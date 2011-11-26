@@ -57,7 +57,7 @@ private:
 	bool Captured_;
 	
 	QList<QPoint> FirstPlayer_, SecondPlayer_;
-
+	bool **Map_;
 public:
 	DotTable (int height, int width, GameMode mode = DEFAULT,
 			Owner turn = FIRST, QObject* = 0);
@@ -72,7 +72,7 @@ private:
 	Owner other (Owner owner) const;
 	
 	void findPolygon (int x, int y, QList<QPoint>& polygon,
-			QList<Polygon>& polygonList, bool **map);
+			QList<Polygon>& polygonList);
 };
 
 #endif // DOTTABLE_H

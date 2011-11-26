@@ -39,16 +39,25 @@ DotTable::DotTable (int height, int width, GameMode mode, Owner turn,
 , Turn_ (turn)
 , GameMode_ (mode)
 , Captured_ (false)
+, Map_ (new bool* [Width_])
 {
 	for (int i = 0; i < width; ++i)
+	{
 		Table_ [i] = new TablePoint [height];
+		Map_ [i] = new bool [height];
+	}
 }
 
 DotTable::~DotTable ()
 {
 	for (int i = 0; i < Width_; ++i)
+	{
 		delete [] Table_ [i];
+		delete [] Map_ [i];
+	}
+	
 	delete [] Table_;
+	delete [] Map_;
 }
 
 TablePoint DotTable::getPoint (int x, int y) const
@@ -67,22 +76,14 @@ void DotTable::setPoint (int x, int y)
 	QList<QPoint>& otherPlayer = Turn_ == FIRST ? SecondPlayer_ : FirstPlayer_;
 	currentPlayer << QPoint (x, y);
 	
-	bool **map = new bool* [Width_];
-	for (int i = 0; i < Width_; ++i)
-		map [i] = new bool [Height_];
-	
 	QList<QPoint> polygon;
 	QList<Polygon> polygonList;
 
 	// O(n)
 	Q_FOREACH (const QPoint& point, polygon)
-		map[point.x ()][point.y ()] = true;
+		Map_ [point.x ()][point.y ()] = true;
 	
-	findPolygon (x, y, polygon, polygonList, map);
-	
-	for (int i = 0; i < Width_; ++i)
-		delete [] map [i];
-	delete [] map;
+	findPolygon (x, y, polygon, polygonList);
 	
 	QList<Polygon>::const_iterator itr = polygonList.begin ();
 	for (; itr != polygonList.end (); ++itr)
@@ -99,10 +100,10 @@ const int dx [] = {-1, 0, 1, 1, 1, 0, -1, -1};
 const int dy [] = {-1, -1, -1, 0, 1, 1, 1, 0};
 
 void DotTable::findPolygon (int x, int y, QList<QPoint>& polygon,
-		QList<Polygon>& polygonList, bool **map)
+		QList<Polygon>& polygonList)
 {
 	polygon << QPoint (x, y);
-	map[x][y] = false;
+	Map_ [x][y] = false;
 	
 	if (polygon.size () > 4 && polygon.first () == polygon.last ())
 	{
@@ -117,10 +118,10 @@ void DotTable::findPolygon (int x, int y, QList<QPoint>& polygon,
 		int new_y = y + dy [i];
 		
 		if (new_x < 0 || new_y < 0 || new_x >= Width_ || new_y >= Height_
-				|| map[new_x][new_y] || Table_ [new_x][new_y].owner != Turn_)
+				|| Map_ [new_x][new_y] || Table_ [new_x][new_y].owner != Turn_)
 			continue;
 		
-		findPolygon (new_x, new_y, polygon, polygonList, map);
+		findPolygon (new_x, new_y, polygon, polygonList);
 	}
 	
 	polygon.pop_back ();
