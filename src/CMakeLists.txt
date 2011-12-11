@@ -16,6 +16,7 @@ INCLUDE_DIRECTORIES (
 )
 
 SET (SRCS
+	stepqueue.cpp
 	tablewidget.cpp
 	mainwindow.cpp
 	newgamedialog.cpp
@@ -25,6 +26,7 @@ SET (SRCS
 	)
 
 SET (HEADERS
+	stepqueue.h
 	tablewidget.h
 	mainwindow.h
 	newgamedialog.h

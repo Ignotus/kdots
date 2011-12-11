@@ -21,21 +21,18 @@
 #include <QObject>
 #include <QPair>
 #include <QPoint>
+#include <QMap>
 
-enum Owner
-{
-	FIRST,
-	SECOND,
-	NIL
-};
+#include "stepqueue.h"
 
-struct TablePoint
+
+struct Point
 {
-	TablePoint (Owner owner = NIL, bool border = false);
+	Point (const bool owner);
 	
-	Owner owner;
-	bool border;
-	bool captured;
+	const bool Owner_;
+	bool Border_;
+	bool Captured_;
 };
 
 class Polygon;
@@ -43,36 +40,27 @@ class Polygon;
 class DotTable : public QObject
 {
 	Q_OBJECT
-public:
-	enum GameMode
-	{
-		EXTRA_TURN,
-		DEFAULT
-	};
-private:
-	int Height_, Width_;
-	TablePoint **Table_;
-	Owner Turn_;
-	GameMode GameMode_;
-	bool Captured_;
 	
-	QList<QPoint> FirstPlayer_, SecondPlayer_;
-	bool **Map_;
+	const int Height_, Width_;
+	QMap<QPoint, Point> PointMap_;
+	StepQueue *StepQueue_;
+	
+	QList<QPoint> Polygon_;
+	QMap<QPoint, bool> TempMap_;
 public:
 	DotTable (int height, int width, GameMode mode = DEFAULT,
-			Owner turn = FIRST, QObject* = 0);
+			bool firstPlayer = 0, QObject *parent = 0);
 	virtual ~DotTable ();
 	
-	TablePoint getPoint (int x, int y) const;
+	Point getPoint (int x, int y) const;
+	Point getPoint (const QPoint& point) const;
+	
 	void setPoint (int x, int y);
-	
-	Owner getOwner () const;
-
+	void setPoint (const QPoint& point);
 private:
-	Owner other (Owner owner) const;
-	
-	void findPolygon (int x, int y, QList<QPoint>& polygon,
-			QList<Polygon>& polygonList);
+	void findPolygon (const QPoint& firstPoint, QList<Polygon>& polygonList);
+signals:
+	void draw (const Polygon& polygon);
 };
 
 #endif // DOTTABLE_H

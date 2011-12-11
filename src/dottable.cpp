@@ -23,116 +23,116 @@
 
 using namespace std;
 
-TablePoint::TablePoint (Owner owner, bool border)
-: owner (owner)
-, border (border)
-, captured (false)
+Point::Point (const bool owner)
+: Owner_ (owner)
+, Border_ (false)
+, Captured_ (false)
 {
 }
 
-DotTable::DotTable (int height, int width, GameMode mode, Owner turn,
+DotTable::DotTable (int height, int width, GameMode mode, bool firstPlayer,
 		QObject *parent)
 : QObject (parent)
 , Height_ (height)
 , Width_ (width)
-, Table_ (new TablePoint* [width])
-, Turn_ (turn)
-, GameMode_ (mode)
-, Captured_ (false)
-, Map_ (new bool* [Width_])
+, StepQueue_ (new StepQueue (mode, firstPlayer))
 {
-	for (int i = 0; i < width; ++i)
-	{
-		Table_ [i] = new TablePoint [height];
-		Map_ [i] = new bool [height];
-	}
+	
 }
 
 DotTable::~DotTable ()
 {
-	for (int i = 0; i < Width_; ++i)
-	{
-		delete [] Table_ [i];
-		delete [] Map_ [i];
-	}
-	
-	delete [] Table_;
-	delete [] Map_;
+	delete StepQueue_;
 }
 
-TablePoint DotTable::getPoint (int x, int y) const
+Point DotTable::getPoint (int x, int y) const
 {
-	return Table_ [x][y];
+	return getPoint (QPoint (x, y));
+}
+
+Point DotTable::getPoint (const QPoint& point) const
+{
+	return PointMap_[point];
 }
 
 void DotTable::setPoint (int x, int y)
 {
-	if (Table_ [x][y].owner != NIL)
+	setPoint (QPoint (x, y));
+}
+
+void DotTable::setPoint (const QPoint& point)
+{
+	if (PointMap_.contains (point))
 		return;
 	
-	Table_ [x][y].owner = Turn_;
-
-	QList<QPoint>& currentPlayer = Turn_ == FIRST ? FirstPlayer_ : SecondPlayer_;
-	QList<QPoint>& otherPlayer = Turn_ == FIRST ? SecondPlayer_ : FirstPlayer_;
-	currentPlayer << QPoint (x, y);
+	Polygon_.clear ();
+	TempMap_.clear ();
 	
-	QList<QPoint> polygon;
 	QList<Polygon> polygonList;
-
-	// O(n)
-	Q_FOREACH (const QPoint& point, polygon)
-		Map_ [point.x ()][point.y ()] = true;
+	findPolygon (point, polygonList);
 	
-	findPolygon (x, y, polygon, polygonList);
-	
+	//O(n^3)
 	QList<Polygon>::const_iterator itr = polygonList.begin ();
 	for (; itr != polygonList.end (); ++itr)
 	{
 		remove_if (polygonList.begin (), polygonList.end (), [&itr] (const Polygon& polygon) {
 			return itr->contains (polygon) && *itr != polygon;
 		});
-	}	
+	}
 	
-	Turn_ = getOwner ();
+	bool isCaptured = false;
+	
+	Q_FOREACH (const Polygon& polygon, polygonList)
+	{
+		Q_FOREACH (const Point& point, PointMap_)
+		{
+			if (point.Owner_ == StepQueue_->getCurrentOwner () || !point.Captured_)
+				continue;
+		
+			const QPoint& k = PointMap_.key (point);
+		
+			if (polygon.contains (k))
+			{
+				isCaptured = true;
+				emit draw (polygon);
+				break;
+			}
+				
+		}
+	}
+	
+	StepQueue_->nextStep (isCaptured);
 }
 
-const int dx [] = {-1, 0, 1, 1, 1, 0, -1, -1};
-const int dy [] = {-1, -1, -1, 0, 1, 1, 1, 0};
+const int dx[] = {-1, 0, 1, 1, 1, 0, -1, -1};
+const int dy[] = {-1, -1, -1, 0, 1, 1, 1, 0};
 
-void DotTable::findPolygon (int x, int y, QList<QPoint>& polygon,
-		QList<Polygon>& polygonList)
+void DotTable::findPolygon (const QPoint& firstPoint, QList<Polygon>& polygonList)
 {
-	polygon << QPoint (x, y);
-	Map_ [x][y] = false;
+	Polygon_ << QPoint (firstPoint);
+	TempMap_[firstPoint] = true;
 	
-	if (polygon.size () > 4 && polygon.first () == polygon.last ())
+	if (Polygon_.size () > 4 && Polygon_.first () == Polygon_.last ())
 	{
-		polygonList << Polygon (polygon);
-		polygon.pop_back ();
+		Polygon_.pop_back ();
+		polygonList << Polygon (Polygon_);
 		return;
 	}
 	
 	for (int i = 0; i < 8; ++i)
 	{
-		int new_x = x + dx [i];
-		int new_y = y + dy [i];
+		const QPoint& newPoint = QPoint (firstPoint.x () + dx[i],
+				firstPoint.y () + dy[i]);
 		
-		if (new_x < 0 || new_y < 0 || new_x >= Width_ || new_y >= Height_
-				|| Map_ [new_x][new_y] || Table_ [new_x][new_y].owner != Turn_)
+		if (newPoint.x () < 0 || newPoint.x () >= Width_
+				|| newPoint.y () < 0 || newPoint.x () >= Height_
+				|| TempMap_[newPoint]
+				|| PointMap_[newPoint].Owner_ != StepQueue_->getCurrentOwner ())
 			continue;
 		
-		findPolygon (new_x, new_y, polygon, polygonList);
+		findPolygon (newPoint, polygonList);
 	}
 	
-	polygon.pop_back ();
+	Polygon_.pop_back ();
 }
 
-Owner DotTable::other (Owner owner) const
-{
-	return (owner == FIRST) ? SECOND : FIRST;
-}
-
-Owner DotTable::getOwner () const
-{
-	return Captured_ ? (GameMode_ == EXTRA_TURN ? Turn_ : other (Turn_)) : other (Turn_);
-}

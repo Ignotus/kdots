@@ -16,15 +16,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
-#include "mainwindow.h"
+#ifndef STEPQUEUE_H
+#define STEPQUEUE_H
 
-int main (int argc, char **argv)
+enum GameMode
 {
-	QApplication app (argc, argv);
+	EXTRA_TURN,
+	DEFAULT
+};
+
+class StepQueue
+{
+	const GameMode GameMode_;
+	bool CurrentOwner_;
+public:
+	// 0 - First Player, 1 - Second Player
+	StepQueue (const GameMode mode, const bool firstOwner);
 	
-	MainWindow w;
-	w.show ();
+	bool getCurrentOwner () const;
 	
-	return app.exec ();
-}
+	bool nextStep (const bool captured);
+};
+
+#endif // STEPQUEUE_H
