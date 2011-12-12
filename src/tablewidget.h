@@ -20,11 +20,29 @@
 #define TABLEWIDGET_H
 
 #include <QWidget>
+#include "dottable.h"
 
 class TableWidget : public QWidget
 {
+	Q_OBJECT
+	
+	DotTable *DotTable_;
+	QPixmap *Pixmap_;
+	
+	int Height_, Width_;
 public:
-	TableWidget (QWidget *parent = 0, Qt::WindowFlags f = 0);
+	TableWidget (int height, int width, GameMode mode, bool firstPlayer = 0,
+			QWidget *parent = 0);
+	virtual ~TableWidget ();
+	
+protected:
+	void mousePressEvent (QMouseEvent *event);
+	void paintEvent (QPaintEvent *event);
+private slots:
+	void drawPolygon (const Polygon& polygon);
+	void drawPoint (const QPoint& point);
+	
+	void drawPixmap ();
 };
 
 #endif // TABLEWIDGET_H

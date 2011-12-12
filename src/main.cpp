@@ -17,13 +17,13 @@
  */
 
 #include <QApplication>
-#include "mainwindow.h"
+#include "tablewidget.h"
 
 int main (int argc, char **argv)
 {
 	QApplication app (argc, argv);
 	
-	MainWindow w;
+	TableWidget w (10, 10, DEFAULT, 0);
 	w.show ();
 	
 	return app.exec ();

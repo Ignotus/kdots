@@ -34,10 +34,9 @@ DotTable::DotTable (int height, int width, GameMode mode, bool firstPlayer,
 		QObject *parent)
 : QObject (parent)
 , Height_ (height)
-, Width_ (width)
 , StepQueue_ (new StepQueue (mode, firstPlayer))
 {
-	
+	Width_ = width;
 }
 
 DotTable::~DotTable ()
@@ -52,7 +51,7 @@ Point DotTable::getPoint (int x, int y) const
 
 Point DotTable::getPoint (const QPoint& point) const
 {
-	return PointMap_[point];
+	return PointHash_[point];
 }
 
 void DotTable::setPoint (int x, int y)
@@ -62,11 +61,11 @@ void DotTable::setPoint (int x, int y)
 
 void DotTable::setPoint (const QPoint& point)
 {
-	if (PointMap_.contains (point))
+	if (PointHash_.contains (point))
 		return;
 	
 	Polygon_.clear ();
-	TempMap_.clear ();
+	TempHash_.clear ();
 	
 	QList<Polygon> polygonList;
 	findPolygon (point, polygonList);
@@ -84,12 +83,16 @@ void DotTable::setPoint (const QPoint& point)
 	
 	Q_FOREACH (const Polygon& polygon, polygonList)
 	{
-		Q_FOREACH (const Point& point, PointMap_)
-		{
-			if (point.Owner_ == StepQueue_->getCurrentOwner () || !point.Captured_)
-				continue;
+		QHashIterator<QPoint, Point> i (PointHash_);
 		
-			const QPoint& k = PointMap_.key (point);
+		while (i.hasNext ())
+		{
+			i.next ();
+			if (i.value ().Owner_ == StepQueue_->getCurrentOwner ()
+					|| !i.value ().Captured_)
+				continue;
+			
+			const QPoint& k = i.key ();
 		
 			if (polygon.contains (k))
 			{
@@ -97,7 +100,6 @@ void DotTable::setPoint (const QPoint& point)
 				emit draw (polygon);
 				break;
 			}
-				
 		}
 	}
 	
@@ -110,7 +112,7 @@ const int dy[] = {-1, -1, -1, 0, 1, 1, 1, 0};
 void DotTable::findPolygon (const QPoint& firstPoint, QList<Polygon>& polygonList)
 {
 	Polygon_ << QPoint (firstPoint);
-	TempMap_[firstPoint] = true;
+	TempHash_[firstPoint] = true;
 	
 	if (Polygon_.size () > 4 && Polygon_.first () == Polygon_.last ())
 	{
@@ -126,8 +128,8 @@ void DotTable::findPolygon (const QPoint& firstPoint, QList<Polygon>& polygonLis
 		
 		if (newPoint.x () < 0 || newPoint.x () >= Width_
 				|| newPoint.y () < 0 || newPoint.x () >= Height_
-				|| TempMap_[newPoint]
-				|| PointMap_[newPoint].Owner_ != StepQueue_->getCurrentOwner ())
+				|| (TempHash_.contains (newPoint) && TempHash_[newPoint])
+				|| (PointHash_.contains (newPoint) && PointHash_[newPoint].Owner_ != StepQueue_->getCurrentOwner ()))
 			continue;
 		
 		findPolygon (newPoint, polygonList);

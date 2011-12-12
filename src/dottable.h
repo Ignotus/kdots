@@ -21,14 +21,15 @@
 #include <QObject>
 #include <QPair>
 #include <QPoint>
-#include <QMap>
+#include <QHash>
+#include <memory>
 
 #include "stepqueue.h"
 
 
 struct Point
 {
-	Point (const bool owner);
+	Point (const bool owner = false);
 	
 	const bool Owner_;
 	bool Border_;
@@ -37,16 +38,19 @@ struct Point
 
 class Polygon;
 
+static int Width_;
+
 class DotTable : public QObject
 {
 	Q_OBJECT
 	
-	const int Height_, Width_;
-	QMap<QPoint, Point> PointMap_;
+	const int Height_;
+
+	QHash<QPoint, Point> PointHash_;
 	StepQueue *StepQueue_;
 	
 	QList<QPoint> Polygon_;
-	QMap<QPoint, bool> TempMap_;
+	QHash<QPoint, bool> TempHash_;
 public:
 	DotTable (int height, int width, GameMode mode = DEFAULT,
 			bool firstPlayer = 0, QObject *parent = 0);
@@ -62,5 +66,10 @@ private:
 signals:
 	void draw (const Polygon& polygon);
 };
+
+inline uint qHash (const QPoint& key)
+{
+	return (key.y () - 1) * Width_ + key.x ();
+}
 
 #endif // DOTTABLE_H
