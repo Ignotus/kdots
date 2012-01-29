@@ -51,6 +51,7 @@ void DotTable::pushPoint (const IntPoint& point)
 	{
 		for (const IntPoint& point : pointList)
 		{
+			qDebug () << "POINTS: " << point.x () << point.y ();
 			if (!table[point.x ()][point.y ()].captured
 					&& polygon.contains (point))
 			{

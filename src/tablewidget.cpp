@@ -33,7 +33,7 @@ using namespace std;
 TableWidget::TableWidget (int height, int width, GameMode mode,
 		Owner owner, QWidget *parent)
 : QWidget (parent)
-, dotTable (new DotTable (height, width, mode, owner, this))
+, dotTable (new DotTable (width, height, mode, owner, this))
 , height (height + 1)
 , width (width + 1)
 {

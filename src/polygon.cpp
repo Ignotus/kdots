@@ -36,6 +36,7 @@ bool Polygon::contains (const IntPoint& point) const
 	
 	list<IntPoint>::const_iterator itr = polygonPoints.begin ();
 	list<IntPoint>::const_iterator itrEnd = polygonPoints.end ();
+	qDebug () << "////////////////////////";
 	qDebug () << "Size: " << polygonPoints.size ();
 	while (itr != itrEnd)
 	{
