@@ -25,6 +25,7 @@ namespace Ui
 	class MainWindow;
 }
 
+class TableWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -35,7 +36,8 @@ public:
 
 private:
 	Ui::MainWindow *ui;
-
+	TableWidget *table;
+	
 private slots:
 	void on_actionNewGame_triggered ();
 };

@@ -61,3 +61,8 @@ void StepQueue::addCaptured (int point)
 	else
 		secondPlayerCaptured += point;
 }
+
+int StepQueue::getMarks (Owner owner) const
+{
+	return owner == FirstOwner ? firstPlayerCaptured : secondPlayerCaptured;
+}

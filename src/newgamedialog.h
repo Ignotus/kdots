@@ -21,6 +21,8 @@
 
 #include <QDialog>
 
+#include "point.hpp"
+
 namespace Ui
 {
 	class NewGameDialog;
@@ -35,7 +37,9 @@ public:
 	
 	int getHeight () const;
 	int getWidth () const;
-
+	GameMode getGameMode () const;
+	Owner getFirstMoving () const;
+	
 private:
 	Ui::NewGameDialog *ui;
 };

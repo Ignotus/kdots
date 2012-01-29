@@ -35,6 +35,8 @@ public:
 	Owner getCurrentOwner () const;
 	
 	void addPoint (const IntPoint& point);
+	int getMarks (Owner owner) const;
+	
 	std::list<IntPoint> getOtherPointList () const;
 	
 	Owner nextStep (bool captured);

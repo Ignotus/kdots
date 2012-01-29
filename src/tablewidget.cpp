@@ -151,6 +151,11 @@ void TableWidget::paintEvent (QPaintEvent *event)
 	
 	QPainter painter (this);
 	painter.drawPixmap (dx, dy, pixmap);
+	
+	emit updateStatusBar (QString ("First:\t")
+			+ QString::number (dotTable->getMarks (FirstOwner))
+			+ "\tSecond:\t"
+			+ QString::number (dotTable->getMarks (SecondOwner)));
 }
 
 TableWidget::~TableWidget ()

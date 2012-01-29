@@ -55,6 +55,7 @@ void DotTable::pushPoint (const IntPoint& point)
 					&& polygon.contains (point))
 			{
 				polygon.setHasPoint (true);
+				qDebug () << point.x () << point.y ();
 				table[point.x ()][point.y ()].captured = true;
 				capturedPoints.push_back (point);
 			}
@@ -92,7 +93,6 @@ void DotTable::findPolygon (const IntPoint& point, list<Polygon>& polygons)
 			&& point.y () == pointList.begin ()->y ()
 			&& pointList.size () > 3)
 	{
-		qDebug () << Q_FUNC_INFO << "Polygon found";
 		polygons.push_back (Polygon (pointList));
 		return;
 	}
@@ -148,4 +148,9 @@ void DotTable::clearBuffer ()
 Graph DotTable::getGraph () const
 {
 	return table;
+}
+
+int DotTable::getMarks (Owner owner) const
+{
+	return stepQueue->getMarks (owner);
 }

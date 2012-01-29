@@ -19,10 +19,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "newgamedialog.h"
+#include "tablewidget.h"
 
 MainWindow::MainWindow (QWidget *parent)
 : QMainWindow (parent)
 , ui (new Ui::MainWindow)
+, table (NULL)
 {
 	ui->setupUi (this);
 }
@@ -34,15 +36,25 @@ MainWindow::~MainWindow ()
 
 void MainWindow::on_actionNewGame_triggered ()
 {
-	NewGameDialog *dialog = new NewGameDialog (this);
-	if (dialog->exec () == QDialog::Rejected)
+	NewGameDialog dialog;
+	if (dialog.exec () == QDialog::Rejected)
 		return;
-		
-		//table = new PointsWidget (dialog->getWidth (), dialog->getHeight (),
-		//		QDots::FIRST, this);
+	
+	table = new TableWidget (dialog.getHeight (),
+			dialog.getWidth (),
+			dialog.getGameMode (),
+			dialog.getFirstMoving (),
+			this);
+	connect (table,
+			SIGNAL (updateStatusBar (const QString&)),
+			ui->statusBar,
+			SLOT (clearMessage ()));
+	connect (table,
+			SIGNAL (updateStatusBar (const QString&)),
+			ui->statusBar,
+			SLOT (showMessage (const QString&)));
 
-		//setCentralWidget (table);
-		//table->show ();
-		//table->repaint ();
+	setCentralWidget (table);
+	table->show ();
 }
 

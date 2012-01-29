@@ -37,6 +37,8 @@ public:
 protected:
 	void mousePressEvent (QMouseEvent *event);
 	void paintEvent (QPaintEvent *event);
+signals:
+	void updateStatusBar (const QString& msg);
 };
 
 #endif // TABLEWIDGET_H

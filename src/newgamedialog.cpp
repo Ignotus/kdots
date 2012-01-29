@@ -18,6 +18,7 @@
 
 #include "newgamedialog.h"
 #include "ui_newgamedialog.h"
+#include <QDebug>
 
 NewGameDialog::NewGameDialog (QWidget *parent)
 : QDialog (parent)
@@ -39,4 +40,14 @@ int NewGameDialog::getHeight () const
 int NewGameDialog::getWidth () const
 {
 	return ui->WidthSpinBox->value ();
+}
+
+GameMode NewGameDialog::getGameMode () const
+{
+	return ui->GameMode->currentIndex () ? ExtraTurnGameMode : DefaultGameMode;
+}
+
+Owner NewGameDialog::getFirstMoving () const
+{
+	return ui->FirstMoving->currentIndex () ? SecondOwner : FirstOwner;
 }

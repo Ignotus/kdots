@@ -36,6 +36,7 @@ bool Polygon::contains (const IntPoint& point) const
 	
 	list<IntPoint>::const_iterator itr = polygonPoints.begin ();
 	list<IntPoint>::const_iterator itrEnd = polygonPoints.end ();
+	qDebug () << "Size: " << polygonPoints.size ();
 	while (itr != itrEnd)
 	{
 		if (itr->y () != point.y ())
@@ -50,6 +51,7 @@ bool Polygon::contains (const IntPoint& point) const
 					? polygonPoints.back ()
 					: *itr;
 		} ();
+		++itr;
 		
 		const IntPoint& nextPoint = [&itr, this] ()
 		{
@@ -57,8 +59,9 @@ bool Polygon::contains (const IntPoint& point) const
 					? polygonPoints.front ()
 					: *itr;
 		} ();
+		--itr;
 		
-		if (prevPoint.x () != nextPoint.x ())
+		if (prevPoint.y () != nextPoint.y () && itr->x () < point.x ())
 			++i;
 		++itr;
 	}

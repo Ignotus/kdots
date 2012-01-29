@@ -22,6 +22,8 @@ SET (SRCS
 	stepqueue.cpp
 	tablewidget.cpp
 	main.cpp
+	newgamedialog.cpp
+	mainwindow.cpp
 	)
 
 SET (HEADERS
@@ -33,6 +35,8 @@ SET (HEADERS
 	tablewidget.h
 	edgelist.hpp
 	point.hpp
+	newgamedialog.h
+	mainwindow.h
 	)
 
 SET (FORMS

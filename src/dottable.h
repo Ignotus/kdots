@@ -44,6 +44,7 @@ public:
 	void pushPoint (const IntPoint& point);
 	
 	Graph getGraph () const;
+	int getMarks (Owner owner) const;
 private:
 	void findPolygon (const IntPoint& point, std::list<Polygon>& polygons);
 	void clearBuffer ();

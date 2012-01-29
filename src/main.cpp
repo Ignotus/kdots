@@ -17,15 +17,14 @@
  */
 
 #include <QApplication>
-#include "tablewidget.h"
+#include "mainwindow.h"
 
 int main (int argc, char **argv)
 {
 	QApplication app (argc, argv);
 	
-	TableWidget w (10, 10, DefaultGameMode, FirstOwner);
+	MainWindow w;
 	w.show ();
-	//w.drawPoint (Point (2, 2), FirstOwner);
 	
 	return app.exec ();
 }
