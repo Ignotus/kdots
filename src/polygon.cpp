@@ -62,8 +62,7 @@ bool Polygon::contains (const IntPoint& point) const
 			++i;
 		++itr;
 	}
-	
-	return !(i % 2);
+	return i % 2;
 }
 
 void Polygon::setHasPoint (bool val)

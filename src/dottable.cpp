@@ -51,7 +51,6 @@ void DotTable::pushPoint (const IntPoint& point)
 	{
 		for (const IntPoint& point : pointList)
 		{
-			qDebug () << Q_FUNC_INFO << "1";
 			if (!table[point.x ()][point.y ()].captured
 					&& polygon.contains (point))
 			{
@@ -78,6 +77,7 @@ void DotTable::pushPoint (const IntPoint& point)
 	}
 	
 	stepQueue->addCaptured (capturedPoints.size ());
+	
 	stepQueue->nextStep (capturedPoints.size ());
 }
 
@@ -127,7 +127,6 @@ void DotTable::drawPolygon (const Polygon& polygon, Owner owner)
 	IntPoint prevPoint = pointList.back ();
 	for (; itr != polygon.end (); ++itr)
 	{
-		qDebug () << Q_FUNC_INFO << "EDGE: " << prevPoint.x () << prevPoint.y () << itr->x () << itr->y ();
 		table.addEdge (prevPoint, *itr);
 		prevPoint = *itr;
 	}
