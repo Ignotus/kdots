@@ -16,16 +16,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
-#include "tablewidget.h"
+#ifndef KDOTS_GRAPHPOINT_H
+#define KDOTS_GRAPHPOINT_H
 
-int main (int argc, char **argv)
+#include "edgelist.hpp"
+
+struct GraphPoint
 {
-	QApplication app (argc, argv);
-	
-	TableWidget w (10, 10, DefaultGameMode, FirstOwner);
-	w.show ();
-	//w.drawPoint (Point (2, 2), FirstOwner);
-	
-	return app.exec ();
-}
+	bool captured;
+	Owner owner;
+	EdgeList<8, int> edges;
+
+	GraphPoint (Owner owner = NoneOwner, bool captured = false);
+};
+
+#endif // KDOTS_GRAPHPOINT_H

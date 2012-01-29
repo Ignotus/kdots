@@ -17,81 +17,146 @@
  */
 
 #include "tablewidget.h"
+
+#include <cmath>
+#include <vector>
+
+using namespace std;
+
 #include <QMouseEvent>
 #include <QPaintEvent>
-#include "polygon.h"
 #include <QPainter>
 #include <QDebug>
 
-TableWidget::TableWidget (int height, int width, GameMode mode, bool firstPlayer,
-		QWidget *parent)
+#include "polygon.h"
+
+TableWidget::TableWidget (int height, int width, GameMode mode,
+		Owner owner, QWidget *parent)
 : QWidget (parent)
-, DotTable_ (new DotTable (height, width, mode, firstPlayer, parent))
-, Pixmap_ (new QPixmap (QSize ((width + 1) * 40, (height + 1) * 40)))
-, Height_ (height)
-, Width_ (width)
+, dotTable (new DotTable (height, width, mode, owner, this))
+, height (height + 1)
+, width (width + 1)
 {
-	connect (DotTable_,
-			SIGNAL (draw (Polygon)),
-			this,
-			SLOT (drawPolygon (Polygon)));
-	
-	
-	Pixmap_->fill (Qt::white);
-	QPainter painter (Pixmap_);
-	
-	QPen linePen (QColor (Qt::black));
-	linePen.setWidth (1);
-	painter.setPen (linePen);
-	int i, k;
-	for (i = 40, k = (width + 1) * 40; i < k; i += 40)
-		painter.drawLine (i, 0, i, Pixmap_->height ());
-	
-	for (i = 40, k = (height + 1) * 40; i < k; i += 40)
-		painter.drawLine (0, i , Pixmap_->width (), i);
-
-	//drawPixmap ();
-	//painter.drawPixmap (Pixmap_->copy (rect ()));
-}
-
-void TableWidget::drawPixmap ()
-{
+	setMinimumSize (400, 400);
 }
 
 void TableWidget::mousePressEvent (QMouseEvent *event)
 {
+	const QRect& rectange = rect ();
 	
+	const float cellHeight = rectange.height () / height;
+	const float cellWidth = rectange.width () / width;
+	
+	const float cellSize = cellHeight > cellWidth ? cellWidth : cellHeight;
+	float tableWidth = cellSize * width;
+	float tableHeight = cellSize * height;
+	
+	float dx = (rectange.width () - cellSize * width) / 2;
+	float dy = (rectange.height () - cellSize * height) / 2;
+
+	int x = (event->x () - dx) / cellSize;
+	int y = (event->y () - dy) / cellSize;
+	
+	const float firstPart = cellSize / 3;
+	const float lastPart = cellSize * 2 / 3;
+	
+	dx = event->x () - dx - x * cellSize;
+	if (dx > firstPart && dx < lastPart)
+		return;
+	else if (dx < firstPart)
+		--x;
+	
+	dy = event->y () - dy - y * cellSize;
+	if (dy > firstPart && dy < lastPart)
+		return;
+	else if (dy < firstPart)
+		--y;
+	
+	dotTable->pushPoint (IntPoint (x, y));
+	update ();
 }
 
 void TableWidget::paintEvent (QPaintEvent *event)
 {
 	const QRect& rectange = event->rect ();
 	
+	const float cellHeight = rectange.height () / height;
+	const float cellWidth = rectange.width () / width;
+	
+	const float cellSize = cellHeight > cellWidth ? cellWidth : cellHeight;
+	const float tableWidth = cellSize * width;
+	const float tableHeight = cellSize * height;
+	
+	QPixmap pixmap (QSize (tableWidth, tableHeight));
+	
+	pixmap.fill (Qt::white);
+	
+	QPainter pixPainter (&pixmap);
+	pixPainter.setRenderHint (QPainter::Antialiasing);
+	
+	QPen pen (Qt::black, 1);
+
+	pixPainter.setPen (pen);
+	
+	int i, k;
+	for (i = cellSize, k = width * cellSize; i < k; i += cellSize)
+		pixPainter.drawLine (i, 0, i, pixmap.height ());
+	
+	for (i = cellSize, k = height * cellSize; i < k; i += cellSize)
+		pixPainter.drawLine (0, i, pixmap.width (), i);
+	
+	const Graph& graph = dotTable->getGraph ();
+	
+	const QBrush firstBrush (Qt::red);
+	const QBrush secondBrush (Qt::blue);
+	
+	const QPen firstPen (Qt::red, 2);
+	const QPen secondPen (Qt::blue, 2);
+	
+	int j;
+	for (i = 0; i < graph.width (); ++i)
+	{
+		for (k = 0; k < graph.height (); ++k)
+		{
+			const GraphPoint& point = graph[i][k];
+			if (point.owner == NoneOwner)
+				continue;
+			
+			pixPainter.setPen (point.owner == FirstOwner
+					? firstPen
+					: secondPen);
+			
+			pixPainter.setBrush (point.owner == FirstOwner
+					? firstBrush
+					: secondBrush);
+			
+			pixPainter.drawEllipse ((i + 1) * cellSize,
+					(k + 1) * cellSize, 10, 10);
+			
+			const EdgeList<8, int>& edges = point.edges;
+			for (j = 0; j < edges.size (); ++j)
+			{
+				const auto& lastPoint = edges[j];
+				
+				qDebug () << Q_FUNC_INFO << i << k << lastPoint.x () << lastPoint.y ();
+				
+				pixPainter.drawLine ((i + 1) * cellSize,
+						(k + 1) * cellSize,
+						(lastPoint.x () + 1) * cellSize,
+						(lastPoint.y () + 1) * cellSize);
+			}
+		}
+	}
+	
+	int dx = (rectange.width () - tableWidth) / 2;
+	int dy = (rectange.height () - tableHeight) / 2;
+	
 	QPainter painter (this);
-	painter.setRenderHint (QPainter::HighQualityAntialiasing);
-	float cellHeight = (float) rectange.height () / Height_;
-	float cellWidth = (float) rectange.width () / Width_;
-	
-	float cellSize = cellHeight > cellWidth ? cellWidth : cellHeight;
-	float tableWidth = cellSize * Width_;
-	float tableHeight = cellSize * Height_;
-	
-	float x = cellHeight > cellWidth ? 0 : (float) (rectange.width () - tableWidth) / 2;
-	float y = cellHeight > cellWidth ? (float) (rectange.height () - tableHeight) / 2 : 0;
-	
-	painter.drawPixmap(QPointF (x, y), Pixmap_->scaled (tableWidth, tableHeight));
+	painter.drawPixmap (dx, dy, pixmap);
+	qDebug () << Q_FUNC_INFO << "Paint ok!";
 }
 
 TableWidget::~TableWidget ()
 {
-	delete DotTable_;
-}
-
-void TableWidget::drawPolygon (const Polygon& polygon)
-{
-}
-
-void TableWidget::drawPoint (const QPoint& point)
-{
-	
+	delete dotTable;
 }

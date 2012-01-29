@@ -1,8 +1,7 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 
-
-SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 PROJECT (kdots)
+SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
 FIND_PACKAGE (Qt4 REQUIRED)
 
@@ -16,22 +15,24 @@ INCLUDE_DIRECTORIES (
 )
 
 SET (SRCS
-	stepqueue.cpp
-	tablewidget.cpp
-	mainwindow.cpp
-	newgamedialog.cpp
+	graphpoint.cpp
+	graph.cpp
 	polygon.cpp
 	dottable.cpp
+	stepqueue.cpp
+	tablewidget.cpp
 	main.cpp
 	)
 
 SET (HEADERS
-	stepqueue.h
-	tablewidget.h
-	mainwindow.h
-	newgamedialog.h
+	graphpoint.h
+	graph.h
 	polygon.h
 	dottable.h
+	stepqueue.h
+	tablewidget.h
+	edgelist.hpp
+	point.hpp
 	)
 
 SET (FORMS

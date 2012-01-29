@@ -16,31 +16,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KDOTS_POLYGON_H
-#define KDOTS_POLYGON_H
-#include <list>
+#ifndef KDOTS_GRAPH_H
+#define KDOTS_GRAPH_H
 
-#include "point.hpp"
+#include <vector>
+#include "graphpoint.h"
 
-class Polygon
+class Graph
 {
-	std::list<IntPoint> polygonPoints;
-	bool hasPoint;
+	std::vector< std::vector<GraphPoint> > graph;
+	int widthv, heightv;
 public:
-	typedef std::list<IntPoint>::const_iterator const_iterator;
-	typedef std::list<IntPoint>::iterator iterator;
+	typedef std::vector< std::vector<GraphPoint> >::const_iterator const_iterator;
+	typedef std::vector< std::vector<GraphPoint> >::iterator iterator;
+	
+	Graph (int width, int height);
+	
+	int width () const;
+	int height () const;
 	
 	iterator begin ();
 	const_iterator begin () const;
 	iterator end ();
 	const_iterator end () const;
 	
-	Polygon (const std::list<IntPoint>& polygonPoints);
+	GraphPoint& operator[] (const Point<int>& index);
+	std::vector<GraphPoint>& operator[] (int index);
+	const std::vector<GraphPoint>& operator[] (int index) const;
 	
-	std::list<IntPoint> getPoints () const;
-	bool contains (const IntPoint& point) const;
-	void setHasPoint (bool val);
-	bool getHasPoint () const;
+	bool addEdge (const Point<int>& first, const Point<int>& second);
+	bool removeEdge (const Point<int>& first, const Point<int>& second);
 };
 
-#endif // KDOTS_POLYGON_H
+#endif // KDOTS_GRAPH_H

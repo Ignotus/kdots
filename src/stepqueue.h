@@ -18,24 +18,34 @@
 
 #ifndef STEPQUEUE_H
 #define STEPQUEUE_H
-
-enum GameMode
-{
-	EXTRA_TURN,
-	DEFAULT
-};
+#include <list>
+#include "point.hpp"
 
 class StepQueue
 {
-	const GameMode GameMode_;
-	bool CurrentOwner_;
+	const GameMode gameMode;
+	Owner currentOwner;
+	
+	std::list<IntPoint> firstPlayerPoints, secondPlayerPoints;
+	
+	int firstPlayerCaptured, secondPlayerCaptured;
 public:
-	// 0 - First Player, 1 - Second Player
-	StepQueue (const GameMode mode, const bool firstOwner);
+	StepQueue (GameMode mode, Owner owner);
 	
-	bool getCurrentOwner () const;
+	Owner getCurrentOwner () const;
 	
-	bool nextStep (const bool captured);
+	void addPoint (const IntPoint& point);
+	std::list<IntPoint> getOtherPointList () const;
+	
+	Owner nextStep (bool captured);
+	
+	void addCaptured (int point);
+	
+	inline
+	static Owner otherPlayer (Owner player)
+	{
+		return player == FirstOwner ? SecondOwner : FirstOwner;
+	}
 };
 
 #endif // STEPQUEUE_H

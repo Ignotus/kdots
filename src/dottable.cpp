@@ -17,124 +17,137 @@
  */
 
 #include "dottable.h"
-#include "polygon.h"
-#include <algorithm>
-#include <functional>
+#include <QDebug>
 
 using namespace std;
 
-Point::Point (const bool owner)
-: Owner_ (owner)
-, Border_ (false)
-, Captured_ (false)
-{
-}
-
-DotTable::DotTable (int height, int width, GameMode mode, bool firstPlayer,
+DotTable::DotTable (int width, int height, GameMode mode, Owner owner,
 		QObject *parent)
 : QObject (parent)
-, Height_ (height)
-, StepQueue_ (new StepQueue (mode, firstPlayer))
+, table (width, height)
+, tempBuffer (width, vector<bool> (height))
+, stepQueue (new StepQueue (mode, owner))
 {
-	Width_ = width;
 }
 
-DotTable::~DotTable ()
+void DotTable::pushPoint (const IntPoint& point)
 {
-	delete StepQueue_;
-}
-
-Point DotTable::getPoint (int x, int y) const
-{
-	return getPoint (QPoint (x, y));
-}
-
-Point DotTable::getPoint (const QPoint& point) const
-{
-	return PointHash_[point];
-}
-
-void DotTable::setPoint (int x, int y)
-{
-	setPoint (QPoint (x, y));
-}
-
-void DotTable::setPoint (const QPoint& point)
-{
-	if (PointHash_.contains (point))
+	if (table[point.x ()][point.y ()].owner != NoneOwner)
 		return;
 	
-	Polygon_.clear ();
-	TempHash_.clear ();
-	
-	QList<Polygon> polygonList;
-	findPolygon (point, polygonList);
-	
-	//O(n^3)
-	QList<Polygon>::const_iterator itr = polygonList.begin ();
-	for (; itr != polygonList.end (); ++itr)
+	table[point.x ()][point.y ()].owner = stepQueue->getCurrentOwner ();
+	qDebug () << Q_FUNC_INFO << "Add Point ok!";
+	stepQueue->addPoint (point);
+	qDebug () << Q_FUNC_INFO << "Add Point ok!";
+	clearBuffer ();	
+	qDebug () << Q_FUNC_INFO << "Clear buffer ok!";
+	list<Polygon> polygons;
+	findPolygon (point, polygons);
+	list<IntPoint> capturedPoints;
+	qDebug() << Q_FUNC_INFO << "Find ok";
+	const list<IntPoint>& pointList = stepQueue->getOtherPointList ();
+	qDebug () << Q_FUNC_INFO << "Get point list";
+	for (Polygon& polygon : polygons)
 	{
-		remove_if (polygonList.begin (), polygonList.end (), [&itr] (const Polygon& polygon) {
-			return itr->contains (polygon) && *itr != polygon;
-		});
-	}
-	
-	bool isCaptured = false;
-	
-	Q_FOREACH (const Polygon& polygon, polygonList)
-	{
-		QHashIterator<QPoint, Point> i (PointHash_);
-		
-		while (i.hasNext ())
+		for (const IntPoint& point : pointList)
 		{
-			i.next ();
-			if (i.value ().Owner_ == StepQueue_->getCurrentOwner ()
-					|| !i.value ().Captured_)
-				continue;
-			
-			const QPoint& k = i.key ();
-		
-			if (polygon.contains (k))
+			qDebug () << Q_FUNC_INFO << "1";
+			if (!table[point.x ()][point.y ()].captured
+					&& polygon.contains (point))
 			{
-				isCaptured = true;
-				emit draw (polygon);
-				break;
+				polygon.setHasPoint (true);
+				table[point.x ()][point.y ()].captured = true;
+				capturedPoints.push_back (point);
 			}
 		}
+		
+		if (!polygon.getHasPoint ())
+		{
+			for (const IntPoint& point : capturedPoints)
+			{
+				if (polygon.contains (point))
+				{
+					polygon.setHasPoint (true);
+					break;
+				}
+			}
+		}
+		
+		if (polygon.getHasPoint ())
+			drawPolygon (polygon, stepQueue->getCurrentOwner ());
 	}
 	
-	StepQueue_->nextStep (isCaptured);
+	stepQueue->addCaptured (capturedPoints.size ());
+	stepQueue->nextStep (capturedPoints.size ());
+	qDebug() << Q_FUNC_INFO << "End";
 }
 
-const int dx[] = {-1, 0, 1, 1, 1, 0, -1, -1};
-const int dy[] = {-1, -1, -1, 0, 1, 1, 1, 0};
-
-void DotTable::findPolygon (const QPoint& firstPoint, QList<Polygon>& polygonList)
+void DotTable::findPolygon (const IntPoint& point, list<Polygon>& polygons)
 {
-	Polygon_ << QPoint (firstPoint);
-	TempHash_[firstPoint] = true;
+	const GraphPoint& graphPoint = table[point.x ()][point.y ()];
+	if (graphPoint.captured
+			|| graphPoint.owner != stepQueue->getCurrentOwner ())
+		return;
 	
-	if (Polygon_.size () > 4 && Polygon_.first () == Polygon_.last ())
+	if (point.x () == pointList.begin ()->x ()
+			&& point.y () == pointList.begin ()->y ()
+			&& pointList.size () > 3)
 	{
-		Polygon_.pop_back ();
-		polygonList << Polygon (Polygon_);
+		qDebug () << Q_FUNC_INFO << "Polygon found";
+		polygons.push_back (Polygon (pointList));
 		return;
 	}
+	
+	if (tempBuffer[point.x ()][point.y ()])
+		return;
+	
+	pointList.push_back (point);
+	tempBuffer[point.x ()][point.y ()] = true;
+	
+	static int dx[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+	static int dy[8] = {1, 1, 0, -1, -1, -1, 0, 1};
 	
 	for (int i = 0; i < 8; ++i)
 	{
-		const QPoint& newPoint = QPoint (firstPoint.x () + dx[i],
-				firstPoint.y () + dy[i]);
-		
-		if (newPoint.x () < 0 || newPoint.x () >= Width_
-				|| newPoint.y () < 0 || newPoint.x () >= Height_
-				|| (TempHash_.contains (newPoint) && TempHash_[newPoint])
-				|| (PointHash_.contains (newPoint) && PointHash_[newPoint].Owner_ != StepQueue_->getCurrentOwner ()))
+		int tempx = point.x () + dx[i];
+		int tempy = point.y () + dy[i];
+		if (tempx < 0 || tempy < 0
+				|| tempx >= table.width ()
+				|| tempy >= table.height ())
 			continue;
 		
-		findPolygon (newPoint, polygonList);
+		findPolygon (IntPoint (tempx, tempy), polygons);
 	}
-	
-	Polygon_.pop_back ();
+	pointList.pop_back ();
 }
 
+void DotTable::drawPolygon (const Polygon& polygon, Owner owner)
+{
+	const list<IntPoint>& pointList = polygon.getPoints ();
+	list<IntPoint>::const_iterator itr = polygon.begin ();
+	IntPoint prevPoint = pointList.back ();
+	for (; itr != polygon.end (); ++itr)
+	{
+		qDebug () << Q_FUNC_INFO << "EDGE: " << prevPoint.x () << prevPoint.y () << itr->x () << itr->y ();
+		table.addEdge (prevPoint, *itr);
+		prevPoint = *itr;
+	}
+}
+
+void DotTable::clearBuffer ()
+{
+	for (int i = 0; i < table.width (); ++i)
+	{
+		for (int j = 0; j < table.height (); ++j)
+		{
+			tempBuffer[i][j] = false;
+		}
+	}
+	
+	pointList.clear ();
+}
+
+Graph DotTable::getGraph () const
+{
+	return table;
+}

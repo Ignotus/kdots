@@ -16,60 +16,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DOTTABLE_H
-#define DOTTABLE_H
-#include <QObject>
-#include <QPair>
-#include <QPoint>
-#include <QHash>
+#ifndef KDOTS_DOTTABLE_H
+#define KDOTS_DOTTABLE_H
+
 #include <memory>
+#include <vector>
+
+#include <QObject>
 
 #include "stepqueue.h"
-
-
-struct Point
-{
-	Point (const bool owner = false);
-	
-	const bool Owner_;
-	bool Border_;
-	bool Captured_;
-};
-
-class Polygon;
-
-static int Width_;
+#include "polygon.h"
+#include "graph.h"
 
 class DotTable : public QObject
 {
 	Q_OBJECT
 	
-	const int Height_;
-
-	QHash<QPoint, Point> PointHash_;
-	StepQueue *StepQueue_;
+	Graph table;
+	std::vector< std::vector<bool> > tempBuffer;
+	std::list<IntPoint> pointList;
 	
-	QList<QPoint> Polygon_;
-	QHash<QPoint, bool> TempHash_;
+	std::shared_ptr<StepQueue> stepQueue;
 public:
-	DotTable (int height, int width, GameMode mode = DEFAULT,
-			bool firstPlayer = 0, QObject *parent = 0);
-	virtual ~DotTable ();
+	DotTable (int width, int height, GameMode mode, Owner owner,
+			QObject *parent);
 	
-	Point getPoint (int x, int y) const;
-	Point getPoint (const QPoint& point) const;
+	void pushPoint (const IntPoint& point);
 	
-	void setPoint (int x, int y);
-	void setPoint (const QPoint& point);
+	Graph getGraph () const;
 private:
-	void findPolygon (const QPoint& firstPoint, QList<Polygon>& polygonList);
-signals:
-	void draw (const Polygon& polygon);
+	void findPolygon (const IntPoint& point, std::list<Polygon>& polygons);
+	void clearBuffer ();
+
+	void drawPolygon (const Polygon& polygon, Owner owner);
 };
 
-inline uint qHash (const QPoint& key)
-{
-	return (key.y () - 1) * Width_ + key.x ();
-}
-
-#endif // DOTTABLE_H
+#endif // KDOTS_DOTTABLE_H

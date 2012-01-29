@@ -18,21 +18,46 @@
 
 #include "stepqueue.h"
 
-StepQueue::StepQueue (const GameMode mode, const bool firstOwner)
-: GameMode_ (mode)
-, CurrentOwner_ (firstOwner)
+StepQueue::StepQueue (GameMode mode, Owner owner)
+: gameMode (mode)
+, currentOwner (owner)
+, firstPlayerCaptured (0)
+, secondPlayerCaptured (0)
 {
 }
 
-bool StepQueue::nextStep (const bool captured)
+Owner StepQueue::nextStep (bool captured)
 {
-	if (!captured || GameMode_ != EXTRA_TURN)
-		CurrentOwner_ = !CurrentOwner_;
+	if (!captured || gameMode != ExtraTurnGameMode)
+		currentOwner = otherPlayer (currentOwner);
 	
-	return CurrentOwner_;
+	return currentOwner;
 }
 
-bool StepQueue::getCurrentOwner () const
+Owner StepQueue::getCurrentOwner () const
 {
-	return CurrentOwner_;
+	return currentOwner;
+}
+
+void StepQueue::addPoint (const IntPoint& point)
+{
+	if (getCurrentOwner () == FirstOwner)
+		firstPlayerPoints.push_back (point);
+	else
+		secondPlayerPoints.push_back (point);
+}
+
+std::list<IntPoint> StepQueue::getOtherPointList () const
+{
+	return getCurrentOwner () == FirstOwner
+			? secondPlayerPoints
+			: firstPlayerPoints;
+}
+
+void StepQueue::addCaptured (int point)
+{
+	if (getCurrentOwner () == FirstOwner)
+		firstPlayerCaptured += point;
+	else
+		secondPlayerCaptured += point;
 }

@@ -16,16 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
-#include "tablewidget.h"
+#include "graphpoint.h"
 
-int main (int argc, char **argv)
+GraphPoint::GraphPoint (Owner owner, bool captured)
+: captured (captured)
+, owner (owner)
 {
-	QApplication app (argc, argv);
-	
-	TableWidget w (10, 10, DefaultGameMode, FirstOwner);
-	w.show ();
-	//w.drawPoint (Point (2, 2), FirstOwner);
-	
-	return app.exec ();
 }

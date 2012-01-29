@@ -16,59 +16,82 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "polygon.h"
+#include <QDebug>
+using namespace std;
 
-Polygon::Polygon (const QList<QPoint>& coordList)
-: CoordList_ (coordList)
+Polygon::Polygon (const list<IntPoint>& polygonPoints)
+: polygonPoints (polygonPoints)
+, hasPoint (false)
 {
 }
 
-bool Polygon::operator== (const Polygon& other) const
+list<IntPoint> Polygon::getPoints () const
 {
-	return other.CoordList_ == CoordList_;
+	return polygonPoints;
 }
 
-bool Polygon::operator!= (const Polygon & other) const
+bool Polygon::contains (const IntPoint& point) const
 {
-	return other.CoordList_ != CoordList_;
-}
-
-// O(n)
-bool Polygon::contains (const Polygon& other) const
-{	
-	return contains (other.CoordList_.first ());
-}
-
-bool Polygon::contains (const QPoint& point) const
-{
-	int count = 0;
-	QList<QPoint>::const_iterator itr = CoordList_.begin ();
-	for (int itr_y; itr != CoordList_.end (); ++itr, itr_y = itr->y ())
+	int i = 0;
+	
+	list<IntPoint>::const_iterator itr = polygonPoints.begin ();
+	list<IntPoint>::const_iterator itrEnd = polygonPoints.end ();
+	while (itr != itrEnd)
 	{
-		if (itr_y == point.y ())
+		if (itr->y () != point.y ())
 		{
-			if (itr->x () < point.x ())
-			{
-				const QPoint& prev = prevPoint (itr, CoordList_);
-				const QPoint& next = nextPoint (itr, CoordList_);
-				if (!(prev.y () < itr_y && next.y () < itr_y))
-					++count;
-			}
-			else if (itr->x () == point.x ())
-				++count;
+			++itr;
+			continue;
 		}
+		
+		const IntPoint& prevPoint = [&itr, this] ()
+		{
+			return itr-- == polygonPoints.begin ()
+					? polygonPoints.back ()
+					: *itr;
+		} ();
+		
+		const IntPoint& nextPoint = [&itr, this] ()
+		{
+			return ++itr == polygonPoints.end ()
+					? polygonPoints.front ()
+					: *itr;
+		} ();
+		
+		if (prevPoint.x () != nextPoint.x ())
+			++i;
+		++itr;
 	}
 	
-	return !(count % 2);
+	return !(i % 2);
 }
 
-QPoint Polygon::prevPoint (QList<QPoint>::const_iterator itr,
-		const QList<QPoint>& points) const
+void Polygon::setHasPoint (bool val)
 {
-	return itr == points.begin () ? points.last () : *(itr - 1);
+	hasPoint = val;
 }
 
-QPoint Polygon::nextPoint (QList<QPoint>::const_iterator itr,
-		const QList<QPoint>& points) const
+bool Polygon::getHasPoint () const
 {
-	return ++itr == points.end () ? points.first () : *itr;
+	return hasPoint;
+}
+
+Polygon::iterator Polygon::begin ()
+{
+	return polygonPoints.begin ();
+}
+
+Polygon::const_iterator Polygon::begin () const
+{
+	return polygonPoints.begin ();
+}
+
+Polygon::iterator Polygon::end ()
+{
+	return polygonPoints.end ();
+}
+
+Polygon::const_iterator Polygon::end () const
+{
+	return polygonPoints.end ();
 }
