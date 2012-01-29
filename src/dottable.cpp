@@ -36,17 +36,17 @@ void DotTable::pushPoint (const IntPoint& point)
 		return;
 	
 	table[point.x ()][point.y ()].owner = stepQueue->getCurrentOwner ();
-	qDebug () << Q_FUNC_INFO << "Add Point ok!";
+	
 	stepQueue->addPoint (point);
-	qDebug () << Q_FUNC_INFO << "Add Point ok!";
+
 	clearBuffer ();	
-	qDebug () << Q_FUNC_INFO << "Clear buffer ok!";
+
 	list<Polygon> polygons;
 	findPolygon (point, polygons);
 	list<IntPoint> capturedPoints;
-	qDebug() << Q_FUNC_INFO << "Find ok";
+
 	const list<IntPoint>& pointList = stepQueue->getOtherPointList ();
-	qDebug () << Q_FUNC_INFO << "Get point list";
+
 	for (Polygon& polygon : polygons)
 	{
 		for (const IntPoint& point : pointList)
@@ -79,7 +79,6 @@ void DotTable::pushPoint (const IntPoint& point)
 	
 	stepQueue->addCaptured (capturedPoints.size ());
 	stepQueue->nextStep (capturedPoints.size ());
-	qDebug() << Q_FUNC_INFO << "End";
 }
 
 void DotTable::findPolygon (const IntPoint& point, list<Polygon>& polygons)

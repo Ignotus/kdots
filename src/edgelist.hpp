@@ -38,7 +38,6 @@ public:
 			return false;
 		
 		pointList[count++] = point;
-		//qDebug () << Q_FUNC_INFO << point.x () << point.y ();
 		return true;
 	}
 
@@ -59,7 +58,6 @@ public:
 
 	Point<B>& operator[] (const int index)
 	{
-		//qDebug () << Q_FUNC_INFO << index << pointList[index].x () << pointList[index].y ();
 		return index >= 0 && index < count
 				? pointList[index]
 				: Point<B> ();
@@ -67,7 +65,6 @@ public:
 	
 	const Point<B>& operator[] (const int index) const
 	{
-		//qDebug () << Q_FUNC_INFO << index << pointList[index].x () << pointList[index].y ();
 		Point<B> def;
 		return index >= 0 && index < count
 				? pointList[index]

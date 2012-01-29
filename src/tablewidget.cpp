@@ -130,15 +130,13 @@ void TableWidget::paintEvent (QPaintEvent *event)
 					? firstBrush
 					: secondBrush);
 			
-			pixPainter.drawEllipse ((i + 1) * cellSize,
-					(k + 1) * cellSize, 10, 10);
+			pixPainter.drawEllipse (QPoint ((i + 1) * cellSize, (k + 1) * cellSize),
+					3, 3);
 			
 			const EdgeList<8, int>& edges = point.edges;
 			for (j = 0; j < edges.size (); ++j)
 			{
 				const auto& lastPoint = edges[j];
-				
-				qDebug () << Q_FUNC_INFO << i << k << lastPoint.x () << lastPoint.y ();
 				
 				pixPainter.drawLine ((i + 1) * cellSize,
 						(k + 1) * cellSize,
@@ -153,7 +151,6 @@ void TableWidget::paintEvent (QPaintEvent *event)
 	
 	QPainter painter (this);
 	painter.drawPixmap (dx, dy, pixmap);
-	qDebug () << Q_FUNC_INFO << "Paint ok!";
 }
 
 TableWidget::~TableWidget ()
