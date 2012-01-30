@@ -15,31 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
-#ifndef TABLEWIDGET_H
-#define TABLEWIDGET_H
-
 #include <QWidget>
-#include <QPainter>
-#include "dottable.h"
 
-class TableWidget : public QWidget
+
+
+class IBot
 {
-	Q_OBJECT
-	
-	DotTable *dotTable;
-	int height, width;
 public:
-	TableWidget (int height, int width, GameMode mode,
-			Owner owner = FirstOwner, QWidget *parent = 0);
-	virtual ~TableWidget ();
+	virtual QWidget* getPluginConfigWidget () = 0;
 	
-protected:
-	void mousePressEvent (QMouseEvent *event);
-	void paintEvent (QPaintEvent *event);
-	void mouseMoveEvent (QMouseEvent *event);
-signals:
-	void updateStatusBar (const QString& msg);
+	virtual ~IBot () {};
+public slots:
+	
 };
-
-#endif // TABLEWIDGET_H

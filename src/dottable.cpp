@@ -47,16 +47,14 @@ void DotTable::pushPoint (const IntPoint& point)
 
 	const list<IntPoint>& pointList = stepQueue->getOtherPointList ();
 
-	for (Polygon& polygon : polygons)
+	for (auto& polygon : polygons)
 	{
-		for (const IntPoint& point : pointList)
+		for (const auto& point : pointList)
 		{
-			qDebug () << "POINTS: " << point.x () << point.y ();
 			if (!table[point.x ()][point.y ()].captured
 					&& polygon.contains (point))
 			{
 				polygon.setHasPoint (true);
-				qDebug () << point.x () << point.y ();
 				table[point.x ()][point.y ()].captured = true;
 				capturedPoints.push_back (point);
 			}
@@ -104,8 +102,8 @@ void DotTable::findPolygon (const IntPoint& point, list<Polygon>& polygons)
 	pointList.push_back (point);
 	tempBuffer[point.x ()][point.y ()] = true;
 	
-	static int dx[8] = {0, 1, 1, 1, 0, -1, -1, -1};
-	static int dy[8] = {1, 1, 0, -1, -1, -1, 0, 1};
+	static const int dx[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+	static const int dy[8] = {1, 1, 0, -1, -1, -1, 0, 1};
 	
 	for (int i = 0; i < 8; ++i)
 	{

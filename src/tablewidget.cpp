@@ -40,6 +40,10 @@ TableWidget::TableWidget (int height, int width, GameMode mode,
 	setMinimumSize (400, 400);
 }
 
+void TableWidget::mouseMoveEvent (QMouseEvent *event)
+{
+}
+
 void TableWidget::mousePressEvent (QMouseEvent *event)
 {
 	const QRect& rectange = rect ();
@@ -130,8 +134,8 @@ void TableWidget::paintEvent (QPaintEvent *event)
 					? firstBrush
 					: secondBrush);
 			
-			pixPainter.drawEllipse (QPoint ((i + 1) * cellSize, (k + 1) * cellSize),
-					3, 3);
+			pixPainter.drawEllipse (QPoint ((i + 1) * cellSize,
+					(k + 1) * cellSize), 3, 3);
 			
 			const EdgeList<8, int>& edges = point.edges;
 			for (j = 0; j < edges.size (); ++j)
@@ -146,8 +150,8 @@ void TableWidget::paintEvent (QPaintEvent *event)
 		}
 	}
 	
-	int dx = (rectange.width () - tableWidth) / 2;
-	int dy = (rectange.height () - tableHeight) / 2;
+	const int dx = (rectange.width () - tableWidth) / 2;
+	const int dy = (rectange.height () - tableHeight) / 2;
 	
 	QPainter painter (this);
 	painter.drawPixmap (dx, dy, pixmap);
