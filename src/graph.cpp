@@ -55,7 +55,6 @@ const std::vector<GraphPoint>& Graph::operator[] (int index) const
 bool Graph::addEdge (const Point<int>& first, const Point<int>& second)
 {
 	graph[first.x ()][first.y ()].edges.addEdge (second);
-	graph[second.x ()][second.y ()].edges.addEdge (first);
 }
 
 bool Graph::removeEdge (const Point<int>& first, const Point<int>& second)
