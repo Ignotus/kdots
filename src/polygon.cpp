@@ -37,6 +37,8 @@ bool Polygon::contains (const IntPoint& point) const
 	list<IntPoint>::const_iterator itr = polygonPoints.begin ();
 	list<IntPoint>::const_iterator itrEnd = polygonPoints.end ();
 	
+	int k = 0;
+	
 	while (itr != itrEnd)
 	{
 		if (itr->y () != point.y ())
@@ -61,11 +63,15 @@ bool Polygon::contains (const IntPoint& point) const
 		} ();
 		--itr;
 		
-		if (prevPoint.y () != nextPoint.y () && itr->x () < point.x ())
+		if (itr->y () == point.y ())
+			++k;
+		
+		if (itr->x () < point.x () && prevPoint.y () != nextPoint.y ())
 			++i;
+		
 		++itr;
 	}
-	return i % 2;
+	return k != i && i % 2;
 }
 
 void Polygon::setHasPoint (bool val)

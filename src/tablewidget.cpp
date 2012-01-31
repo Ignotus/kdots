@@ -75,6 +75,10 @@ void TableWidget::mousePressEvent (QMouseEvent *event)
 		return;
 	else if (dy < firstPart)
 		--y;
+
+	//TODO: Fix it
+	if (x >= width - 1 || x < 0 || y < 0 || y >= height - 1)
+		return;
 	
 	dotTable->pushPoint (IntPoint (x, y));
 	update ();

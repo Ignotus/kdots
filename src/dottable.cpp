@@ -62,7 +62,7 @@ void DotTable::pushPoint (const IntPoint& point)
 		
 		if (!polygon.getHasPoint ())
 		{
-			for (const IntPoint& point : capturedPoints)
+			for (const auto& point : capturedPoints)
 			{
 				if (polygon.contains (point))
 				{
