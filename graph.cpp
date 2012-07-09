@@ -16,38 +16,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "newgamedialog.h"
-#include "ui_newgamedialog.h"
-#include <QDebug>
+#include "graph.hpp"
 
-NewGameDialog::NewGameDialog (QWidget *parent)
-: QDialog (parent)
-, ui (new Ui::NewGameDialog)
+namespace KDots
 {
-	ui->setupUi (this);
-}
 
-NewGameDialog::~NewGameDialog ()
-{
-	delete ui;
-}
+  Graph::Graph (int width, int height)
+    : m_graph (width, std::vector<GraphPoint> (height))
+  {
+  }
 
-int NewGameDialog::getHeight () const
-{
-	return ui->HeightSpinBox->value ();
-}
+  bool
+  Graph::addEdge (const Point& first, const Point& second)
+  {
+    m_graph[first.x ()][first.y ()].edges ().addEdge (second);
+    m_graph[second.x ()][second.y ()].edges ().addEdge (first);
+  }
 
-int NewGameDialog::getWidth () const
-{
-	return ui->WidthSpinBox->value ();
-}
+  bool
+  Graph::removeEdge (const Point& first, const Point& second)
+  {
+    m_graph[first.x ()][first.y ()].edges ().removeEdge (second);
+    m_graph[second.x ()][second.y ()].edges ().removeEdge (first);
+  }
 
-GameMode NewGameDialog::getGameMode () const
-{
-	return ui->GameMode->currentIndex () ? ExtraTurnGameMode : DefaultGameMode;
-}
-
-Owner NewGameDialog::getFirstMoving () const
-{
-	return ui->FirstMoving->currentIndex () ? SecondOwner : FirstOwner;
 }

@@ -1,6 +1,6 @@
 /*
  * kdots
- * Copyright (C) 2011 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright (C) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,19 +15,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef CONSTANTS_HPP
+#define CONSTANTS_HPP
 
-#ifndef KDOTS_GRAPHPOINT_H
-#define KDOTS_GRAPHPOINT_H
-
-#include "edgelist.hpp"
-
-struct GraphPoint
+namespace KDots
 {
-	bool captured;
-	Owner owner;
-	EdgeList<8, int> edges;
 
-	GraphPoint (Owner owner = NoneOwner, bool captured = false);
-};
+  enum GameMode
+  {
+    EXTRA_TURN_MODE,
+    DEFAULT_MODE
+  };
 
-#endif // KDOTS_GRAPHPOINT_H
+  enum Owner
+  {
+    NONE,
+    FIRST,
+    SECOND
+  };
+  
+  const int GRAPH_DX[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+  const int GRAPH_DY[8] = {1, 1, 0, -1, -1, -1, 0, 1};
+  
+}
+
+#endif

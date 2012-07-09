@@ -1,6 +1,6 @@
 /*
  * kdots
- * Copyright (C) 2011 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright (C) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +15,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef MAINWINDOW_HPP
+#define MAINWINDOW_HPP
+#include <QMainWindow>
 
-#include "graphpoint.h"
-
-GraphPoint::GraphPoint (Owner owner, bool captured)
-: captured (captured)
-, owner (owner)
+namespace Ui
 {
+  class MainWindow;
 }
+
+namespace KDots
+{
+  class TableWidget;
+
+  class MainWindow : public QMainWindow
+  {
+    Q_OBJECT
+  public:
+    MainWindow (QWidget *parent = 0);
+
+  private:
+    Ui::MainWindow *m_ui;
+
+  private slots:
+    void on_actionNewGame_triggered ();
+  };
+}
+
+#endif

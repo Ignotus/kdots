@@ -1,6 +1,6 @@
 /*
  * kdots
- * Copyright (C) 2011 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright (C) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,31 +15,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef TABLEWIDGET_HPP
+#define TABLEWIDGET_HPP
+#include <QWidget>
+#include "dottable.hpp"
 
-#include <QMainWindow>
-
-namespace Ui
+namespace KDots
 {
-	class MainWindow;
+  class TableWidget : public QWidget
+  {
+    Q_OBJECT
+
+    std::shared_ptr<DotTable> m_table;
+    int m_height, m_width;
+  public:
+    TableWidget (int height, int width, GameMode mode,
+                Owner owner = FIRST, QWidget *parent = 0);
+
+  protected:
+    void mousePressEvent (QMouseEvent *event);
+    void paintEvent (QPaintEvent *event);
+    void mouseMoveEvent (QMouseEvent *event);
+  signals:
+    void updateStatusBar (const QString &msg);
+  };
 }
 
-class TableWidget;
-
-class MainWindow : public QMainWindow
-{
-	Q_OBJECT
-public:
-	MainWindow (QWidget *parent = 0);
-	virtual ~MainWindow ();
-
-private:
-	Ui::MainWindow *ui;
-	TableWidget *table;
-	
-private slots:
-	void on_actionNewGame_triggered ();
-};
-
-#endif // MAINWINDOW_H
+#endif

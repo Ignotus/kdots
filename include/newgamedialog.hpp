@@ -1,6 +1,6 @@
 /*
  * kdots
- * Copyright (C) 2011 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright (C) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,32 +15,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
-#ifndef KDOTS_POLYGON_H
-#define KDOTS_POLYGON_H
-#include <list>
-
+#ifndef NEWGAMEDIALOG_H
+#define NEWGAMEDIALOG_H
+#include <QDialog>
 #include "point.hpp"
+#include "constants.hpp"
 
-class Polygon
+namespace Ui
 {
-	std::list<IntPoint> polygonPoints;
-	bool hasPoint;
-public:
-	typedef std::list<IntPoint>::const_iterator const_iterator;
-	typedef std::list<IntPoint>::iterator iterator;
-	
-	iterator begin ();
-	const_iterator begin () const;
-	iterator end ();
-	const_iterator end () const;
-	
-	Polygon (const std::list<IntPoint>& polygonPoints);
-	
-	std::list<IntPoint> getPoints () const;
-	bool contains (const IntPoint& point) const;
-	void setHasPoint (bool val);
-	bool getHasPoint () const;
-};
+  class NewGameDialog;
+}
 
-#endif // KDOTS_POLYGON_H
+namespace KDots
+{
+  class NewGameDialog : public QDialog
+  {
+    Q_OBJECT
+  public:
+    NewGameDialog (QWidget *parent = 0);
+
+    int getHeight () const;
+    int getWidth () const;
+    GameMode getGameMode () const;
+    Owner getFirstMoving () const;
+
+  private:
+    Ui::NewGameDialog *m_ui;
+  };
+}
+
+
+#endif

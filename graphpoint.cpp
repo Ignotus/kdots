@@ -1,6 +1,6 @@
 /*
  * kdots
- * Copyright (C) 2011 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright (C) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,15 +16,4 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
-#include "mainwindow.h"
-
-int main (int argc, char **argv)
-{
-	QApplication app (argc, argv);
-	
-	MainWindow w;
-	w.show ();
-	
-	return app.exec ();
-}
+#include "graphpoint.hpp"
