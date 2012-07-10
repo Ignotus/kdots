@@ -36,7 +36,6 @@ namespace KDots
   {
     PolyList polygonList;
     findPolygons (point, polygonList);
-    qDebug () << "_____________________________________";
     int max = 0;
     for (Polygon_ptr ptr : polygonList)
       {
@@ -54,14 +53,16 @@ namespace KDots
 
   void
   PolygonFinder::findPolygons (const Point& point, PolyList& polygons)
-  {
+  { 
     std::cout << "CACHE: ";
     for (const Point& i : m_cache)
       {
         std::cout << "[" << i.x () << "," << i.y () << "] ";
       }
       
-      std::cout << std::endl;
+    std::cout << std::endl;
+    
+
     
     const GraphPoint& graphPoint = m_graph[point];
     
@@ -96,7 +97,8 @@ namespace KDots
           {
             continue;
           }
-                  
+        
+        
         findPolygons (Point (tempx, tempy), polygons);
       }
     

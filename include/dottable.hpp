@@ -47,7 +47,7 @@ namespace KDots
     }
     
   private:
-    void drawPolygon (PolyList polygons, std::vector<bool>& filled);
+    void drawPolygon (PolyList polygons, const std::vector<bool>& filled);
   };
 }
 

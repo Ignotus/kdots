@@ -80,14 +80,16 @@ namespace KDots
   void
   DotTable::pushPoint (const Point& point)
   {
-    if (m_graph[point.x ()][point.y ()].owner () != NONE)
+    GraphPoint& currentPoint = m_graph[point];
+    if (currentPoint.owner () != NONE
+        || currentPoint.isCaptuted ())
       {
         return;
       }
 
     const Owner current = m_steps->getCurrentOwner ();
 
-    m_graph[point.x ()][point.y ()].setOwner(current);
+    currentPoint.setOwner(current);
 
     m_steps->addPoint (point);
 
@@ -106,22 +108,31 @@ namespace KDots
       
     std::vector<bool> filled (polyList.size (), false);
     
-    // O(n^2)
-    for (const Point& point : points)
+    for (int k = 0; k < m_graph.width (); ++k)
       {
-        if (m_graph[point].isCaptuted ())
+        int j;
+        for (j = 0; j < m_graph.height (); ++j)
           {
-            continue;
-          }
-          
-        for (int i = 0; i < polyList.size (); ++i)
-          {
-            if (isInPolygon (polyList[i], point))
+            const GraphPoint& gpoint = m_graph[k][j];
+            if (gpoint.isCaptuted () || gpoint.owner () == current)
               {
-                filled[i] = true;
-                m_steps->addCaptured ();
-                m_graph[point].capture ();
-                break;
+                continue;
+              }
+              
+            for (int i = 0; i < polyList.size (); ++i)
+              {
+                const Point newPoint (k, j);
+                if (isInPolygon (polyList[i], newPoint))
+                  {
+                    if (gpoint.owner () == StepQueue::other (current))
+                      {
+                        filled[i] = true;
+                        m_steps->addCaptured ();
+                      }
+                      
+                    m_graph[newPoint].capture ();
+                    break;
+                  }
               }
           }
       }
@@ -133,7 +144,7 @@ namespace KDots
   }
 
   void
-  DotTable::drawPolygon (PolyList polygons, std::vector<bool>& filled)
+  DotTable::drawPolygon (PolyList polygons, const std::vector<bool>& filled)
   {
     for (int i = 0; i < polygons.size (); ++i)
       {
