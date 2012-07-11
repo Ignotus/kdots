@@ -105,8 +105,6 @@ namespace KDots
         m_steps->nextStep ();
         return;
       }
-      
-    std::vector<bool> filled (polyList.size (), false);
     
     for (int k = 0; k < m_graph.width (); ++k)
       {
@@ -126,10 +124,10 @@ namespace KDots
                   {
                     if (gpoint.owner () == StepQueue::other (current))
                       {
-                        filled[i] = true;
+                        polyList[i]->setFilled(true);
                         m_steps->addCaptured ();
                       }
-                      
+                    
                     m_graph[newPoint].capture ();
                     break;
                   }
@@ -137,23 +135,21 @@ namespace KDots
           }
       }
       
-    drawPolygon (polyList, filled);
+    drawPolygon (polyList);
     
     m_steps->nextStep ();
     
   }
 
   void
-  DotTable::drawPolygon (PolyList polygons, const std::vector<bool>& filled)
+  DotTable::drawPolygon (PolyList polygons)
   {
-    for (int i = 0; i < polygons.size (); ++i)
+    for (Polygon_ptr polygon : polygons)
       {
-        if (!filled[i])
+        if (!polygon->isFilled ())
           {
             continue;
           }
-          
-        Polygon_ptr polygon = polygons[i];
           
         Polygon::const_iterator itr = polygon->begin ();
         Point prevPoint = polygon->back ();

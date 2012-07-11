@@ -15,39 +15,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_DOTTABLE_HPP
-#define KDOTS_DOTTABLE_HPP
-#include <memory>
-#include "stepqueue.hpp"
-#include "graph.hpp"
-#include "polygonfinder.hpp"
+#ifndef KDOTS_POLYGON_HPP
+#define KDOTS_POLYGON_HPP
+#include <list>
+#include "point.hpp"
 
 namespace KDots
 {
-  
-  class DotTable
+  class Polygon : public std::list<Point>
   {
-    Graph m_graph;
-    std::shared_ptr<StepQueue> m_steps;
+    bool m_filled;
   public:
-    DotTable (int width, int height, GameMode mode, Owner owner);
-
-    void pushPoint (const Point& point);
-
-    inline Graph
-    graph () const
+    Polygon ()
+      : std::list<Point> ()
+      , m_filled (false)
     {
-      return m_graph;
     }
     
-    inline std::shared_ptr<StepQueue>
-    stepQueue ()
+    Polygon (const std::list<Point>& a)
+      : std::list<Point> (a)
+      , m_filled (false)
     {
-      return m_steps;
     }
     
-  private:
-    void drawPolygon (PolyList polygons);
+    bool isFilled () const
+    {
+      return m_filled;
+    }
+    
+    void setFilled (bool filled)
+    {
+      m_filled = filled;
+    }
   };
 }
 

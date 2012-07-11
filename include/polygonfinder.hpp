@@ -21,12 +21,12 @@
 #include <list>
 #include <QDebug>
 #include "graph.hpp"
+#include "polygon.hpp"
 
 namespace KDots
 {
   class Point;
   
-  typedef std::list<Point> Polygon;
   typedef std::shared_ptr<Polygon> Polygon_ptr;
   typedef std::vector<Polygon_ptr> PolyList;
   

@@ -27,6 +27,7 @@ SET (SRCS
   newgamedialog.cpp
   mainwindow.cpp
   polygonfinder.cpp
+  polygon.cpp
 )
 
 SET (HEADERS
@@ -41,6 +42,7 @@ SET (HEADERS
   include/mainwindow.hpp
   include/constants.hpp
   include/polygonfinder.hpp
+  include/polygon.hpp
 )
 
 SET (FORMS
