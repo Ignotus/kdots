@@ -89,7 +89,7 @@ namespace KDots
 
     const Owner current = m_steps->getCurrentOwner ();
 
-    currentPoint.setOwner(current);
+    currentPoint.setOwner (current);
 
     m_steps->addPoint (point);
 
@@ -100,7 +100,7 @@ namespace KDots
 
     const std::list<Point>& points = m_steps->getPoints (StepQueue::other (current));
     
-    if (!points.size () || !polyList.size ())
+    if (points.empty () || polyList.empty ())
       {
         m_steps->nextStep ();
         return;
@@ -116,15 +116,16 @@ namespace KDots
               {
                 continue;
               }
-              
-            for (int i = 0; i < polyList.size (); ++i)
+            
+            
+            for (const Polygon_ptr polygon : polyList)
               {
                 const Point newPoint (k, j);
-                if (isInPolygon (polyList[i], newPoint))
+                if (isInPolygon (polygon, newPoint))
                   {
                     if (gpoint.owner () == StepQueue::other (current))
                       {
-                        polyList[i]->setFilled(true);
+                        polygon->setFilled(true);
                         m_steps->addCaptured ();
                       }
                     
@@ -144,7 +145,7 @@ namespace KDots
   void
   DotTable::drawPolygon (PolyList polygons)
   {
-    for (Polygon_ptr polygon : polygons)
+    for (const Polygon_ptr polygon : polygons)
       {
         if (!polygon->isFilled ())
           {

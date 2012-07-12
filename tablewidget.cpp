@@ -90,16 +90,14 @@ namespace KDots
         return;
       }
 
-    qDebug () << Q_FUNC_INFO << __LINE__;
     m_table->pushPoint (Point (x, y));
-    qDebug () << Q_FUNC_INFO << __LINE__;
     update ();
   }
 
   void
   TableWidget::paintEvent (QPaintEvent *event)
   {
-    const QRect &rectange = event->rect ();
+    const QRect& rectange = event->rect ();
 
     const float cellHeight = rectange.height () / m_height;
     const float cellWidth = rectange.width () / m_width;

@@ -31,23 +31,34 @@ namespace KDots
   {
   }
   
+  namespace
+  {
+    int
+    maxSize (const PolyList& polygonList)
+    {
+      int max = 0;
+      for (const Polygon_ptr ptr : polygonList)
+        {
+          if (ptr->size () > max)
+            {
+              max = ptr->size ();
+            }
+        }
+      
+      return max;
+    }
+  }
+  
   PolyList
   PolygonFinder::polygons (const Point& point)
   {
     PolyList polygonList;
     findPolygons (point, polygonList);
-    int max = 0;
-    for (Polygon_ptr ptr : polygonList)
-      {
-        if (ptr->size () > max)
-          {
-            max = ptr->size ();
-          }
-      }
-      
-    qDebug () << Q_FUNC_INFO << max;
     
-    std::remove_if (polygonList.begin (), polygonList.end (), [&max] (Polygon_ptr ptr) { return ptr->size () < max; });
+    const int max = maxSize (polygonList);
+    polygonList.erase (std::remove_if (polygonList.begin (), polygonList.end (),
+                                       [&max] (const Polygon_ptr ptr) { return ptr->size () < max; }),
+                       polygonList.end ());
     return polygonList;
   }
 
@@ -73,7 +84,6 @@ namespace KDots
       
     if (m_cache.size () > 3 && point == m_cache.front ())
       {
-        qDebug () << Q_FUNC_INFO << "Polygon size: " << m_cache.size ();
         polygons.push_back (Polygon_ptr (new Polygon (m_cache)));
         return;
       }

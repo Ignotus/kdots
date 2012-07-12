@@ -38,10 +38,6 @@ namespace KDots
     std::vector<std::vector<bool>> m_stepMap;
   public:
     PolygonFinder (Graph& graph, Owner owner);
-    ~PolygonFinder ()
-    {
-      qDebug () << Q_FUNC_INFO << __LINE__;
-    }
     
     // O(n)
     PolyList polygons (const Point& point);
