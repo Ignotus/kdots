@@ -15,6 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef KDOTS_PLUGIN_HPP
+#define KDOTS_PLUGIN_HPP
 #include <memory>
 #include <QString>
 #include <QIcon>
@@ -52,6 +54,8 @@ namespace KDots
     }
   };
   
-  Q_DECLARE_INERFACE(IPlugin, "com.github.ignotus.kdots.IPlugin/1.0");
+  Q_DECLARE_INERFACE (IPlugin, "com.github.ignotus.kdots.IPlugin/1.0");
   
 }
+
+#endif

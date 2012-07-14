@@ -26,7 +26,7 @@ namespace KDots
   {
     Q_OBJECT
 
-    std::shared_ptr<DotTable> m_table;
+    DotTable *m_table;
     int m_height, m_width;
   public:
     TableWidget (int height, int width, GameMode mode,

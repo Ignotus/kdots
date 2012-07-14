@@ -29,7 +29,7 @@ namespace KDots
   TableWidget::TableWidget (int height, int width, GameMode mode,
                             Owner owner, QWidget *parent)
     : QWidget (parent)
-    , m_table (new DotTable (width, height, mode, owner))
+    , m_table (new DotTable (width, height, mode, owner, this))
     , m_height (height + 1)
     , m_width (width + 1)
   {
