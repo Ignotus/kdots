@@ -22,8 +22,9 @@
 namespace KDots
 {
 
-  DotTable::DotTable (int width, int height, GameMode mode, Owner owner)
-    : m_graph (width, height)
+  DotTable::DotTable (int width, int height, GameMode mode, Owner owner, QObject *parent = 0)
+    : QObject (parent)
+    , m_graph (width, height)
     , m_steps (mode == DEFAULT_MODE
         ? new StepQueue (owner)
         : new ExtraStepQueue (owner))

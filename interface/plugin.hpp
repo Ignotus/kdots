@@ -15,41 +15,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_DOTTABLE_HPP
-#define KDOTS_DOTTABLE_HPP
 #include <memory>
-#include <QObject>
-#include "stepqueue.hpp"
-#include "graph.hpp"
-#include "polygonfinder.hpp"
+#include <QString>
+#include <QIcon>
+#include <point.hpp>
+#include <dottable.hpp>
+
+class QWidget;
 
 namespace KDots
 {
   
-  class DotTable : public QObject
+  class IPlugin
   {
-    Graph m_graph;
-    std::shared_ptr<StepQueue> m_steps;
   public:
-    DotTable (int width, int height, GameMode mode, Owner owner, QObject *parent = 0);
-
-    void pushPoint (const Point& point);
-
-    inline Graph
-    graph () const
-    {
-      return m_graph;
-    }
+    virtual void init (DotTable *table) = 0;
+    virtual ~IPlugin () {}
     
-    inline std::shared_ptr<StepQueue>
-    stepQueue ()
-    {
-      return m_steps;
-    }
+    /** @brief Returns a configuration widget for the current plugin.
+     */
+    virtual QWidget* configurationWidget () = 0;
     
-  private:
-    void drawPolygon (PolyList polygons);
+    /** @brief Returns a plugin name.
+     */
+    virtual QString name () const = 0;
+    
+    /** @brief Returns a plugin description.
+     */
+    virtual QString description () const = 0;
+    
+    /** @brief Returns a plugin icon.
+     */
+    virtual QIcon icon () const
+    {
+      return QIcon ();
+    }
   };
+  
+  Q_DECLARE_INERFACE(IPlugin, "com.github.ignotus.kdots.IPlugin/1.0");
+  
 }
-
-#endif
