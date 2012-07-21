@@ -38,6 +38,7 @@ namespace KDots
     int getWidth () const;
     GameMode getGameMode () const;
     Owner getFirstMoving () const;
+    QString getRival () const;
 
   private:
     Ui::NewGameDialog *m_ui;

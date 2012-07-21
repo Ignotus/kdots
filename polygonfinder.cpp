@@ -64,17 +64,7 @@ namespace KDots
 
   void
   PolygonFinder::findPolygons (const Point& point, PolyList& polygons)
-  { 
-    std::cout << "CACHE: ";
-    for (const Point& i : m_cache)
-      {
-        std::cout << "[" << i.x () << "," << i.y () << "] ";
-      }
-      
-    std::cout << std::endl;
-    
-
-    
+  {
     const GraphPoint& graphPoint = m_graph[point];
     
     if (graphPoint.isCaptuted () || graphPoint.owner () != m_current)

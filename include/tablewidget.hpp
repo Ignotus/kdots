@@ -17,25 +17,31 @@
  */
 #ifndef TABLEWIDGET_HPP
 #define TABLEWIDGET_HPP
+#include <memory>
 #include <QWidget>
-#include "dottable.hpp"
+#include "constants.hpp"
 
 namespace KDots
 {
+  class IRival;
+  class DotTable;
+  
   class TableWidget : public QWidget
   {
     Q_OBJECT
 
     DotTable *m_table;
     int m_height, m_width;
+    
+    std::shared_ptr<IRival> m_rival;
   public:
     TableWidget (int height, int width, GameMode mode,
-                Owner owner = FIRST, QWidget *parent = 0);
+                 Owner owner, std::shared_ptr<IRival> rival,
+                 QWidget *parent = 0);
 
   protected:
     void mousePressEvent (QMouseEvent *event);
     void paintEvent (QPaintEvent *event);
-    void mouseMoveEvent (QMouseEvent *event);
   signals:
     void updateStatusBar (const QString &msg);
   };

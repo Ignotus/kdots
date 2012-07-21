@@ -18,8 +18,11 @@
 
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
+#include <QDir>
+#include "interface/iplugin.hpp"
 #include "newgamedialog.hpp"
 #include "tablewidget.hpp"
+#include "plugincontainer.hpp"
 
 namespace KDots
 {
@@ -39,12 +42,18 @@ namespace KDots
       {
         return;
       }
+      
+    const QString& rivalName = dialog.getRival ();
+    
+    std::shared_ptr<IRival> rival (PluginContainer::instance ().plugin (rivalName)->createRival ());
 
     TableWidget *table = new TableWidget (dialog.getHeight (),
                             dialog.getWidth (),
                             dialog.getGameMode (),
                             dialog.getFirstMoving (),
+                            rival,
                             this);
+    
     connect (table,
             SIGNAL (updateStatusBar (const QString &)),
             m_ui->statusBar,

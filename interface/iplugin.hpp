@@ -15,47 +15,71 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_PLUGIN_HPP
-#define KDOTS_PLUGIN_HPP
-#include <memory>
+#ifndef KDOTS_IPLUGIN_HPP
+#define KDOTS_IPLUGIN_HPP
 #include <QString>
 #include <QIcon>
+#include <QtCore/qplugin.h>
 #include <point.hpp>
-#include <dottable.hpp>
 
-class QWidget;
+class QDialog;
 
 namespace KDots
 {
+  class DotTable;
   
-  class IPlugin
+  class IRival : public QObject
   {
+    Q_OBJECT
   public:
-    virtual void init (DotTable *table) = 0;
+    IRival (QObject* parent = 0)
+      : QObject (parent)
+    {
+    }
+    
+    virtual void configure (DotTable *table)
+    {
+    }
+    
+    virtual bool isAllow () const = 0;
+  
+  public slots:
+    virtual void nextStep (const Point& point)
+    {
+    }
+  };
+  
+  class IPlugin : public QObject
+  {
+    Q_OBJECT
+  public:
+    IPlugin (QObject *parent = 0)
+      : QObject (parent)
+    {
+    }
+    
     virtual ~IPlugin () {}
-    
-    /** @brief Returns a configuration widget for the current plugin.
-     */
-    virtual QWidget* configurationWidget () = 0;
-    
+
     /** @brief Returns a plugin name.
-     */
+    */
     virtual QString name () const = 0;
-    
+      
     /** @brief Returns a plugin description.
-     */
+    */
     virtual QString description () const = 0;
+     
+    virtual IRival* createRival () = 0;
     
     /** @brief Returns a plugin icon.
-     */
+    */
     virtual QIcon icon () const
     {
       return QIcon ();
     }
   };
-  
-  Q_DECLARE_INERFACE (IPlugin, "com.github.ignotus.kdots.IPlugin/1.0");
-  
+
 }
+
+Q_DECLARE_INTERFACE (KDots::IPlugin, "com.github.ignotus.kdots.IPlugin/1.0");
 
 #endif

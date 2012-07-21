@@ -22,16 +22,34 @@
 #include "stepqueue.hpp"
 #include "graph.hpp"
 #include "polygonfinder.hpp"
+#include "interface/iplugin.hpp"
 
 namespace KDots
 {
+  struct GameConfig
+  {
+    int m_width, m_height;
+    GameMode m_mode;
+    Owner m_firstOwner, m_user;
+    
+    GameConfig (int width, int height, GameMode mode, Owner first, Owner user)
+      : m_width (width)
+      , m_height (height)
+      , m_mode (mode)
+      , m_firstOwner (first)
+      , m_user (user)
+    {
+    }
+  };
   
   class DotTable : public QObject
   {
+    Q_OBJECT
+    
     Graph m_graph;
     std::shared_ptr<StepQueue> m_steps;
   public:
-    DotTable (int width, int height, GameMode mode, Owner owner, QObject *parent = 0);
+    DotTable (const GameConfig& config, QObject *parent = 0);
 
     void pushPoint (const Point& point);
 
@@ -46,7 +64,8 @@ namespace KDots
     {
       return m_steps;
     }
-    
+  signals:
+    void nextPlayer (const Point& lastPoint);
   private:
     void drawPolygon (PolyList polygons);
   };

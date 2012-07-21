@@ -16,6 +16,9 @@ INCLUDE_DIRECTORIES (
   ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+
+SET (KDOTS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
 SET (SRCS
   graphpoint.cpp
   graph.cpp
@@ -27,6 +30,7 @@ SET (SRCS
   mainwindow.cpp
   polygonfinder.cpp
   polygon.cpp
+  plugincontainer.cpp
 )
 
 SET (HEADERS
@@ -42,6 +46,7 @@ SET (HEADERS
   include/constants.hpp
   include/polygonfinder.hpp
   include/polygon.hpp
+  include/plugincontainer.hpp
 )
 
 SET (FORMS
@@ -62,4 +67,4 @@ TARGET_LINK_LIBRARIES (kdots
   ${QT_LIBRARIES}
 )
 
-ADD_SUBDIRECTORY (interface)
+ADD_SUBDIRECTORY (plugins)

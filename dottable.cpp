@@ -22,19 +22,19 @@
 namespace KDots
 {
 
-  DotTable::DotTable (int width, int height, GameMode mode, Owner owner, QObject *parent = 0)
+  DotTable::DotTable (const GameConfig& config, QObject *parent)
     : QObject (parent)
-    , m_graph (width, height)
-    , m_steps (mode == DEFAULT_MODE
-        ? new StepQueue (owner)
-        : new ExtraStepQueue (owner))
+    , m_graph (config.m_width, config.m_height)
+    , m_steps (config.m_mode == DEFAULT_MODE
+        ? new StepQueue (config.m_firstOwner)
+        : new ExtraStepQueue (config.m_firstOwner))
   {
   }
   
   namespace
   {
     bool
-    isInPolygon (Polygon_ptr polygon, const Point& point)
+    is_in_polygon (Polygon_ptr polygon, const Point& point)
     {
       int i, k;
       Polygon::const_iterator itr = polygon->begin ();
@@ -122,7 +122,7 @@ namespace KDots
             for (const Polygon_ptr polygon : polyList)
               {
                 const Point newPoint (k, j);
-                if (isInPolygon (polygon, newPoint))
+                if (is_in_polygon (polygon, newPoint))
                   {
                     if (gpoint.owner () == StepQueue::other (current))
                       {
@@ -141,6 +141,10 @@ namespace KDots
     
     m_steps->nextStep ();
     
+    if (m_steps->getCurrentOwner () != current)
+      {
+        emit nextPlayer (point);
+      }
   }
 
   void

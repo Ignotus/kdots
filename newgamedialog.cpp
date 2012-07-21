@@ -20,6 +20,7 @@
 #include "ui_newgamedialog.h"
 #include <QDebug>
 #include "constants.hpp"
+#include "plugincontainer.hpp"
 
 namespace KDots
 {
@@ -28,6 +29,8 @@ namespace KDots
     , m_ui (new Ui::NewGameDialog)
   {
     m_ui->setupUi (this);
+    
+    m_ui->Rival->addItems (PluginContainer::instance ().plugins ().keys ());
   }
 
   int
@@ -54,5 +57,11 @@ namespace KDots
   NewGameDialog::getFirstMoving () const
   {
     return m_ui->FirstMoving->currentIndex () ? Owner::SECOND : Owner::FIRST;
+  }
+  
+  QString
+  NewGameDialog::getRival () const
+  {
+    return m_ui->Rival->currentText ();
   }
 }

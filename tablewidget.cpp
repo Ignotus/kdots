@@ -23,33 +23,51 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QDebug>
+#include "dottable.hpp"
+#include "interface/iplugin.hpp"
 
 namespace KDots
 {
   TableWidget::TableWidget (int height, int width, GameMode mode,
-                            Owner owner, QWidget *parent)
+                            Owner owner, std::shared_ptr<IRival> rival, QWidget *parent)
     : QWidget (parent)
-    , m_table (new DotTable (width, height, mode, owner, this))
+    , m_table (new DotTable (GameConfig (width, height, mode, owner, owner) , this))
     , m_height (height + 1)
     , m_width (width + 1)
+    , m_rival (rival)
   {
     setMinimumSize (400, 400);
+    
+    rival->configure (m_table);
+    
+    connect (m_table,
+             SIGNAL (nextPlayer (const Point&)),
+             rival.get (),
+             SLOT (nextStep (Point)));
   }
-
-  void
-  TableWidget::mouseMoveEvent (QMouseEvent *event)
+  
+  namespace
   {
+    float cell_size (const QRect& rectange, int height, int width)
+    {
+      const float cellHeight = rectange.height () / height;
+      const float cellWidth = rectange.width () / width;
+
+      return cellHeight > cellWidth ? cellWidth : cellHeight;
+    }
   }
 
   void
   TableWidget::mousePressEvent (QMouseEvent *event)
   {
-    const QRect &rectange = rect ();
+    if (!m_rival->isAllow ())
+      {
+        return;
+      }
 
-    const float cellHeight = rectange.height () / m_height;
-    const float cellWidth = rectange.width () / m_width;
-
-    const float cellSize = cellHeight > cellWidth ? cellWidth : cellHeight;
+    const QRect& rectange = rect ();
+    
+    const float cellSize = cell_size (rectange, m_height, m_width);
     float tableWidth = cellSize * m_width;
     float tableHeight = cellSize * m_height;
 
@@ -98,11 +116,8 @@ namespace KDots
   TableWidget::paintEvent (QPaintEvent *event)
   {
     const QRect& rectange = event->rect ();
-
-    const float cellHeight = rectange.height () / m_height;
-    const float cellWidth = rectange.width () / m_width;
-
-    const float cellSize = cellHeight > cellWidth ? cellWidth : cellHeight;
+    const float cellSize = cell_size (rectange, m_height, m_width);
+    
     const float tableWidth = cellSize * m_width;
     const float tableHeight = cellSize * m_height;
 
@@ -112,24 +127,19 @@ namespace KDots
 
     QPainter pixPainter (&pixmap);
     pixPainter.setRenderHint (QPainter::Antialiasing);
+    pixPainter.setPen (QPen (Qt::black, 1));
 
-    QPen pen (Qt::black, 1);
-
-    pixPainter.setPen (pen);
-
-    int i, k;
-
-    for (i = cellSize, k = m_width * cellSize; i < k; i += cellSize)
+    for (int i = cellSize, k = m_width * cellSize; i < k; i += cellSize)
       {
         pixPainter.drawLine (i, 0, i, pixmap.height ());
       }
 
-    for (i = cellSize, k = m_height * cellSize; i < k; i += cellSize)
+    for (int i = cellSize, k = m_height * cellSize; i < k; i += cellSize)
       {
         pixPainter.drawLine (0, i, pixmap.width (), i);
       }
 
-    const Graph &graph = m_table->graph ();
+    const Graph& graph = m_table->graph ();
 
     const QBrush firstBrush (Qt::red);
     const QBrush secondBrush (Qt::blue);
@@ -137,11 +147,9 @@ namespace KDots
     const QPen firstPen (Qt::red, 2);
     const QPen secondPen (Qt::blue, 2);
 
-    int j;
-
-    for (i = 0; i < graph.width (); ++i)
+    for (int i = 0; i < graph.width (); ++i)
       {
-        for (k = 0; k < graph.height (); ++k)
+        for (int k = 0; k < graph.height (); ++k)
           {
             const GraphPoint &point = graph[i][k];
 
@@ -163,25 +171,21 @@ namespace KDots
                                     3, 3);
 
             const GraphPoint::GraphEdges& edges = point.edges ();
-
-            for (j = 0; j < edges.size (); ++j)
+            for (int j = 0; j < edges.size (); ++j)
               {
                 const Point& lastPoint = edges[j];
 
-                pixPainter.drawLine ( (i + 1) * cellSize,
-                                      (k + 1) * cellSize,
-                                      (lastPoint.x () + 1) * cellSize,
-                                      (lastPoint.y () + 1) * cellSize);
+                pixPainter.drawLine ((i + 1) * cellSize,
+                                     (k + 1) * cellSize,
+                                     (lastPoint.x () + 1) * cellSize,
+                                     (lastPoint.y () + 1) * cellSize);
               }
           }
       }
 
-    const int dx = (rectange.width () - tableWidth) / 2;
-
-    const int dy = (rectange.height () - tableHeight) / 2;
-
     QPainter painter (this);
-
+    const int dx = (rectange.width () - tableWidth) / 2;
+    const int dy = (rectange.height () - tableHeight) / 2;
     painter.drawPixmap (dx, dy, pixmap);
 
     emit updateStatusBar (QString ("First:\t")

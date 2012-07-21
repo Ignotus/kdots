@@ -17,6 +17,7 @@
  */
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
+#include <QString>
 
 namespace KDots
 {
@@ -37,6 +38,7 @@ namespace KDots
   const int GRAPH_DX[8] = {0, 1, 1, 1, 0, -1, -1, -1};
   const int GRAPH_DY[8] = {1, 1, 0, -1, -1, -1, 0, 1};
   
+  const QString PLUGIN_SUFFIX = "libkdots_";
 }
 
 #endif
