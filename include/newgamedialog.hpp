@@ -28,6 +28,13 @@ namespace Ui
 
 namespace KDots
 {
+  struct GameConfig
+  {
+    int m_width, m_height;
+    GameMode m_mode;
+    Owner m_firstOwner;
+  };
+  
   class NewGameDialog : public QDialog
   {
     Q_OBJECT
@@ -40,6 +47,7 @@ namespace KDots
     Owner getFirstMoving () const;
     QString getRival () const;
 
+    GameConfig getGameConfig () const;
   private:
     Ui::NewGameDialog *m_ui;
   };

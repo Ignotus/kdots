@@ -46,13 +46,10 @@ namespace KDots
     const QString& rivalName = dialog.getRival ();
     
     std::shared_ptr<IRival> rival (PluginContainer::instance ().plugin (rivalName)->createRival ());
+    
+    const GameConfig& config = dialog.getGameConfig ();
 
-    TableWidget *table = new TableWidget (dialog.getHeight (),
-                            dialog.getWidth (),
-                            dialog.getGameMode (),
-                            dialog.getFirstMoving (),
-                            rival,
-                            this);
+    TableWidget *table = new TableWidget (config, rival, this);
     
     connect (table,
             SIGNAL (updateStatusBar (const QString &)),

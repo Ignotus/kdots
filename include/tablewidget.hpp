@@ -20,6 +20,7 @@
 #include <memory>
 #include <QWidget>
 #include "constants.hpp"
+#include "newgamedialog.hpp"
 #include "interface/irival.hpp"
 
 namespace KDots
@@ -35,8 +36,7 @@ namespace KDots
     
     std::shared_ptr<KDots::IRival> m_rival;
   public:
-    TableWidget (int height, int width, GameMode mode,
-                 Owner owner, std::shared_ptr<IRival> rival,
+    TableWidget (const GameConfig& config, std::shared_ptr<IRival> rival,
                  QWidget *parent = 0);
   protected:
     void mousePressEvent (QMouseEvent *event);

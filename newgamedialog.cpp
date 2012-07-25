@@ -64,4 +64,16 @@ namespace KDots
   {
     return m_ui->Rival->currentText ();
   }
+  
+  GameConfig
+  NewGameDialog::getGameConfig () const
+  {
+    GameConfig config;
+    config.m_firstOwner = getFirstMoving ();
+    config.m_height = getHeight ();
+    config.m_width = getWidth ();
+    config.m_mode = getGameMode ();
+    
+    return config;
+  }
 }

@@ -28,12 +28,11 @@
 
 namespace KDots
 {
-  TableWidget::TableWidget (int height, int width, GameMode mode,
-                            Owner owner, std::shared_ptr<IRival> rival, QWidget *parent)
+  TableWidget::TableWidget (const GameConfig& config, std::shared_ptr<IRival> rival, QWidget *parent)
     : QWidget (parent)
-    , m_table (new DotTable (GameConfig (width, height, mode, owner, owner) , this))
-    , m_height (height + 1)
-    , m_width (width + 1)
+    , m_table (new DotTable (config , this))
+    , m_height (config.m_height + 1)
+    , m_width (config.m_width + 1)
     , m_rival (rival)
   {
     setMinimumSize (400, 400);

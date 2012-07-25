@@ -21,27 +21,12 @@
 #include <QObject>
 #include "stepqueue.hpp"
 #include "graph.hpp"
+#include "newgamedialog.hpp"
 #include "polygonfinder.hpp"
 #include "interface/iplugin.hpp"
 
 namespace KDots
 {
-  struct GameConfig
-  {
-    int m_width, m_height;
-    GameMode m_mode;
-    Owner m_firstOwner, m_user;
-    
-    GameConfig (int width, int height, GameMode mode, Owner first, Owner user)
-      : m_width (width)
-      , m_height (height)
-      , m_mode (mode)
-      , m_firstOwner (first)
-      , m_user (user)
-    {
-    }
-  };
-  
   class DotTable : public QObject
   {
     Q_OBJECT

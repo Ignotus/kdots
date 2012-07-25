@@ -39,6 +39,7 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
+    <addaction name="actionAbout_Qt_2"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_Help"/>
@@ -65,6 +66,11 @@
   <action name="actionAbout_KDots">
    <property name="text">
     <string>About KDots</string>
+   </property>
+  </action>
+  <action name="actionAbout_Qt_2">
+   <property name="text">
+    <string>About Qt</string>
    </property>
   </action>
  </widget>

@@ -65,12 +65,14 @@ namespace KDots
       return m_owner;
     }
     
-    GraphEdges& edges ()
+    GraphEdges&
+    edges ()
     {
       return m_edges;
     }
     
-    const GraphEdges& edges () const
+    const GraphEdges&
+    edges () const
     {
       return m_edges;
     }
