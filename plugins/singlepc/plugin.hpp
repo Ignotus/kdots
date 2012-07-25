@@ -18,18 +18,24 @@
 #ifndef KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
 #define KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
 #include <interface/iplugin.hpp>
+#include <interface/irival.hpp>
 
 namespace KDots
 {
-namespace SinglePC
+namespace singlepc
 {
-  class Rival : public KDots::IRival
+  class Rival : public QObject, public KDots::IRival
   {
     Q_OBJECT
   public:
     Rival (QObject *parent = 0)
-      : IRival (parent)
+      : QObject (parent)
     {
+    }
+    
+    QObject* getQObject ()
+    {
+      return this;
     }
     
     bool
@@ -44,14 +50,14 @@ namespace SinglePC
     {
     }
   };
-  
-  class Plugin : public KDots::IPlugin
+
+  class Plugin : public QObject, public KDots::IPlugin
   {
     Q_OBJECT
     Q_INTERFACES (KDots::IPlugin)
   public:
-    Plugin (QObject *parent = 0)
-      : IPlugin (parent)
+    Plugin (QObject* parent = 0)
+      : QObject (parent)
     {
     }
     

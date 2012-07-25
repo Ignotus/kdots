@@ -38,19 +38,20 @@ namespace KDots
     //TODO: Plugins must be situated in the system unix directory
     QDir pluginsDir (qApp->applicationDirPath ());
     pluginsDir.cd ("plugins");
-    
-    for (const QString& fileName : pluginsDir.entryList (QStringList ({PLUGIN_SUFFIX + "*"}), QDir::Files))
+    qDebug () << Q_FUNC_INFO << "Loading plugins..."; 
+    for (const QString& fileName : pluginsDir.entryList ({PLUGIN_SUFFIX + "*"}, QDir::Files))
       {
         QPluginLoader pluginLoader (pluginsDir.absoluteFilePath (fileName));
-        QObject *plugin = pluginLoader.instance ();
-        if (plugin)
+        IPlugin *iplugin = qobject_cast<IPlugin*> (pluginLoader.instance ());
+        if (iplugin)
           {
-            IPlugin *iplugin = qobject_cast<IPlugin*> (plugin);
-            if (iplugin)
-              {
-                qDebug () << Q_FUNC_INFO << "Loading the plugin:" << iplugin->name ();
-                m_pluginMap.insert (iplugin->name (), iplugin);
-              }
+            qDebug () << Q_FUNC_INFO << "Loading the plugin:" << iplugin->name ();
+            m_pluginMap.insert (iplugin->name (), iplugin);
+          }
+        else
+          {
+            qDebug () << Q_FUNC_INFO << pluginLoader.errorString ();
+            qDebug () << Q_FUNC_INFO << "Cannot load the plugin " << fileName;
           }
       }
   }

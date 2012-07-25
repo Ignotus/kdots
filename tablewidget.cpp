@@ -42,7 +42,7 @@ namespace KDots
     
     connect (m_table,
              SIGNAL (nextPlayer (const Point&)),
-             rival.get (),
+             rival.get ()->getQObject (),
              SLOT (nextStep (Point)));
   }
   

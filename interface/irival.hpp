@@ -15,34 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TABLEWIDGET_HPP
-#define TABLEWIDGET_HPP
-#include <memory>
-#include <QWidget>
-#include "constants.hpp"
-#include "interface/irival.hpp"
+#ifndef KDOTS_IRIVAL_HPP
+#define KDOTS_IRIVAL_HPP
+#include <point.hpp>
+
+class QObject;
 
 namespace KDots
 {
   class DotTable;
   
-  class TableWidget : public QWidget
+  class IRival
   {
-    Q_OBJECT
-
-    DotTable *m_table;
-    int m_height, m_width;
-    
-    std::shared_ptr<KDots::IRival> m_rival;
   public:
-    TableWidget (int height, int width, GameMode mode,
-                 Owner owner, std::shared_ptr<IRival> rival,
-                 QWidget *parent = 0);
-  protected:
-    void mousePressEvent (QMouseEvent *event);
-    void paintEvent (QPaintEvent *event);
-  signals:
-    void updateStatusBar (const QString &msg);
+    virtual ~IRival () {}
+    
+    virtual void configure (DotTable *table)
+    {
+    }
+    
+    virtual QObject* getQObject () = 0;
+    
+    virtual bool isAllow () const = 0;
+    virtual void nextStep (const Point& point) = 0;
   };
 }
 

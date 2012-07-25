@@ -19,7 +19,7 @@
 #define KDOTS_IPLUGIN_HPP
 #include <QString>
 #include <QIcon>
-#include <QtCore/qplugin.h>
+#include <QtPlugin>
 #include <point.hpp>
 
 class QDialog;
@@ -27,37 +27,11 @@ class QDialog;
 namespace KDots
 {
   class DotTable;
-  
-  class IRival : public QObject
+  class IRival;
+
+  class IPlugin 
   {
-    Q_OBJECT
   public:
-    IRival (QObject* parent = 0)
-      : QObject (parent)
-    {
-    }
-    
-    virtual void configure (DotTable *table)
-    {
-    }
-    
-    virtual bool isAllow () const = 0;
-  
-  public slots:
-    virtual void nextStep (const Point& point)
-    {
-    }
-  };
-  
-  class IPlugin : public QObject
-  {
-    Q_OBJECT
-  public:
-    IPlugin (QObject *parent = 0)
-      : QObject (parent)
-    {
-    }
-    
     virtual ~IPlugin () {}
 
     /** @brief Returns a plugin name.
@@ -81,5 +55,4 @@ namespace KDots
 }
 
 Q_DECLARE_INTERFACE (KDots::IPlugin, "com.github.ignotus.kdots.IPlugin/1.0");
-
 #endif

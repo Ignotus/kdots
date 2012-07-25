@@ -27,7 +27,11 @@ namespace KDots
     typedef QMap<QString, IPlugin*> PluginMap;
     PluginMap m_pluginMap;
   public:
-    PluginContainer () {}
+    PluginContainer ()
+    {
+      loadPlugins ();
+    }
+
     static PluginContainer& instance ();
     
     inline const PluginMap&

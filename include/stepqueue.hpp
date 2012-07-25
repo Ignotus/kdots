@@ -34,10 +34,6 @@ namespace KDots
     bool m_captured;
   public:
     StepQueue (Owner firstPlayer);
-    virtual ~StepQueue ()
-    {
-      qDebug () << Q_FUNC_INFO << __LINE__;
-    }
     
     void addPoint (const Point& point);
     void addCaptured ();
