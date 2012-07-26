@@ -27,4 +27,19 @@ TARGET_LINK_LIBRARIES (kdots_singlepc
   ${QT_LIBRARIES}
 )
 
-FILE (COPY ${CMAKE_CURRENT_BINARY_DIR}/libkdots_singlepc.so DESTINATION ${PLUGIN_BUILD_DIR})
+
+IF (UNIX)
+  ADD_CUSTOM_COMMAND(
+    TARGET kdots_singlepc
+    POST_BUILD
+    COMMAND mv ARGS ${CMAKE_CURRENT_BINARY_DIR}/libkdots_singlepc.so
+    ${PLUGIN_BUILD_DIR}
+  )
+ELSE (UNIX)
+    ADD_CUSTOM_COMMAND(
+    TARGET kdots_singlepc
+    POST_BUILD
+    COMMAND move ARGS ${CMAKE_CURRENT_BINARY_DIR}/libkdots_singlepc.so
+    ${PLUGIN_BUILD_DIR}
+  )
+ENDIF (UNIX)

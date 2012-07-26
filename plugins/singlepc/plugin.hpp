@@ -75,7 +75,7 @@ namespace singlepc
     
     QString description () const
     {
-      return "singlepc";
+      return "Playing in the single PC";
     }
   };
 

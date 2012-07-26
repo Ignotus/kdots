@@ -1,1 +1,2 @@
 ADD_SUBDIRECTORY (singlepc)
+#ADD_SUBDIRECTORY (ipconnect)
