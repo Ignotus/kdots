@@ -25,34 +25,34 @@
 
 namespace KDots
 {
-  PluginContainer&
-  PluginContainer::instance ()
-  {
-    static PluginContainer obj;
-    return obj;
-  }
-  
-  void
-  PluginContainer::loadPlugins ()
-  {
-    //TODO: Plugins must be situated in the system unix directory
-    QDir pluginsDir (qApp->applicationDirPath ());
-    pluginsDir.cd ("plugins");
-    qDebug () << Q_FUNC_INFO << "Loading plugins..."; 
-    for (const QString& fileName : pluginsDir.entryList ({PLUGIN_SUFFIX + "*"}, QDir::Files))
-      {
-        QPluginLoader pluginLoader (pluginsDir.absoluteFilePath (fileName));
-        IPlugin *iplugin = qobject_cast<IPlugin*> (pluginLoader.instance ());
-        if (iplugin)
-          {
-            qDebug () << Q_FUNC_INFO << "Loading the plugin:" << iplugin->name ();
-            m_pluginMap.insert (iplugin->name (), iplugin);
-          }
-        else
-          {
-            qDebug () << Q_FUNC_INFO << pluginLoader.errorString ();
-            qDebug () << Q_FUNC_INFO << "Cannot load the plugin " << fileName;
-          }
-      }
-  }
+	PluginContainer& PluginContainer::instance ()
+	{
+		static PluginContainer obj;
+		return obj;
+	}
+
+	void PluginContainer::loadPlugins ()
+	{
+		//TODO: Plugins must be situated in the system unix directory
+		QDir pluginsDir (qApp->applicationDirPath ());
+		pluginsDir.cd ("plugins");
+		qDebug () << Q_FUNC_INFO << "Loading plugins...";
+
+		for (const QString& fileName : pluginsDir.entryList ({PLUGIN_SUFFIX + "*"}, QDir::Files))
+		{
+			QPluginLoader pluginLoader (pluginsDir.absoluteFilePath (fileName));
+			IPlugin *iplugin = qobject_cast<IPlugin *> (pluginLoader.instance ());
+
+			if (iplugin)
+			{
+				qDebug () << Q_FUNC_INFO << "Loading the plugin:" << iplugin->name ();
+				m_pluginMap.insert (iplugin->name (), iplugin);
+			}
+			else
+			{
+				qDebug () << Q_FUNC_INFO << pluginLoader.errorString ();
+				qDebug () << Q_FUNC_INFO << "Cannot load the plugin " << fileName;
+			}
+		}
+	}
 }

@@ -20,30 +20,31 @@
 #include <memory>
 #include <list>
 #include <QDebug>
-#include "graph.hpp"
 #include "polygon.hpp"
+#include "constants.hpp"
 
 namespace KDots
 {
-  class Point;
-  
-  typedef std::shared_ptr<Polygon> Polygon_ptr;
-  typedef std::vector<Polygon_ptr> PolyList;
-  
-  class PolygonFinder
-  {
-    Graph& m_graph;
-    Owner m_current;
-    std::list<Point> m_cache;
-    std::vector<std::vector<bool>> m_stepMap;
-  public:
-    PolygonFinder (Graph& graph, Owner owner);
-    
-    // O(n)
-    PolyList polygons (const Point& point);
-  private:
-    void findPolygons (const Point& point, PolyList& polygons);
-  };
+	class Point;
+	struct Graph;
+
+	typedef std::shared_ptr<Polygon> Polygon_ptr;
+	typedef std::vector<Polygon_ptr> PolyList;
+
+	class PolygonFinder
+	{
+		Graph& m_graph;
+		Owner m_current;
+		std::list<Point> m_cache;
+		std::vector<std::vector<bool>> m_stepMap;
+	public:
+		PolygonFinder (Graph& graph, Owner owner);
+
+		// O(n)
+		PolyList polygons (const Point& point);
+	private:
+		void findPolygons (const Point& point, PolyList& polygons);
+	};
 
 }
 

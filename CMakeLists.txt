@@ -29,11 +29,13 @@ SET (SRCS
   stepqueue.cpp
   tablewidget.cpp
   main.cpp
+  newgamewidget.cpp
   newgamedialog.cpp
   mainwindow.cpp
   polygonfinder.cpp
   polygon.cpp
   plugincontainer.cpp
+  pluginmanagerwidget.cpp
 )
 
 SET (HEADERS
@@ -45,24 +47,35 @@ SET (HEADERS
   include/edgelist.hpp
   include/point.hpp
   include/newgamedialog.hpp
+  include/newgamewidget.hpp
   include/mainwindow.hpp
   include/constants.hpp
   include/polygonfinder.hpp
   include/polygon.hpp
   include/plugincontainer.hpp
+  include/pluginmanagerwidget.hpp
+)
+
+SET (INTERFACE_HEAD
+  interface/iplugin.hpp
+  interface/irival.hpp
+  interface/iconfigurationwidget.hpp
 )
 
 SET (FORMS
   ui/mainwindow.ui
+  ui/newgamewidget.ui
   ui/newgamedialog.ui
 )
 
 QT4_WRAP_CPP (HEADERS_MOC ${HEADERS})
+QT4_WRAP_CPP (INTERFACE_MOC ${INTERFACE_HEAD})
 QT4_WRAP_UI (FORMS_HEADERS ${FORMS})
 
 ADD_EXECUTABLE (kdots
   ${SRCS}
   ${HEADERS_MOC}
+  ${INTERFACE_MOC}
   ${FORMS_HEADERS}
 )
 

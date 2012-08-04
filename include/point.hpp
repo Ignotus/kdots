@@ -20,67 +20,56 @@
 
 namespace KDots
 {
-  
-  class Point
-  {
-    int m_x, m_y;
-  public:
-    inline
-    Point ()
-      : m_x (-1)
-      , m_y (-1)
-    {}
+	class Point
+	{
+		int m_x, m_y;
+	public:
+		inline Point ()
+			: m_x (-1)
+			, m_y (-1)
+		{}
 
-    inline
-    Point (int x, int y)
-      : m_x (x)
-      , m_y (y)
-    {}
+		inline Point (int x, int y)
+			: m_x (x)
+			, m_y (y)
+		{}
 
 
-    inline int
-    x () const
-    {
-      return m_x;
-    }
+		inline int x () const
+		{
+			return m_x;
+		}
 
-    inline int
-    y () const
-    {
-      return m_y;
-    }
+		inline int y () const
+		{
+			return m_y;
+		}
 
-    inline void
-    setX (int x)
-    {
-      m_x = x;
-    }
+		inline void setX (int x)
+		{
+			m_x = x;
+		}
 
-    inline void
-    setY (int y)
-    {
-      m_y = y;
-    }
+		inline void setY (int y)
+		{
+			m_y = y;
+		}
 
-    inline bool
-    operator== (const Point& a) const
-    {
-      return m_x == a.m_x && m_y == a.m_y;
-    }
+		inline bool operator== (const Point& a) const
+		{
+			return m_x == a.m_x && m_y == a.m_y;
+		}
 
-    inline bool
-    operator!= (const Point& a) const
-    {
-      return !(*this == a);
-    }
+		inline bool operator!= (const Point& a) const
+		{
+			return ! (*this == a);
+		}
 
-    inline bool
-    empty () const
-    {
-      return m_x == -1 || m_y == -1;
-    }
-  };
-
+		inline bool empty () const
+		{
+			return m_x == -1 || m_y == -1;
+		}
+	};
 }
 
 #endif

@@ -22,62 +22,54 @@
 
 namespace KDots
 {
-  
-  class GraphPoint
-  {
-  public:
-    typedef EdgeList<8> GraphEdges;
-    
-  private:
-    bool m_captured;
-    Owner m_owner;
-    GraphEdges m_edges;
-    
-  public:
-    inline
-    GraphPoint (Owner owner = NONE)
-      : m_captured (false)
-      , m_owner (owner)
-    {
-    }
-    
-    inline bool
-    isCaptuted () const
-    {
-      return m_captured;
-    }
-    
-    inline void
-    capture ()
-    {
-      m_captured = true;
-    }
-    
-    inline void
-    setOwner (Owner owner)
-    {
-      m_owner = owner;
-    }
-    
-    inline int
-    owner () const
-    {
-      return m_owner;
-    }
-    
-    GraphEdges&
-    edges ()
-    {
-      return m_edges;
-    }
-    
-    const GraphEdges&
-    edges () const
-    {
-      return m_edges;
-    }
-  };
-  
+	class GraphPoint
+	{
+	public:
+		typedef EdgeList<8> GraphEdges;
+
+	private:
+		bool m_captured;
+		Owner m_owner;
+		GraphEdges m_edges;
+
+	public:
+		inline
+		GraphPoint (Owner owner = NONE)
+			: m_captured (false)
+			, m_owner (owner)
+		{
+		}
+
+		inline bool isCaptuted () const
+		{
+			return m_captured;
+		}
+
+		inline void capture ()
+		{
+			m_captured = true;
+		}
+
+		inline void setOwner (Owner owner)
+		{
+			m_owner = owner;
+		}
+
+		inline int owner () const
+		{
+			return m_owner;
+		}
+
+		GraphEdges& edges ()
+		{
+			return m_edges;
+		}
+
+		const GraphEdges& edges () const
+		{
+			return m_edges;
+		}
+	};
 }
 
 #endif

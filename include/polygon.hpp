@@ -22,32 +22,32 @@
 
 namespace KDots
 {
-  class Polygon : public std::list<Point>
-  {
-    bool m_filled;
-  public:
-    Polygon ()
-      : std::list<Point> ()
-      , m_filled (false)
-    {
-    }
-    
-    Polygon (const std::list<Point>& a)
-      : std::list<Point> (a)
-      , m_filled (false)
-    {
-    }
-    
-    bool isFilled () const
-    {
-      return m_filled;
-    }
-    
-    void setFilled (bool filled)
-    {
-      m_filled = filled;
-    }
-  };
+	class Polygon : public std::list<Point>
+	{
+		bool m_filled;
+	public:
+		Polygon ()
+			: std::list<Point> ()
+			, m_filled (false)
+		{
+		}
+
+		Polygon (const std::list<Point>& a)
+			: std::list<Point> (a)
+			, m_filled (false)
+		{
+		}
+
+		bool isFilled () const
+		{
+			return m_filled;
+		}
+
+		void setFilled (bool filled)
+		{
+			m_filled = filled;
+		}
+	};
 }
 
 #endif

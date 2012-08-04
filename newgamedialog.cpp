@@ -15,65 +15,126 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include "newgamedialog.hpp"
-#include "ui_newgamedialog.h"
 #include <QDebug>
-#include "constants.hpp"
+#include "ui_newgamedialog.h"
+#include "pluginmanagerwidget.hpp"
+#include "newgamewidget.hpp"
 #include "plugincontainer.hpp"
+#include <interface/irival.hpp>
+#include <interface/iplugin.hpp>
+#include <interface/iconfigurationwidget.hpp>
 
 namespace KDots
 {
-  NewGameDialog::NewGameDialog (QWidget *parent)
-    : QDialog (parent)
-    , m_ui (new Ui::NewGameDialog)
-  {
-    m_ui->setupUi (this);
-    
-    m_ui->Rival->addItems (PluginContainer::instance ().plugins ().keys ());
-  }
-
-  int
-  NewGameDialog::getHeight () const
-  {
-    return m_ui->HeightSpinBox->value ();
-  }
-
-  int
-  NewGameDialog::getWidth () const
-  {
-    return m_ui->WidthSpinBox->value ();
-  }
-
-  GameMode
-  NewGameDialog::getGameMode () const
-  {
-    return m_ui->GameMode->currentIndex ()
-        ? GameMode::EXTRA_TURN_MODE
-        : GameMode::DEFAULT_MODE;
-  }
-
-  Owner
-  NewGameDialog::getFirstMoving () const
-  {
-    return m_ui->FirstMoving->currentIndex () ? Owner::SECOND : Owner::FIRST;
-  }
-  
-  QString
-  NewGameDialog::getRival () const
-  {
-    return m_ui->Rival->currentText ();
-  }
-  
-  GameConfig
-  NewGameDialog::getGameConfig () const
-  {
-    GameConfig config;
-    config.m_firstOwner = getFirstMoving ();
-    config.m_height = getHeight ();
-    config.m_width = getWidth ();
-    config.m_mode = getGameMode ();
-    
-    return config;
-  }
+	NewGameDialog::NewGameDialog (QWidget *parent)
+		: QDialog (parent)
+		, m_ui (new Ui::NewGameDialog)
+		, m_game (NULL)
+		, m_pluginManager (new PluginManagerWidget (this))
+		, m_configWidget (NULL)
+	{
+		m_ui->setupUi (this);
+			
+		m_ui->Grid->addWidget (m_pluginManager, 0, 0, Qt::AlignCenter);
+		
+		connect (m_ui->NextButton,
+				SIGNAL (clicked (bool)),
+				this,
+				SLOT (pluginWidget ()));
+	}
+	
+	std::shared_ptr<IRival> NewGameDialog::rival () const
+	{
+		return m_rival;
+	}
+	
+	GameConfig NewGameDialog::gameConfig () const
+	{
+		if (m_game)
+			return m_game->getGameConfig ();
+		
+		return m_rival->getGameConfig ();
+	}
+	
+	void NewGameDialog::pluginWidget ()
+	{
+		m_ui->NextButton->disconnect (this, SLOT (pluginWidget ()));
+		
+		if (!m_pluginManager)
+		{
+			qWarning () << Q_FUNC_INFO << "Cannot cast to PluginManagerWidget";
+			return;
+		}
+		
+		const QString& pluginName = m_pluginManager->pluginName ();
+		
+		IPlugin *pluginInstance = PluginContainer::instance ().plugin (pluginName);
+		if (!pluginInstance)
+		{
+			qDebug () << Q_FUNC_INFO << "Plugin instance not exists";
+			return;
+		}
+		
+		m_rival.reset (pluginInstance->createRival ());
+		
+		m_pluginManager->hide ();
+		
+		m_configWidget = m_rival->configureWidget ();
+		
+		if (!m_configWidget)
+		{
+			gameWidget ();
+			return;
+		}
+		
+		//w->setParent (this);
+		m_ui->Grid->addWidget (m_configWidget , 0, 0, Qt::AlignCenter);
+		
+		connect (m_configWidget,
+				SIGNAL (needCreateTable (bool)),
+				this,
+				SLOT (onNeedCreateTable (bool)));
+		
+		connect (m_ui->NextButton,
+				SIGNAL (clicked (bool)),
+				this,
+ 				SLOT (gameWidget ()));
+	}
+	
+	void NewGameDialog::onNeedCreateTable (bool val)
+	{
+		if (val)
+		{
+			m_ui->NextButton->setEnabled (true);
+			m_ui->OKButton->setEnabled (false);
+			connect (m_ui->NextButton,
+					SIGNAL (clicked (bool)),
+					this,
+					SLOT (gameWidget ()));
+		}
+		else
+		{
+			m_ui->NextButton->setEnabled (false);
+			m_ui->OKButton->setEnabled (true);
+			m_ui->NextButton->disconnect (this, SLOT (gameWidget ()));
+		}
+	}
+	
+	void NewGameDialog::gameWidget ()
+	{
+		if (m_configWidget)
+		{
+			m_configWidget->hide ();
+		}
+		
+		m_ui->NextButton->setEnabled (false);
+		m_ui->OKButton->setEnabled (true);
+		m_game = new NewGameWidget (this);
+		m_ui->Grid->addWidget (m_game, 0, 0, Qt::AlignCenter);
+	}
+	
+	///
+	
+	
 }

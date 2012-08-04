@@ -15,38 +15,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_MAINWINDOW_HPP
-#define KDOTS_MAINWINDOW_HPP
-#include <memory>
-#include <QMainWindow>
-#include "newgamewidget.hpp"
-
-namespace Ui
-{
-	class MainWindow;
-}
+#ifndef KDOTS_PLUGINS_IPCONNECT_PLUGIN_HPP
+#define KDOTS_PLUGINS_IPCONNECT_PLUGIN_HPP
+#include <interface/iplugin.hpp>
+#include "rival.hpp"
 
 namespace KDots
 {
-	class TableWidget;
-	class IRival;
+namespace ipconnect
+{
 
-	class MainWindow : public QMainWindow
-	{
-		Q_OBJECT
-	public:
-		MainWindow (QWidget *parent = 0);
+		class Plugin : public KDots::IPlugin
+		{
+			Q_OBJECT
+			Q_INTERFACES (KDots::IPlugin)
+		public:
+			Plugin (QObject *parent = 0)
+				: IPlugin (parent)
+			{
+			}
 
-	private:
-		Ui::MainWindow *m_ui;
-		std::shared_ptr<IRival> m_rival;
+			IRival* createRival ()
+			{
+				return new Rival;
+			}
 
-		void loadPlugins ();
+			QString name () const
+			{
+				return "ipconnect";
+			}
 
-	private slots:
-		void on_actionNewGame_triggered ();
-	//	void onGameConfig (const GameConfig& config);
-	};
+			QString description () const
+			{
+				return "Playing y internet connection";
+			}
+		};
+
+}
 }
 
 #endif

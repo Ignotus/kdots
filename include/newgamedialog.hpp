@@ -15,43 +15,46 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef NEWGAMEDIALOG_H
-#define NEWGAMEDIALOG_H
+#ifndef KDOTS_NEWGAMEDIALOG_HPP
+#define KDOTS_NEWGAMEDIALOG_HPP
+#include <memory>
 #include <QDialog>
-#include "point.hpp"
-#include "constants.hpp"
+#include <include/newgamewidget.hpp>
 
 namespace Ui
 {
-  class NewGameDialog;
+	class NewGameDialog;
 }
 
 namespace KDots
 {
-  struct GameConfig
-  {
-    int m_width, m_height;
-    GameMode m_mode;
-    Owner m_firstOwner;
-  };
-  
-  class NewGameDialog : public QDialog
-  {
-    Q_OBJECT
-  public:
-    NewGameDialog (QWidget *parent = 0);
-
-    int getHeight () const;
-    int getWidth () const;
-    GameMode getGameMode () const;
-    Owner getFirstMoving () const;
-    QString getRival () const;
-
-    GameConfig getGameConfig () const;
-  private:
-    Ui::NewGameDialog *m_ui;
-  };
+	class IRival;
+	class IConfigurationWidget;
+	class PluginManagerWidget;
+	
+	class NewGameDialog : public QDialog
+	{
+		Q_OBJECT
+		
+		Ui::NewGameDialog *m_ui;
+		NewGameWidget *m_game;
+		PluginManagerWidget *m_pluginManager;
+		IConfigurationWidget *m_configWidget;
+	
+		mutable std::shared_ptr<IRival> m_rival;
+	public:
+		NewGameDialog (QWidget *parent = 0);
+		
+		std::shared_ptr<IRival> rival () const;
+		
+		GameConfig gameConfig () const;
+	private slots:
+		void pluginWidget ();
+		void gameWidget ();
+		void onNeedCreateTable (bool);
+	//signals:
+	//	void createTable (const GameConfig& config);
+	};
 }
-
 
 #endif

@@ -26,31 +26,36 @@ class QDialog;
 
 namespace KDots
 {
-  class DotTable;
-  class IRival;
+	class DotTable;
+	class IRival;
 
-  class IPlugin 
-  {
-  public:
-    virtual ~IPlugin () {}
+	class IPlugin : public QObject
+	{
+	public:
+		IPlugin (QObject *parent = 0)
+			: QObject (parent)
+		{
+		}
+		
+		virtual ~IPlugin () {}
 
-    /** @brief Returns a plugin name.
-    */
-    virtual QString name () const = 0;
-      
-    /** @brief Returns a plugin description.
-    */
-    virtual QString description () const = 0;
-     
-    virtual IRival* createRival () = 0;
-    
-    /** @brief Returns a plugin icon.
-    */
-    virtual QIcon icon () const
-    {
-      return QIcon ();
-    }
-  };
+		/** @brief Returns a plugin name.
+		*/
+		virtual QString name () const = 0;
+
+		/** @brief Returns a plugin description.
+		*/
+		virtual QString description () const = 0;
+
+		virtual IRival* createRival () = 0;
+
+		/** @brief Returns a plugin icon.
+		*/
+		virtual QIcon icon () const
+		{
+			return QIcon ();
+		}
+	};
 
 }
 

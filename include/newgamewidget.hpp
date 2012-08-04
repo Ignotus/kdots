@@ -15,38 +15,54 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_MAINWINDOW_HPP
-#define KDOTS_MAINWINDOW_HPP
-#include <memory>
-#include <QMainWindow>
-#include "newgamewidget.hpp"
+#ifndef KDOTS_NEWGAMEWIDGET_HPP
+#define KDOTS_NEWGAMEWIDGET_HPP
+#include <QWidget>
+#include "point.hpp"
+#include "constants.hpp"
 
 namespace Ui
 {
-	class MainWindow;
+	class NewGameWidget;
 }
 
 namespace KDots
 {
-	class TableWidget;
-	class IRival;
+	struct GameConfig
+	{
+		int m_width, m_height;
+		GameMode m_mode;
+		Owner m_firstOwner;
+		
+		GameConfig ()
+			: m_width (-1)
+		{}
+		
+		bool isInititialized () const
+		{
+			return m_width != -1;
+		}
+	};
+	
+	QDataStream& operator<< (QDataStream& out, const GameConfig& config);
+	QDataStream& operator>> (QDataStream& in, GameConfig& config);
 
-	class MainWindow : public QMainWindow
+	class NewGameWidget : public QWidget
 	{
 		Q_OBJECT
 	public:
-		MainWindow (QWidget *parent = 0);
+		NewGameWidget (QWidget *parent = 0);
 
+		int getHeight () const;
+		int getWidth () const;
+		GameMode getGameMode () const;
+		Owner getFirstMoving () const;
+
+		GameConfig getGameConfig () const;
 	private:
-		Ui::MainWindow *m_ui;
-		std::shared_ptr<IRival> m_rival;
-
-		void loadPlugins ();
-
-	private slots:
-		void on_actionNewGame_triggered ();
-	//	void onGameConfig (const GameConfig& config);
+		Ui::NewGameWidget *m_ui;
 	};
 }
+
 
 #endif

@@ -21,56 +21,47 @@
 #include <vector>
 #include "graphpoint.hpp"
 
-
 namespace KDots
 {
-  
-  class Graph
-  {
-    std::vector<std::vector<GraphPoint>> m_graph;
-  public:
-    Graph (int width, int height);
+	class Graph
+	{
+		std::vector<std::vector<GraphPoint>> m_graph;
+	public:
+		Graph (int width, int height);
 
-    inline int
-    width () const
-    {
-      return m_graph.size ();
-    }
-    
-    inline int
-    height () const
-    {
-      return m_graph[0].size ();
-    }
+		inline int width () const
+		{
+			return m_graph.size ();
+		}
 
-    inline GraphPoint&
-    operator[] (const Point& index)
-    {
-      return m_graph[index.x ()][index.y ()];
-    }
-    
-    inline const GraphPoint&
-    operator[] (const Point& index) const
-    {
-      return m_graph[index.x ()][index.y ()];
-    }
-    
-    inline std::vector<GraphPoint>&
-    operator[] (int index)
-    {
-      return m_graph[index];
-    }
-    
-    inline const std::vector<GraphPoint>&
-    operator[] (int index) const
-    {
-      return m_graph[index];
-    }
+		inline int height () const
+		{
+			return m_graph[0].size ();
+		}
 
-    bool addEdge (const Point& first, const Point& second);
-    bool removeEdge (const Point& first, const Point& second);
-  };
+		inline GraphPoint& operator[] (const Point& index)
+		{
+			return m_graph[index.x ()][index.y ()];
+		}
 
+		inline const GraphPoint& operator[] (const Point& index) const
+		{
+			return m_graph[index.x ()][index.y ()];
+		}
+
+		inline std::vector<GraphPoint>& operator[] (int index)
+		{
+			return m_graph[index];
+		}
+
+		inline const std::vector<GraphPoint>& operator[] (int index) const
+		{
+			return m_graph[index];
+		}
+
+		bool addEdge (const Point& first, const Point& second);
+		bool removeEdge (const Point& first, const Point& second);
+	};
 }
 
 #endif

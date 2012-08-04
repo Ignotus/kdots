@@ -15,37 +15,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_MAINWINDOW_HPP
-#define KDOTS_MAINWINDOW_HPP
-#include <memory>
-#include <QMainWindow>
-#include "newgamewidget.hpp"
+#ifndef KDOTS_PLUGINMANAGERWIDGET_HPP
+#define KDOTS_PLUGINMANAGERWIDGET_HPP
+#include <QWidget>
 
-namespace Ui
-{
-	class MainWindow;
-}
+class QComboBox;
 
 namespace KDots
 {
-	class TableWidget;
-	class IRival;
-
-	class MainWindow : public QMainWindow
+	class PluginManagerWidget : public QWidget
 	{
 		Q_OBJECT
+		
+		QComboBox *m_pluginComboBox;
 	public:
-		MainWindow (QWidget *parent = 0);
-
-	private:
-		Ui::MainWindow *m_ui;
-		std::shared_ptr<IRival> m_rival;
-
-		void loadPlugins ();
-
-	private slots:
-		void on_actionNewGame_triggered ();
-	//	void onGameConfig (const GameConfig& config);
+		PluginManagerWidget (QWidget *parent = 0);
+		
+		QString pluginName () const;
 	};
 }
 

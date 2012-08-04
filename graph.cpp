@@ -21,23 +21,21 @@
 namespace KDots
 {
 
-  Graph::Graph (int width, int height)
-    : m_graph (width, std::vector<GraphPoint> (height))
-  {
-  }
+	Graph::Graph (int width, int height)
+		: m_graph (width, std::vector<GraphPoint> (height))
+	{
+	}
 
-  bool
-  Graph::addEdge (const Point& first, const Point& second)
-  {
-    m_graph[first.x ()][first.y ()].edges ().addEdge (second);
-    m_graph[second.x ()][second.y ()].edges ().addEdge (first);
-  }
+	bool Graph::addEdge (const Point& first, const Point& second)
+	{
+		m_graph[first.x ()][first.y ()].edges ().addEdge (second);
+		m_graph[second.x ()][second.y ()].edges ().addEdge (first);
+	}
 
-  bool
-  Graph::removeEdge (const Point& first, const Point& second)
-  {
-    m_graph[first.x ()][first.y ()].edges ().removeEdge (second);
-    m_graph[second.x ()][second.y ()].edges ().removeEdge (first);
-  }
+	bool Graph::removeEdge (const Point& first, const Point& second)
+	{
+		m_graph[first.x ()][first.y ()].edges ().removeEdge (second);
+		m_graph[second.x ()][second.y ()].edges ().removeEdge (first);
+	}
 
 }

@@ -21,39 +21,39 @@
 #include <QObject>
 #include "stepqueue.hpp"
 #include "graph.hpp"
-#include "newgamedialog.hpp"
 #include "polygonfinder.hpp"
-#include "interface/iplugin.hpp"
+#include "newgamewidget.hpp"
 
 namespace KDots
 {
-  class DotTable : public QObject
-  {
-    Q_OBJECT
-    
-    Graph m_graph;
-    std::shared_ptr<StepQueue> m_steps;
-  public:
-    DotTable (const GameConfig& config, QObject *parent = 0);
+	class DotTable : public QObject
+	{
+		Q_OBJECT
 
-    void pushPoint (const Point& point);
+		Graph m_graph;
+		std::shared_ptr<StepQueue> m_steps;
+		GameConfig m_config;
+	public:
+		DotTable (const GameConfig& config, QObject *parent = 0);
 
-    inline Graph
-    graph () const
-    {
-      return m_graph;
-    }
-    
-    inline std::shared_ptr<StepQueue>
-    stepQueue ()
-    {
-      return m_steps;
-    }
-  signals:
-    void nextPlayer (const Point& lastPoint);
-  private:
-    void drawPolygon (PolyList polygons);
-  };
+		const GameConfig& gameConfig () const;
+
+		void pushPoint (const Point& point);
+
+		inline Graph graph () const
+		{
+			return m_graph;
+		}
+
+		inline std::shared_ptr<StepQueue> stepQueue()
+		{
+			return m_steps;
+		}
+	signals:
+		void nextPlayer(const Point& lastPoint);
+	private:
+		void drawPolygon(PolyList polygons);
+	};
 }
 
 #endif

@@ -15,38 +15,46 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_MAINWINDOW_HPP
-#define KDOTS_MAINWINDOW_HPP
-#include <memory>
-#include <QMainWindow>
-#include "newgamewidget.hpp"
+#ifndef KDOTS_PLUGINS_IPCONNECT_CONFIGURATIONWIDGET_H
+#define KDOTS_PLUGINS_IPCONNECT_CONFIGURATIONWIDGET_H
+#include <interface/iconfigurationwidget.hpp>
 
 namespace Ui
 {
-	class MainWindow;
+	class ConfigurationWidget;
 }
+
 
 namespace KDots
 {
-	class TableWidget;
-	class IRival;
-
-	class MainWindow : public QMainWindow
+	namespace ipconnect
 	{
-		Q_OBJECT
-	public:
-		MainWindow (QWidget *parent = 0);
+		struct ServerConfig
+		{
+			int m_port;
+			int user;
+		};
+		
+		struct ClientConfig
+		{
+			QString m_host;
+			int m_port;
+		};
+		
+		class ConfigurationWidget : public IConfigurationWidget
+		{
+			Q_OBJECT
 
-	private:
-		Ui::MainWindow *m_ui;
-		std::shared_ptr<IRival> m_rival;
-
-		void loadPlugins ();
-
-	private slots:
-		void on_actionNewGame_triggered ();
-	//	void onGameConfig (const GameConfig& config);
-	};
+			Ui::ConfigurationWidget *m_ui;
+		public:
+			ConfigurationWidget (QWidget *parent = 0);
+			bool clientConfig (ClientConfig& config);
+			bool serverConfig (ServerConfig& config);
+			
+		private slots:
+			void onTabChanged (int index);
+		};
+	}
 }
 
 #endif

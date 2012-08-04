@@ -18,38 +18,36 @@
 #ifndef KDOTS_PLUGINCONTAINER_HPP
 #define KDOTS_PLUGINCONTAINER_HPP
 #include <QMap>
-#include <interface/iplugin.hpp>
 
 namespace KDots
 {
-  class PluginContainer
-  {
-    typedef QMap<QString, IPlugin*> PluginMap;
-    PluginMap m_pluginMap;
-  public:
-    PluginContainer ()
-    {
-      loadPlugins ();
-    }
+	class IPlugin;
+	class PluginContainer
+	{
+		typedef QMap<QString, IPlugin*> PluginMap;
+		PluginMap m_pluginMap;
+	public:
+		PluginContainer ()
+		{
+			loadPlugins ();
+		}
 
-    static PluginContainer& instance ();
-    
-    inline const PluginMap&
-    plugins () const
-    {
-      return m_pluginMap;
-    }
-    
-    inline IPlugin*
-    plugin (const QString& name)
-    {
-      PluginMap::const_iterator itr = m_pluginMap.find (name);
-      return itr != m_pluginMap.end () ? *itr : NULL;
-    }
-    
-  private:
-    void loadPlugins ();
-  };
+		static PluginContainer& instance ();
+
+		inline const PluginMap& plugins () const
+		{
+			return m_pluginMap;
+		}
+
+		inline IPlugin* plugin (const QString& name)
+		{
+			PluginMap::const_iterator itr = m_pluginMap.find (name);
+			return itr != m_pluginMap.end () ? *itr : NULL;
+		}
+
+	private:
+		void loadPlugins ();
+	};
 }
 
 #endif

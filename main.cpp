@@ -18,13 +18,12 @@
 #include <QApplication>
 #include "mainwindow.hpp"
 
-int
-main (int argc, char **argv)
+int main (int argc, char **argv)
 {
-  QApplication app (argc, argv);
+	QApplication app (argc, argv);
 
-  KDots::MainWindow w;
-  w.show ();
+	KDots::MainWindow w;
+	w.show ();
 
-  return app.exec ();
+	return app.exec ();
 }

@@ -19,6 +19,7 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 #include <QDir>
+#include <QDebug>
 #include "interface/iplugin.hpp"
 #include "newgamedialog.hpp"
 #include "tablewidget.hpp"
@@ -26,41 +27,46 @@
 
 namespace KDots
 {
-  MainWindow::MainWindow (QWidget *parent)
-    : QMainWindow (parent)
-    , m_ui (new Ui::MainWindow)
-  {
-    m_ui->setupUi (this);
-  }
+	MainWindow::MainWindow (QWidget *parent)
+		: QMainWindow (parent)
+		, m_ui (new Ui::MainWindow)
+	{
+		m_ui->setupUi (this);
+	}
 
-  void
-  MainWindow::on_actionNewGame_triggered ()
-  {
-    NewGameDialog dialog;
+	void MainWindow::on_actionNewGame_triggered ()
+	{
+		qDebug () << Q_FUNC_INFO;	
+		NewGameDialog dialog;
+		qDebug () << Q_FUNC_INFO;	
+		if (dialog.exec () != QDialog::Accepted)
+			return;
 
-    if (dialog.exec () == QDialog::Rejected)
-      {
-        return;
-      }
-      
-    const QString& rivalName = dialog.getRival ();
-    
-    std::shared_ptr<IRival> rival (PluginContainer::instance ().plugin (rivalName)->createRival ());
-    
-    const GameConfig& config = dialog.getGameConfig ();
+		m_rival = dialog.rival ();
 
-    TableWidget *table = new TableWidget (config, rival, this);
-    
-    connect (table,
-            SIGNAL (updateStatusBar (const QString &)),
-            m_ui->statusBar,
-            SLOT (clearMessage ()));
-    connect (table,
-            SIGNAL (updateStatusBar (const QString &)),
-            m_ui->statusBar,
-            SLOT (showMessage (const QString &)));
+		const GameConfig& config = dialog.gameConfig ();
+		
+		if (!config.isInititialized ())
+			return;
 
-    setCentralWidget (table);
-    table->show ();
-  }
+		TableWidget *table = new TableWidget (config, m_rival, this);
+
+		connect (table,
+		         SIGNAL (updateStatusBar (const QString&)),
+		         m_ui->statusBar,
+		         SLOT (clearMessage ()));
+		connect (table,
+		         SIGNAL (updateStatusBar (const QString&)),
+		         m_ui->statusBar,
+		         SLOT (showMessage (const QString&)));
+
+		setCentralWidget (table);
+		table->show ();
+
+		//connect (&dialog,
+		//		SIGNAL (gameConfig (const GameConfig&)),
+		//		this,
+		//		SLOT (onGameConfig (const GameConfig&)));
+	}
+
 }

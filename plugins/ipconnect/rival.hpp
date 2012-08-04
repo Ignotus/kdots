@@ -15,66 +15,47 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
-#define KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
-#include <interface/iplugin.hpp>
+#ifndef KDOTS_PLUGINS_IPCONNECT_RIVAL_HPP
+#define KDOTS_PLUGINS_IPCONNECT_RIVAL_HPP
+#include <QObject>
+#include <QTcpSocket>
+#include <QTcpServer>
 #include <interface/irival.hpp>
+#include <include/dottable.hpp>
+#include "configurationwidget.hpp"
 
 namespace KDots
 {
-	namespace singlepc
+	namespace ipconnect
 	{
+		
 		class Rival : public KDots::IRival
 		{
 			Q_OBJECT
-		public:
-			Rival (QObject *parent = 0)
-				: IRival (parent)
-			{
-			}
 
-			bool isAllow () const
-			{
-				return true;
-			}
+			const DotTable *m_table;
+			QTcpSocket *m_socket;
+			QTcpServer *m_server;
+			
+			std::shared_ptr<ConfigurationWidget> m_configWidget;
+		public:
+			Rival (QObject *parent = 0);
+			
+			GameConfig getGameConfig ();
+			
+			IConfigurationWidget* configureWidget ();
+
+			void setDotTable (DotTable *table);
+
+			bool isAllow () const;
 
 		public slots:
-			void nextStep (const Point& point)
-			{
-			}
+			void nextStep (const Point& point);
 			
-			void ready ()
-			{
-			}
+		private slots:
+			void onNewConnectionHandle ();
+			void onServerReadyRead ();
 		};
-
-		class Plugin : public KDots::IPlugin
-		{
-			Q_OBJECT
-			Q_INTERFACES (KDots::IPlugin)
-		public:
-			Plugin (QObject *parent = 0)
-				: IPlugin (parent)
-			{
-			}
-
-			IRival* createRival ()
-			{
-				return new Rival;
-			}
-
-			QString name () const
-			{
-				return "singlepc";
-			}
-
-			QString description () const
-			{
-				return "Playing in the single PC";
-			}
-		};
-
 	}
 }
-
 #endif

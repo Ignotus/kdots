@@ -15,38 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_MAINWINDOW_HPP
-#define KDOTS_MAINWINDOW_HPP
-#include <memory>
-#include <QMainWindow>
-#include "newgamewidget.hpp"
+#include "plugin.hpp"
 
-namespace Ui
-{
-	class MainWindow;
-}
-
-namespace KDots
-{
-	class TableWidget;
-	class IRival;
-
-	class MainWindow : public QMainWindow
-	{
-		Q_OBJECT
-	public:
-		MainWindow (QWidget *parent = 0);
-
-	private:
-		Ui::MainWindow *m_ui;
-		std::shared_ptr<IRival> m_rival;
-
-		void loadPlugins ();
-
-	private slots:
-		void on_actionNewGame_triggered ();
-	//	void onGameConfig (const GameConfig& config);
-	};
-}
-
-#endif
+Q_EXPORT_PLUGIN2 (kdots_ipconnection, KDots::ipconnect::Plugin)

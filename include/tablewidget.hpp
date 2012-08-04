@@ -20,30 +20,30 @@
 #include <memory>
 #include <QWidget>
 #include "constants.hpp"
-#include "newgamedialog.hpp"
 #include "interface/irival.hpp"
 
 namespace KDots
 {
-  class DotTable;
-  
-  class TableWidget : public QWidget
-  {
-    Q_OBJECT
+	 class DotTable;
+	 class GameConfig;
 
-    DotTable *m_table;
-    int m_height, m_width;
-    
-    std::shared_ptr<KDots::IRival> m_rival;
-  public:
-    TableWidget (const GameConfig& config, std::shared_ptr<IRival> rival,
-                 QWidget *parent = 0);
-  protected:
-    void mousePressEvent (QMouseEvent *event);
-    void paintEvent (QPaintEvent *event);
-  signals:
-    void updateStatusBar (const QString &msg);
-  };
+	class TableWidget : public QWidget
+	{
+		Q_OBJECT
+
+		DotTable *m_table;
+		int m_height, m_width;
+
+		std::shared_ptr<KDots::IRival> m_rival;
+	public:
+		TableWidget (const GameConfig& config, std::shared_ptr<IRival> rival,
+				QWidget *parent = 0);
+	protected:
+		void mousePressEvent (QMouseEvent *event);
+		void paintEvent (QPaintEvent *event);
+	signals:
+		void updateStatusBar (const QString& msg);
+	};
 }
 
 #endif

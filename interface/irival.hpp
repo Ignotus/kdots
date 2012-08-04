@@ -17,28 +17,52 @@
  */
 #ifndef KDOTS_IRIVAL_HPP
 #define KDOTS_IRIVAL_HPP
-#include <point.hpp>
+#include <QObject>
+#include <include/newgamewidget.hpp>
 
 class QObject;
+class QWidget;
 
 namespace KDots
 {
-  class DotTable;
-  
-  class IRival
-  {
-  public:
-    virtual ~IRival () {}
-    
-    virtual void configure (DotTable *table)
-    {
-    }
-    
-    virtual QObject* getQObject () = 0;
-    
-    virtual bool isAllow () const = 0;
-    virtual void nextStep (const Point& point) = 0;
-  };
+	class DotTable;
+	class IConfigurationWidget;
+	class Point;
+	
+	class IRival : public QObject
+	{
+		Q_OBJECT
+	public:
+		IRival (QObject* parent = 0)
+			: QObject (parent)
+		{
+		}
+		virtual ~IRival () {}
+
+		virtual IConfigurationWidget* configureWidget ()
+		{
+			return NULL;
+		}
+		
+		virtual bool isAllow () const = 0;
+		
+		virtual GameConfig getGameConfig ()
+		{
+			return GameConfig ();
+		}
+		
+	public slots:
+		virtual void nextStep (const Point& point) = 0;
+		virtual void setDotTable (DotTable *table)
+		{
+		}
+		
+		virtual void ready ()
+		{
+		}
+	signals:
+		void createDotTable (const GameConfig& config);
+	};
 }
 
 #endif

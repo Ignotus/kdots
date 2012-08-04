@@ -15,30 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef CONSTANTS_HPP
-#define CONSTANTS_HPP
+#ifndef KDOTS_CONSTANTS_HPP
+#define KDOTS_CONSTANTS_HPP
 #include <QString>
 
 namespace KDots
 {
+	enum GameMode
+	{
+		EXTRA_TURN_MODE,
+		DEFAULT_MODE
+	};
 
-  enum GameMode
-  {
-    EXTRA_TURN_MODE,
-    DEFAULT_MODE
-  };
+	enum Owner
+	{
+		NONE,
+		FIRST,
+		SECOND
+	};
 
-  enum Owner
-  {
-    NONE,
-    FIRST,
-    SECOND
-  };
-  
-  const int GRAPH_DX[8] = {0, 1, 1, 1, 0, -1, -1, -1};
-  const int GRAPH_DY[8] = {1, 1, 0, -1, -1, -1, 0, 1};
-  
-  const QString PLUGIN_SUFFIX = "libkdots_";
+	const int GRAPH_DX[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+	const int GRAPH_DY[8] = {1, 1, 0, -1, -1, -1, 0, 1};
+
+	const QString PLUGIN_SUFFIX = "libkdots_";
 }
 
 #endif

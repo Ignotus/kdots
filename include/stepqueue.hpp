@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef STEPQUEUE_HPP
-#define STEPQUEUE_HPP
+#ifndef KDOTS_STEPQUEUE_HPP
+#define KDOTS_STEPQUEUE_HPP
 #include <list>
 #include <QDebug>
 #include "point.hpp"
@@ -25,73 +25,63 @@
 namespace KDots
 {
 
-  class StepQueue
-  {
-    std::list<Point> m_firstPoints, m_secondPoints;
-    int m_first, m_second;
-  protected:
-    Owner m_owner;
-    bool m_captured;
-  public:
-    StepQueue (Owner firstPlayer);
-    
-    void addPoint (const Point& point);
-    void addCaptured ();
+	class StepQueue
+	{
+		std::list<Point> m_firstPoints, m_secondPoints;
+		int m_first, m_second;
+	protected:
+		Owner m_owner;
+		bool m_captured;
+	public:
+		StepQueue (Owner firstPlayer);
 
-    inline Owner
-    getCurrentOwner () const
-    {
-      return m_owner;
-    }
-    
-    inline int
-    getMarks (Owner owner) const
-    {
-      return owner == FIRST ? m_first : m_second;
-    }
+		void addPoint (const Point &point);
+		void addCaptured ();
 
-    inline std::list<Point>
-    getPoints (Owner owner) const
-    {
-      return getCurrentOwner () == FIRST
-          ? m_secondPoints
-          : m_firstPoints;
-    }
+		inline Owner getCurrentOwner () const
+		{
+			return m_owner;
+		}
 
-    inline static Owner
-    other (Owner player)
-    {
-      return player == FIRST ? SECOND : FIRST;
-    }
-    
-    virtual Owner
-    nextStep ()
-    {
-      m_captured = false;
-      return (m_owner = other (m_owner));
-    }
-  };
-  
-  class ExtraStepQueue : public StepQueue
-  {
-  public:
-    ExtraStepQueue (Owner firstPlayer);
-    
-    Owner
-    nextStep ()
-    {
-      if (m_captured)
-        {
-          return m_owner;
-        }
-      
-      m_captured = false;
-      
-      return (m_owner = other (m_owner));
-    }
-  };
-  
-  
+		inline int getMarks (Owner owner) const
+		{
+			return owner == FIRST ? m_first : m_second;
+		}
+
+		inline std::list<Point> getPoints (Owner owner) const
+		{
+			return getCurrentOwner() == FIRST ? m_secondPoints : m_firstPoints;
+		}
+
+		inline static Owner other (Owner player)
+		{
+			return player == FIRST ? SECOND : FIRST;
+		}
+
+		virtual Owner nextStep ()
+		{
+			m_captured = false;
+			return (m_owner = other (m_owner));
+		}
+	};
+
+	class ExtraStepQueue : public StepQueue
+	{
+	public:
+		ExtraStepQueue(Owner firstPlayer);
+
+		Owner
+		nextStep()
+		{
+			if(m_captured)
+				return m_owner;
+
+			m_captured = false;
+
+			return (m_owner = other(m_owner));
+		}
+	};
+
 
 }
 

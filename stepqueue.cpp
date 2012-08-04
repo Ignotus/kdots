@@ -21,44 +21,35 @@
 namespace KDots
 {
   
-  StepQueue::StepQueue (Owner firstPlayer)
-    : m_owner (firstPlayer)
-    , m_first (0)
-    , m_second (0)
-    , m_captured (false)
-  {
-  }
+	StepQueue::StepQueue (Owner firstPlayer)
+		: m_owner (firstPlayer)
+		, m_first (0)
+		, m_second (0)
+		, m_captured (false)
+	{
+	}
 
-  void
-  StepQueue::addPoint (const Point& point)
-  {
-    if (getCurrentOwner () == FIRST)
-      {
-        m_firstPoints.push_back (point);
-      }
-    else
-      {
-        m_secondPoints.push_back (point);
-      }
-  }
+	void StepQueue::addPoint (const Point& point)
+	{
+		if (getCurrentOwner () == FIRST)
+			m_firstPoints.push_back (point);
+		else
+			m_secondPoints.push_back (point);
+	}
 
-  void
-  StepQueue::addCaptured ()
-  {
-    m_captured = true;
-    if (getCurrentOwner () == FIRST)
-      {
-        ++m_first;
-      }
-    else
-      {
-        ++m_second;
-      }
-  }
-  
-  ExtraStepQueue::ExtraStepQueue (Owner firstPlayer)
-    : StepQueue (firstPlayer)
-  {
-  }
+	void StepQueue::addCaptured ()
+	{
+		m_captured = true;
+
+		if (getCurrentOwner () == FIRST)
+			++m_first;
+		else
+			++m_second;
+	}
+
+	ExtraStepQueue::ExtraStepQueue (Owner firstPlayer)
+		: StepQueue (firstPlayer)
+	{
+	}
 
 }
