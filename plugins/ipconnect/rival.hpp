@@ -37,6 +37,8 @@ namespace KDots
 			QTcpSocket *m_socket;
 			QTcpServer *m_server;
 			
+			Owner m_me;
+			
 			std::unique_ptr<ConfigurationWidget> m_configWidget;
 		public:
 			Rival (QObject *parent = 0);

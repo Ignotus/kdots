@@ -45,6 +45,11 @@ namespace KDots
 		         SIGNAL (nextPlayer (const Point&)),
 		         rival.get (),
 		         SLOT (nextStep (const Point&)));
+		
+		connect (m_table,
+				SIGNAL (nextPlayer(const Point&)),
+				this,
+				SLOT (repaint ()));
 	}
 
 	namespace
