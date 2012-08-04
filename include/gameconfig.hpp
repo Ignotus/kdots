@@ -46,6 +46,4 @@ QDataStream& operator<< (QDataStream& out, const KDots::GameConfig& obj);
 
 QDataStream& operator>> (QDataStream& in, KDots::GameConfig& obj);
 
-void registerMeta ();
-
 #endif

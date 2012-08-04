@@ -15,18 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "point.hpp"
 
-#include "gameconfig.hpp"
-
-QDataStream& operator<< (QDataStream& out, const KDots::GameConfig& obj)
+namespace KDots
 {
-	out << (quint32) obj.m_firstOwner << (quint32) obj.m_height << (quint32) obj.m_width << (quint32) obj.m_mode;
-	return out;
-}
+	QDataStream& operator<< (QDataStream& out, const KDots::Point& obj)
+	{
+		out << (quint32) obj.m_x << (quint32) obj.m_y;
+		return out;
+	}
 
-QDataStream& operator>> (QDataStream& in, KDots::GameConfig& obj)
-{
-	in >> (quint32&) obj.m_firstOwner >> (quint32&) obj.m_height >> (quint32&) obj.m_width >> (quint32&) obj.m_mode;
-	return in;
+	QDataStream& operator>> (QDataStream& in, KDots::Point& obj)
+	{
+		in >> (quint32&) obj.m_x >> (quint32&) obj.m_y;
+	}
 }
-

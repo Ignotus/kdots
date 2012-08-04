@@ -37,6 +37,7 @@ SET (SRCS
   plugincontainer.cpp
   pluginmanagerwidget.cpp
   gameconfig.cpp
+  point.cpp
 )
 
 SET (HEADERS

@@ -17,6 +17,7 @@
  */
 #ifndef KDOTS_POINT_HPP
 #define KDOTS_POINT_HPP
+#include <QMetaType>
 
 namespace KDots
 {
@@ -69,7 +70,18 @@ namespace KDots
 		{
 			return m_x == -1 || m_y == -1;
 		}
+		
+		friend QDataStream& operator<< (QDataStream& out, const KDots::Point& obj);
+		friend QDataStream& operator>> (QDataStream& in, KDots::Point& obj);
 	};
+	
+	QDataStream& operator<< (QDataStream& out, const KDots::Point& obj);
+
+	QDataStream& operator>> (QDataStream& in, KDots::Point& obj);
 }
+
+Q_DECLARE_METATYPE (KDots::Point);
+
+
 
 #endif
