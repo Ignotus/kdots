@@ -33,7 +33,7 @@ namespace KDots
 		{
 			Q_OBJECT
 
-			const DotTable *m_table;
+			DotTable *m_table;
 			QTcpSocket *m_socket;
 			QTcpServer *m_server;
 			
@@ -55,7 +55,7 @@ namespace KDots
 			
 		private slots:
 			void onNewConnectionHandle ();
-			void onServerReadyRead ();
+			void onReadyRead ();
 		};
 	}
 }

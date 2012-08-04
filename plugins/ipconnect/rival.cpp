@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "rival.hpp"
+#include <stepqueue.hpp>
 
 namespace KDots
 {
@@ -44,7 +45,6 @@ namespace KDots
 			}
 			
 			//Joining Game
-			qDebug () << Q_FUNC_INFO;
 			m_socket = new QTcpSocket (this);
 
 			m_socket->connectToHost (config.m_host, config.m_port);
@@ -57,9 +57,9 @@ namespace KDots
 				if (m_socket->waitForReadyRead ())
 				{
 					qDebug () << Q_FUNC_INFO << "Reading Table config";
-					QByteArray data = m_socket->readAll();
+					const QByteArray& data = m_socket->readAll();
 					qDebug () << Q_FUNC_INFO << "Data size" << data.size ();
-					QDataStream in (&data, QIODevice::ReadOnly);
+					QDataStream in (&const_cast<QByteArray&> (data), QIODevice::ReadOnly);
 					QVariant variantData;
 					in >> variantData;
 					if (!variantData.canConvert<GameConfig> ())
@@ -71,9 +71,16 @@ namespace KDots
 					if (!config.isInititialized ())
 					{
 						qWarning () << Q_FUNC_INFO << "Table config is invalid";
+						return GameConfig ();
 					}
-					
-					return config;
+					else
+					{
+						connect (m_socket,
+								SIGNAL (readyRead ()),
+								this,
+								SLOT (onReadyRead ()));
+						return config;
+					}
 				}
 			}
 			
@@ -82,15 +89,16 @@ namespace KDots
 		
 		void Rival::setDotTable (DotTable *table) //Is called after configureWidget
 		{
+			m_table = table;
+			
 			ServerConfig config;
 			if (!m_configWidget->serverConfig (config))
 			{
-				qWarning () << Q_FUNC_INFO;
-				return ;
+				// Client
+				return;
 			}
 			
 			//Create server
-			m_table = table;
 			
 			qDebug () << Q_FUNC_INFO;
 			m_server = new QTcpServer (this);
@@ -122,33 +130,39 @@ namespace KDots
 
 		void Rival::nextStep (const Point& point)
 		{
+			QByteArray array;
+			QDataStream out (&array, QIODevice::WriteOnly);
+			
+			out << QVariant::fromValue<Point> (point);
+			
+			m_socket->write (array);
 		}
 
 		void Rival::onNewConnectionHandle ()
 		{
 			qDebug () << Q_FUNC_INFO;
 			m_socket = m_server->nextPendingConnection ();
-			
 		
 			QByteArray gameData;
-				
 			QDataStream out (&gameData, QIODevice::WriteOnly);
 			out << QVariant::fromValue<GameConfig> (m_table->gameConfig ());
 			m_socket->write (gameData);
-			qDebug () << Q_FUNC_INFO << "Data size" << gameData.size ();
 			qDebug () << Q_FUNC_INFO << "Game config sent";
 			connect (m_socket,
 					SIGNAL (readyRead ()),
 					this,
-					SLOT (onServerReadyRead ()));
+					SLOT (onReadyRead ()));
 
 		}
 
-		void Rival::onServerReadyRead ()
+		void Rival::onReadyRead ()
 		{
-			qDebug () << Q_FUNC_INFO;
-			//const QByteArray& data = m_socket->readAll();
-			//m_socket->write (data);
+			const QByteArray& array = m_socket->readAll ();
+			QDataStream in (&const_cast<QByteArray&> (array), QIODevice::ReadOnly);
+			QVariant var;
+			in >> var;
+			const Point& point  = var.value<Point> ();
+			m_table->pushPoint (point);
 		}
 	}
 }
