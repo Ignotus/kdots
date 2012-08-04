@@ -17,11 +17,14 @@
  */
 #include <QApplication>
 #include "mainwindow.hpp"
+#include "gameconfig.hpp"
 
 int main (int argc, char **argv)
 {
 	QApplication app (argc, argv);
-
+	
+	registerMeta ();
+	
 	KDots::MainWindow w;
 	w.show ();
 

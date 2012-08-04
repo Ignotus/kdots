@@ -18,8 +18,8 @@
 #ifndef KDOTS_NEWGAMEWIDGET_HPP
 #define KDOTS_NEWGAMEWIDGET_HPP
 #include <QWidget>
-#include "point.hpp"
 #include "constants.hpp"
+#include "gameconfig.hpp"
 
 namespace Ui
 {
@@ -28,25 +28,6 @@ namespace Ui
 
 namespace KDots
 {
-	struct GameConfig
-	{
-		int m_width, m_height;
-		GameMode m_mode;
-		Owner m_firstOwner;
-		
-		GameConfig ()
-			: m_width (-1)
-		{}
-		
-		bool isInititialized () const
-		{
-			return m_width != -1;
-		}
-	};
-	
-	QDataStream& operator<< (QDataStream& out, const GameConfig& config);
-	QDataStream& operator>> (QDataStream& in, GameConfig& config);
-
 	class NewGameWidget : public QWidget
 	{
 		Q_OBJECT
@@ -63,6 +44,7 @@ namespace KDots
 		Ui::NewGameWidget *m_ui;
 	};
 }
+
 
 
 #endif

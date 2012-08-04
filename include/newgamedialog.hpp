@@ -19,7 +19,7 @@
 #define KDOTS_NEWGAMEDIALOG_HPP
 #include <memory>
 #include <QDialog>
-#include <include/newgamewidget.hpp>
+#include "gameconfig.hpp"
 
 namespace Ui
 {
@@ -31,6 +31,7 @@ namespace KDots
 	class IRival;
 	class IConfigurationWidget;
 	class PluginManagerWidget;
+	class NewGameWidget;
 	
 	class NewGameDialog : public QDialog
 	{

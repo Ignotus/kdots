@@ -19,7 +19,6 @@
 #define KDOTS_MAINWINDOW_HPP
 #include <memory>
 #include <QMainWindow>
-#include "newgamewidget.hpp"
 
 namespace Ui
 {

@@ -27,7 +27,7 @@
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="tabWidgetPage1" native="true">
+       <widget class="QWidget" name="tabWidgetPage1">
         <attribute name="title">
          <string>Create Game</string>
         </attribute>
@@ -45,6 +45,9 @@
            <widget class="QSpinBox" name="listenPort">
             <property name="maximum">
              <number>99999</number>
+            </property>
+            <property name="value">
+             <number>6666</number>
             </property>
            </widget>
           </item>
@@ -79,7 +82,7 @@
          </layout>
         </widget>
        </widget>
-       <widget class="QWidget" name="tabWidgetPage2" native="true">
+       <widget class="QWidget" name="tabWidgetPage2">
         <attribute name="title">
          <string>Join Game</string>
         </attribute>
@@ -101,12 +104,19 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="host"/>
+           <widget class="QLineEdit" name="host">
+            <property name="text">
+             <string>127.0.0.1</string>
+            </property>
+           </widget>
           </item>
           <item row="1" column="1">
            <widget class="QSpinBox" name="connectionPort">
             <property name="maximum">
              <number>99999</number>
+            </property>
+            <property name="value">
+             <number>6666</number>
             </property>
            </widget>
           </item>

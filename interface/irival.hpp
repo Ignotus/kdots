@@ -20,7 +20,6 @@
 #include <QObject>
 #include <include/newgamewidget.hpp>
 
-class QObject;
 class QWidget;
 
 namespace KDots

@@ -19,13 +19,13 @@
 #define KDOTS_DOTTABLE_HPP
 #include <memory>
 #include <QObject>
-#include "stepqueue.hpp"
 #include "graph.hpp"
-#include "polygonfinder.hpp"
-#include "newgamewidget.hpp"
+#include "gameconfig.hpp"
+#include "polygon.hpp"
 
 namespace KDots
 {
+	class StepQueue;
 	class DotTable : public QObject
 	{
 		Q_OBJECT
@@ -36,7 +36,7 @@ namespace KDots
 	public:
 		DotTable (const GameConfig& config, QObject *parent = 0);
 
-		const GameConfig& gameConfig () const;
+		GameConfig gameConfig () const;
 
 		void pushPoint (const Point& point);
 

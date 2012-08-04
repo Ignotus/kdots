@@ -23,7 +23,14 @@ namespace KDots
 	{
 		Rival::Rival (QObject *parent)
 			: IRival (parent)
+			, m_socket (NULL)
 		{
+		}
+		
+		Rival::~Rival ()
+		{
+			if (m_socket)
+				m_socket->disconnectFromHost ();
 		}
 		
 		GameConfig Rival::getGameConfig ()
@@ -51,12 +58,20 @@ namespace KDots
 				{
 					qDebug () << Q_FUNC_INFO << "Reading Table config";
 					QByteArray data = m_socket->readAll();
-					
+					qDebug () << Q_FUNC_INFO << "Data size" << data.size ();
 					QDataStream in (&data, QIODevice::ReadOnly);
-					GameConfig config;
-					in >> config;
+					QVariant variantData;
+					in >> variantData;
+					if (!variantData.canConvert<GameConfig> ())
+					{
+						qWarning () << Q_FUNC_INFO << "Cannot convert to GameConfig: " << variantData.typeName ();
+					}
+					
+					const GameConfig& config = variantData.value<GameConfig> ();
 					if (!config.isInititialized ())
-						qWarning () << Q_FUNC_INFO;
+					{
+						qWarning () << Q_FUNC_INFO << "Table config is invalid";
+					}
 					
 					return config;
 				}
@@ -102,7 +117,7 @@ namespace KDots
 
 		bool Rival::isAllow () const
 		{
-
+			return true;
 		}
 
 		void Rival::nextStep (const Point& point)
@@ -114,13 +129,14 @@ namespace KDots
 			qDebug () << Q_FUNC_INFO;
 			m_socket = m_server->nextPendingConnection ();
 			
+		
 			QByteArray gameData;
-			
+				
 			QDataStream out (&gameData, QIODevice::WriteOnly);
-			out << m_table->gameConfig ();
-			
+			out << QVariant::fromValue<GameConfig> (m_table->gameConfig ());
 			m_socket->write (gameData);
-			
+			qDebug () << Q_FUNC_INFO << "Data size" << gameData.size ();
+			qDebug () << Q_FUNC_INFO << "Game config sent";
 			connect (m_socket,
 					SIGNAL (readyRead ()),
 					this,

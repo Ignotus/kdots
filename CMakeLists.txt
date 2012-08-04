@@ -36,6 +36,7 @@ SET (SRCS
   polygon.cpp
   plugincontainer.cpp
   pluginmanagerwidget.cpp
+  gameconfig.cpp
 )
 
 SET (HEADERS
@@ -54,6 +55,7 @@ SET (HEADERS
   include/polygon.hpp
   include/plugincontainer.hpp
   include/pluginmanagerwidget.hpp
+  include/gameconfig.hpp
 )
 
 SET (INTERFACE_HEAD

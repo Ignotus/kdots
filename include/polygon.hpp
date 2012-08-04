@@ -18,6 +18,8 @@
 #ifndef KDOTS_POLYGON_HPP
 #define KDOTS_POLYGON_HPP
 #include <list>
+#include <vector>
+#include <memory>
 #include "point.hpp"
 
 namespace KDots
@@ -48,6 +50,9 @@ namespace KDots
 			m_filled = filled;
 		}
 	};
+	
+	typedef std::shared_ptr<Polygon> Polygon_ptr;
+	typedef std::vector<Polygon_ptr> PolyList;
 }
 
 #endif

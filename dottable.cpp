@@ -18,6 +18,7 @@
 #include "dottable.hpp"
 #include <QDebug>
 #include "polygonfinder.hpp"
+#include "stepqueue.hpp"
 
 namespace KDots
 {
@@ -32,7 +33,7 @@ namespace KDots
 	{
 	}
 	
-	const GameConfig& DotTable::gameConfig () const
+	GameConfig DotTable::gameConfig () const
 	{
 		return m_config;
 	}

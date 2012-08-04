@@ -23,8 +23,10 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QDebug>
+#include <interface/iplugin.hpp>
+#include <interface/irival.hpp>
 #include "dottable.hpp"
-#include "interface/iplugin.hpp"
+#include "stepqueue.hpp"
 
 namespace KDots
 {

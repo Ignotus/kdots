@@ -15,35 +15,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_TABLEWIDGET_HPP
-#define KDOTS_TABLEWIDGET_HPP
-#include <memory>
-#include <QWidget>
+#ifndef KDOTS_GAMECONFIG_HPP
+#define KDOTS_GAMECONFIG_HPP
+#include <QMetaType>
 #include "constants.hpp"
 
 namespace KDots
 {
-	class IRival;
-	class DotTable;
-	struct GameConfig;
-
-	class TableWidget : public QWidget
+	struct GameConfig
 	{
-		Q_OBJECT
-
-		DotTable *m_table;
-		int m_height, m_width;
-
-		std::shared_ptr<KDots::IRival> m_rival;
-	public:
-		TableWidget (const GameConfig& config, std::shared_ptr<IRival> rival,
-				QWidget *parent = 0);
-	protected:
-		void mousePressEvent (QMouseEvent *event);
-		void paintEvent (QPaintEvent *event);
-	signals:
-		void updateStatusBar (const QString& msg);
+		int m_width, m_height;
+		GameMode m_mode;
+		Owner m_firstOwner;
+		
+		GameConfig ()
+			: m_width (-1)
+		{}
+		
+		bool isInititialized () const
+		{
+			return m_width != -1;
+		}
 	};
+
 }
+
+Q_DECLARE_METATYPE (KDots::GameConfig);
+
+QDataStream& operator<< (QDataStream& out, const KDots::GameConfig& obj);
+
+QDataStream& operator>> (QDataStream& in, KDots::GameConfig& obj);
+
+void registerMeta ();
 
 #endif

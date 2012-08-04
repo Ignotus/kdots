@@ -19,7 +19,6 @@
 #define KDOTS_POLYGONFINDER_HPP
 #include <memory>
 #include <list>
-#include <QDebug>
 #include "polygon.hpp"
 #include "constants.hpp"
 
@@ -27,9 +26,6 @@ namespace KDots
 {
 	class Point;
 	struct Graph;
-
-	typedef std::shared_ptr<Polygon> Polygon_ptr;
-	typedef std::vector<Polygon_ptr> PolyList;
 
 	class PolygonFinder
 	{

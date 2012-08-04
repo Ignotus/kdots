@@ -33,6 +33,9 @@ namespace ipconnect
 			Plugin (QObject *parent = 0)
 				: IPlugin (parent)
 			{
+				qRegisterMetaType<QVariant> ("QVariant");
+				qRegisterMetaType<GameConfig> ("GameConfig");
+				qRegisterMetaTypeStreamOperators<QVariant> ("QVariant");
 			}
 
 			IRival* createRival ()

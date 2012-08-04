@@ -40,6 +40,7 @@ namespace KDots
 			std::shared_ptr<ConfigurationWidget> m_configWidget;
 		public:
 			Rival (QObject *parent = 0);
+			virtual ~Rival ();
 			
 			GameConfig getGameConfig ();
 			

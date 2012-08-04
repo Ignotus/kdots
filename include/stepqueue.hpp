@@ -18,7 +18,6 @@
 #ifndef KDOTS_STEPQUEUE_HPP
 #define KDOTS_STEPQUEUE_HPP
 #include <list>
-#include <QDebug>
 #include "point.hpp"
 #include "constants.hpp"
 

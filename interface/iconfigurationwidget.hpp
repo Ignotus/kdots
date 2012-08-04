@@ -18,7 +18,6 @@
 #ifndef KDOTS_ICONFIGURATIONWIDGET_HPP
 #define KDOTS_ICONFIGURATIONWIDGET_HPP
 #include <QWidget>
-#include <QDebug>
 
 namespace KDots
 {
