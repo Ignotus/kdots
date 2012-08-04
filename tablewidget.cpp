@@ -43,8 +43,8 @@ namespace KDots
 
 		connect (m_table,
 		         SIGNAL (nextPlayer (const Point&)),
-		         qobject_cast<QObject*> (rival.get ()),
-		         SLOT (nextStep (Point)));
+		         rival.get (),
+		         SLOT (nextStep (const Point&)));
 	}
 
 	namespace

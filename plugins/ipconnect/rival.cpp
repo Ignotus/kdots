@@ -130,12 +130,13 @@ namespace KDots
 
 		void Rival::nextStep (const Point& point)
 		{
+			qDebug () << Q_FUNC_INFO << "Sending point";
 			QByteArray array;
 			QDataStream out (&array, QIODevice::WriteOnly);
 			
 			out << QVariant::fromValue<Point> (point);
-			
-			m_socket->write (array);
+			if (m_socket->waitForBytesWritten ())
+				m_socket->write (array);
 		}
 
 		void Rival::onNewConnectionHandle ()

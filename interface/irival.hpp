@@ -51,7 +51,10 @@ namespace KDots
 		}
 		
 	public slots:
-		virtual void nextStep (const Point& point) = 0;
+		virtual void nextStep (const Point& point)
+		{
+		}
+		
 		virtual void setDotTable (DotTable *table)
 		{
 		}

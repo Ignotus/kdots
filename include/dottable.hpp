@@ -45,14 +45,14 @@ namespace KDots
 			return m_graph;
 		}
 
-		inline std::shared_ptr<StepQueue> stepQueue()
+		inline std::shared_ptr<StepQueue> stepQueue ()
 		{
 			return m_steps;
 		}
 	signals:
-		void nextPlayer(const Point& lastPoint);
+		void nextPlayer (const Point& lastPoint);
 	private:
-		void drawPolygon(PolyList polygons);
+		void drawPolygon (PolyList polygons);
 	};
 }
 

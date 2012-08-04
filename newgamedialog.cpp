@@ -44,6 +44,12 @@ namespace KDots
 				SLOT (pluginWidget ()));
 	}
 	
+	NewGameDialog::~NewGameDialog ()
+	{
+		if (m_configWidget)
+			m_configWidget->setParent(0);
+	}
+	
 	std::shared_ptr<IRival> NewGameDialog::rival () const
 	{
 		return m_rival;
@@ -88,7 +94,6 @@ namespace KDots
 			return;
 		}
 		
-		//w->setParent (this);
 		m_ui->Grid->addWidget (m_configWidget , 0, 0, Qt::AlignCenter);
 		
 		connect (m_configWidget,
@@ -133,8 +138,5 @@ namespace KDots
 		m_game = new NewGameWidget (this);
 		m_ui->Grid->addWidget (m_game, 0, 0, Qt::AlignCenter);
 	}
-	
-	///
-	
 	
 }

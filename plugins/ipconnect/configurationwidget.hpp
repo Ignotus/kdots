@@ -18,7 +18,6 @@
 #ifndef KDOTS_PLUGINS_IPCONNECT_CONFIGURATIONWIDGET_H
 #define KDOTS_PLUGINS_IPCONNECT_CONFIGURATIONWIDGET_H
 #include <interface/iconfigurationwidget.hpp>
-
 namespace Ui
 {
 	class ConfigurationWidget;
@@ -48,6 +47,7 @@ namespace KDots
 			Ui::ConfigurationWidget *m_ui;
 		public:
 			ConfigurationWidget (QWidget *parent = 0);
+			
 			bool clientConfig (ClientConfig& config);
 			bool serverConfig (ServerConfig& config);
 			

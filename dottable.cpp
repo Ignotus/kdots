@@ -104,6 +104,7 @@ namespace KDots
 		if (points.empty () || polyList.empty ())
 		{
 			m_steps->nextStep ();
+			emit nextPlayer (point);
 			return;
 		}
 
@@ -142,8 +143,7 @@ namespace KDots
 
 		m_steps->nextStep ();
 
-		if (m_steps->getCurrentOwner () != current)
-			emit nextPlayer (point);
+		emit nextPlayer (point);
 	}
 
 	void DotTable::drawPolygon (PolyList polygons)

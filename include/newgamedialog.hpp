@@ -45,6 +45,7 @@ namespace KDots
 		mutable std::shared_ptr<IRival> m_rival;
 	public:
 		NewGameDialog (QWidget *parent = 0);
+		virtual ~NewGameDialog ();
 		
 		std::shared_ptr<IRival> rival () const;
 		
