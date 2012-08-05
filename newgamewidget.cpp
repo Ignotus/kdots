@@ -29,9 +29,6 @@ namespace KDots
 		, m_ui (new Ui::NewGameWidget)
 	{
 		m_ui->setupUi (this);
-		
-		
-		//const QVariant& var = QVariant::fromValue<GameConfig> (getGameConfig ());
 	}
 
 	int NewGameWidget::getHeight () const
@@ -65,19 +62,4 @@ namespace KDots
 		return config;
 	}
 	
-/*	QDataStream&  operator<< (QDataStream& out, const KDots::GameConfig& config)
-	{
-		out << (int) config.m_firstOwner << config.m_height << config.m_width << (int) config.m_mode;
-		return out;
-	}
-		
-	QDataStream& operator>> (QDataStream& in, KDots::GameConfig& config)
-	{
-		int owner, mode;
-		in >> owner >> config.m_height >> config.m_width >> mode;
-		config.m_firstOwner = static_cast<Owner> (owner);
-		config.m_mode = static_cast<GameMode> (mode);
-		return in;
-	}
-	*/
 }

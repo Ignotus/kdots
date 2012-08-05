@@ -23,7 +23,6 @@
 
 namespace KDots
 {
-
 	class StepQueue
 	{
 		std::list<Point> m_firstPoints, m_secondPoints;
@@ -67,17 +66,17 @@ namespace KDots
 	class ExtraStepQueue : public StepQueue
 	{
 	public:
-		ExtraStepQueue(Owner firstPlayer);
+		ExtraStepQueue (Owner firstPlayer);
 
 		Owner
-		nextStep()
+		nextStep ()
 		{
-			if(m_captured)
+			if (m_captured)
 				return m_owner;
 
 			m_captured = false;
 
-			return (m_owner = other(m_owner));
+			return (m_owner = other (m_owner));
 		}
 	};
 

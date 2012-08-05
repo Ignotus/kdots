@@ -31,11 +31,6 @@ namespace KDots
 		{
 		}
 	
-	//public slots:
-	//	virtual void ready ()
-	//	{
-	//	}
-		
 	signals:
 		void needCreateTable (bool);
 	};

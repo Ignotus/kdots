@@ -20,7 +20,6 @@
 
 namespace KDots
 {
-
 	Graph::Graph (int width, int height)
 		: m_graph (width, std::vector<GraphPoint> (height))
 	{
@@ -37,5 +36,4 @@ namespace KDots
 		m_graph[first.x ()][first.y ()].edges ().removeEdge (second);
 		m_graph[second.x ()][second.y ()].edges ().removeEdge (first);
 	}
-
 }

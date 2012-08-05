@@ -129,9 +129,7 @@ namespace KDots
 	void NewGameDialog::gameWidget ()
 	{
 		if (m_configWidget)
-		{
 			m_configWidget->hide ();
-		}
 		
 		m_ui->NextButton->setEnabled (false);
 		m_ui->OKButton->setEnabled (true);

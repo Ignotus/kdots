@@ -54,8 +54,6 @@ namespace KDots
 		void pluginWidget ();
 		void gameWidget ();
 		void onNeedCreateTable (bool);
-	//signals:
-	//	void createTable (const GameConfig& config);
 	};
 }
 

@@ -59,9 +59,6 @@ namespace KDots
 		{
 		}
 		
-		virtual void ready ()
-		{
-		}
 	signals:
 		void createDotTable (const GameConfig& config);
 	};

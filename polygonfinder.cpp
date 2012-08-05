@@ -67,7 +67,7 @@ namespace KDots
 	{
 		const GraphPoint& graphPoint = m_graph[point];
 
-		if (graphPoint.isCaptuted () || graphPoint.owner () != m_current)
+		if (graphPoint.isCaptured () || graphPoint.owner () != m_current)
 			return;
 
 		if (m_cache.size () > 3 && point == m_cache.front ())

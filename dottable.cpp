@@ -40,16 +40,11 @@ namespace KDots
 
 	namespace
 	{
-		bool
-		is_in_polygon (Polygon_ptr polygon, const Point& point)
+		bool isInPolygon (Polygon_ptr polygon, const Point& point)
 		{
-			int i, k;
-			Polygon::const_iterator itr = polygon->begin ();
-			Polygon::const_iterator itrEnd = polygon->end ();
+			int i = 0, k = 0;
 
-			i = k = 0;
-
-			while (itr != itrEnd)
+			for (Polygon::const_iterator itr = polygon->begin (), itrEnd = polygon->end (); itr != itrEnd; ++itr)
 			{
 				if (itr->y () != point.y ())
 				{
@@ -65,7 +60,7 @@ namespace KDots
 
 				++itr;
 
-				const Point& nextPoint = ++itr == polygon->end ()
+				const Point& nextPoint = ++itr == itrEnd
 						? polygon->front ()
 						: *itr;
 
@@ -73,8 +68,6 @@ namespace KDots
 
 				if (itr->x () < point.x () && prevPoint.y () != nextPoint.y ())
 					++i;
-
-				++itr;
 			}
 
 			return k != i && i % 2;
@@ -85,7 +78,7 @@ namespace KDots
 	{
 		GraphPoint& currentPoint = m_graph[point];
 
-		if (currentPoint.owner () != NONE || currentPoint.isCaptuted ())
+		if (currentPoint.owner () != NONE || currentPoint.isCaptured ())
 			return;
 
 		const Owner current = m_steps->getCurrentOwner ();
@@ -114,9 +107,9 @@ namespace KDots
 
 			for (j = 0; j < m_graph.height (); ++j)
 			{
-				const GraphPoint &gpoint = m_graph[k][j];
+				const GraphPoint& gpoint = m_graph[k][j];
 
-				if (gpoint.isCaptuted () || gpoint.owner () == current)
+				if (gpoint.isCaptured () || gpoint.owner () == current)
 					continue;
 
 
@@ -124,7 +117,7 @@ namespace KDots
 				{
 					const Point newPoint (k, j);
 
-					if (is_in_polygon (polygon, newPoint))
+					if (isInPolygon (polygon, newPoint))
 					{
 						if (gpoint.owner () == StepQueue::other (current))
 						{
@@ -152,14 +145,13 @@ namespace KDots
 		{
 			if (!polygon->isFilled ())
 				continue;
-
-			Polygon::const_iterator itr = polygon->begin ();
+			
 			Point prevPoint = polygon->back ();
-
-			for (; itr != polygon->end (); ++itr)
+			
+			for (const Point& currPoint : *polygon.get ())
 			{
-				m_graph.addEdge (prevPoint, *itr);
-				prevPoint = *itr;
+				m_graph.addEdge (prevPoint, currPoint);
+				prevPoint = currPoint;
 			}
 		}
 	}

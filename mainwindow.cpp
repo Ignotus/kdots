@@ -62,11 +62,6 @@ namespace KDots
 
 		setCentralWidget (table);
 		table->show ();
-
-		//connect (&dialog,
-		//		SIGNAL (gameConfig (const GameConfig&)),
-		//		this,
-		//		SLOT (onGameConfig (const GameConfig&)));
 	}
 
 }

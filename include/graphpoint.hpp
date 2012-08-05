@@ -40,7 +40,7 @@ namespace KDots
 		{
 		}
 
-		inline bool isCaptuted () const
+		inline bool isCaptured () const
 		{
 			return m_captured;
 		}
