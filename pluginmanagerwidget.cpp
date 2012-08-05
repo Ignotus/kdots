@@ -19,23 +19,37 @@
 #include "pluginmanagerwidget.hpp"
 #include <QComboBox>
 #include <QGridLayout>
+#include <interface/iplugin.hpp>
 #include "plugincontainer.hpp"
+#include "ui_pluginmanagerwidget.h"
 
 namespace KDots
 {
 	PluginManagerWidget::PluginManagerWidget (QWidget *parent)
 		: QWidget (parent)
-		, m_pluginComboBox (new QComboBox (this))
+		, m_ui (new Ui::PluginManagerWidget)
 	{
-		QGridLayout *layout = new QGridLayout (this);
-		setLayout (layout);
+		m_ui->setupUi (this);
 		
-		layout->addWidget (m_pluginComboBox, 0, 0);
-		m_pluginComboBox->addItems (PluginContainer::instance ().plugins ().keys ());
+		for (IPlugin *plugin : PluginContainer::instance ().plugins ().values ())
+			m_ui->PluginComboBox->addItem (plugin->icon (), plugin->name ());
+		
+		onIndexChanged (0);
+		
+		connect (m_ui->PluginComboBox,
+				SIGNAL (currentIndexChanged (int)),
+				this,
+				SLOT (onIndexChanged (int)));
+	}
+	
+	void PluginManagerWidget::onIndexChanged (int current)
+	{
+		IPlugin *first = PluginContainer::instance ().plugin (m_ui->PluginComboBox->itemText (current));
+		m_ui->Description->setText (first->description ());
 	}
 
 	QString PluginManagerWidget::pluginName () const
 	{
-		return m_pluginComboBox->currentText ();
+		return m_ui->PluginComboBox->currentText ();
 	}
 }

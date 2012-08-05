@@ -21,17 +21,24 @@
 
 class QComboBox;
 
+namespace Ui
+{
+	class PluginManagerWidget;
+}
+
 namespace KDots
 {
 	class PluginManagerWidget : public QWidget
 	{
 		Q_OBJECT
 		
-		QComboBox *m_pluginComboBox;
+		Ui::PluginManagerWidget *m_ui;
 	public:
 		PluginManagerWidget (QWidget *parent = 0);
 		
 		QString pluginName () const;
+	private slots:
+		void onIndexChanged (int current);
 	};
 }
 

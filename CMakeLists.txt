@@ -69,6 +69,7 @@ SET (FORMS
   ui/mainwindow.ui
   ui/newgamewidget.ui
   ui/newgamedialog.ui
+  ui/pluginmanagerwidget.ui
 )
 
 QT4_WRAP_CPP (HEADERS_MOC ${HEADERS})

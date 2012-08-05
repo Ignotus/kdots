@@ -19,7 +19,6 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 #include <QDir>
-#include <QDebug>
 #include "interface/iplugin.hpp"
 #include "newgamedialog.hpp"
 #include "tablewidget.hpp"
@@ -36,9 +35,7 @@ namespace KDots
 
 	void MainWindow::on_actionNewGame_triggered ()
 	{
-		qDebug () << Q_FUNC_INFO;	
 		NewGameDialog dialog;
-		qDebug () << Q_FUNC_INFO;	
 		if (dialog.exec () != QDialog::Accepted)
 			return;
 
@@ -52,13 +49,13 @@ namespace KDots
 		TableWidget *table = new TableWidget (config, m_rival, this);
 
 		connect (table,
-		         SIGNAL (updateStatusBar (const QString&)),
-		         m_ui->statusBar,
-		         SLOT (clearMessage ()));
+				SIGNAL (updateStatusBar (const QString&)),
+				m_ui->statusBar,
+				SLOT (clearMessage ()));
 		connect (table,
-		         SIGNAL (updateStatusBar (const QString&)),
-		         m_ui->statusBar,
-		         SLOT (showMessage (const QString&)));
+				SIGNAL (updateStatusBar (const QString&)),
+				m_ui->statusBar,
+				SLOT (showMessage (const QString&)));
 
 		setCentralWidget (table);
 		table->show ();

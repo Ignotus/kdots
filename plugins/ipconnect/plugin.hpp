@@ -47,7 +47,7 @@ namespace ipconnect
 
 			QString description () const
 			{
-				return "Playing y internet connection";
+				return "Playing by internet connection";
 			}
 		};
 
