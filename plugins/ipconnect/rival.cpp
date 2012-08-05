@@ -25,6 +25,7 @@ namespace KDots
 		Rival::Rival (QObject *parent)
 			: IRival (parent)
 			, m_socket (NULL)
+			, m_server (NULL)
 			, m_me (NONE)
 		{
 		}
