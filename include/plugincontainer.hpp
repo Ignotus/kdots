@@ -19,6 +19,8 @@
 #define KDOTS_PLUGINCONTAINER_HPP
 #include <QMap>
 
+class QDir;
+
 namespace KDots
 {
 	class IPlugin;
@@ -47,6 +49,7 @@ namespace KDots
 
 	private:
 		void loadPlugins ();
+		bool findPlugin (const QDir& dir);
 	};
 }
 

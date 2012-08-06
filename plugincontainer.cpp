@@ -30,14 +30,10 @@ namespace KDots
 		static PluginContainer obj;
 		return obj;
 	}
-
-	void PluginContainer::loadPlugins ()
+	
+	bool PluginContainer::findPlugin (const QDir& pluginsDir)
 	{
-		//TODO: Plugins must be situated in the system unix directory
-		QDir pluginsDir (qApp->applicationDirPath ());
-		pluginsDir.cd ("plugins");
-		qDebug () << Q_FUNC_INFO << "Loading plugins...";
-
+		bool foundFlag = false;
 		for (const QString& fileName : pluginsDir.entryList ({PLUGIN_SUFFIX + "*"}, QDir::Files))
 		{
 			QPluginLoader pluginLoader (pluginsDir.absoluteFilePath (fileName));
@@ -45,6 +41,7 @@ namespace KDots
 
 			if (iplugin)
 			{
+				foundFlag = true;
 				qDebug () << Q_FUNC_INFO << "Loading the plugin:" << iplugin->name ();
 				m_pluginMap.insert (iplugin->name (), iplugin);
 			}
@@ -54,5 +51,24 @@ namespace KDots
 				qDebug () << Q_FUNC_INFO << "Cannot load the plugin " << fileName;
 			}
 		}
+		
+		return foundFlag;
+	}
+
+	void PluginContainer::loadPlugins ()
+	{
+		QDir currentDir (qApp->applicationDirPath ());
+		if (!currentDir.cd ("plugins") || !findPlugin (currentDir))
+		{
+#ifdef Q_OS_UNIX
+			QDir libdir (PLUGINS_DIR);
+			if (!libdir.exists () || !findPlugin (libdir))
+				qDebug () << Q_FUNC_INFO << "Plugins not found in " << libdir.absolutePath ();
+#else
+			qDebug () << Q_FUNC_INFO << "Plugins not found";
+#endif	
+		}
+
+		
 	}
 }
