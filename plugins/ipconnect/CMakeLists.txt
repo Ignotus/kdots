@@ -1,0 +1,63 @@
+CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
+
+PROJECT (ipconnect)
+INCLUDE_DIRECTORIES (
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_BINARY_DIR}
+  ${KDOTS_SOURCE_DIR}
+)
+
+FIND_PACKAGE (Qt4 REQUIRED)
+SET (QT_USE_QTNETWORK TRUE)
+
+INCLUDE (${QT_USE_FILE})
+
+
+SET (IPCONNECT_HEADERS
+  plugin.hpp
+  rival.hpp
+  configurationwidget.hpp
+)
+
+SET (IPCONNECT_SRCS
+  plugin.cpp
+  rival.cpp
+  configurationwidget.cpp
+)
+
+SET (FORMS
+  configurationwidget.ui
+)
+
+QT4_WRAP_UI (IPCONNECT_FORMS_HEADERS ${FORMS})
+QT4_WRAP_CPP (IPCONNECT_HEADERS_MOC ${IPCONNECT_HEADERS})
+
+ADD_LIBRARY (kdots_ipconnect SHARED
+  ${IPCONNECT_SRCS}
+  ${IPCONNECT_HEADERS_MOC}
+  ${IPCONNECT_FORMS_HEADERS}
+)
+
+TARGET_LINK_LIBRARIES (kdots_ipconnect
+  ${QT_LIBRARIES}
+)
+
+IF (UNIX)
+	INSTALL (TARGETS kdots_ipconnect DESTINATION ${PLUGINS_DIR})
+ENDIF (UNIX)
+
+IF (UNIX)
+  ADD_CUSTOM_COMMAND(
+    TARGET kdots_ipconnect
+    POST_BUILD
+    COMMAND cp ARGS ${CMAKE_CURRENT_BINARY_DIR}/libkdots_ipconnect.so
+    ${PLUGIN_BUILD_DIR}
+  )
+ELSE (UNIX)
+    ADD_CUSTOM_COMMAND(
+    TARGET kdots_ipconnect
+    POST_BUILD
+    COMMAND copy ARGS ${CMAKE_CURRENT_BINARY_DIR}/libkdots_ipconnect.so
+    ${PLUGIN_BUILD_DIR}
+  )
+ENDIF (UNIX)
