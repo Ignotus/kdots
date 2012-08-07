@@ -73,9 +73,8 @@ namespace KDots
 
 		const float cellSize = cell_size (rectange, m_height, m_width);
 
-		float tableWidth = cellSize * m_width;
-
-		float tableHeight = cellSize * m_height;
+		//float tableWidth = cellSize * m_width;
+		//float tableHeight = cellSize * m_height;
 
 		float dx = (rectange.width () - cellSize * m_width) / 2;
 

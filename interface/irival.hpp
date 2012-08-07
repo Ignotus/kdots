@@ -53,10 +53,12 @@ namespace KDots
 	public slots:
 		virtual void nextStep (const Point& point)
 		{
+			Q_UNUSED (point);
 		}
 		
 		virtual void setDotTable (DotTable *table)
 		{
+			Q_UNUSED (table);
 		}
 		
 	signals:

@@ -22,9 +22,9 @@ namespace KDots
 {
   
 	StepQueue::StepQueue (Owner firstPlayer)
-		: m_owner (firstPlayer)
-		, m_first (0)
+		: m_first (0)
 		, m_second (0)
+		, m_owner (firstPlayer)
 		, m_captured (false)
 	{
 	}

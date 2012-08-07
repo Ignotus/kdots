@@ -58,8 +58,8 @@ namespace KDots
 			return m_graph[index];
 		}
 
-		bool addEdge (const Point& first, const Point& second);
-		bool removeEdge (const Point& first, const Point& second);
+		void addEdge (const KDots::Point& first, const KDots::Point& second);
+		void removeEdge (const Point& first, const Point& second);
 	};
 }
 

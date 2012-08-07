@@ -32,6 +32,7 @@ namespace KDots
 		bool m_captured;
 	public:
 		StepQueue (Owner firstPlayer);
+		virtual ~StepQueue () {}
 
 		void addPoint (const Point &point);
 		void addCaptured ();
@@ -48,6 +49,7 @@ namespace KDots
 
 		inline std::list<Point> getPoints (Owner owner) const
 		{
+			Q_UNUSED (owner);
 			return getCurrentOwner() == FIRST ? m_secondPoints : m_firstPoints;
 		}
 

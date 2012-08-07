@@ -25,13 +25,13 @@ namespace KDots
 	{
 	}
 
-	bool Graph::addEdge (const Point& first, const Point& second)
+	void Graph::addEdge (const Point& first, const Point& second)
 	{
 		m_graph[first.x ()][first.y ()].edges ().addEdge (second);
 		m_graph[second.x ()][second.y ()].edges ().addEdge (first);
 	}
 
-	bool Graph::removeEdge (const Point& first, const Point& second)
+	void Graph::removeEdge (const Point& first, const Point& second)
 	{
 		m_graph[first.x ()][first.y ()].edges ().removeEdge (second);
 		m_graph[second.x ()][second.y ()].edges ().removeEdge (first);

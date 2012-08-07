@@ -36,7 +36,7 @@ namespace KDots
 	{
 		int maxSize (const PolyList& polygonList)
 		{
-			int max = 0;
+			unsigned max = 0;
 
 			for (const Polygon_ptr ptr : polygonList)
 			{
@@ -53,7 +53,7 @@ namespace KDots
 		PolyList polygonList;
 		findPolygons (point, polygonList);
 
-		const int max = maxSize (polygonList);
+		const unsigned max = maxSize (polygonList);
 		polygonList.erase (std::remove_if (polygonList.begin (), polygonList.end (),
 						[&max] (const Polygon_ptr ptr)
 						{
