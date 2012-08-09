@@ -15,19 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "point.hpp"
+#ifndef CONFIG_HPP
+#define CONFIG_HPP
 
-namespace KDots
-{
-	QDataStream& operator<< (QDataStream& out, const KDots::Point& obj)
-	{
-		out << (quint32) obj.m_x << (quint32) obj.m_y;
-		return out;
-	}
+#define PLUGINS_DIR "${PLUGINS_DIR}"
 
-	QDataStream& operator>> (QDataStream& in, KDots::Point& obj)
-	{
-		in >> (quint32&) obj.m_x >> (quint32&) obj.m_y;
-		return in;
-	}
-}
+#endif

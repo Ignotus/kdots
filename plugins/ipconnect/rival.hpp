@@ -28,7 +28,6 @@ namespace KDots
 {
 	namespace ipconnect
 	{
-		
 		class Rival : public KDots::IRival
 		{
 			Q_OBJECT

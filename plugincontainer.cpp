@@ -22,6 +22,7 @@
 #include <QPluginLoader>
 #include "interface/iplugin.hpp"
 #include "constants.hpp"
+#include "config.hpp"
 
 namespace KDots
 {

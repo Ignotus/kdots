@@ -41,6 +41,7 @@ namespace KDots
 		public slots:
 			void nextStep (const Point& point)
 			{
+				Q_UNUSED (point);
 			}
 			
 			void ready ()
