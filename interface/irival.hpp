@@ -32,11 +32,14 @@ namespace KDots
 	{
 		Q_OBJECT
 	public:
-		IRival (QObject* parent = 0)
+		IRival (QObject *parent = 0)
 			: QObject (parent)
 		{
 		}
-		virtual ~IRival () {}
+		
+		virtual ~IRival ()
+		{
+		}
 
 		virtual IConfigurationWidget* configureWidget ()
 		{
