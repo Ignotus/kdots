@@ -13,10 +13,12 @@ INCLUDE_DIRECTORIES (
 )
 
 SET (SIMPLEAI_HEADERS
+	rival.hpp
 	plugin.hpp
 )
 
 SET (SIMPLEAI_SRCS
+	rival.cpp
 	plugin.cpp
 )
 

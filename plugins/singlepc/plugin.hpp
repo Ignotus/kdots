@@ -43,10 +43,6 @@ namespace KDots
 			{
 				Q_UNUSED (point);
 			}
-			
-			void ready ()
-			{
-			}
 		};
 
 		class Plugin : public KDots::IPlugin

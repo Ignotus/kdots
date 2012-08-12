@@ -44,7 +44,8 @@ namespace KDots
 		{
 			int i = 0, k = 0;
 
-			for (Polygon::const_iterator itr = polygon->begin (), itrEnd = polygon->end (); itr != itrEnd; ++itr)
+			Polygon::const_iterator itr = polygon->begin (), itrEnd = polygon->end ();
+			while (itr != itrEnd)
 			{
 				if (itr->y () != point.y ())
 				{
@@ -60,7 +61,7 @@ namespace KDots
 
 				++itr;
 
-				const Point& nextPoint = ++itr == itrEnd
+				const Point& nextPoint = ++itr == polygon->end ()
 						? polygon->front ()
 						: *itr;
 
@@ -68,6 +69,8 @@ namespace KDots
 
 				if (itr->x () < point.x () && prevPoint.y () != nextPoint.y ())
 					++i;
+				
+				++itr;
 			}
 
 			return k != i && i % 2;
@@ -93,18 +96,15 @@ namespace KDots
 		const PolyList& polyList = finder.polygons (point);
 
 		const std::list<Point>& points = m_steps->getPoints (StepQueue::other (current));
-
 		if (points.empty () || polyList.empty ())
 		{
 			m_steps->nextStep ();
 			emit nextPlayer (point);
 			return;
 		}
-
-		for (int k = 0; k < m_graph.width (); ++k)
+		
+		for (int k = 0, j; k < m_graph.width (); ++k)
 		{
-			int j;
-
 			for (j = 0; j < m_graph.height (); ++j)
 			{
 				const GraphPoint& gpoint = m_graph[k][j];
@@ -112,11 +112,10 @@ namespace KDots
 				if (gpoint.isCaptured () || gpoint.owner () == current)
 					continue;
 
-
-				for (const Polygon_ptr polygon : polyList)
+				for (Polygon_ptr polygon : polyList)
 				{
 					const Point newPoint (k, j);
-
+					
 					if (isInPolygon (polygon, newPoint))
 					{
 						if (gpoint.owner () == StepQueue::other (current))
@@ -131,11 +130,9 @@ namespace KDots
 				}
 			}
 		}
-
+		
 		drawPolygon (polyList);
-
 		m_steps->nextStep ();
-
 		emit nextPlayer (point);
 	}
 

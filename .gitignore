@@ -1,0 +1,10 @@
+*.qm
+builds/
+backup/
+debug/
+release/
+build/
+changelog
+*.tar.gz
+*~
+*.kdev4

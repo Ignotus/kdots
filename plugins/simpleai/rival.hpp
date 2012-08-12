@@ -15,41 +15,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_PLUGINS_SIMPLEAI_PLUGIN_HPP
-#define KDOTS_PLUGINS_SIMPLEAI_PLUGIN_HPP
-#include <interface/iplugin.hpp>
-#include "rival.hpp"
+#ifndef KDOTS_PLUGINS_SIMPLEAI_RIVAL_HPP
+#define KDOTS_PLUGINS_SIMPLEAI_RIVAL_HPP
+#include <interface/irival.hpp>
 
 namespace KDots
 {
 	namespace simpleai
 	{
-		class Plugin : public KDots::IPlugin
+		class Rival : public KDots::IRival
 		{
 			Q_OBJECT
-			Q_INTERFACES (KDots::IPlugin)
+			
+			DotTable *m_table;
 		public:
-			Plugin (QObject *parent = 0)
-				: IPlugin (parent)
-			{
-			}
+			Rival (QObject *parent = 0);
 
-			IRival* createRival ()
-			{
-				return new Rival;
-			}
-
-			QString name () const
-			{
-				return "simpleai";
-			}
-
-			QString description () const
-			{
-				return "Playing with the simple AI";
-			}
+			bool isAllow () const;
+		public slots:
+			void nextStep (const Point& point);
+			
+			void setDotTable (DotTable *table);
 		};
-
 	}
 }
 
