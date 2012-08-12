@@ -13,11 +13,13 @@ INCLUDE_DIRECTORIES (
 )
 
 SET (SIMPLEAI_HEADERS
+	prioritymap.hpp
 	rival.hpp
 	plugin.hpp
 )
 
 SET (SIMPLEAI_SRCS
+	prioritymap.cpp
 	rival.cpp
 	plugin.cpp
 )
