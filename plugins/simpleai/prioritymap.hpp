@@ -21,6 +21,7 @@
 #include <vector>
 #include <include/point.hpp>
 
+struct stat;
 namespace KDots
 {
 	namespace simpleai
@@ -55,6 +56,9 @@ namespace KDots
 				, m_priority (priority)
 			{
 			}
+			
+			bool operator== (const MapData& other) const;
+			bool operator!= (const MapData& other) const;
 		};
 		
 		class PriorityMap
@@ -66,6 +70,9 @@ namespace KDots
 			PriorityMap& operator= (const PriorityMap&);
 		public:
 			static PriorityMap& instance ();
+			
+			static MapData inverse (const MapData& data);
+			static MapData rotate (const MapData& data);
 			
 			const std::list<MapData>& priorityMap ();
 		};

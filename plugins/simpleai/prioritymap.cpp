@@ -16,12 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "prioritymap.hpp"
+#include <QDebug>
 
 namespace KDots
 {
 	namespace simpleai
 	{
-		const std::list<MapData> PRIORITY_MAP ({
+		const std::list<MapData> PRIORITY_MAP {
 			{
 				{//1
 					{NM, SE, NM},
@@ -186,7 +187,7 @@ namespace KDots
 					{NM, EM, NM},
 					{NM, SE, NM}
 				},
-				{1, 4},
+				{1, 3},
 				0.05
 			},
 			{
@@ -349,53 +350,85 @@ namespace KDots
 				{1, 1},
 				0.1
 			}
-		});
+		};
 		
-		namespace
+		bool MapData::operator== (const MapData& other) const
 		{
-			MapData inverse (const MapData& data)
+			if (m_current != other.m_current)
+				return false;
+			
+			if (m_priority != other.m_priority)
+				return false;
+			
+			if (other.m_map.size () != m_map.size ()
+					|| !other.m_map.size ()
+					|| !m_map.size ())
+				return false;
+			
+			for (MapType::const_iterator other_itr = other.m_map.begin (),
+					itr = m_map.begin (), other_e = other.m_map.end ();
+					other_itr != other_e ; ++other_itr, ++itr)
 			{
-				const MapType& map = data.m_map;
-				MapData newData;
-				MapType& newMap = newData.m_map;
-				
-				newMap.resize (map.size ());
-				
-				MapType::const_iterator map_i = map.begin ();
-				for (MapType::iterator new_i = newMap.begin (),
-						new_e = newMap.end ();
-						new_i != new_e; ++new_i, ++map_i)
-				{
-					new_i->resize (map_i->size ());
-					std::reverse_copy (map_i->begin (), map_i->end (), new_i->begin ());
-				}
-				
-				newData.m_priority = data.m_priority;
-				newData.m_current = {static_cast<int> (map.front ().size () - 1 - data.m_current.x ()), data.m_current.y ()};
-				
-				return newData;
+				if (!std::equal (other_itr->begin (), other_itr->end (), itr->begin ()))
+					return false;
 			}
 			
-			MapData rotate (const MapData& data) 
+			return true;
+		}
+		
+		bool MapData::operator!= (const MapData& other) const
+		{
+			return !(other == *this);
+		}
+		
+		///
+		
+		MapData PriorityMap::inverse (const MapData& data)
+		{
+			const MapType& map = data.m_map;
+			MapData newData;
+			MapType& newMap = newData.m_map;
+			
+			newMap.resize (map.size ());
+			
+			MapType::const_iterator map_i = map.begin ();
+			for (MapType::iterator new_i = newMap.begin (),
+					new_e = newMap.end ();
+					new_i != new_e; ++new_i, ++map_i)
 			{
-				const MapType& map = data.m_map;
-				MapData newData;
-				MapType& newMap = newData.m_map;
-				
-				newMap.resize (map.front ().size ());
-				std::for_each (newMap.begin (), newMap.end (), [&map] (MapLine& line) { line.resize (map.size ()); });
-				
-				for (int i = 0, max_i = newMap.size (), j, max_j = map.size (); i != max_i; ++i) //y
-				{
-					for (j = 0; j != max_j; ++j) //x
-						newMap[i][j] = map[max_j - 1 - j][i]; 
-				}
-				
-				newData.m_priority = data.m_priority;
-				newData.m_current = {data.m_current.y (), static_cast<int> (map.size () - 1 - data.m_current.x ())};
-				
-				return newData;
+				new_i->resize (map_i->size ());
+				std::reverse_copy (map_i->begin (), map_i->end (), new_i->begin ());
 			}
+			
+			newData.m_priority = data.m_priority;
+			newData.m_current = {static_cast<int> (map.front ().size () - 1 - data.m_current.x ()),
+					data.m_current.y ()};
+			
+			return newData;
+		}
+		
+		MapData PriorityMap::rotate (const MapData& data) 
+		{
+			const MapType& map = data.m_map;
+			MapData newData;
+			MapType& newMap = newData.m_map;
+			
+			newMap.resize (map.front ().size ());
+			std::for_each (newMap.begin (), newMap.end (), [&map] (MapLine& line) {
+				line.resize (map.size ());
+			});
+			
+			for (int i = 0, max_i = newMap.size (), j, max_j = map.size (); i != max_i; ++i) //y
+			{
+				for (j = 0; j != max_j; ++j) //x
+					newMap[i][j] = map[max_j - 1 - j][i]; 
+			}
+			
+			newData.m_priority = data.m_priority;
+			newData.m_current = {static_cast<int> (map.size () - 1 - data.m_current.y ()),
+					data.m_current.x ()};
+			
+			return newData;
 		}
 		
 		PriorityMap::PriorityMap ()

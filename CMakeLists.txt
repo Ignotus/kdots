@@ -4,6 +4,14 @@ PROJECT (kdots)
 
 FIND_PACKAGE (Qt4 REQUIRED)
 
+
+OPTION (TESTS "Enable test units" OFF)
+
+IF (TESTS)
+	ENABLE_TESTING ()
+	SET (QT_USE_QTTEST TRUE)
+ENDIF (TESTS)
+
 SET (QT_USE_QTGUI TRUE)
 SET (QT_USE_QTCORE TRUE)
 
@@ -41,7 +49,6 @@ SET (SRCS
 	dottable.cpp
 	stepqueue.cpp
 	tablewidget.cpp
-	main.cpp
 	newgamewidget.cpp
 	newgamedialog.cpp
 	mainwindow.cpp
@@ -91,15 +98,23 @@ QT4_WRAP_UI (FORMS_HEADERS ${FORMS})
 
 CONFIGURE_FILE (config.hpp.in config.hpp)
 
-ADD_EXECUTABLE (kdots
+ADD_LIBRARY (lib_kdots STATIC
 	${SRCS}
 	${HEADERS_MOC}
 	${FORMS_HEADERS}
 	${INTERFACE_MOC}
 )
 
-TARGET_LINK_LIBRARIES (kdots
+ADD_EXECUTABLE (kdots
+	main.cpp
+)
+
+TARGET_LINK_LIBRARIES (lib_kdots
 	${QT_LIBRARIES}
+)
+
+TARGET_LINK_LIBRARIES (kdots
+	lib_kdots
 )
 	
 IF (UNIX)
