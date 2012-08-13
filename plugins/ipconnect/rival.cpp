@@ -168,7 +168,6 @@ namespace KDots
 					SIGNAL (readyRead ()),
 					this,
 					SLOT (onReadyRead ()));
-
 		}
 
 		void Rival::onReadyRead ()

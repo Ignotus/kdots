@@ -102,11 +102,11 @@ ADD_LIBRARY (lib_kdots STATIC
 	${SRCS}
 	${HEADERS_MOC}
 	${FORMS_HEADERS}
-	${INTERFACE_MOC}
 )
 
 ADD_EXECUTABLE (kdots
 	main.cpp
+	${INTERFACE_MOC}
 )
 
 TARGET_LINK_LIBRARIES (lib_kdots
@@ -115,6 +115,7 @@ TARGET_LINK_LIBRARIES (lib_kdots
 
 TARGET_LINK_LIBRARIES (kdots
 	lib_kdots
+	${QT_LIBRARIES}
 )
 	
 IF (UNIX)
