@@ -27,12 +27,18 @@ namespace KDots
 	{
 		std::list<Point> m_firstPoints, m_secondPoints;
 		int m_first, m_second;
+		Point m_lastPoint;
 	protected:
 		Owner m_owner;
 		bool m_captured;
 	public:
 		StepQueue (Owner firstPlayer);
 		virtual ~StepQueue () {}
+		
+		inline const Point& lastPoint () const
+		{
+			return m_lastPoint;
+		}
 
 		void addPoint (const Point &point);
 		void addCaptured ();

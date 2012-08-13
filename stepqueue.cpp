@@ -31,6 +31,7 @@ namespace KDots
 
 	void StepQueue::addPoint (const Point& point)
 	{
+		m_lastPoint = point;
 		if (getCurrentOwner () == FIRST)
 			m_firstPoints.push_back (point);
 		else

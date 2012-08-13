@@ -35,7 +35,7 @@ namespace KDots
 
 		inline int height () const
 		{
-			return m_graph[0].size ();
+			return m_graph.front ().size ();
 		}
 
 		inline GraphPoint& operator[] (const Point& index)

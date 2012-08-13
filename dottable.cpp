@@ -61,7 +61,7 @@ namespace KDots
 
 				++itr;
 
-				const Point& nextPoint = ++itr == polygon->end ()
+				const Point& nextPoint = ++itr == itrEnd
 						? polygon->front ()
 						: *itr;
 
