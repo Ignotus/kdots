@@ -140,7 +140,19 @@ namespace KDots
 
 		const QPen firstPen (Qt::red, 2), secondPen (Qt::blue, 2),
 				firtBorder (Qt::red, 0.5), secondBorder (Qt::blue, 0.5);
-
+				
+		if (!lastPoint.empty ())
+		{
+			pixPainter.setPen (graph[lastPoint].owner () == FIRST
+					? firtBorder
+					: secondBorder);
+						
+			pixPainter.setBrush (Qt::NoBrush);
+			pixPainter.drawEllipse (QPoint ((lastPoint.x () + 1) * cellSize,
+					(lastPoint.y () + 1) * cellSize),
+					6, 6);
+		}
+		
 		for (int i = 0; i < graph.width (); ++i)
 		{
 			for (int k = 0; k < graph.height (); ++k)
@@ -162,18 +174,6 @@ namespace KDots
 				                                 (k + 1) * cellSize),
 				                        3, 3);
 				
-				if (lastPoint == Point (i, k))
-				{
-					pixPainter.setPen (point.owner () == FIRST
-							? firtBorder
-							: secondBorder);
-					
-					pixPainter.setBrush (Qt::NoBrush);
-					pixPainter.drawEllipse (QPoint ( (i + 1) * cellSize,
-				                                 (k + 1) * cellSize),
-				                        6, 6);
-				}
-
 				const GraphPoint::GraphEdges& edges = point.edges ();
 
 				for (int j = 0; j < edges.size (); ++j)
