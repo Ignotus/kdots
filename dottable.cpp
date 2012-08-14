@@ -40,8 +40,40 @@ namespace KDots
 
 	namespace
 	{
+		Point getPrevPoint (Polygon_ptr& polygon, Polygon::const_iterator current)
+		{
+			const int currentY = current->y ();
+			for (Polygon::const_iterator prev = current;;)
+			{
+				if (prev == polygon->begin ())
+					prev = --polygon->end ();
+				else
+					--prev;
+				
+				if (prev->y () != currentY)
+					return *prev;
+			}
+		}
+		
+		Point getNextPoint (Polygon_ptr& polygon, Polygon::const_iterator current)
+		{
+			const int currentY = current->y ();
+			for (Polygon::const_iterator next = current;;)
+			{
+				if (next == --polygon->end ())
+					next = polygon->begin ();
+				else
+					++next;
+				
+				if (next->y () != currentY)
+					return *next;
+			}
+		}
+		
 		bool isInPolygon (Polygon_ptr polygon, const Point& point)
 		{
+			// k - a count of points in the same line with "point" object
+			// i - crosses count
 			int i = 0, k = 0;
 
 			Polygon::const_iterator itr = polygon->begin (), itrEnd = polygon->end ();
@@ -55,17 +87,8 @@ namespace KDots
 				else
 					++k;
 
-				const Point& prevPoint = itr-- == polygon->begin ()
-						? polygon->back ()
-						: *itr;
-
-				++itr;
-
-				const Point& nextPoint = ++itr == itrEnd
-						? polygon->front ()
-						: *itr;
-
-				--itr;
+				const Point& prevPoint = getPrevPoint (polygon, itr);
+				const Point& nextPoint = getNextPoint (polygon, itr);
 
 				if (itr->x () < point.x () && prevPoint.y () != nextPoint.y ())
 					++i;
