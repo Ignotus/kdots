@@ -161,10 +161,13 @@ namespace KDots
 
 	void DotTable::drawPolygon (PolyList polygons)
 	{
-		for (const Polygon_ptr polygon : polygons)
+		for (Polygon_ptr polygon : polygons)
 		{
 			if (!polygon->isFilled ())
 				continue;
+			
+			polygon->setOwner (m_steps->getCurrentOwner ());
+			m_polygons.push_back (polygon);
 			
 			Point prevPoint = polygon->back ();
 			

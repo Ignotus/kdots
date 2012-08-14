@@ -21,12 +21,14 @@
 #include <vector>
 #include <memory>
 #include "point.hpp"
+#include "constants.hpp"
 
 namespace KDots
 {
 	class Polygon : public std::list<Point>
 	{
 		bool m_filled;
+		Owner m_owner;
 	public:
 		Polygon ()
 			: std::list<Point> ()
@@ -48,6 +50,16 @@ namespace KDots
 		void setFilled (bool filled)
 		{
 			m_filled = filled;
+		}
+		
+		Owner owner () const
+		{
+			return m_owner;
+		}
+		
+		void setOwner (Owner own)
+		{
+			m_owner = own;
 		}
 	};
 	

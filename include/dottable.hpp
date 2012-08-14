@@ -33,12 +33,18 @@ namespace KDots
 		Graph m_graph;
 		std::shared_ptr<StepQueue> m_steps;
 		GameConfig m_config;
+		std::vector<Polygon_ptr> m_polygons;
 	public:
 		DotTable (const GameConfig& config, QObject *parent = 0);
 
 		GameConfig gameConfig () const;
 
 		void pushPoint (const Point& point);
+		
+		inline std::vector<Polygon_ptr> polygons ()
+		{
+			return m_polygons;
+		}
 
 		inline Graph graph () const
 		{

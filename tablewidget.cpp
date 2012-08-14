@@ -187,6 +187,23 @@ namespace KDots
 				}
 			}
 		}
+		
+		const std::vector<Polygon_ptr>& polygonVector = m_table->polygons ();
+		const QBrush firstPolyBrush (Qt::red, Qt::FDiagPattern),
+			secondPolyBrush (Qt::blue, Qt::BDiagPattern);
+		
+		for (Polygon_ptr polygon : polygonVector)
+		{
+			QPolygon qPoly;
+			for (const Point& point : *polygon)
+				qPoly << QPoint ((point.x () + 1) * cellSize, (point.y () + 1) * cellSize);
+			
+			QPainterPath path;
+			path.addPolygon (qPoly);
+			pixPainter.fillPath (path, polygon->owner () == FIRST
+					? firstPolyBrush
+					: secondPolyBrush);
+		}
 
 		QPainter painter (this);
 		const int dx = (rectange.width () - tableWidth) / 2;

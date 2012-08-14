@@ -29,12 +29,11 @@ namespace KDots
 			: m_x (-1)
 			, m_y (-1)
 		{}
-
+		
 		inline Point (int x, int y)
 			: m_x (x)
 			, m_y (y)
 		{}
-
 
 		inline int x () const
 		{
