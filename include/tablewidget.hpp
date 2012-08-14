@@ -19,6 +19,7 @@
 #define KDOTS_TABLEWIDGET_HPP
 #include <memory>
 #include <QWidget>
+#include <QDebug>
 #include "constants.hpp"
 
 namespace KDots

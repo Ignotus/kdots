@@ -57,6 +57,7 @@ namespace KDots
 		private slots:
 			void onNewConnectionHandle ();
 			void onReadyRead ();
+			void onDisconnected ();
 		};
 	}
 }

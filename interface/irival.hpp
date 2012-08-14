@@ -66,6 +66,7 @@ namespace KDots
 		
 	signals:
 		void createDotTable (const GameConfig& config);
+		void needDestroy ();
 	};
 }
 

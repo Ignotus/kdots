@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_PLUGINS_IPCONNECT_CONFIGURATIONWIDGET_H
-#define KDOTS_PLUGINS_IPCONNECT_CONFIGURATIONWIDGET_H
+#ifndef KDOTS_PLUGINS_IPCONNECT_CONFIGURATIONWIDGET_HPP
+#define KDOTS_PLUGINS_IPCONNECT_CONFIGURATIONWIDGET_HPP
 #include <interface/iconfigurationwidget.hpp>
 namespace Ui
 {

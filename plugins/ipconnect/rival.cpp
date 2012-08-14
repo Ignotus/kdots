@@ -16,7 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "rival.hpp"
-#include <stepqueue.hpp>
+#include <QMessageBox>
+#include <include/stepqueue.hpp>
+#include "connectdialog.hpp"
 
 namespace KDots
 {
@@ -47,6 +49,13 @@ namespace KDots
 			}
 		}
 		
+		void Rival::onDisconnected ()
+		{
+			QMessageBox::warning (0,
+					tr ("The socket has been disconnected"),
+					tr ("The socket has been disconnected"));
+		}
+		
 		GameConfig Rival::getGameConfig ()
 		{
 			ClientConfig config;
@@ -59,11 +68,15 @@ namespace KDots
 			
 			//Joining Game
 			m_socket = new QTcpSocket (this);
-
+			connect (m_socket,
+					SIGNAL (disconnected ()),
+					this,
+					SLOT (onDisconnected ()));
+			
 			m_socket->connectToHost (config.m_host, config.m_port);
 
 			qDebug () << Q_FUNC_INFO << "Connecting to the server...";
-			if (m_socket->waitForConnected ())
+			if (m_socket->waitForConnected (5000))
 			{
 				qDebug () << Q_FUNC_INFO << "Connected";
 				
@@ -93,9 +106,21 @@ namespace KDots
 								SIGNAL (readyRead ()),
 								this,
 								SLOT (onReadyRead ()));
+						
+						QMessageBox::information (0,
+								tr ("Connected"),
+								tr ("Good luck have fun"));
 						return config;
 					}
 				}
+			}
+			else
+			{
+				QMessageBox::warning (0,
+						tr ("Warning!"),
+						tr ("Cannot connect to the server: ") + m_socket->errorString ());
+				
+				emit needDestroy ();
 			}
 			
 			return GameConfig ();
@@ -123,11 +148,13 @@ namespace KDots
 					SIGNAL (newConnection ()),
 					this,
 					SLOT (onNewConnectionHandle ()));
-
-			if (m_server->listen (QHostAddress::Any, config.m_port))
-				qDebug () << Q_FUNC_INFO << "Listening the port" << config.m_port;
-			else
-				qWarning () << Q_FUNC_INFO << "Couldn't listen the port " << config.m_port;
+			
+			ConnectDialog dialog (m_server, config.m_port);
+			if (dialog.exec () != QDialog::Accepted)
+			{
+				m_server->close ();
+				emit needDestroy ();
+			}
 		}
 		
 		IConfigurationWidget* Rival::configureWidget ()
@@ -145,6 +172,9 @@ namespace KDots
 
 		void Rival::nextStep (const Point& point)
 		{
+			if (!m_socket)
+				return;
+			
 			qDebug () << Q_FUNC_INFO << "Sending point";
 			QByteArray array;
 			QDataStream out (&array, QIODevice::WriteOnly);
@@ -157,6 +187,8 @@ namespace KDots
 		{
 			qDebug () << Q_FUNC_INFO;
 			m_socket = m_server->nextPendingConnection ();
+			if (!m_socket)
+				return;
 			
 			QByteArray gameData;
 			QDataStream out (&gameData, QIODevice::WriteOnly);

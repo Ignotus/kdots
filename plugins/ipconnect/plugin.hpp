@@ -22,36 +22,35 @@
 
 namespace KDots
 {
-namespace ipconnect
-{
-
-		class Plugin : public KDots::IPlugin
-		{
-			Q_OBJECT
-			Q_INTERFACES (KDots::IPlugin)
-		public:
-			Plugin (QObject *parent = 0)
-				: IPlugin (parent)
+	namespace ipconnect
+	{
+			class Plugin : public KDots::IPlugin
 			{
-			}
+				Q_OBJECT
+				Q_INTERFACES (KDots::IPlugin)
+			public:
+				Plugin (QObject *parent = 0)
+					: IPlugin (parent)
+				{
+				}
 
-			IRival* createRival ()
-			{
-				return new Rival;
-			}
+				IRival* createRival ()
+				{
+					return new Rival;
+				}
 
-			QString name () const
-			{
-				return "ipconnect";
-			}
+				QString name () const
+				{
+					return "ipconnect";
+				}
 
-			QString description () const
-			{
-				return "Playing by internet connection";
-			}
-		};
+				QString description () const
+				{
+					return "Playing by internet connection";
+				}
+			};
 
-}
+	}
 }
 
 #endif

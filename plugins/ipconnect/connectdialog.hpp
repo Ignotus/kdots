@@ -15,37 +15,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_MAINWINDOW_HPP
-#define KDOTS_MAINWINDOW_HPP
-#include <memory>
-#include <QMainWindow>
+#ifndef KDOTS_PLUGINS_IPCONNECT_CONNECTDIALOG_HPP
+#define KDOTS_PLUGINS_IPCONNECT_CONNECTDIALOG_HPP
+#include <QDialog>
 
 namespace Ui
 {
-	class MainWindow;
+	class ConnectDialog;
 }
+
+class QTcpServer;
 
 namespace KDots
 {
-	class TableWidget;
-	class IRival;
-
-	class MainWindow : public QMainWindow
+	namespace ipconnect
 	{
-		Q_OBJECT
-	public:
-		MainWindow (QWidget *parent = 0);
-	private:
-		Ui::MainWindow *m_ui;
-		std::shared_ptr<IRival> m_rival;
-		bool m_destroyTable;
-		
-		void loadPlugins ();
-
-	private slots:
-		void on_actionNewGame_triggered ();
-		void destroyGame ();
-	};
+		class ConnectDialog : public QDialog
+		{
+			Q_OBJECT
+			
+			Ui::ConnectDialog *m_ui;
+			QTcpServer *m_server;
+		public:
+			ConnectDialog (QTcpServer *server, int port, QWidget *parent = 0);
+		};
+	}
 }
 
 #endif

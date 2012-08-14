@@ -15,11 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 #include <QDir>
-#include "interface/iplugin.hpp"
+#include <QDebug>
+#include <interface/iplugin.hpp>
+#include <interface/irival.hpp>
 #include "newgamedialog.hpp"
 #include "tablewidget.hpp"
 #include "plugincontainer.hpp"
@@ -29,6 +30,7 @@ namespace KDots
 	MainWindow::MainWindow (QWidget *parent)
 		: QMainWindow (parent)
 		, m_ui (new Ui::MainWindow)
+		, m_destroyTable (false)
 	{
 		m_ui->setupUi (this);
 	}
@@ -40,6 +42,11 @@ namespace KDots
 			return;
 
 		m_rival = dialog.rival ();
+		
+		connect (m_rival.get (),
+				SIGNAL (needDestroy ()),
+				this,
+				SLOT (destroyGame ()));
 
 		const GameConfig& config = dialog.gameConfig ();
 		
@@ -47,6 +54,12 @@ namespace KDots
 			return;
 
 		TableWidget *table = new TableWidget (config, m_rival, this);
+		
+		if (m_destroyTable)
+		{
+			delete table;
+			return;
+		}
 
 		connect (table,
 				SIGNAL (updateStatusBar (const QString&)),
@@ -59,6 +72,11 @@ namespace KDots
 
 		setCentralWidget (table);
 		table->show ();
+	}
+	
+	void MainWindow::destroyGame ()
+	{
+		m_destroyTable = true;
 	}
 
 }

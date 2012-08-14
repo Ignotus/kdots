@@ -17,12 +17,14 @@ SET (QT_USE_QTNETWORK TRUE)
 INCLUDE (${QT_USE_FILE})
 
 SET (IPCONNECT_HEADERS
+	connectdialog.hpp
 	plugin.hpp
 	rival.hpp
 	configurationwidget.hpp
 )
 
 SET (IPCONNECT_SRCS
+	connectdialog.cpp
 	plugin.cpp
 	rival.cpp
 	configurationwidget.cpp
@@ -30,6 +32,7 @@ SET (IPCONNECT_SRCS
 
 SET (FORMS
 	configurationwidget.ui
+	connectdialog.ui
 )
 
 QT4_WRAP_UI (IPCONNECT_FORMS_HEADERS ${FORMS})

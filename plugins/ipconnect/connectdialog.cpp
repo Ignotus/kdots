@@ -15,37 +15,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef KDOTS_MAINWINDOW_HPP
-#define KDOTS_MAINWINDOW_HPP
-#include <memory>
-#include <QMainWindow>
-
-namespace Ui
-{
-	class MainWindow;
-}
+#include "connectdialog.hpp"
+#include <QTcpServer>
+#include <QDebug>
+#include "ui_connectdialog.h"
 
 namespace KDots
 {
-	class TableWidget;
-	class IRival;
-
-	class MainWindow : public QMainWindow
+	namespace ipconnect
 	{
-		Q_OBJECT
-	public:
-		MainWindow (QWidget *parent = 0);
-	private:
-		Ui::MainWindow *m_ui;
-		std::shared_ptr<IRival> m_rival;
-		bool m_destroyTable;
-		
-		void loadPlugins ();
+		ConnectDialog::ConnectDialog (QTcpServer* server, int port, QWidget* parent)
+			: QDialog (parent)
+			, m_ui (new Ui::ConnectDialog)
+			, m_server (server)
+		{
+			m_ui->setupUi (this);
+			
+			connect (server,
+					SIGNAL (newConnection ()),
+					this,
+					SLOT (accept ()));
+			
+			if (m_server->listen (QHostAddress::Any, port))
+				qDebug () << Q_FUNC_INFO << "Listening the port" << port;
+			else
+				qWarning () << Q_FUNC_INFO << "Couldn't listen the port " << port;
+		}
 
-	private slots:
-		void on_actionNewGame_triggered ();
-		void destroyGame ();
-	};
+	}
 }
-
-#endif
