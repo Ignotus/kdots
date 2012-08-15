@@ -26,6 +26,7 @@ namespace KDots
 		class Rival : public KDots::IRival
 		{
 			Q_OBJECT
+			Q_INTERFACES (KDots::IRival)
 			
 			DotTable *m_table;
 		public:

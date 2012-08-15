@@ -22,34 +22,34 @@ SET (SINGLEPC_SRCS
 
 QT4_WRAP_CPP (SINGLEPC_HEADERS_MOC ${SINGLEPC_HEADERS})
 
-ADD_LIBRARY (kdots_singlepc
+ADD_LIBRARY (kdots_singlepc SHARED
 	${SINGLEPC_SRCS}
 	${SINGLEPC_HEADERS_MOC}
 )
 
 TARGET_LINK_LIBRARIES (kdots_singlepc
 	${QT_LIBRARIES}
-	${KDE4_KDECORE_LIBS}
-	${KDE4_KDEUI_LIBS}
-	lib_kdots
+	kdots_plugin
 )
 
 IF (UNIX)
 	INSTALL (TARGETS kdots_singlepc DESTINATION ${PLUGINS_DIR})
 ENDIF (UNIX)
 
+GET_PROPERTY (kdots_singlepc_location TARGET kdots_singlepc PROPERTY LOCATION)
+
 IF (UNIX)
 	ADD_CUSTOM_COMMAND(
 		TARGET kdots_singlepc
 		POST_BUILD
-		COMMAND cp ARGS ${CMAKE_CURRENT_BINARY_DIR}/libkdots_singlepc.so
+		COMMAND cp ARGS ${kdots_singlepc_location}
 		${PLUGIN_BUILD_DIR}
 	)
 ELSE (UNIX)
 	ADD_CUSTOM_COMMAND(
 		TARGET kdots_singlepc
 		POST_BUILD
-		COMMAND copy ARGS ${CMAKE_CURRENT_BINARY_DIR}/libkdots_singlepc.so
+		COMMAND copy ARGS ${kdots_singlepc_location}
 		${PLUGIN_BUILD_DIR}
 	)
 ENDIF (UNIX)

@@ -39,24 +39,27 @@ ADD_LIBRARY (kdots_simpleai SHARED
 
 TARGET_LINK_LIBRARIES (kdots_simpleai
 	${QT_LIBRARIES}
+	kdots_plugin
 )
 
 IF (UNIX)
 	INSTALL (TARGETS kdots_simpleai DESTINATION ${PLUGINS_DIR})
 ENDIF (UNIX)
 
+GET_PROPERTY (kdots_simpleai_location TARGET kdots_simpleai PROPERTY LOCATION)
+
 IF (UNIX)
 	ADD_CUSTOM_COMMAND(
 		TARGET kdots_simpleai
 		POST_BUILD
-		COMMAND cp ARGS ${CMAKE_CURRENT_BINARY_DIR}/libkdots_simpleai.so
+		COMMAND cp ARGS ${kdots_simpleai_location}
 		${PLUGIN_BUILD_DIR}
 	)
 ELSE (UNIX)
 	ADD_CUSTOM_COMMAND(
 		TARGET kdots_simpleai
 		POST_BUILD
-		COMMAND copy ARGS ${CMAKE_CURRENT_BINARY_DIR}/libkdots_simpleai.so
+		COMMAND copy ARGS ${kdots_simpleai_location}
 		${PLUGIN_BUILD_DIR}
 	)
 ENDIF (UNIX)

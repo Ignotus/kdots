@@ -46,24 +46,27 @@ ADD_LIBRARY (kdots_ipconnect SHARED
 
 TARGET_LINK_LIBRARIES (kdots_ipconnect
 	${QT_LIBRARIES}
+	kdots_plugin
 )
 
 IF (UNIX)
 	INSTALL (TARGETS kdots_ipconnect DESTINATION ${PLUGINS_DIR})
 ENDIF (UNIX)
 
+GET_PROPERTY (kdots_ipconnect_location TARGET kdots_ipconnect PROPERTY LOCATION)
+
 IF (UNIX)
 	ADD_CUSTOM_COMMAND(
 		TARGET kdots_ipconnect
 		POST_BUILD
-		COMMAND cp ARGS ${CMAKE_CURRENT_BINARY_DIR}/libkdots_ipconnect.so
+		COMMAND cp ARGS ${kdots_ipconnect_location}
 		${PLUGIN_BUILD_DIR}
 	)
 ELSE (UNIX)
 	ADD_CUSTOM_COMMAND(
 		TARGET kdots_ipconnect
 		POST_BUILD
-		COMMAND copy ARGS ${CMAKE_CURRENT_BINARY_DIR}/libkdots_ipconnect.so
+		COMMAND copy ARGS ${kdots_ipconnect_location}
 		${PLUGIN_BUILD_DIR}
 	)
 ENDIF (UNIX)

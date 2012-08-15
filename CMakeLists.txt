@@ -95,24 +95,24 @@ QT4_WRAP_UI (FORMS_HEADERS ${FORMS})
 
 CONFIGURE_FILE (config.hpp.in config.hpp)
 
-ADD_LIBRARY (lib_kdots
-	${HEADERS_MOC}
-	${FORMS_HEADERS}
+ADD_LIBRARY (kdots_plugin SHARED
 	${INTERFACE_MOC}
 )
 
 ADD_EXECUTABLE (kdots
 	main.cpp
 	${SRCS}
+	${HEADERS_MOC}
+	${FORMS_HEADERS}
 )
 
-TARGET_LINK_LIBRARIES (lib_kdots
+TARGET_LINK_LIBRARIES (kdots_plugin
 	${QT_LIBRARIES}
 )
 
 TARGET_LINK_LIBRARIES (kdots
-	lib_kdots
 	${QT_LIBRARIES}
+	kdots_plugin
 )
 	
 IF (UNIX)
