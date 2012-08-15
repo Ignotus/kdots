@@ -32,6 +32,7 @@ namespace KDots
 		
 		bool Rival::isAllow () const
 		{
+			return true;
 		}
 		
 		namespace

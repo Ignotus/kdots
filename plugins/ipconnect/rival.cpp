@@ -87,7 +87,11 @@ namespace KDots
 					qDebug () << Q_FUNC_INFO << "Data size" << data.size ();
 					QDataStream in (&const_cast<QByteArray&> (data), QIODevice::ReadOnly);
 					QVariant variantData;
-					in >> variantData >> (quint32&) m_me; 
+					
+					quint32 me;
+					in >> variantData >> me;
+					m_me = static_cast<Owner> (me);
+					
 					if (!variantData.canConvert<GameConfig> ())
 					{
 						qWarning () << Q_FUNC_INFO << "Cannot convert to GameConfig: "

@@ -17,6 +17,7 @@
  */
 #ifndef KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
 #define KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
+#include <kdemacros.h>
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 

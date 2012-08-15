@@ -26,7 +26,10 @@ QDataStream& operator<< (QDataStream& out, const KDots::GameConfig& obj)
 
 QDataStream& operator>> (QDataStream& in, KDots::GameConfig& obj)
 {
-	in >> (quint32&) obj.m_firstOwner >> (quint32&) obj.m_height >> (quint32&) obj.m_width >> (quint32&) obj.m_mode;
+	quint32 owner, mode;
+	in >> owner >> (quint32&) obj.m_height >> (quint32&) obj.m_width >> mode;
+	obj.m_firstOwner = static_cast<KDots::Owner> (owner);
+	obj.m_mode = static_cast<KDots::GameMode> (mode);
 	return in;
 }
 

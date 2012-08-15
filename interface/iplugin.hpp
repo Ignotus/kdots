@@ -22,6 +22,10 @@
 #include <QtPlugin>
 #include <point.hpp>
 
+#define K_PLUGIN_EXPORT( c ) \
+	K_PLUGIN_FACTORY (TextEditorFactory, registerPlugin<c> ();) \
+	K_EXPORT_PLUGIN (TextEditorFactory ("c"))
+
 class QDialog;
 
 namespace KDots
@@ -31,6 +35,7 @@ namespace KDots
 
 	class IPlugin : public QObject
 	{
+		Q_OBJECT
 	public:
 		IPlugin (QObject *parent = 0)
 			: QObject (parent)
