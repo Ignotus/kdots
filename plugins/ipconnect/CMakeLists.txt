@@ -35,11 +35,10 @@ SET (FORMS
 	connectdialog.ui
 )
 
-kde4_add_ui_files (IPCONNECT_FORMS_HEADERS ${FORMS})
+kde4_add_ui_files (IPCONNECT_SRCS ${FORMS})
 
 kde4_add_plugin (kdots_ipconnect
 	${IPCONNECT_SRCS}
-	${IPCONNECT_FORMS_HEADERS}
 )
 
 TARGET_LINK_LIBRARIES (kdots_ipconnect

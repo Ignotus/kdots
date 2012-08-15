@@ -89,7 +89,7 @@ SET (FORMS
 	ui/pluginmanagerwidget.ui
 )
 
-kde4_add_ui_files (FORMS_HEADERS ${FORMS})
+kde4_add_ui_files (SRCS ${FORMS})
 
 CONFIGURE_FILE (config.hpp.in config.hpp)
 
@@ -99,7 +99,6 @@ kde4_add_library (kdotslib SHARED
 
 kde4_add_executable (kdots
 	main.cpp
-	${FORMS_HEADERS}
 	${INTERFACE_HEAD}
 )
 
