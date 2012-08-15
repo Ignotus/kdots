@@ -19,10 +19,11 @@
 #define KDOTS_GAMECONFIG_HPP
 #include <QMetaType>
 #include "constants.hpp"
+#include "point.hpp"
 
 namespace KDots
 {
-	struct GameConfig
+	struct KDOTS_EXPORT GameConfig
 	{
 		int m_width, m_height;
 		GameMode m_mode;
@@ -36,6 +37,8 @@ namespace KDots
 		{
 			return m_width != -1;
 		}
+		
+		static void registerMeta ();
 	};
 
 }

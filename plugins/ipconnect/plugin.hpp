@@ -26,10 +26,9 @@ namespace KDots
 	{
 			class Plugin : public KDots::IPlugin
 			{
-				Q_OBJECT
 				Q_INTERFACES (KDots::IPlugin)
 			public:
-				Plugin (QObject *parent = 0)
+				Plugin (QObject *parent, const QVariantList&)
 					: IPlugin (parent)
 				{
 				}

@@ -58,6 +58,9 @@ namespace KDots
 			void onNewConnectionHandle ();
 			void onReadyRead ();
 			void onDisconnected ();
+		signals:
+			void createDotTable (const GameConfig& config);
+			void needDestroy ();
 		};
 	}
 }

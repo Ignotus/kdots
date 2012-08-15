@@ -18,22 +18,12 @@
 #include <QApplication>
 #include "mainwindow.hpp"
 #include "gameconfig.hpp"
-#include "point.hpp"
-
-void registerMeta ()
-{
-	qRegisterMetaType<KDots::GameConfig> ("GameConfig");
-	qRegisterMetaTypeStreamOperators<KDots::GameConfig> ("GameConfig");
-	qRegisterMetaType<KDots::Point> ("Point");
-	qRegisterMetaTypeStreamOperators<KDots::Point> ("Point");
-}
-
 
 int main (int argc, char **argv)
 {
 	QApplication app (argc, argv);
 	
-	registerMeta ();
+	KDots::GameConfig::registerMeta ();
 	
 	KDots::MainWindow w;
 	w.show ();

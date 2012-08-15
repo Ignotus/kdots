@@ -24,15 +24,14 @@ namespace KDots
 	struct GameConfig;
 	class IConfigurationWidget : public QWidget
 	{
-		Q_OBJECT
 	public:
 		IConfigurationWidget (QWidget *parent = 0)
 			: QWidget (parent)
 		{
 		}
 	
-	signals:
-		void needCreateTable (bool);
+	protected:
+		virtual void needCreateTable (bool) = 0;
 	};
 }
 

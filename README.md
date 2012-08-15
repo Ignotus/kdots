@@ -16,6 +16,7 @@ Dependencies for building
 =========================
 * Qt Framework (QtGui, QtCore, QtNetwork) 4.6 or later.
 * cmake 2.6 or later.
+* KDELibs 4.6 or later
 * A C++ compiler with C++11 support.
 
 Building

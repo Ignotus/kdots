@@ -30,7 +30,6 @@ namespace KDots
 	
 	class IRival : public QObject
 	{
-		Q_OBJECT
 	public:
 		IRival (QObject *parent = 0)
 			: QObject (parent)
@@ -52,8 +51,8 @@ namespace KDots
 		{
 			return GameConfig ();
 		}
-		
-	public slots:
+	
+		//slots
 		virtual void nextStep (const Point& point)
 		{
 			Q_UNUSED (point);
@@ -64,9 +63,10 @@ namespace KDots
 			Q_UNUSED (table);
 		}
 		
-	signals:
-		void createDotTable (const GameConfig& config);
-		void needDestroy ();
+	protected: //signals
+		virtual void createDotTable (const GameConfig& config) = 0;
+		
+		virtual void needDestroy () = 0;
 	};
 }
 

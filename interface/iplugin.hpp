@@ -34,7 +34,6 @@ namespace KDots
 
 	class IPlugin : public QObject
 	{
-		Q_OBJECT
 	public:
 		IPlugin (QObject *parent = 0)
 			: QObject (parent)
@@ -63,9 +62,9 @@ namespace KDots
 
 }
 
-#define KDOTS_EXPORT_PLUGIN( libname, classname )             \
-    K_PLUGIN_FACTORY(factory, registerPlugin<classname>();) \
-        K_EXPORT_PLUGIN(factory(#libname))
+#define KDOTS_EXPORT_PLUGIN(libname, classname) \
+	K_PLUGIN_FACTORY(factory, registerPlugin<classname>();) \
+	K_EXPORT_PLUGIN(factory(#libname))
 
 Q_DECLARE_INTERFACE (KDots::IPlugin, "com.github.ignotus.kdots.IPlugin/1.0");
 #endif

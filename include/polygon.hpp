@@ -25,7 +25,7 @@
 
 namespace KDots
 {
-	class Polygon : public std::list<Point>
+	class KDOTS_EXPORT Polygon : public std::list<Point>
 	{
 		bool m_filled;
 		Owner m_owner;

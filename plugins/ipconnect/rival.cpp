@@ -217,3 +217,5 @@ namespace KDots
 		}
 	}
 }
+
+#include "rival.moc"

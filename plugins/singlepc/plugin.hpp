@@ -17,6 +17,7 @@
  */
 #ifndef KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
 #define KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
+#include <kdemacros.h>
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 
@@ -24,7 +25,7 @@ namespace KDots
 {
 	namespace singlepc
 	{
-		class Rival : public KDots::IRival
+		class KDE_EXPORT Rival : public KDots::IRival
 		{
 			Q_OBJECT
 			Q_INTERFACES (KDots::IRival)
@@ -44,14 +45,17 @@ namespace KDots
 			{
 				Q_UNUSED (point);
 			}
+		signals:
+			void createDotTable (const GameConfig& config);
+			void needDestroy ();
 		};
 
-		class Plugin : public KDots::IPlugin
+		class KDE_EXPORT Plugin : public KDots::IPlugin
 		{
 			Q_OBJECT
 			Q_INTERFACES (KDots::IPlugin)
 		public:
-			Plugin (QObject *parent = 0)
+			Plugin (QObject *parent, const QVariantList&)
 				: IPlugin (parent)
 			{
 			}

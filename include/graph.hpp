@@ -22,7 +22,7 @@
 
 namespace KDots
 {
-	class Graph
+	class KDOTS_EXPORT Graph
 	{
 		std::vector<std::vector<GraphPoint>> m_graph;
 	public:

@@ -63,3 +63,5 @@ namespace KDots
 	}
 	
 }
+
+#include "include/newgamewidget.moc"

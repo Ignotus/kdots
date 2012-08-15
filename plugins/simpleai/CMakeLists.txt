@@ -30,16 +30,16 @@ SET (SIMPLEAI_SRCS
 	plugin.cpp
 )
 
-QT4_WRAP_CPP (SIMPLEAI_HEADERS_MOC ${SIMPLEAI_HEADERS})
-
-ADD_LIBRARY (kdots_simpleai SHARED
+kde4_add_plugin (kdots_simpleai
 	${SIMPLEAI_SRCS}
 	${SIMPLEAI_HEADERS_MOC}
 )
 
 TARGET_LINK_LIBRARIES (kdots_simpleai
+	${KDE4_KDECORE_LIBS}
+	${KDE4_KDEUI_LIBS}
 	${QT_LIBRARIES}
-	kdots_plugin
+	kdotslib
 )
 
 IF (UNIX)

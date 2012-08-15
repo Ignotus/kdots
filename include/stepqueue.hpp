@@ -23,7 +23,7 @@
 
 namespace KDots
 {
-	class StepQueue
+	class KDOTS_EXPORT StepQueue
 	{
 		std::list<Point> m_firstPoints, m_secondPoints;
 		int m_first, m_second;

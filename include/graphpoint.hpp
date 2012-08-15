@@ -22,7 +22,7 @@
 
 namespace KDots
 {
-	class GraphPoint
+	class KDOTS_EXPORT GraphPoint
 	{
 	public:
 		typedef EdgeList<8> GraphEdges;

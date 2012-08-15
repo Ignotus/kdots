@@ -37,6 +37,9 @@ namespace KDots
 			void nextStep (const Point& point);
 			
 			void setDotTable (DotTable *table);
+		signals:
+			void createDotTable (const GameConfig& config);
+			void needDestroy ();
 		};
 	}
 }

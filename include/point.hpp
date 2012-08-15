@@ -18,10 +18,11 @@
 #ifndef KDOTS_POINT_HPP
 #define KDOTS_POINT_HPP
 #include <QMetaType>
+#include "constants.hpp"
 
 namespace KDots
 {
-	class Point
+	class KDOTS_EXPORT Point
 	{
 		int m_x, m_y;
 	public:

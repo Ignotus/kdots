@@ -33,3 +33,13 @@ QDataStream& operator>> (QDataStream& in, KDots::GameConfig& obj)
 	return in;
 }
 
+namespace KDots
+{
+	void GameConfig::registerMeta ()
+	{
+		qRegisterMetaType<KDots::GameConfig> ("GameConfig");
+		qRegisterMetaTypeStreamOperators<KDots::GameConfig> ("GameConfig");
+		qRegisterMetaType<KDots::Point> ("Point");
+		qRegisterMetaTypeStreamOperators<KDots::Point> ("Point");
+	}
+}

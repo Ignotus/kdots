@@ -17,4 +17,6 @@
  */
 #include "plugin.hpp"
 
-Q_EXPORT_PLUGIN2 (kdots_singlepc, KDots::singlepc::Plugin)
+KDOTS_EXPORT_PLUGIN (kdots_singlepc, KDots::singlepc::Plugin)
+
+#include "plugin.moc"

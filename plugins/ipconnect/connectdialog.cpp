@@ -44,3 +44,5 @@ namespace KDots
 
 	}
 }
+
+#include "connectdialog.moc"

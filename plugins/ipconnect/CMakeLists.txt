@@ -35,18 +35,18 @@ SET (FORMS
 	connectdialog.ui
 )
 
-QT4_WRAP_UI (IPCONNECT_FORMS_HEADERS ${FORMS})
-QT4_WRAP_CPP (IPCONNECT_HEADERS_MOC ${IPCONNECT_HEADERS})
+kde4_add_ui_files (IPCONNECT_FORMS_HEADERS ${FORMS})
 
-ADD_LIBRARY (kdots_ipconnect SHARED
+kde4_add_plugin (kdots_ipconnect
 	${IPCONNECT_SRCS}
-	${IPCONNECT_HEADERS_MOC}
 	${IPCONNECT_FORMS_HEADERS}
 )
 
 TARGET_LINK_LIBRARIES (kdots_ipconnect
+	${KDE4_KDECORE_LIBS}
+	${KDE4_KDEUI_LIBS}
 	${QT_LIBRARIES}
-	kdots_plugin
+	kdotslib
 )
 
 IF (UNIX)

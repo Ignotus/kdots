@@ -20,16 +20,16 @@ SET (SINGLEPC_SRCS
 	plugin.cpp
 )
 
-QT4_WRAP_CPP (SINGLEPC_HEADERS_MOC ${SINGLEPC_HEADERS})
-
-ADD_LIBRARY (kdots_singlepc SHARED
+kde4_add_plugin (kdots_singlepc
 	${SINGLEPC_SRCS}
-	${SINGLEPC_HEADERS_MOC}
+	${INTERFACES}
 )
 
 TARGET_LINK_LIBRARIES (kdots_singlepc
+	${KDE4_KDECORE_LIBS}
+	${KDE4_KDEUI_LIBS}
 	${QT_LIBRARIES}
-	kdots_plugin
+	kdotslib
 )
 
 IF (UNIX)

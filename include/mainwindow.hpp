@@ -19,6 +19,7 @@
 #define KDOTS_MAINWINDOW_HPP
 #include <memory>
 #include <QMainWindow>
+#include "constants.hpp"
 
 namespace Ui
 {
@@ -30,7 +31,7 @@ namespace KDots
 	class TableWidget;
 	class IRival;
 
-	class MainWindow : public QMainWindow
+	class KDOTS_EXPORT MainWindow : public QMainWindow
 	{
 		Q_OBJECT
 	public:

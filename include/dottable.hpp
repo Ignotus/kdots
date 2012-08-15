@@ -26,7 +26,7 @@
 namespace KDots
 {
 	class StepQueue;
-	class DotTable : public QObject
+	class KDOTS_EXPORT DotTable : public QObject
 	{
 		Q_OBJECT
 

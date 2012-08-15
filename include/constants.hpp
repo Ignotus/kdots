@@ -18,6 +18,20 @@
 #ifndef KDOTS_CONSTANTS_HPP
 #define KDOTS_CONSTANTS_HPP
 #include <QString>
+#include <kdemacros.h>
+#ifndef KDOTS_EXPORT
+# if defined(MAKE_KDOTS_LIB)
+   // We are building this library
+#  define KDOTS_EXPORT KDE_EXPORT
+# else
+   // We are using this library
+#  define KDOTS_EXPORT KDE_IMPORT
+# endif
+#endif
+
+# ifndef KDOTS_EXPORT_DEPRECATED
+#  define KDOTS_EXPORT_DEPRECATED KDE_DEPRECATED KDOTS_EXPORT
+# endif
 
 namespace KDots
 {

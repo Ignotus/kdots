@@ -80,3 +80,5 @@ namespace KDots
 	}
 
 }
+
+#include "include/mainwindow.moc"

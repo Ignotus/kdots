@@ -53,6 +53,8 @@ namespace KDots
 			
 		private slots:
 			void onTabChanged (int index);
+		signals:
+			void needCreateTable (bool);
 		};
 	}
 }

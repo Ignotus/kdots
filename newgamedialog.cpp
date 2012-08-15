@@ -138,3 +138,5 @@ namespace KDots
 	}
 	
 }
+
+#include "include/newgamedialog.moc"

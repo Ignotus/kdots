@@ -179,3 +179,5 @@ namespace KDots
 		}
 	}
 }
+
+#include "include/dottable.moc"

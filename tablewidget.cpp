@@ -217,3 +217,5 @@ namespace KDots
 		                      + QString::number (m_table->stepQueue()->getMarks (SECOND)));
 	}
 }
+
+#include "include/tablewidget.moc"

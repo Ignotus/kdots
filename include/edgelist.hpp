@@ -22,7 +22,7 @@
 namespace KDots
 {
 	template<int SIZE>
-	class EdgeList
+	class KDOTS_EXPORT EdgeList
 	{
 		int m_count;
 		Point m_pointList[SIZE];

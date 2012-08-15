@@ -53,3 +53,5 @@ namespace KDots
 		return m_ui->PluginComboBox->currentText ();
 	}
 }
+
+#include "include/pluginmanagerwidget.moc"
