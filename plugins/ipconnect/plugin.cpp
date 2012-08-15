@@ -17,4 +17,4 @@
  */
 #include "plugin.hpp"
 
-KDOTS_EXPORT_PLUGIN (kdots_ipconnection, KDots::ipconnect::Plugin)
+Q_EXPORT_PLUGIN2 (kdots_ipconnection, KDots::ipconnect::Plugin)
