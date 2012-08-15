@@ -55,11 +55,13 @@ namespace KDots
 			}
 		}
 		
-		Point getNextPoint (Polygon_ptr& polygon, Polygon::const_iterator current)
+		Point getNextPoint (Polygon_ptr& polygon, int& shift, Polygon::const_iterator current)
 		{
 			const int currentY = current->y ();
+			shift = 0;
 			for (Polygon::const_iterator next = current;;)
 			{
+				++shift;
 				if (next == --polygon->end ())
 					next = polygon->begin ();
 				else
@@ -74,7 +76,7 @@ namespace KDots
 		{
 			// k - a count of points in the same line with "point" object
 			// i - crosses count
-			int i = 0, k = 0;
+			int i = 0, shift;
 
 			Polygon::const_iterator itr = polygon->begin (), itrEnd = polygon->end ();
 			while (itr != itrEnd)
@@ -84,19 +86,17 @@ namespace KDots
 					++itr;
 					continue;
 				}
-				else
-					++k;
 
 				const Point& prevPoint = getPrevPoint (polygon, itr);
-				const Point& nextPoint = getNextPoint (polygon, itr);
+				const Point& nextPoint = getNextPoint (polygon, shift, itr);
 
-				if (itr->x () < point.x () && prevPoint.y () != nextPoint.y ())
+				if (itr->x () < point.x () && prevPoint.y () != nextPoint.y () && shift == 1)
 					++i;
 				
 				++itr;
 			}
 
-			return k != i && i % 2;
+			return i % 2;
 		}
 	}
 
@@ -130,7 +130,7 @@ namespace KDots
 		{
 			for (j = 0; j < m_graph.height (); ++j)
 			{
-				const GraphPoint& gpoint = m_graph[k][j];
+				GraphPoint& gpoint = m_graph[k][j];
 
 				if (gpoint.isCaptured () || gpoint.owner () == current)
 					continue;
@@ -146,8 +146,8 @@ namespace KDots
 							polygon->setFilled (true);
 							m_steps->addCaptured ();
 						}
-
-						m_graph[newPoint].capture ();
+						
+						gpoint.capture ();
 						break;
 					}
 				}

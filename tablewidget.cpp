@@ -30,7 +30,8 @@
 
 namespace KDots
 {
-	TableWidget::TableWidget (const GameConfig& config, std::shared_ptr<IRival> rival, QWidget *parent)
+	TableWidget::TableWidget (const GameConfig& config,
+			std::shared_ptr<IRival> rival, QWidget *parent)
 		: QWidget (parent)
 		, m_table (new DotTable (config , this))
 		, m_height (config.m_height + 1)
@@ -142,8 +143,8 @@ namespace KDots
 				firtBorder (Qt::red, 0.5), secondBorder (Qt::blue, 0.5);
 				
 		const std::vector<Polygon_ptr>& polygonVector = m_table->polygons ();
-		const QBrush firstPolyBrush (Qt::red, Qt::Dense6Pattern),
-			secondPolyBrush (Qt::blue, Qt::DiagCrossPattern);
+		const QBrush firstPolyBrush (Qt::red, Qt::FDiagPattern),
+			secondPolyBrush (Qt::blue, Qt::BDiagPattern);
 		
 		for (Polygon_ptr polygon : polygonVector)
 		{
