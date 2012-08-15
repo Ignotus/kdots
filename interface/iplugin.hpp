@@ -20,11 +20,10 @@
 #include <QString>
 #include <QIcon>
 #include <QtPlugin>
+#include <kexportplugin.h>
+#include <kpluginfactory.h>
 #include <point.hpp>
 
-#define K_PLUGIN_EXPORT( c ) \
-	K_PLUGIN_FACTORY (TextEditorFactory, registerPlugin<c> ();) \
-	K_EXPORT_PLUGIN (TextEditorFactory ("c"))
 
 class QDialog;
 
@@ -63,6 +62,10 @@ namespace KDots
 	};
 
 }
+
+#define KDOTS_EXPORT_PLUGIN( libname, classname )             \
+    K_PLUGIN_FACTORY(factory, registerPlugin<classname>();) \
+        K_EXPORT_PLUGIN(factory(#libname))
 
 Q_DECLARE_INTERFACE (KDots::IPlugin, "com.github.ignotus.kdots.IPlugin/1.0");
 #endif

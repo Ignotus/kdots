@@ -17,7 +17,6 @@
  */
 #ifndef KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
 #define KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
-#include <kdemacros.h>
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 
@@ -28,6 +27,7 @@ namespace KDots
 		class Rival : public KDots::IRival
 		{
 			Q_OBJECT
+			Q_INTERFACES (KDots::IRival)
 		public:
 			Rival (QObject *parent = 0)
 				: IRival (parent)

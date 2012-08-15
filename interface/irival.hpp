@@ -70,4 +70,6 @@ namespace KDots
 	};
 }
 
+Q_DECLARE_INTERFACE (KDots::IRival, "com.github.ignotus.kdots.IRival/1.0");
+
 #endif

@@ -36,4 +36,6 @@ namespace KDots
 	};
 }
 
+Q_DECLARE_INTERFACE (KDots::IConfigurationWidget, "com.github.ignotus.kdots.IConfigurationWidget/1.0");
+
 #endif
