@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <widget class="KMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -19,62 +19,46 @@
   <property name="windowTitle">
    <string>KDots</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
-  <widget class="QMenuBar" name="menuBar">
+  <widget class="QWidget" name="centralWidget" native="true">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>640</width>
-     <height>19</height>
+     <width>100</width>
+     <height>30</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>&amp;File</string>
-    </property>
-    <addaction name="actionNewGame"/>
-   </widget>
-   <widget class="QMenu" name="menu_Help">
-    <property name="title">
-     <string>&amp;Help</string>
-    </property>
-    <addaction name="actionAbout_Qt_2"/>
-   </widget>
-   <addaction name="menuFile"/>
-   <addaction name="menu_Help"/>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
+  <widget class="KStatusBar" name="statusBar" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>3</width>
+     <height>18</height>
+    </rect>
+   </property>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionNewGame">
-   <property name="text">
-    <string>New Game</string>
-   </property>
-  </action>
-  <action name="actionAbout_Qt">
-   <property name="text">
-    <string>About Qt</string>
-   </property>
-  </action>
-  <action name="actionAbout_KDots">
-   <property name="text">
-    <string>About KDots</string>
-   </property>
-  </action>
-  <action name="actionAbout_Qt_2">
-   <property name="text">
-    <string>About Qt</string>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>KMainWindow</class>
+   <extends>QWidget</extends>
+   <header>kmainwindow.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>KToolBar</class>
+   <extends>QWidget</extends>
+   <header>ktoolbar.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KStatusBar</class>
+   <extends>QWidget</extends>
+   <header>kstatusbar.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -19,6 +19,8 @@
 #include "ui_mainwindow.h"
 #include <QDir>
 #include <QDebug>
+#include <KMenuBar>
+#include <KStatusBar>
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 #include "newgamedialog.hpp"
@@ -28,11 +30,25 @@
 namespace KDots
 {
 	MainWindow::MainWindow (QWidget *parent)
-		: QMainWindow (parent)
+		: KXmlGuiWindow (parent)
 		, m_ui (new Ui::MainWindow)
 		, m_destroyTable (false)
 	{
 		m_ui->setupUi (this);
+		
+		statusBar ()->show ();
+		setCentralWidget (new QWidget (this));
+		setupGUI (Create);
+		initMenu ();
+	}
+	
+	void MainWindow::initMenu ()
+	{
+		KMenuBar *currentBar = menuBar ();
+		QMenu *fileMenu = new QMenu (tr ("&File"));
+		fileMenu->addAction (tr ("New game"), this, SLOT (on_actionNewGame_triggered ()));
+		currentBar->insertMenu (currentBar->actionAt ({1, 1}), fileMenu);
+		menuBar ()->show ();
 	}
 
 	void MainWindow::on_actionNewGame_triggered ()

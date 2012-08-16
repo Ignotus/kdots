@@ -23,7 +23,7 @@
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
-      <widget class="QTabWidget" name="tabWidget">
+      <widget class="KTabWidget" name="tabWidget">
        <property name="currentIndex">
         <number>0</number>
        </property>
@@ -66,7 +66,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QComboBox" name="user">
+           <widget class="KComboBox" name="user">
             <item>
              <property name="text">
               <string>First Player</string>
@@ -104,7 +104,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="host">
+           <widget class="KLineEdit" name="host">
             <property name="inputMask">
              <string>000.000.000.000; </string>
             </property>
@@ -139,6 +139,24 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KComboBox</class>
+   <extends>QComboBox</extends>
+   <header>kcombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>ktabwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

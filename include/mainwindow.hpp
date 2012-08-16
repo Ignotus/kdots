@@ -18,7 +18,7 @@
 #ifndef KDOTS_MAINWINDOW_HPP
 #define KDOTS_MAINWINDOW_HPP
 #include <memory>
-#include <QMainWindow>
+#include <KXmlGuiWindow>
 #include "constants.hpp"
 
 namespace Ui
@@ -31,7 +31,7 @@ namespace KDots
 	class TableWidget;
 	class IRival;
 
-	class KDOTS_EXPORT MainWindow : public QMainWindow
+	class KDOTS_EXPORT MainWindow : public KXmlGuiWindow
 	{
 		Q_OBJECT
 	public:
@@ -41,7 +41,7 @@ namespace KDots
 		std::shared_ptr<IRival> m_rival;
 		bool m_destroyTable;
 		
-		void loadPlugins ();
+		void initMenu ();
 
 	private slots:
 		void on_actionNewGame_triggered ();

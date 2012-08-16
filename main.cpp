@@ -15,18 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QApplication>
+#include <KApplication>
+#include <KAboutData>
+#include <KLocale>
+#include <KCmdLineArgs>
 #include "mainwindow.hpp"
 #include "gameconfig.hpp"
 
 int main (int argc, char **argv)
 {
-	QApplication app (argc, argv);
+	KAboutData aboutData ("KDots", 0,
+		ki18n ("KDots"), "0.5b",
+		ki18n ("A prototype of the game of dots."),
+		KAboutData::License_GPL_V3,
+		ki18n ("Copyright (c) 2011-2012 Minh ngo") );
+	
+	KCmdLineArgs::init (argc, argv, &aboutData);
+ 
+	KApplication app;
 	
 	KDots::GameConfig::registerMeta ();
 	
-	KDots::MainWindow w;
-	w.show ();
+	KDots::MainWindow *w = new KDots::MainWindow ();
+	w->show ();
 
 	return app.exec ();
 }

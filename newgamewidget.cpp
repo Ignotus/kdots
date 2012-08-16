@@ -29,6 +29,7 @@ namespace KDots
 		, m_ui (new Ui::NewGameWidget)
 	{
 		m_ui->setupUi (this);
+		
 	}
 
 	int NewGameWidget::getHeight () const
