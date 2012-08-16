@@ -79,11 +79,11 @@ namespace KDots
 
 		connect (table,
 				SIGNAL (updateStatusBar (const QString&)),
-				m_ui->statusBar,
+				statusBar (),
 				SLOT (clearMessage ()));
 		connect (table,
 				SIGNAL (updateStatusBar (const QString&)),
-				m_ui->statusBar,
+				statusBar (),
 				SLOT (showMessage (const QString&)));
 
 		setCentralWidget (table);

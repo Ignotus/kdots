@@ -29,16 +29,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="KStatusBar" name="statusBar" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>3</width>
-     <height>18</height>
-    </rect>
-   </property>
-  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -47,16 +37,6 @@
    <extends>QWidget</extends>
    <header>kmainwindow.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>KToolBar</class>
-   <extends>QWidget</extends>
-   <header>ktoolbar.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KStatusBar</class>
-   <extends>QWidget</extends>
-   <header>kstatusbar.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
