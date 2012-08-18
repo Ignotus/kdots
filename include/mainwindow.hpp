@@ -54,6 +54,7 @@ namespace KDots
 	private slots:
 		void on_actionNewGame_triggered ();
 		void destroyGame ();
+		void onPreferences ();
 	};
 }
 

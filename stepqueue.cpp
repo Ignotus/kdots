@@ -27,7 +27,6 @@
 
 namespace KDots
 {
-  
 	StepQueue::StepQueue (Owner firstPlayer)
 		: m_first (0)
 		, m_second (0)

@@ -27,6 +27,7 @@
 #include <KAboutData>
 #include <KLocale>
 #include <KCmdLineArgs>
+#include <brushcombo.hpp>
 #include "mainwindow.hpp"
 #include "gameconfig.hpp"
 

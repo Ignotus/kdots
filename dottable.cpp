@@ -24,7 +24,6 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "dottable.hpp"
-#include <QDebug>
 #include "polygonfinder.hpp"
 #include "stepqueue.hpp"
 

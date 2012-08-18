@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+		http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+
+<kcfgfile />
+
+<group name="Board">
+	<entry name="firstPointColor" type="Color">
+		<label>First player territory fill style</label>
+		<default>#FF0000</default>
+	</entry>
+	<entry name="secondPointColor" type="Color">
+		<label>Second player territory fill style</label>
+		<default>#0099FF</default>
+	</entry>
+	<entry name="firstFillStyle" type="Int">
+		<label>First player territory fill style</label>
+		<default>0</default>
+	</entry>
+	<entry name="secondFillStyle" type="Int">
+		<label>Second player territory fill style</label>
+		<default>0</default>
+	</entry>
+</group>
+
+</kcfg>

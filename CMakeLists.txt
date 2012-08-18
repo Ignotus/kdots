@@ -41,6 +41,7 @@ IF (UNIX)
 ENDIF (UNIX)
 
 SET (SRCS
+	brushcombo.cpp
 	graphpoint.cpp
 	graph.cpp
 	dottable.cpp
@@ -55,9 +56,12 @@ SET (SRCS
 	pluginmanagerwidget.cpp
 	gameconfig.cpp
 	point.cpp
+	brushcombodelegate.cpp
+	kdots.kcfgc
 )
 
 SET (HEADERS
+	include/brushcombo.hpp
 	include/graphpoint.hpp
 	include/graph.hpp
 	include/dottable.hpp
@@ -74,6 +78,7 @@ SET (HEADERS
 	include/plugincontainer.hpp
 	include/pluginmanagerwidget.hpp
 	include/gameconfig.hpp
+	include/brushcombodelegate.hpp
 )
 
 SET (INTERFACE_HEAD
@@ -87,9 +92,12 @@ SET (FORMS
 	ui/newgamewidget.ui
 	ui/newgamedialog.ui
 	ui/pluginmanagerwidget.ui
+	ui/boardconfigwidget.ui
 )
 
 kde4_add_ui_files (SRCS ${FORMS})
+kde4_add_kcfg_files (SRCS kdots.kcfgc)
+INSTALL (FILES kdots.kcfg DESTINATION ${KCFG_INSTALL_DIR})
 
 CONFIGURE_FILE (config.hpp.in config.hpp)
 
@@ -118,6 +126,7 @@ TARGET_LINK_LIBRARIES (kdots
 IF (UNIX)
 	INSTALL (TARGETS kdots DESTINATION ${BINDIR})
 	INSTALL (TARGETS kdotslib DESTINATION ${LIBDIR})
+	#INSTALL ( FILES kdotsui.rc DESTINATION ${DATA_INSTALL_DIR}/kdots )
 ENDIF (UNIX)
 
 # uninstall target
@@ -129,4 +138,4 @@ CONFIGURE_FILE (
 ADD_CUSTOM_TARGET (uninstall
 	COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 
-ADD_SUBDIRECTORY (plugins)
+#ADD_SUBDIRECTORY (plugins)

@@ -23,40 +23,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#include "pluginmanagerwidget.hpp"
-#include <interface/iplugin.hpp>
-#include "plugincontainer.hpp"
-#include "ui_pluginmanagerwidget.h"
+#include "brushcombo.hpp"
+#include <QPaintEvent>
+#include <QStylePainter>
+#include "brushcombodelegate.hpp"
 
 namespace KDots
 {
-	PluginManagerWidget::PluginManagerWidget (QWidget *parent)
-		: QWidget (parent)
-		, m_ui (new Ui::PluginManagerWidget)
+	BrushCombo::BrushCombo (QWidget* parent)
+		: KComboBox (parent)
 	{
-		m_ui->setupUi (this);
-		
-		for (IPlugin *plugin : PluginContainer::instance ().plugins ().values ())
-			m_ui->PluginComboBox->addItem (plugin->icon (), plugin->name ());
-		
-		onIndexChanged (0);
-		
-		connect (m_ui->PluginComboBox,
-				SIGNAL (currentIndexChanged (int)),
-				this,
-				SLOT (onIndexChanged (int)));
+		for (int i = 0; i < 15; ++i)
+		{
+			addItem (QString::number (i));
+		}
+		setItemDelegate (new BrushComboDelegate (this));
 	}
 	
-	void PluginManagerWidget::onIndexChanged (int current)
+	void BrushCombo::paintEvent (QPaintEvent *e)
 	{
-		IPlugin *first = PluginContainer::instance ().plugin (m_ui->PluginComboBox->itemText (current));
-		m_ui->Description->setText (first->description ());
-	}
+		Q_UNUSED (e);
+		
+		QStylePainter painter (this);
+		QStyleOptionComboBox opt;
+		initStyleOption (&opt);
+		painter.drawComplexControl (QStyle::CC_ComboBox, opt);
 
-	QString PluginManagerWidget::pluginName () const
-	{
-		return m_ui->PluginComboBox->currentText ();
+		const QRect& rect = painter.style ()->subControlRect (QStyle::CC_ComboBox,
+				&opt, QStyle::SC_ComboBoxEditField, this);
+		
+		QPixmap pixmap (rect.size () - QSize (4, 4));
+		QPainter pixPainter (&pixmap);
+		pixPainter.setRenderHint (QStylePainter::Antialiasing);
+		pixPainter.fillRect (pixmap.rect (), Qt::white);
+		pixPainter.fillRect (pixmap.rect (),
+				BrushComboDelegate::brushes ()[currentIndex ()]);
+		pixPainter.drawRect (pixmap.rect ());
+		
+		QPainter genPainter (this);
+		genPainter.drawPixmap (rect.x () + 2, rect.y () + 2, pixmap);
 	}
 }
 
-#include "include/pluginmanagerwidget.moc"
+#include "include/brushcombo.moc"

@@ -25,6 +25,7 @@
  */
 #include "rival.hpp"
 #include <QMessageBox>
+#include <KLocalizedString>
 #include <include/stepqueue.hpp>
 #include "connectdialog.hpp"
 
@@ -60,8 +61,8 @@ namespace KDots
 		void Rival::onDisconnected ()
 		{
 			QMessageBox::warning (0,
-					tr ("The socket has been disconnected"),
-					tr ("The socket has been disconnected"));
+					i18n ("The socket has been disconnected"),
+					i18n ("The socket has been disconnected"));
 		}
 		
 		GameConfig Rival::getGameConfig ()
@@ -120,8 +121,8 @@ namespace KDots
 								SLOT (onReadyRead ()));
 						
 						QMessageBox::information (0,
-								tr ("Connected"),
-								tr ("Good luck have fun"));
+								i18n ("Connected"),
+								i18n ("Good luck have fun"));
 						return config;
 					}
 				}
@@ -129,8 +130,8 @@ namespace KDots
 			else
 			{
 				QMessageBox::warning (0,
-						tr ("Warning!"),
-						tr ("Cannot connect to the server: ") + m_socket->errorString ());
+						i18n ("Warning!"),
+						i18n ("Cannot connect to the server: ") + m_socket->errorString ());
 				
 				emit needDestroy ();
 			}

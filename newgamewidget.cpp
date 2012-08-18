@@ -25,7 +25,6 @@
  */
 #include "newgamewidget.hpp"
 #include "ui_newgamewidget.h"
-#include <QDebug>
 #include <QMetaType>
 #include "constants.hpp"
 #include "plugincontainer.hpp"

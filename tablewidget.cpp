@@ -30,7 +30,6 @@
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QPainter>
-#include <QDebug>
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 #include "dottable.hpp"

@@ -24,7 +24,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "plugincontainer.hpp"
-#include <QDebug>
+#include <KDebug>
 #include <QDir>
 #include <QApplication>
 #include <QPluginLoader>
@@ -51,13 +51,13 @@ namespace KDots
 			if (iplugin)
 			{
 				foundFlag = true;
-				qDebug () << Q_FUNC_INFO << "Loading the plugin:" << iplugin->name ();
+				kDebug () << "Loading the plugin:" << iplugin->name ();
 				m_pluginMap.insert (iplugin->name (), iplugin);
 			}
 			else
 			{
-				qDebug () << Q_FUNC_INFO << pluginLoader.errorString ();
-				qDebug () << Q_FUNC_INFO << "Cannot load the plugin " << fileName;
+				kDebug () << pluginLoader.errorString ();
+				kDebug () << "Cannot load the plugin " << fileName;
 			}
 		}
 		
@@ -72,9 +72,9 @@ namespace KDots
 #ifdef Q_OS_UNIX
 			QDir libdir (PLUGINS_DIR);
 			if (!libdir.exists () || !findPlugin (libdir))
-				qDebug () << Q_FUNC_INFO << "Plugins not found in " << libdir.absolutePath ();
+				kDebug () << "Plugins not found in " << libdir.absolutePath ();
 #else
-			qDebug () << Q_FUNC_INFO << "Plugins not found";
+			kDebug () << "Plugins not found";
 #endif	
 		}
 
