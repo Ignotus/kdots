@@ -26,6 +26,13 @@
 #include "dottable.hpp"
 #include "polygonfinder.hpp"
 #include "stepqueue.hpp"
+#define BOARD_LOOP_BEGIN(X_ITER, Y_ITER) \
+	for (int X_ITER = 0, Y_ITER; X_ITER < m_graph.width (); ++X_ITER) \
+	{ \
+		for (Y_ITER = 0; Y_ITER < m_graph.height (); ++Y_ITER) \
+		{
+			
+#define BOARD_LOOP_END }}
 
 namespace KDots
 {
@@ -132,33 +139,49 @@ namespace KDots
 			return;
 		}
 		
-		for (int k = 0, j; k < m_graph.width (); ++k)
-		{
-			for (j = 0; j < m_graph.height (); ++j)
+		const Owner otherOwner = StepQueue::other (current);
+		
+		BOARD_LOOP_BEGIN (k, j)
+			GraphPoint& gpoint = m_graph[k][j];
+
+			if (gpoint.isCaptured () || gpoint.owner () != otherOwner)
+				continue;
+
+			for (Polygon_ptr polygon : polyList)
 			{
-				GraphPoint& gpoint = m_graph[k][j];
-
-				if (gpoint.isCaptured () || gpoint.owner () == current)
-					continue;
-
-				for (Polygon_ptr polygon : polyList)
-				{
-					const Point newPoint (k, j);
+				const Point newPoint (k, j);
 					
-					if (isInPolygon (polygon, newPoint))
+				if (isInPolygon (polygon, newPoint))
+				{
+					if (gpoint.owner () == otherOwner)
 					{
-						if (gpoint.owner () == StepQueue::other (current))
-						{
-							polygon->setFilled (true);
-							m_steps->addCaptured ();
-						}
-						
-						gpoint.capture ();
-						break;
+						polygon->setFilled (true);
+						m_steps->addCaptured ();
 					}
+						
+					gpoint.capture ();
+					break;
 				}
 			}
-		}
+		BOARD_LOOP_END;
+		
+		BOARD_LOOP_BEGIN (k, j)
+			GraphPoint& gpoint = m_graph[k][j];
+
+			if (gpoint.isCaptured () || gpoint.owner () != NONE)
+				continue;
+
+			for (Polygon_ptr polygon : polyList)
+			{
+				const Point newPoint (k, j);
+					
+				if (isInPolygon (polygon, newPoint) && polygon->isFilled ())
+				{
+					gpoint.capture ();
+					break;
+				}
+			}
+		BOARD_LOOP_END;
 		
 		drawPolygon (polyList);
 		m_steps->nextStep ();
@@ -185,5 +208,8 @@ namespace KDots
 		}
 	}
 }
+
+#undef BOARD_LOOP_BEGIN
+#undef BOARD_LOOP_END
 
 #include "include/dottable.moc"
