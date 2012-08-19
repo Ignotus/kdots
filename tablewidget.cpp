@@ -227,9 +227,9 @@ namespace KDots
 		painter.drawPixmap (dx, dy, pixmap);
 
 		emit updateStatusBar (QString ("First:\t")
-		                      + QString::number (m_table->stepQueue()->getMarks (FIRST))
-		                      + "\tSecond:\t"
-		                      + QString::number (m_table->stepQueue()->getMarks (SECOND)));
+				+ QString::number (m_table->stepQueue ()->getMarks (FIRST))
+				+ "\tSecond:\t"
+				+ QString::number (m_table->stepQueue ()->getMarks (SECOND)));
 	}
 }
 

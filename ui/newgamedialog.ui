@@ -14,26 +14,6 @@
    <string>New Game</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="1" column="0">
-    <widget class="KPushButton" name="CancelButton">
-     <property name="text">
-      <string>Cancel</string>
-     </property>
-     <property name="icon">
-      <iconset theme="dialog-cancel"/>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="KPushButton" name="NextButton">
-     <property name="text">
-      <string>Next</string>
-     </property>
-     <property name="icon">
-      <iconset theme="go-next"/>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="2">
     <widget class="KPushButton" name="OKButton">
      <property name="enabled">
@@ -43,7 +23,33 @@
       <string>OK</string>
      </property>
      <property name="icon">
-      <iconset theme="dialog-ok"/>
+      <iconset theme="dialog-ok">
+       <normaloff/>
+      </iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="KPushButton" name="NextButton">
+     <property name="text">
+      <string>Next</string>
+     </property>
+     <property name="icon">
+      <iconset theme="go-next">
+       <normaloff/>
+      </iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="KPushButton" name="CancelButton">
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+     <property name="icon">
+      <iconset theme="dialog-cancel">
+       <normaloff/>
+      </iconset>
      </property>
     </widget>
    </item>
