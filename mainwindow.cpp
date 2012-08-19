@@ -43,6 +43,7 @@ namespace KDots
 		: KXmlGuiWindow (parent)
 		, m_ui (new Ui::MainWindow)
 		, m_destroyTable (false)
+		, m_table (NULL)
 	{
 		m_ui->setupUi (this);
 		
@@ -82,7 +83,22 @@ namespace KDots
 			
 		dialog.addPage (board, i18n ("Board"), QLatin1String ("games-config-options"));
 		
+		connect (&dialog,
+				SIGNAL (settingsChanged (const QString&)),
+				this,
+				SLOT (updateConfiguration (const QString&)));
+		
+		if (m_table)
+		{
+			connect (&dialog,
+					SIGNAL (accepted ()),
+					m_table,
+					SLOT (update ()));
+		}
+		
 		dialog.exec ();
+		
+
 	}
 
 	void MainWindow::on_actionNewGame_triggered ()
@@ -103,25 +119,26 @@ namespace KDots
 		if (!config.isInititialized ())
 			return;
 
-		TableWidget *table = new TableWidget (config, m_rival, this);
+		m_table = new TableWidget (config, m_rival, this);
 		
 		if (m_destroyTable)
 		{
-			delete table;
+			delete m_table;
+			m_table = NULL;
 			return;
 		}
 
-		connect (table,
+		connect (m_table,
 				SIGNAL (updateStatusBar (const QString&)),
 				statusBar (),
 				SLOT (clearMessage ()));
-		connect (table,
+		connect (m_table,
 				SIGNAL (updateStatusBar (const QString&)),
 				statusBar (),
 				SLOT (showMessage (const QString&)));
 
-		setCentralWidget (table);
-		table->show ();
+		setCentralWidget (m_table);
+		m_table->show ();
 	}
 	
 	void MainWindow::destroyGame ()
@@ -129,6 +146,10 @@ namespace KDots
 		m_destroyTable = true;
 	}
 
+	void MainWindow::updateConfiguration (const QString&)
+	{
+		// UNUSED
+	}
 }
 
 #include "include/mainwindow.moc"

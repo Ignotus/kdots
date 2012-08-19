@@ -23,40 +23,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_MAINWINDOW_HPP
-#define KDOTS_MAINWINDOW_HPP
-#include <memory>
-#include <KXmlGuiWindow>
-#include "constants.hpp"
-
-namespace Ui
-{
-	class MainWindow;
-}
+#ifndef KDOTS_BRUSHCOMBODELEGATE_HPP
+#define KDOTS_BRUSHCOMBODELEGATE_HPP
+#include <QStyledItemDelegate>
+#include <QVector>
 
 namespace KDots
 {
-	class TableWidget;
-	class IRival;
-
-	class KDOTS_EXPORT MainWindow : public KXmlGuiWindow
+	class BrushComboDelegate : public QStyledItemDelegate
 	{
 		Q_OBJECT
 	public:
-		MainWindow (QWidget *parent = 0);
-	private:
-		Ui::MainWindow *m_ui;
-		std::shared_ptr<IRival> m_rival;
-		bool m_destroyTable;
-		TableWidget *m_table;
+		static const QVector<Qt::BrushStyle>& brushes ();
+		static Qt::BrushStyle getBrushStyle (int index);
 		
-		void initMenu ();
-
-	private slots:
-		void on_actionNewGame_triggered ();
-		void destroyGame ();
-		void onPreferences ();
-		void updateConfiguration (const QString& dialogName);
+		BrushComboDelegate (QWidget* parent = 0);
+		
+		QWidget* createEditor (QWidget *parent, const QStyleOptionViewItem& option,
+				const QModelIndex& index) const;
+		void setEditorData (QWidget *editor, const QModelIndex& index) const;
+		void setModelData (QWidget *editor, QAbstractItemModel *model,
+				const QModelIndex& index) const;
+		void updateEditorGeometry (QWidget *editor, const QStyleOptionViewItem& option,
+				const QModelIndex& index) const;
+		void paint (QPainter *painter, const QStyleOptionViewItem& option,
+				const QModelIndex& index) const;
+		QSize sizeHint ( const QStyleOptionViewItem& option, const QModelIndex& index ) const;
 	};
 }
 

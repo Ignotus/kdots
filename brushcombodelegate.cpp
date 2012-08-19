@@ -48,14 +48,17 @@ namespace KDots
 		return brush;
 	}
 	
+	Qt::BrushStyle BrushComboDelegate::getBrushStyle (int index)
+	{
+		return brushes ()[index];
+	}
+	
 	QWidget* BrushComboDelegate::createEditor (QWidget *parent,
-			const QStyleOptionViewItem& option, const QModelIndex& index) const
+			const QStyleOptionViewItem&, const QModelIndex&) const
 	{
 		QComboBox* editor = new QComboBox (parent);
 		for (int i = 0, size = brushes ().size (); i < size; ++i)
-		{
 			editor->addItem (QString::number (i));
-		}
 		
 		return editor;
 	}
@@ -75,7 +78,7 @@ namespace KDots
 	}
 	
 	void BrushComboDelegate::updateEditorGeometry (QWidget *editor,
-			const QStyleOptionViewItem& option, const QModelIndex& index) const
+			const QStyleOptionViewItem& option, const QModelIndex&) const
 	{
 		editor->setGeometry (option.rect);
 	}
@@ -98,11 +101,9 @@ namespace KDots
  
 		KApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
 		painter->drawPixmap (itemRect, pixmap);
-		
 	}
 	
-	QSize BrushComboDelegate::sizeHint (const QStyleOptionViewItem& option,
-			const QModelIndex& index) const
+	QSize BrushComboDelegate::sizeHint (const QStyleOptionViewItem&, const QModelIndex&) const
 	{
 		return QSize (60, 36);
 	}

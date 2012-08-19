@@ -23,40 +23,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_MAINWINDOW_HPP
-#define KDOTS_MAINWINDOW_HPP
-#include <memory>
-#include <KXmlGuiWindow>
+#ifndef KDOTS_BRUSHCOMBO_HPP
+#define KDOTS_BRUSHCOMBO_HPP
+#include <KComboBox>
 #include "constants.hpp"
-
-namespace Ui
-{
-	class MainWindow;
-}
 
 namespace KDots
 {
-	class TableWidget;
-	class IRival;
-
-	class KDOTS_EXPORT MainWindow : public KXmlGuiWindow
+	class KDOTS_EXPORT BrushCombo : public KComboBox
 	{
 		Q_OBJECT
 	public:
-		MainWindow (QWidget *parent = 0);
-	private:
-		Ui::MainWindow *m_ui;
-		std::shared_ptr<IRival> m_rival;
-		bool m_destroyTable;
-		TableWidget *m_table;
-		
-		void initMenu ();
-
-	private slots:
-		void on_actionNewGame_triggered ();
-		void destroyGame ();
-		void onPreferences ();
-		void updateConfiguration (const QString& dialogName);
+		BrushCombo (QWidget* parent = 0);
+		void paintEvent (QPaintEvent *e);
 	};
 }
 

@@ -34,16 +34,13 @@ namespace KDots
 		: KComboBox (parent)
 	{
 		for (int i = 0; i < 15; ++i)
-		{
 			addItem (QString::number (i));
-		}
+		
 		setItemDelegate (new BrushComboDelegate (this));
 	}
 	
-	void BrushCombo::paintEvent (QPaintEvent *e)
+	void BrushCombo::paintEvent (QPaintEvent*)
 	{
-		Q_UNUSED (e);
-		
 		QStylePainter painter (this);
 		QStyleOptionComboBox opt;
 		initStyleOption (&opt);

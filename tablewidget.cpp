@@ -34,6 +34,8 @@
 #include <interface/irival.hpp>
 #include "dottable.hpp"
 #include "stepqueue.hpp"
+#include "brushcombodelegate.hpp"
+#include "kdots.h"
 
 namespace KDots
 {
@@ -144,14 +146,20 @@ namespace KDots
 		const Graph& graph = m_table->graph ();
 		const Point& lastPoint = m_table->stepQueue ()->lastPoint ();
 
-		const QBrush firstBrush (Qt::red), secondBrush (Qt::blue);
+		const QColor& firstColor = Settings::firstPointColor ();
+		const QColor& secondColor = Settings::secondPointColor ();
+		
+		const QBrush firstBrush (firstColor), secondBrush (secondColor);
 
-		const QPen firstPen (Qt::red, 2), secondPen (Qt::blue, 2),
-				firtBorder (Qt::red, 0.5), secondBorder (Qt::blue, 0.5);
+		const QPen firstPen (firstColor, 2), secondPen (secondColor, 2),
+				firtBorder (firstColor, 0.5), secondBorder (secondColor, 0.5);
 				
 		const std::vector<Polygon_ptr>& polygonVector = m_table->polygons ();
-		const QBrush firstPolyBrush (Qt::red, Qt::FDiagPattern),
-			secondPolyBrush (Qt::blue, Qt::BDiagPattern);
+		
+		const QBrush firstPolyBrush (firstColor,
+				BrushComboDelegate::getBrushStyle (Settings::firstFillStyle ()));
+		const QBrush secondPolyBrush (secondColor,
+				BrushComboDelegate::getBrushStyle (Settings::secondFillStyle ()));
 		
 		for (Polygon_ptr polygon : polygonVector)
 		{
