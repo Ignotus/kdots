@@ -64,8 +64,8 @@ namespace KDots
 		settingMenu->addAction (KIcon ("configure"), i18n ("&Preferences..."),
 				this, SLOT (onPreferences ()));
 		
-		QMenu *fileMenu = new QMenu (i18n ("&File"));
-		fileMenu->addAction (i18n ("&New game"), this,
+		QMenu *fileMenu = new QMenu (i18n ("&Game"));
+		fileMenu->addAction (KIcon ("file_new"), i18n ("&New game"), this,
 				SLOT (on_actionNewGame_triggered ()));
 		
 		currentBar->insertMenu (settingAction, fileMenu);
