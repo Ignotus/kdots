@@ -41,13 +41,14 @@ namespace KDots
 		Owner m_current;
 		std::list<Point> m_cache;
 		std::vector<std::vector<bool>> m_stepMap;
+		PolyList m_polygons;
 	public:
 		PolygonFinder (Graph& graph, Owner owner);
 
 		// O(n)
-		PolyList polygons (const Point& point);
+		const PolyList& operator() (const Point& point);
 	private:
-		void findPolygons (const Point& point, PolyList& polygons);
+		void findPolygons (const Point& point);
 	};
 
 }

@@ -29,7 +29,6 @@
 
 namespace KDots
 {
-
 	DotTable::DotTable (const GameConfig& config, QObject *parent)
 		: QObject (parent)
 		, m_graph (config.m_width, config.m_height)
@@ -120,10 +119,10 @@ namespace KDots
 
 		m_steps->addPoint (point);
 
-		PolygonFinder finder (m_graph, current);
+		PolygonFinder findPolygon (m_graph, current);
 
 		//O(n)
-		const PolyList& polyList = finder.polygons (point);
+		const PolyList& polyList = findPolygon (point);
 
 		const std::list<Point>& points = m_steps->getPoints (StepQueue::other (current));
 		if (points.empty () || polyList.empty ())

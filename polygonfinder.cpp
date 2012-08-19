@@ -42,11 +42,11 @@ namespace KDots
 
 	namespace
 	{
-		int maxSize (const PolyList& polygonList)
+		std::size_t maxSize (const PolyList& polygonList)
 		{
-			unsigned max = 0;
+			std::size_t max = 0;
 
-			for (const Polygon_ptr ptr : polygonList)
+			for (const Polygon_ptr& ptr : polygonList)
 			{
 				if (ptr->size () > max)
 					max = ptr->size ();
@@ -56,22 +56,22 @@ namespace KDots
 		}
 	}
 
-	PolyList PolygonFinder::polygons (const Point& point)
+	const PolyList& PolygonFinder::operator() (const Point& point)
 	{
-		PolyList polygonList;
-		findPolygons (point, polygonList);
+		findPolygons (point);
 
-		const unsigned max = maxSize (polygonList);
-		polygonList.erase (std::remove_if (polygonList.begin (), polygonList.end (),
-						[&max] (const Polygon_ptr ptr)
+		const std::size_t max = maxSize (m_polygons);
+		m_polygons.erase (std::remove_if (m_polygons.begin (), m_polygons.end (),
+						[&max] (const Polygon_ptr& ptr)
 						{
 							return ptr->size () < max;
 						}),
-		                   polygonList.end ());
-		return polygonList;
+				m_polygons.end ());
+		
+		return m_polygons;
 	}
 
-	void PolygonFinder::findPolygons (const Point& point, PolyList& polygons)
+	void PolygonFinder::findPolygons (const Point& point)
 	{
 		const GraphPoint& graphPoint = m_graph[point];
 
@@ -80,7 +80,7 @@ namespace KDots
 
 		if (m_cache.size () > 3 && point == m_cache.front ())
 		{
-			polygons.push_back (Polygon_ptr (new Polygon (m_cache)));
+			m_polygons.push_back (Polygon_ptr (new Polygon (m_cache)));
 			return;
 		}
 
@@ -98,7 +98,7 @@ namespace KDots
 			if (tempx < 0 || tempy < 0 || tempx >= m_graph.width () || tempy >= m_graph.height ())
 				continue;
 
-			findPolygons (Point (tempx, tempy), polygons);
+			findPolygons (Point (tempx, tempy));
 		}
 
 		m_cache.pop_back ();
