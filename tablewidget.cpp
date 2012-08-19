@@ -119,9 +119,15 @@ namespace KDots
 		m_table->pushPoint (Point (x, y));
 		update ();
 	}
+	
+	void TableWidget::undo ()
+	{
+		setUpdatesEnabled (false);
+		m_table->undo ();
+		setUpdatesEnabled (true);
+	}
 
-	void
-	TableWidget::paintEvent (QPaintEvent *event)
+	void TableWidget::paintEvent (QPaintEvent *event)
 	{
 		const QRect& rectange = event->rect ();
 		const float cellSize = cell_size (rectange, m_height, m_width);

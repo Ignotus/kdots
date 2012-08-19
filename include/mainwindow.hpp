@@ -50,6 +50,8 @@ namespace KDots
 		bool m_destroyTable;
 		TableWidget *m_table;
 		
+		QAction *m_undoAction;
+		
 		void initMenu ();
 
 	private slots:
@@ -57,6 +59,7 @@ namespace KDots
 		void destroyGame ();
 		void onPreferences ();
 		void updateConfiguration (const QString& dialogName);
+		void undo ();
 	};
 }
 

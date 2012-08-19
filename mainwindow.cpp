@@ -28,6 +28,7 @@
 #include <KMenuBar>
 #include <KStatusBar>
 #include <KConfigDialog>
+#include <KToolBar>
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 #include "ui_mainwindow.h"
@@ -44,6 +45,7 @@ namespace KDots
 		, m_ui (new Ui::MainWindow)
 		, m_destroyTable (false)
 		, m_table (NULL)
+		, m_undoAction (NULL)
 	{
 		m_ui->setupUi (this);
 		
@@ -70,6 +72,17 @@ namespace KDots
 		
 		currentBar->insertMenu (settingAction, fileMenu);
 		menuBar ()->show ();
+		
+		KToolBar *currentTools = toolBar ();
+		m_undoAction = currentTools->addAction (KIcon ("undo"), i18n ("Undo"), this, SLOT (undo ()));
+		m_undoAction->setEnabled (false);
+		currentTools->show ();
+	}
+	
+	void MainWindow::undo ()
+	{
+		if (m_table && m_rival && m_rival->canUndo ())
+			m_table->undo ();
 	}
 	
 	void MainWindow::onPreferences ()
@@ -97,8 +110,6 @@ namespace KDots
 		}
 		
 		dialog.exec ();
-		
-
 	}
 
 	void MainWindow::on_actionNewGame_triggered ()
@@ -108,6 +119,8 @@ namespace KDots
 			return;
 
 		m_rival = dialog.rival ();
+		
+		m_undoAction->setEnabled (m_rival->canUndo ());
 		
 		connect (m_rival.get (),
 				SIGNAL (needDestroy ()),
@@ -144,6 +157,7 @@ namespace KDots
 	void MainWindow::destroyGame ()
 	{
 		m_destroyTable = true;
+		m_undoAction->setEnabled (false);
 	}
 
 	void MainWindow::updateConfiguration (const QString&)

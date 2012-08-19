@@ -47,6 +47,11 @@ namespace KDots
 			{
 				return true;
 			}
+		
+			bool canUndo () const
+			{
+				return true;
+			}
 
 		public slots:
 			void nextStep (const Point& point)

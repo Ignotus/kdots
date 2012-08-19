@@ -38,7 +38,7 @@ namespace KDots
 	{
 		Q_OBJECT
 
-		Graph m_graph;
+		std::unique_ptr<Graph> m_graph;
 		std::shared_ptr<StepQueue> m_steps;
 		GameConfig m_config;
 		std::vector<Polygon_ptr> m_polygons;
@@ -56,13 +56,15 @@ namespace KDots
 
 		inline Graph graph () const
 		{
-			return m_graph;
+			return *m_graph;
 		}
 
 		inline std::shared_ptr<StepQueue> stepQueue ()
 		{
 			return m_steps;
 		}
+		
+		void undo ();
 	signals:
 		void nextPlayer (const Point& lastPoint);
 	private:

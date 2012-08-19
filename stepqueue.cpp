@@ -28,7 +28,8 @@
 namespace KDots
 {
 	StepQueue::StepQueue (Owner firstPlayer)
-		: m_first (0)
+		: m_firstOwner (firstPlayer)
+		, m_first (0)
 		, m_second (0)
 		, m_owner (firstPlayer)
 		, m_captured (false)
@@ -37,7 +38,7 @@ namespace KDots
 
 	void StepQueue::addPoint (const Point& point)
 	{
-		m_lastPoint = point;
+		m_points.push_back (point);
 		if (getCurrentOwner () == FIRST)
 			m_firstPoints.push_back (point);
 		else

@@ -70,6 +70,11 @@ namespace KDots
 		{
 			Q_UNUSED (table);
 		}
+				
+		virtual bool canUndo () const
+		{
+			return false;
+		}
 		
 	protected: //signals
 		virtual void createDotTable (const GameConfig& config) = 0;

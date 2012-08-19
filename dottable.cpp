@@ -26,19 +26,12 @@
 #include "dottable.hpp"
 #include "polygonfinder.hpp"
 #include "stepqueue.hpp"
-#define BOARD_LOOP_BEGIN(X_ITER, Y_ITER) \
-	for (int X_ITER = 0, Y_ITER; X_ITER < m_graph.width (); ++X_ITER) \
-	{ \
-		for (Y_ITER = 0; Y_ITER < m_graph.height (); ++Y_ITER) \
-		{
-			
-#define BOARD_LOOP_END }}
 
 namespace KDots
 {
 	DotTable::DotTable (const GameConfig& config, QObject *parent)
 		: QObject (parent)
-		, m_graph (config.m_width, config.m_height)
+		, m_graph (new Graph (config.m_width, config.m_height))
 		, m_steps (config.m_mode == DEFAULT_MODE
 				? new StepQueue (config.m_firstOwner)
 				: new ExtraStepQueue (config.m_firstOwner))
@@ -115,7 +108,8 @@ namespace KDots
 
 	void DotTable::pushPoint (const Point& point)
 	{
-		GraphPoint& currentPoint = m_graph[point];
+		Graph& graph = *m_graph;
+		GraphPoint& currentPoint = graph[point];
 
 		if (currentPoint.owner () != NONE || currentPoint.isCaptured ())
 			return;
@@ -126,7 +120,7 @@ namespace KDots
 
 		m_steps->addPoint (point);
 
-		PolygonFinder findPolygon (m_graph, current);
+		PolygonFinder findPolygon (graph, current);
 
 		//O(n)
 		const PolyList& polyList = findPolygon (point);
@@ -140,18 +134,17 @@ namespace KDots
 		}
 		
 		const Owner otherOwner = StepQueue::other (current);
-		
-		BOARD_LOOP_BEGIN (k, j)
-			GraphPoint& gpoint = m_graph[k][j];
-
-			if (gpoint.isCaptured () || gpoint.owner () != otherOwner)
+	
+		const std::list<Point>& otherOwnerPoints = m_steps->getPoints (otherOwner);
+		for (const Point& p : otherOwnerPoints)
+		{
+			GraphPoint& gpoint = graph[p];
+			if (gpoint.isCaptured ())
 				continue;
-
+			
 			for (Polygon_ptr polygon : polyList)
 			{
-				const Point newPoint (k, j);
-					
-				if (isInPolygon (polygon, newPoint))
+				if (isInPolygon (polygon, p))
 				{
 					if (gpoint.owner () == otherOwner)
 					{
@@ -163,29 +156,47 @@ namespace KDots
 					break;
 				}
 			}
-		BOARD_LOOP_END;
+		}
 		
-		BOARD_LOOP_BEGIN (k, j)
-			GraphPoint& gpoint = m_graph[k][j];
-
-			if (gpoint.isCaptured () || gpoint.owner () != NONE)
-				continue;
-
-			for (Polygon_ptr polygon : polyList)
+		for (int k = 0, j, max_k = graph.width (), max_j = graph.height (); k < max_k; ++k)
+		{
+			for (j = 0; j < max_j; ++j)
 			{
-				const Point newPoint (k, j);
-					
-				if (isInPolygon (polygon, newPoint) && polygon->isFilled ())
+				GraphPoint& gpoint = graph[k][j];
+
+				if (gpoint.isCaptured () || gpoint.owner () != NONE)
+					continue;
+
+				for (Polygon_ptr polygon : polyList)
 				{
-					gpoint.capture ();
-					break;
+					const Point newPoint (k, j);
+
+					if (isInPolygon (polygon, newPoint) && polygon->isFilled ())
+					{
+						gpoint.capture ();
+						break;
+					}
 				}
 			}
-		BOARD_LOOP_END;
+		}
 		
 		drawPolygon (polyList);
 		m_steps->nextStep ();
 		emit nextPlayer (point);
+	}
+
+
+	//Hardcore undo process
+	void DotTable::undo ()
+	{
+		m_graph.reset (new Graph (m_config.m_width, m_config.m_height));
+		m_polygons.clear ();
+		std::list<Point> points (m_steps->getAllPoints ());
+		points.pop_back ();
+		m_steps->clear ();
+
+		for (const Point& point : points)
+			pushPoint (point);
 	}
 
 	void DotTable::drawPolygon (PolyList polygons)
@@ -202,14 +213,11 @@ namespace KDots
 			
 			for (const Point& currPoint : *polygon.get ())
 			{
-				m_graph.addEdge (prevPoint, currPoint);
+				m_graph->addEdge (prevPoint, currPoint);
 				prevPoint = currPoint;
 			}
 		}
 	}
 }
-
-#undef BOARD_LOOP_BEGIN
-#undef BOARD_LOOP_END
 
 #include "include/dottable.moc"

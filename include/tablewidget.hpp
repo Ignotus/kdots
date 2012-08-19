@@ -47,6 +47,7 @@ namespace KDots
 	public:
 		TableWidget (const GameConfig& config, std::shared_ptr<IRival> rival,
 				QWidget *parent = 0);
+		void undo ();
 	protected:
 		void mousePressEvent (QMouseEvent *event);
 		void paintEvent (QPaintEvent *event);

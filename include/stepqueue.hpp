@@ -33,9 +33,9 @@ namespace KDots
 {
 	class KDOTS_EXPORT StepQueue
 	{
-		std::list<Point> m_firstPoints, m_secondPoints;
+		Owner m_firstOwner;
+		std::list<Point> m_firstPoints, m_secondPoints, m_points;
 		int m_first, m_second;
-		Point m_lastPoint;
 	protected:
 		Owner m_owner;
 		bool m_captured;
@@ -43,12 +43,22 @@ namespace KDots
 		StepQueue (Owner firstPlayer);
 		virtual ~StepQueue () {}
 		
-		inline const Point& lastPoint () const
+		inline Point lastPoint () const
 		{
-			return m_lastPoint;
+			return m_points.empty () ? Point () : m_points.back ();
+		}
+		
+		inline void clear ()
+		{
+			m_first = m_second = 0;
+			m_owner  = m_firstOwner;
+			m_captured  = false;
+			m_firstPoints.clear ();
+			m_secondPoints.clear ();
+			m_points.clear ();
 		}
 
-		void addPoint (const Point &point);
+		void addPoint (const Point& point);
 		void addCaptured ();
 
 		inline Owner getCurrentOwner () const
@@ -63,8 +73,12 @@ namespace KDots
 
 		inline std::list<Point> getPoints (Owner owner) const
 		{
-			Q_UNUSED (owner);
-			return getCurrentOwner() == FIRST ? m_secondPoints : m_firstPoints;
+			return owner == SECOND ? m_secondPoints : m_firstPoints;
+		}
+		
+		inline std::list<Point> getAllPoints () const
+		{
+			return m_points;
 		}
 
 		inline static Owner other (Owner player)
