@@ -1,6 +1,6 @@
 /*
  * KDots
- * Copyright (c) 2011-2012 Minh Ngo <ignotusp@fedoraproject.org>
+ * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -40,10 +40,10 @@ int main (int argc, char **argv)
 		ki18n ("Copyright (c) 2011-2012 Minh Ngo"));
 	
 	aboutData.setHomepage ("https://github.com/Ignotus/kdots");
-	aboutData.setBugAddress ("ignotusp@fedoraproject.org");
+	aboutData.setBugAddress ("nlminhtl@gmail.com");
 	aboutData.addAuthor (ki18n ("Minh Ngo"),
 			ki18n ("Architecture. Project Management"),
-			"ignotusp@fedoraproject.org",
+			"nlminhtl@gmail.com",
 			"http://ignotusp.fedoraproject.org");
 	
 	aboutData.addCredit (ki18n ("Bohdan Rybak"),

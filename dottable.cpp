@@ -1,6 +1,6 @@
 /*
  * KDots
- * Copyright (c) 2011-2012 Minh Ngo <ignotusp@fedoraproject.org>
+ * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -158,7 +158,8 @@ namespace KDots
 			}
 		}
 		
-		for (int k = 0, j, max_k = graph.width (), max_j = graph.height (); k < max_k; ++k)
+		for (int k = 0, j, max_k = graph.width (), max_j = graph.height ();
+				 k < max_k; ++k)
 		{
 			for (j = 0; j < max_j; ++j)
 			{
