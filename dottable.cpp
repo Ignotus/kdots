@@ -186,7 +186,6 @@ namespace KDots
 		emit nextPlayer (point);
 	}
 
-
 	//Hardcore undo process
 	void DotTable::undo ()
 	{

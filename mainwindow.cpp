@@ -46,6 +46,7 @@ namespace KDots
 		, m_destroyTable (false)
 		, m_table (NULL)
 		, m_undoAction (NULL)
+		, m_endAction (NULL)
 	{
 		m_ui->setupUi (this);
 		
@@ -74,9 +75,24 @@ namespace KDots
 		menuBar ()->show ();
 		
 		KToolBar *currentTools = toolBar ();
+		currentTools->addAction (KIcon ("file_new"), i18n ("&New game"), this,
+				SLOT (on_actionNewGame_triggered ()));
+		m_endAction = currentTools->addAction (KIcon ("window-close"),
+				i18n ("&End game"), this, SLOT (endGame ()));
+		m_endAction->setEnabled (false);
+		
 		m_undoAction = currentTools->addAction (KIcon ("undo"), i18n ("Undo"), this, SLOT (undo ()));
 		m_undoAction->setEnabled (false);
 		currentTools->show ();
+	}
+	
+	void MainWindow::endGame ()
+	{
+		delete m_table;
+		m_table = NULL;
+		m_rival.reset ();
+		m_endAction->setEnabled (true);
+		statusBar ()->clearMessage ();
 	}
 	
 	void MainWindow::undo ()
@@ -95,11 +111,6 @@ namespace KDots
 		boardUi->setupUi (board);
 			
 		dialog.addPage (board, i18n ("Board"), QLatin1String ("games-config-options"));
-		
-		connect (&dialog,
-				SIGNAL (settingsChanged (const QString&)),
-				this,
-				SLOT (updateConfiguration (const QString&)));
 		
 		if (m_table)
 		{
@@ -136,8 +147,7 @@ namespace KDots
 		
 		if (m_destroyTable)
 		{
-			delete m_table;
-			m_table = NULL;
+			endGame ();
 			return;
 		}
 
@@ -152,17 +162,13 @@ namespace KDots
 
 		setCentralWidget (m_table);
 		m_table->show ();
+		m_endAction->setEnabled (true);
 	}
 	
 	void MainWindow::destroyGame ()
 	{
 		m_destroyTable = true;
 		m_undoAction->setEnabled (false);
-	}
-
-	void MainWindow::updateConfiguration (const QString&)
-	{
-		// UNUSED
 	}
 }
 

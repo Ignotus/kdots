@@ -50,7 +50,7 @@ namespace KDots
 		bool m_destroyTable;
 		TableWidget *m_table;
 		
-		QAction *m_undoAction;
+		QAction *m_undoAction, *m_endAction;
 		
 		void initMenu ();
 
@@ -58,8 +58,8 @@ namespace KDots
 		void on_actionNewGame_triggered ();
 		void destroyGame ();
 		void onPreferences ();
-		void updateConfiguration (const QString& dialogName);
 		void undo ();
+		void endGame ();
 	};
 }
 
