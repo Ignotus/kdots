@@ -63,7 +63,7 @@ namespace KDots
 			m_owner = owner;
 		}
 
-		inline int owner () const
+		inline Owner owner () const
 		{
 			return m_owner;
 		}
