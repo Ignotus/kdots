@@ -31,6 +31,28 @@ namespace KDots
 		: m_graph (width, std::vector<GraphPoint> (height))
 	{
 	}
+	
+	Graph::iterator Graph::begin ()
+	{
+		return iterator (this);
+	}
+		
+	Graph::const_iterator Graph::begin () const
+	{
+		return const_iterator (this);
+	}
+		
+	Graph::iterator Graph::end ()
+	{
+		iterator itr (this, 0, height ());
+		return itr;
+	}
+		
+	Graph::const_iterator Graph::end () const
+	{
+		const_iterator itr (this, 0, height ());
+		return itr;
+	}
 
 	void Graph::addEdge (const Point& first, const Point& second)
 	{

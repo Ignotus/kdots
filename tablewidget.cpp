@@ -192,38 +192,35 @@ namespace KDots
 					6, 6);
 		}
 		
-		for (int i = 0; i < graph.width (); ++i)
+		for (Graph::const_iterator itr = graph.begin (), itrEnd = graph.end ();
+				itr != itrEnd; ++itr)
 		{
-			for (int k = 0; k < graph.height (); ++k)
-			{
-				const GraphPoint& point = graph[i][k];
-
-				if (point.owner () == NONE)
+			if (itr->owner () == NONE)
 					continue;
 
-				pixPainter.setPen (point.owner () == FIRST
-						? firstPen
-						: secondPen);
+			pixPainter.setPen (itr->owner () == FIRST
+					? firstPen
+					: secondPen);
 
-				pixPainter.setBrush (point.owner () == FIRST
-						? firstBrush
-						: secondBrush);
+			pixPainter.setBrush (itr->owner () == FIRST
+					? firstBrush
+					: secondBrush);
+			
+			const Point& currPoint = itr.point ();
 
-				pixPainter.drawEllipse (QPoint ( (i + 1) * cellSize,
-				                                 (k + 1) * cellSize),
-				                        3, 3);
+			pixPainter.drawEllipse (QPoint ((currPoint.x () + 1) * cellSize,
+								(currPoint.y () + 1) * cellSize), 3, 3);
 				
-				const GraphPoint::GraphEdges& edges = point.edges ();
+			const GraphPoint::GraphEdges& edges = itr->edges ();
 
-				for (int j = 0; j < edges.size (); ++j)
-				{
-					const Point& lastPoint = edges[j];
+			for (int j = 0; j < edges.size (); ++j)
+			{
+				const Point& lastPoint = edges[j];
 
-					pixPainter.drawLine ( (i + 1) * cellSize,
-					                      (k + 1) * cellSize,
-					                      (lastPoint.x () + 1) * cellSize,
-					                      (lastPoint.y () + 1) * cellSize);
-				}
+				pixPainter.drawLine ((currPoint.x () + 1) * cellSize,
+						(currPoint.y () + 1) * cellSize,
+						(lastPoint.x () + 1) * cellSize,
+						(lastPoint.y () + 1) * cellSize);
 			}
 		}
 		

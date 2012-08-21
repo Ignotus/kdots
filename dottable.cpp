@@ -158,27 +158,22 @@ namespace KDots
 			}
 		}
 		
-		for (int k = 0, j, max_k = graph.width (), max_j = graph.height ();
-				 k < max_k; ++k)
+		for (Graph::iterator itr = graph.begin (), itrEnd = graph.end ();
+				itr != itrEnd; ++itr)
 		{
-			for (j = 0; j < max_j; ++j)
+			if (itr->isCaptured () || itr->owner () != NONE)
+				continue;
+			
+			for (Polygon_ptr polygon : polyList)
 			{
-				GraphPoint& gpoint = graph[k][j];
+				const Point& newPoint = itr.point ();
 
-				if (gpoint.isCaptured () || gpoint.owner () != NONE)
-					continue;
-
-				for (Polygon_ptr polygon : polyList)
+				if (isInPolygon (polygon, newPoint) && polygon->isFilled ())
 				{
-					const Point newPoint (k, j);
-
-					if (isInPolygon (polygon, newPoint) && polygon->isFilled ())
-					{
-						gpoint.capture ();
-						break;
-					}
+					itr->capture ();
+					break;
 				}
-			}
+			}	
 		}
 		
 		drawPolygon (polyList);

@@ -117,6 +117,7 @@ endloop:
 		
 		void Rival::nextStep (const Point& point)
 		{
+			Q_UNUSED (point);
 			if (isAllow ())
 				return;
 			
@@ -126,24 +127,22 @@ endloop:
 			std::vector<Point> points;
 			float max_priority = -1;
 			
-			for (int j = 0; j < gr.height (); ++j)
+			for (Graph::const_iterator itr = gr.begin (), itrEnd = gr.end ();
+					itr != itrEnd; ++itr)
 			{
-				for (int i = 0; i < gr.width (); ++i)
-				{
-					const GraphPoint& grPoint = gr[i][j];
-					if (grPoint.owner () != NONE)
-						continue;
+				if (itr->owner () != NONE)
+					continue;
 					
-					const Point newPoint (i, j);
-					const float imp = calcImportance (gr, newPoint, current);
-					if (imp == max_priority)
-						points.push_back (newPoint);
-					else if (imp > max_priority)
-					{
-						max_priority = imp;
-						points.clear ();
-						points.push_back (newPoint);
-					}
+				const Point& newPoint = itr.point ();
+				
+				const float imp = calcImportance (gr, newPoint, current);
+				if (imp == max_priority)
+					points.push_back (newPoint);
+				else if (imp > max_priority)
+				{
+					max_priority = imp;
+					points.clear ();
+					points.push_back (newPoint);
 				}
 			}
 			

@@ -26,15 +26,99 @@
 #ifndef KDOTS_GRAPH_HPP
 #define KDOTS_GRAPH_HPP
 #include <vector>
+#include <iterator>
 #include "graphpoint.hpp"
 
 namespace KDots
 {
+	class Graph;
+	
+	template<class A>
+	class graph_iterator : public std::iterator<std::forward_iterator_tag, A>
+	{
+		Graph *m_graph;
+		int m_x, m_y;
+	public:
+		
+		Point point () const
+		{
+			return Point (m_x, m_y);
+		}
+		
+		graph_iterator ()
+			: m_graph (NULL)
+			, m_x (0)
+			, m_y (0)
+		{
+		}
+		
+		graph_iterator (Graph *graph, int x = 0, int y = 0)
+			: m_graph (graph)
+			, m_x (x)
+			, m_y (y)
+		{
+		}
+		
+		graph_iterator (const Graph *graph, int x = 0, int y = 0)
+			: m_graph (const_cast<Graph*> (graph))
+			, m_x (x)
+			, m_y (y)
+		{
+		}
+		
+		graph_iterator (const graph_iterator& other)
+			: m_graph (other.m_graph)
+			, m_x (other.m_x)
+			, m_y (other.m_y)
+		{
+		}
+		
+		graph_iterator& operator= (const graph_iterator& other)
+		{
+			m_graph = other.m_graph;
+			m_x = other.m_x;
+			m_y = other.m_y;
+			return *this;
+		}
+		
+		bool operator== (const graph_iterator& other) const
+		{
+			return m_graph == other.m_graph && m_x == other.m_x && m_y == other.m_y;
+		}
+		
+		bool operator!= (const graph_iterator& other) const
+		{
+			return m_graph != other.m_graph || m_x != other.m_x || m_y != other.m_y;
+		}
+		
+		A& operator* ();
+		
+		A* operator-> ();
+		
+		graph_iterator& operator++ ();
+		
+		graph_iterator operator++ (int)
+		{
+			graph_iterator res (*this);
+			++(*this);
+			return res;
+		}
+	};
+	
 	class KDOTS_EXPORT Graph
 	{
 		std::vector<std::vector<GraphPoint>> m_graph;
 	public:
+		typedef graph_iterator<GraphPoint> iterator;
+		typedef graph_iterator<const GraphPoint> const_iterator;
+		
 		Graph (int width, int height);
+		
+		iterator begin ();
+		const_iterator begin () const;
+		
+		iterator end ();
+		const_iterator end () const;
 
 		inline int width () const
 		{
@@ -69,6 +153,32 @@ namespace KDots
 		void addEdge (const KDots::Point& first, const KDots::Point& second);
 		void removeEdge (const Point& first, const Point& second);
 	};
+	
+	template<class A>
+	A& graph_iterator<A>::operator* ()
+	{
+		return (*m_graph)[m_x][m_y];
+	}
+	
+	template<class A>
+	A* graph_iterator<A>::operator-> ()
+	{
+		return &(*m_graph)[m_x][m_y];
+	}
+
+	template<class A>
+	graph_iterator<A>& graph_iterator<A>::operator++ ()
+	{
+		if (m_x + 1 == m_graph->width ())
+		{
+			m_x = 0;
+			++m_y;
+		}
+		else
+			++m_x;
+		
+		return *this;
+	}
 }
 
 #endif
