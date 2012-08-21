@@ -43,6 +43,11 @@ namespace KDots
 		StepQueue (Owner firstPlayer);
 		virtual ~StepQueue () {}
 		
+		inline Owner firstOwner () const
+		{
+			return m_firstOwner;
+		}
+		
 		inline Point lastPoint () const
 		{
 			return m_points.empty () ? Point () : m_points.back ();

@@ -24,6 +24,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "rival.hpp"
+#include <ctime>
+#include <KDebug>
 #include <include/point.hpp>
 #include <include/dottable.hpp>
 #include <include/stepqueue.hpp>
@@ -42,16 +44,17 @@ namespace KDots
 		
 		bool Rival::isAllow () const
 		{
-			return true;
+			if (!m_table)
+				return false;
+			
+			return m_table->stepQueue ()->getCurrentOwner () == m_table->stepQueue ()->firstOwner ();
 		}
 		
 		namespace
 		{
-			float calcImportance(const Graph& graph, const Point& point)
+			float calcImportance(const Graph& graph, const Point& point, const Owner currentOwner)
 			{
 				float priority = -1;
-				const GraphPoint& thisPoint = graph[point];
-				const Owner currentOwner = thisPoint.owner ();
 				const Owner otherOwner = StepQueue::other (currentOwner);
 				
 				for (const MapData& table : PriorityMap::instance ().priorityMap ())
@@ -68,14 +71,12 @@ namespace KDots
 							const int dy = currentPoint.y () - j;
 							const int newX = point.x () + dx;
 							const int newY = point.y () + dy;
-							
 							if (newX < 0 || newY < 0 || newX >= graph.width ()
 									|| newY >= graph.height ())
 								goto endloop;
 							
-							const MapElement el = map[i][j];
-				
-							const GraphPoint& graphPoint = graph[point.x () + dx][point.y () + dy];
+							const MapElement el = map[j][i];
+							const GraphPoint& graphPoint = graph[newX][newY];
 							const Owner own = graphPoint.owner ();
 							switch (el)
 							{
@@ -116,6 +117,38 @@ endloop:
 		
 		void Rival::nextStep (const Point& point)
 		{
+			if (isAllow ())
+				return;
+			
+			const Graph& gr = m_table->graph ();
+			
+			const Owner current = m_table->stepQueue ()->getCurrentOwner ();
+			std::vector<Point> points;
+			float max_priority = -1;
+			
+			for (int j = 0; j < gr.height (); ++j)
+			{
+				for (int i = 0; i < gr.width (); ++i)
+				{
+					const GraphPoint& grPoint = gr[i][j];
+					if (grPoint.owner () != NONE)
+						continue;
+					
+					const Point newPoint (i, j);
+					const float imp = calcImportance (gr, newPoint, current);
+					if (imp == max_priority)
+						points.push_back (newPoint);
+					else if (imp > max_priority)
+					{
+						max_priority = imp;
+						points.clear ();
+						points.push_back (newPoint);
+					}
+				}
+			}
+			
+			srand (time (NULL));
+			m_table->pushPoint (points[rand () % points.size ()]);
 		}
 		
 		void Rival::setDotTable (DotTable *table)
