@@ -73,8 +73,7 @@ namespace KDots
 		}
 	}
 
-	void
-	TableWidget::mousePressEvent (QMouseEvent *event)
+	void TableWidget::mousePressEvent (QMouseEvent *event)
 	{
 		if (!m_rival->isAllow ())
 			return;
@@ -82,9 +81,6 @@ namespace KDots
 		const QRect& rectange = rect ();
 
 		const float cellSize = cell_size (rectange, m_height, m_width);
-
-		//float tableWidth = cellSize * m_width;
-		//float tableHeight = cellSize * m_height;
 
 		float dx = (rectange.width () - cellSize * m_width) / 2;
 
@@ -171,8 +167,10 @@ namespace KDots
 		{
 			QPolygon qPoly;
 			for (const Point& point : *polygon)
-				qPoly << QPoint ((point.x () + 1) * cellSize, (point.y () + 1) * cellSize);
-			
+			{
+				const Point& newPoint = point + 1;
+				qPoly << QPoint (newPoint.x (), newPoint.y ()) * cellSize;
+			}
 			QPainterPath path;
 			path.addPolygon (qPoly);
 			pixPainter.fillPath (path, polygon->owner () == FIRST
@@ -187,9 +185,8 @@ namespace KDots
 					: secondBorder);
 						
 			pixPainter.setBrush (Qt::NoBrush);
-			pixPainter.drawEllipse (QPoint ((lastPoint.x () + 1) * cellSize,
-					(lastPoint.y () + 1) * cellSize),
-					6, 6);
+			const Point& newPoint = lastPoint + 1;
+			pixPainter.drawEllipse (QPointF (newPoint.x (), newPoint.y ()) * cellSize, 6, 6);
 		}
 		
 		for (Graph::const_iterator itr = graph.begin (), itrEnd = graph.end ();
@@ -206,21 +203,18 @@ namespace KDots
 					? firstBrush
 					: secondBrush);
 			
-			const Point& currPoint = itr.point ();
+			const Point& currPoint = itr.point () + 1;
 
-			pixPainter.drawEllipse (QPoint ((currPoint.x () + 1) * cellSize,
-								(currPoint.y () + 1) * cellSize), 3, 3);
+			pixPainter.drawEllipse (QPointF (currPoint.x (), currPoint.y ()) * cellSize, 3, 3);
 				
 			const GraphPoint::GraphEdges& edges = itr->edges ();
 
 			for (int j = 0; j < edges.size (); ++j)
 			{
-				const Point& lastPoint = edges[j];
+				const Point& lastPoint = edges[j] + 1;
 
-				pixPainter.drawLine ((currPoint.x () + 1) * cellSize,
-						(currPoint.y () + 1) * cellSize,
-						(lastPoint.x () + 1) * cellSize,
-						(lastPoint.y () + 1) * cellSize);
+				pixPainter.drawLine (QPointF (currPoint.x (), currPoint.y ()) * cellSize,
+						QPointF (lastPoint.x (), lastPoint.y ()) * cellSize);
 			}
 		}
 		

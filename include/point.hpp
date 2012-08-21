@@ -63,6 +63,16 @@ namespace KDots
 		{
 			m_y = y;
 		}
+		
+		Point operator* (int val) const
+		{
+			return Point (m_x * val, m_y * val);
+		}
+		
+		Point operator+ (int val) const
+		{
+			return Point (m_x + val, m_y + val);
+		}
 
 		inline bool operator== (const Point& a) const
 		{
@@ -78,6 +88,8 @@ namespace KDots
 		{
 			return m_x == -1 || m_y == -1;
 		}
+		
+		
 		
 		friend QDataStream& operator<< (QDataStream& out, const KDots::Point& obj);
 		friend QDataStream& operator>> (QDataStream& in, KDots::Point& obj);

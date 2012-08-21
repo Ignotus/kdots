@@ -187,7 +187,9 @@ namespace KDots
 		m_graph.reset (new Graph (m_config.m_width, m_config.m_height));
 		m_polygons.clear ();
 		std::list<Point> points (m_steps->getAllPoints ());
-		points.pop_back ();
+		
+		if (points.begin () != points.end ())
+			points.pop_back ();
 		m_steps->clear ();
 
 		for (const Point& point : points)
