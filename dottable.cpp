@@ -188,7 +188,7 @@ namespace KDots
 		m_polygons.clear ();
 		std::list<Point> points (m_steps->getAllPoints ());
 		
-		if (points.begin () != points.end ())
+		if (!points.empty ())
 			points.pop_back ();
 		m_steps->clear ();
 

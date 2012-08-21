@@ -108,7 +108,6 @@ namespace KDots
 		else if (dy < firstPart)
 			--y;
 
-		//TODO: Fix it
 		if (x >= m_width - 1 || x < 0 || y < 0 || y >= m_height - 1)
 			return;
 

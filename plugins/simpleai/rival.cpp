@@ -117,15 +117,37 @@ endloop:
 		
 		void Rival::nextStep (const Point& point)
 		{
-			Q_UNUSED (point);
 			if (isAllow ())
 				return;
 			
 			const Graph& gr = m_table->graph ();
 			
 			const Owner current = m_table->stepQueue ()->getCurrentOwner ();
+			const Owner other = StepQueue::other (current);
 			std::vector<Point> points;
 			float max_priority = -1;
+			
+			int min_x = point.x () - 2, min_y = point.y () - 2;
+			int max_x = point.x () + 2, max_y = point.y () + 2;
+			for (int j = 0, max_j = gr.height (), max_i = gr.width (), i; j < max_j; ++j)
+			{
+				for (i = 0; i < max_i; ++i)
+				{
+					const GraphPoint& point = gr[i][j];
+					if (point.owner () == other)
+					{
+						if (i - 2 < min_x)
+							min_x = i - 2;
+						else if (i + 2 > max_x)
+							max_x = i + 2;
+						
+						if (j - 2 < min_y)
+							min_y = j - 2;
+						else if (j + 2 > max_y)
+							max_y = j + 2;
+					}
+				}
+			}
 			
 			for (Graph::const_iterator itr = gr.begin (), itrEnd = gr.end ();
 					itr != itrEnd; ++itr)
@@ -134,6 +156,10 @@ endloop:
 					continue;
 					
 				const Point& newPoint = itr.point ();
+				
+				if (newPoint.x () < min_x || newPoint.x () > max_x
+						|| newPoint.y () < min_y || newPoint.y () > max_y)
+					continue;
 				
 				const float imp = calcImportance (gr, newPoint, current);
 				if (imp == max_priority)
@@ -147,7 +173,8 @@ endloop:
 			}
 			
 			srand (time (NULL));
-			m_table->pushPoint (points[rand () % points.size ()]);
+			if (!points.empty ())
+				m_table->pushPoint (points[rand () % points.size ()]);
 		}
 		
 		void Rival::setDotTable (DotTable *table)

@@ -357,7 +357,7 @@ namespace KDots
 				},
 				{1, 1},
 				0.1
-			},
+			}/*,
 			{
 				{//34
 					{SE, EM},
@@ -365,7 +365,7 @@ namespace KDots
 				},
 				{1, 1},
 				0.01
-			}
+			}*/
 		};
 		
 		bool MapData::operator== (const MapData& other) const

@@ -14,7 +14,7 @@ Look the [COPYING](https://github.com/Ignotus/kdots/blob/master/COPYING) file fo
 
 Dependencies for building
 =========================
-* Qt Framework (QtGui, QtCore, QtNetwork) 4.6 or later.
+* Qt Framework (QtGui, QtCore, QtNetwork) 4.8 or later.
 * cmake 2.6 or later.
 * KDELibs 4.6 or later
 * A C++ compiler with C++11 support.
