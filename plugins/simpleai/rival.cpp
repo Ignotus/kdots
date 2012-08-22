@@ -25,10 +25,12 @@
  */
 #include "rival.hpp"
 #include <ctime>
+#include <algorithm>
 #include <KDebug>
 #include <include/point.hpp>
 #include <include/dottable.hpp>
 #include <include/stepqueue.hpp>
+#include <include/constants.hpp>
 #include "prioritymap.hpp"
 
 namespace KDots
@@ -38,6 +40,9 @@ namespace KDots
 		Rival::Rival (QObject *parent)
 			: IRival (parent)
 			, m_table (NULL)
+			, m_current (FIRST)
+			, m_other (SECOND)
+			, m_iterations (10)
 		{
 			PriorityMap::instance ();
 		}
@@ -78,26 +83,27 @@ namespace KDots
 							const MapElement el = map[j][i];
 							const GraphPoint& graphPoint = graph[newX][newY];
 							const Owner own = graphPoint.owner ();
+							const bool captured = graphPoint.isCaptured ();
 							switch (el)
 							{
 							case EM: //Empty
-								if (own != NONE)
+								if (own != NONE || captured)
 									goto endloop;
 								break;
 							case FI: //First
-								if (own != currentOwner)
+								if (own != currentOwner || captured)
 									goto endloop;
 								break;
 							case SE: //Second
-								if (own != otherOwner)
+								if (own != otherOwner || captured)
 									goto endloop;
 								break;
 							case PF: // Possibly first
-								if (own == otherOwner)
+								if (own == otherOwner || captured)
 									goto endloop;
 								break;
 							case PS: // Possibly second
-								if (own == currentOwner)
+								if (own == currentOwner || captured)
 									goto endloop;
 							default:
 								break;
@@ -120,14 +126,10 @@ endloop:
 			if (isAllow ())
 				return;
 			
-			//std::vector<Point> pointStack;
-			
 			const Graph& gr = m_table->graph ();
 			
-			const Owner current = m_table->stepQueue ()->getCurrentOwner ();
-			const Owner other = StepQueue::other (current);
 			std::vector<Point> points;
-			float max_priority = -1;
+			float max_priority = -0.5 * m_iterations;
 			
 			int min_x = point.x () - 2, min_y = point.y () - 2;
 			int max_x = point.x () + 2, max_y = point.y () + 2;
@@ -136,7 +138,7 @@ endloop:
 				for (i = 0; i < max_i; ++i)
 				{
 					const GraphPoint& point = gr[i][j];
-					if (point.owner () == other)
+					if (point.owner () == m_other)
 					{
 						if (i - 2 < min_x)
 							min_x = i - 2;
@@ -151,19 +153,26 @@ endloop:
 				}
 			}
 			
+			m_pointStack.clear ();
+			
 			for (Graph::const_iterator itr = gr.begin (), itrEnd = gr.end ();
 					itr != itrEnd; ++itr)
 			{
 				if (itr->owner () != NONE || itr->isCaptured ())
 					continue;
-					
+				
 				const Point& newPoint = itr.point ();
 				
 				if (newPoint.x () < min_x || newPoint.x () > max_x
 						|| newPoint.y () < min_y || newPoint.y () > max_y)
 					continue;
 				
-				const float imp = calcImportance (gr, newPoint, current);
+				float imp = 0;
+				
+				calcImportanceTree (imp, newPoint, 1);
+				
+				kDebug () << imp;
+				
 				if (imp == max_priority)
 					points.push_back (newPoint);
 				else if (imp > max_priority)
@@ -174,14 +183,58 @@ endloop:
 				}
 			}
 			
-			srand (time (NULL));
+			kDebug () << "MAX PRIORITY: " << max_priority;	
+			
+			
 			if (!points.empty ())
 				m_table->pushPoint (points[rand () % points.size ()]);
+		}
+		
+		void Rival::calcImportanceTree (float& importance, const Point& point, int iteration)
+		{
+			const Graph& gr = m_table->graph ();
+
+			importance += calcImportance (gr, point, m_current);
+			m_pointStack.push_back (point);
+			if (iteration == m_iterations) // Need configure this feature
+				return;
+			
+			float max_imp =  -m_iterations;
+			
+			int i = 0;
+			for (; i < 8; ++i)
+			{
+				const int tempx = point.x () + GRAPH_DX[i];
+				const int tempy = point.y () + GRAPH_DY[i];
+
+				if (tempx < 0 || tempy < 0 || tempx >= gr.width () || tempy >= gr.height ())
+					continue;
+				
+				const Point newPoint (tempx, tempy);
+				const GraphPoint& newGrPoint = gr[newPoint];
+				
+				if (!newGrPoint.isCaptured () && newGrPoint.owner () == NONE
+						&& std::find (m_pointStack.begin (), m_pointStack.end (), newPoint) == m_pointStack.end ())
+				{
+					float imp = 0;
+					calcImportanceTree (imp, newPoint, iteration + 1);
+					
+					kDebug () << "IMP:" << imp << " MAX_IMP:" << imp << " ITER: " << iteration;
+					if (max_imp == -m_iterations || imp < max_imp)
+						max_imp = imp;
+				}
+			}
+			
+			if (i != 8)
+				importance += max_imp;
 		}
 		
 		void Rival::setDotTable (DotTable *table)
 		{
 			m_table = table;
+			
+			m_current = m_table->stepQueue ()->getCurrentOwner ();
+			m_other = StepQueue::other (m_current);
 		}
 	}
 }

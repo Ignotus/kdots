@@ -54,7 +54,7 @@ namespace KDots
 			return m_polygons;
 		}
 
-		inline Graph graph () const
+		inline Graph& graph () const
 		{
 			return *m_graph;
 		}

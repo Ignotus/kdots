@@ -37,6 +37,9 @@ namespace KDots
 			Q_INTERFACES (KDots::IRival)
 			
 			DotTable *m_table;
+			std::vector<Point> m_pointStack;
+			Owner m_current, m_other;
+			int m_iterations;
 		public:
 			Rival (QObject *parent = 0);
 
@@ -45,6 +48,8 @@ namespace KDots
 			void nextStep (const Point& point);
 			
 			void setDotTable (DotTable *table);
+		private:
+			void calcImportanceTree (float& importance, const Point& point, int iteration);
 		signals:
 			void createDotTable (const GameConfig& config);
 			void needDestroy ();
