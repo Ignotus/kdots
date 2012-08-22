@@ -4,16 +4,16 @@ INCLUDE_DIRECTORIES (
 	${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-QT4_WRAP_CPP (PRIORITYMAP_MOC prioritymaptest.hpp)
-
-ADD_EXECUTABLE (priority_map_test
+kde4_add_executable (priority_map_test
 	prioritymaptest.cpp
-	${PRIORITYMAP_MOC}
 )
+
 TARGET_LINK_LIBRARIES (priority_map_test
+	${KDE4_KDECORE_LIBS}
+	${KDE4_KDEUI_LIBS}
 	${QT_LIBRARIES}
 	kdots_simpleai
-	lib_kdots
+	kdotslib
 )
 
 ADD_TEST (PriorityMapTest priority_map_test)

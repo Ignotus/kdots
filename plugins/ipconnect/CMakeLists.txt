@@ -33,7 +33,7 @@ SET (FORMS
 
 kde4_add_ui_files (IPCONNECT_SRCS ${FORMS})
 
-kde4_add_plugin (kdots_ipconnect
+kde4_add_plugin (kdots_ipconnect SHARED
 	${IPCONNECT_SRCS}
 )
 

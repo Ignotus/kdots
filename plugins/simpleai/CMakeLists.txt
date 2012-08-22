@@ -26,7 +26,7 @@ SET (SIMPLEAI_SRCS
 	plugin.cpp
 )
 
-kde4_add_plugin (kdots_simpleai
+kde4_add_plugin (kdots_simpleai SHARED
 	${SIMPLEAI_SRCS}
 )
 

@@ -58,7 +58,7 @@ private slots:
 	void sizeTest ()
 	{
 		const std::list<MapData>& dataList = PriorityMap::instance ().priorityMap ();
-		QVERIFY (dataList.size () == 33 * 8);
+		QVERIFY (dataList.size () % 8 == 0);
 	}
 	
 	void currenPointTest ()
@@ -76,8 +76,6 @@ private slots:
 	
 	void inverseTest ()
 	{
-		const std::list<MapData>& dataList = PriorityMap::instance ().priorityMap ();
-		
 		const MapData& inverted = PriorityMap::inverse (TEST_DATA);
 		const MapData answer {
 			{
@@ -109,8 +107,6 @@ private slots:
 	
 	void rotateTest ()
 	{
-		const std::list<MapData>& dataList = PriorityMap::instance ().priorityMap ();
-		
 		const MapData& rotated = PriorityMap::rotate (TEST_DATA);
 		const MapData answer {
 			{

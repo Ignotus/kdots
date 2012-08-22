@@ -16,7 +16,7 @@ SET (SINGLEPC_SRCS
 	plugin.cpp
 )
 
-kde4_add_plugin (kdots_singlepc
+kde4_add_plugin (kdots_singlepc SHARED
 	${SINGLEPC_SRCS}
 )
 

@@ -360,24 +360,7 @@ namespace KDots
 			},
 			{
 				{//34
-					{SE, EM},
-					{EM, CU}
-				},
-				{1, 1},
-				0.01
-			},
-			{
-				{//35
-					{EM, EM, EM},
-					{EM, EM, EM},
-					{EM, EM, CU}
-				},
-				{2, 2},
-				-0.05
-			},
-			{
-				{//36
-					{EM, SE, SE},
+					{EM, SE, NM},
 					{CU, FI, SE},
 					{EM, SE, NM}
 				},
@@ -385,13 +368,31 @@ namespace KDots
 				0.5
 			},
 			{
-				{
+				{//35
 					{NM, FI, NM},
 					{CU, SE, FI},
-					{SE, FI, SE}
+					{NM, FI, NM}
 				},
 				{0, 1},
-				0.9
+				0.5
+			},
+			{
+				{//36
+					{NM, SE},
+					{SE, CU},
+					{NM, SE}
+				},
+				{1, 1},
+				-0.5
+			},
+			{
+				{//37
+					{SE, FI, SE},
+					{SE, FI, SE},
+					{EM, CU, EM}
+				},
+				{1, 2},
+				0.6
 			}
 		};
 		

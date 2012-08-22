@@ -27,6 +27,7 @@
 #define KDOTS_PLUGINS_SIMPLEAI_PRIORITY_HPP
 #include <list>
 #include <vector>
+#include <include/constants.hpp>
 #include <include/point.hpp>
 
 struct stat;
@@ -48,7 +49,7 @@ namespace KDots
 		typedef std::vector<MapElement> MapLine;
 		typedef std::vector<MapLine> MapType;
 		
-		struct MapData
+		struct KDOTS_EXPORT MapData
 		{
 			MapType m_map;
 			Point m_current;
@@ -69,7 +70,7 @@ namespace KDots
 			bool operator!= (const MapData& other) const;
 		};
 		
-		class PriorityMap
+		class KDOTS_EXPORT PriorityMap
 		{
 			std::list<MapData> m_priorityMap;
 			

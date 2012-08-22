@@ -88,8 +88,7 @@ namespace KDots
 	
 	void MainWindow::endGame ()
 	{
-		delete m_table;
-		m_table = NULL;
+		m_table->deleteLater ();
 		m_rival.reset ();
 		m_endAction->setEnabled (true);
 		statusBar ()->clearMessage ();

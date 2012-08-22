@@ -42,7 +42,7 @@ namespace KDots
 			, m_table (NULL)
 			, m_current (FIRST)
 			, m_other (SECOND)
-			, m_iterations (10)
+			, m_iterations (2)
 		{
 			PriorityMap::instance ();
 		}
@@ -59,7 +59,7 @@ namespace KDots
 		{
 			float calcImportance(const Graph& graph, const Point& point, const Owner currentOwner)
 			{
-				float priority = -1;
+				float priority = -0.5;
 				const Owner otherOwner = StepQueue::other (currentOwner);
 				
 				for (const MapData& table : PriorityMap::instance ().priorityMap ())
@@ -119,6 +119,22 @@ endloop:
 				
 				return priority;
 			}
+			
+			bool isEmptyAround (const Graph& graph, const Point& point)
+			{
+				for (int i = 0; i < 8; ++i)
+				{
+					const Point newPoint (point.x () + GRAPH_DX[i], point.y () + GRAPH_DY[i]);
+					if (newPoint.x () < 0 || newPoint.y () < 0
+							|| newPoint.x () >= graph.width () || newPoint.y () >= graph.height ())
+						continue;
+					
+					if (graph[newPoint].owner () != NONE)
+						return false;
+				}
+				
+				return true;
+			}
 		}
 		
 		void Rival::nextStep (const Point& point)
@@ -131,24 +147,24 @@ endloop:
 			std::vector<Point> points;
 			float max_priority = -0.5 * m_iterations;
 			
-			int min_x = point.x () - 2, min_y = point.y () - 2;
-			int max_x = point.x () + 2, max_y = point.y () + 2;
+			int min_x = point.x () - 1, min_y = point.y () - 1;
+			int max_x = point.x () + 1, max_y = point.y () + 1;
 			for (int j = 0, max_j = gr.height (), max_i = gr.width (), i; j < max_j; ++j)
 			{
 				for (i = 0; i < max_i; ++i)
 				{
 					const GraphPoint& point = gr[i][j];
-					if (point.owner () == m_other)
+					if (point.owner () != NONE)
 					{
-						if (i - 2 < min_x)
-							min_x = i - 2;
-						else if (i + 2 > max_x)
-							max_x = i + 2;
+						if (i - 1 < min_x)
+							min_x = i - 1;
+						else if (i + 1 > max_x)
+							max_x = i + 1;
 						
-						if (j - 2 < min_y)
-							min_y = j - 2;
-						else if (j + 2 > max_y)
-							max_y = j + 2;
+						if (j - 1 < min_y)
+							min_y = j - 1;
+						else if (j + 1 > max_y)
+							max_y = j + 1;
 					}
 				}
 			}
@@ -163,6 +179,9 @@ endloop:
 				
 				const Point& newPoint = itr.point ();
 				
+				if (isEmptyAround (gr, newPoint))
+					continue;
+				
 				if (newPoint.x () < min_x || newPoint.x () > max_x
 						|| newPoint.y () < min_y || newPoint.y () > max_y)
 					continue;
@@ -170,8 +189,6 @@ endloop:
 				float imp = 0;
 				
 				calcImportanceTree (imp, newPoint, 1);
-				
-				kDebug () << imp;
 				
 				if (imp == max_priority)
 					points.push_back (newPoint);
@@ -181,13 +198,17 @@ endloop:
 					points.clear ();
 					points.push_back (newPoint);
 				}
+				else
+				{
+					kDebug () << "imp: " << imp << "point: " << newPoint.x () << newPoint.y ();
+				}
 			}
 			
-			kDebug () << "MAX PRIORITY: " << max_priority;	
-			
+			kDebug () << "points vector size: " << points.size () << "max imp: " << max_priority;
 			
 			if (!points.empty ())
 				m_table->pushPoint (points[rand () % points.size ()]);
+			
 		}
 		
 		void Rival::calcImportanceTree (float& importance, const Point& point, int iteration)
@@ -219,7 +240,6 @@ endloop:
 					float imp = 0;
 					calcImportanceTree (imp, newPoint, iteration + 1);
 					
-					kDebug () << "IMP:" << imp << " MAX_IMP:" << imp << " ITER: " << iteration;
 					if (max_imp == -m_iterations || imp < max_imp)
 						max_imp = imp;
 				}
