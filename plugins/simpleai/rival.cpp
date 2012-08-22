@@ -42,7 +42,7 @@ namespace KDots
 			, m_table (NULL)
 			, m_current (FIRST)
 			, m_other (SECOND)
-			, m_iterations (2)
+			, m_iterations (3)
 		{
 			PriorityMap::instance ();
 		}
@@ -91,19 +91,19 @@ namespace KDots
 									goto endloop;
 								break;
 							case FI: //First
-								if (own != currentOwner || captured)
-									goto endloop;
-								break;
-							case SE: //Second
 								if (own != otherOwner || captured)
 									goto endloop;
 								break;
+							case SE: //Second
+								if (own != currentOwner || captured)
+									goto endloop;
+								break;
 							case PF: // Possibly first
-								if (own == otherOwner || captured)
+								if (own == currentOwner || captured)
 									goto endloop;
 								break;
 							case PS: // Possibly second
-								if (own == currentOwner || captured)
+								if (own == otherOwner || captured)
 									goto endloop;
 							default:
 								break;
@@ -198,13 +198,7 @@ endloop:
 					points.clear ();
 					points.push_back (newPoint);
 				}
-				else
-				{
-					kDebug () << "imp: " << imp << "point: " << newPoint.x () << newPoint.y ();
-				}
 			}
-			
-			kDebug () << "points vector size: " << points.size () << "max imp: " << max_priority;
 			
 			if (!points.empty ())
 				m_table->pushPoint (points[rand () % points.size ()]);
