@@ -37,6 +37,7 @@ namespace KDots
 	{
 		bool m_filled;
 		Owner m_owner;
+		float m_area;
 	public:
 		Polygon ()
 			: std::list<Point> ()
@@ -48,6 +49,16 @@ namespace KDots
 			: std::list<Point> (a)
 			, m_filled (false)
 		{
+		}
+		
+		void setArea (float area)
+		{
+			m_area = area;
+		}
+		
+		float area () const
+		{
+			return m_area;
 		}
 
 		bool isFilled () const

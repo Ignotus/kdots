@@ -202,7 +202,6 @@ endloop:
 			
 			if (!points.empty ())
 				m_table->pushPoint (points[rand () % points.size ()]);
-			
 		}
 		
 		void Rival::calcImportanceTree (float& importance, const Point& point, int iteration)

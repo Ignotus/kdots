@@ -26,6 +26,7 @@
 #include "polygonfinder.hpp"
 #include <algorithm>
 #include <iostream>
+#include <KDebug>
 #include "point.hpp"
 #include "constants.hpp"
 #include "graph.hpp"
@@ -42,14 +43,30 @@ namespace KDots
 
 	namespace
 	{
-		std::size_t maxSize (const PolyList& polygonList)
+		float area (const Polygon& polygon)
 		{
-			std::size_t max = 0;
+			float res = 0;
+			Point prevPoint = polygon.back ();
+			for (Polygon::const_iterator itr = polygon.begin (), itrEnd = polygon.end ();
+					 itr != itrEnd; ++itr)
+			{
+				res += (itr->x () - prevPoint.x ()) * float (itr->y () + prevPoint.y ()) / 2; 
+				prevPoint = *itr;
+			} 
+			
+			return std::abs (res);
+		}
+		
+		float maxSize (const PolyList& polygonList)
+		{
+			float max = 0;
 
 			for (const Polygon_ptr& ptr : polygonList)
 			{
-				if (ptr->size () > max)
-					max = ptr->size ();
+				const float currArea = area (*ptr);
+				ptr->setArea (currArea);
+				if (currArea > max)
+					max = currArea;
 			}
 
 			return max;
@@ -60,11 +77,11 @@ namespace KDots
 	{
 		findPolygons (point);
 
-		const std::size_t max = maxSize (m_polygons);
+		const float max = maxSize (m_polygons);
 		m_polygons.erase (std::remove_if (m_polygons.begin (), m_polygons.end (),
 						[&max] (const Polygon_ptr& ptr)
 						{
-							return ptr->size () < max;
+							return ptr->area () < max;
 						}),
 				m_polygons.end ());
 		
