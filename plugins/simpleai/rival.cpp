@@ -120,6 +120,8 @@ endloop:
 			if (isAllow ())
 				return;
 			
+			//std::vector<Point> pointStack;
+			
 			const Graph& gr = m_table->graph ();
 			
 			const Owner current = m_table->stepQueue ()->getCurrentOwner ();
@@ -152,7 +154,7 @@ endloop:
 			for (Graph::const_iterator itr = gr.begin (), itrEnd = gr.end ();
 					itr != itrEnd; ++itr)
 			{
-				if (itr->owner () != NONE)
+				if (itr->owner () != NONE || itr->isCaptured ())
 					continue;
 					
 				const Point& newPoint = itr.point ();
