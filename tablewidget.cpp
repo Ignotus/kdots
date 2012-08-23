@@ -152,7 +152,7 @@ namespace KDots
 		
 		const QBrush firstBrush (firstColor), secondBrush (secondColor);
 
-		const QPen firstPen (firstColor, 2), secondPen (secondColor, 2),
+		const QPen firstPen (firstColor, 1.5), secondPen (secondColor, 1.5),
 				firtBorder (firstColor, 0.5), secondBorder (secondColor, 0.5);
 				
 		const std::vector<Polygon_ptr>& polygonVector = m_table->polygons ();
