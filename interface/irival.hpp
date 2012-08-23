@@ -29,6 +29,7 @@
 #include <include/newgamewidget.hpp>
 
 class QWidget;
+class QStatusBar;
 
 namespace KDots
 {
@@ -69,6 +70,16 @@ namespace KDots
 		virtual void setDotTable (DotTable *table)
 		{
 			Q_UNUSED (table);
+		}
+		
+		virtual void setStatusBar (QStatusBar *bar)
+		{
+			Q_UNUSED (bar);
+		}
+		
+		virtual void setDifficulty (int diff)
+		{
+			Q_UNUSED (diff);
 		}
 				
 		virtual bool canUndo () const

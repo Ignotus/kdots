@@ -25,7 +25,7 @@
  */
 #ifndef KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
 #define KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
-#include <kdemacros.h>
+#include <KGameDifficulty>
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 
@@ -41,6 +41,7 @@ namespace KDots
 			Rival (QObject *parent = 0)
 				: IRival (parent)
 			{
+				KGameDifficulty::setEnabled (false);
 			}
 
 			bool isAllow () const

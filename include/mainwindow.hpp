@@ -27,12 +27,15 @@
 #define KDOTS_MAINWINDOW_HPP
 #include <memory>
 #include <KXmlGuiWindow>
+#include <KGameDifficulty>
 #include "constants.hpp"
 
 namespace Ui
 {
 	class MainWindow;
 }
+
+class KAction;
 
 namespace KDots
 {
@@ -44,22 +47,27 @@ namespace KDots
 		Q_OBJECT
 	public:
 		MainWindow (QWidget *parent = 0);
+		~MainWindow ();
 	private:
 		Ui::MainWindow *m_ui;
 		std::shared_ptr<IRival> m_rival;
 		bool m_destroyTable;
 		TableWidget *m_table;
-		
-		QAction *m_undoAction, *m_endAction;
+		//KAction *m_undoAction, *m_endAction;
 		
 		void initMenu ();
 
 	private slots:
-		void on_actionNewGame_triggered ();
+		void onNewGame ();
 		void destroyGame ();
 		void onPreferences ();
 		void undo ();
 		void endGame ();
+		void difficultyHandler (KGameDifficulty::standardLevel level);
+	
+	signals:
+		void undoActionEnable (bool);
+		void endActionEnable (bool);
 	};
 }
 

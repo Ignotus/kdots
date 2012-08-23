@@ -26,7 +26,9 @@
 #include "rival.hpp"
 #include <ctime>
 #include <algorithm>
-#include <KDebug>
+#include <QStatusBar>
+#include <QLabel>
+#include <kgamedifficulty.h>
 #include <include/point.hpp>
 #include <include/dottable.hpp>
 #include <include/stepqueue.hpp>
@@ -43,8 +45,19 @@ namespace KDots
 			, m_current (FIRST)
 			, m_other (SECOND)
 			, m_iterations (3)
+			, m_statusBar (NULL)
 		{
 			PriorityMap::instance ();
+			KGameDifficulty::setEnabled (true);
+		}
+		
+		void Rival::setDifficulty (int diff)
+		{
+			m_iterations = diff;
+		}
+		
+		Rival::~Rival()
+		{
 		}
 		
 		bool Rival::isAllow () const
@@ -249,5 +262,10 @@ endloop:
 			m_current = m_table->stepQueue ()->getCurrentOwner ();
 			m_other = StepQueue::other (m_current);
 		}
+		
+		void Rival::setStatusBar (QStatusBar* bar)
+		{
+		}
+
 	}
 }

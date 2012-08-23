@@ -23,6 +23,7 @@ kde4_add_plugin (kdots_singlepc SHARED
 TARGET_LINK_LIBRARIES (kdots_singlepc
 	${KDE4_KDECORE_LIBS}
 	${KDE4_KDEUI_LIBS}
+	${KDEGAMES_LIBRARY}
 	${QT_LIBRARIES}
 	kdotslib
 )

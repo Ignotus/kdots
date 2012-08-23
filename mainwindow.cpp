@@ -29,6 +29,10 @@
 #include <KStatusBar>
 #include <KConfigDialog>
 #include <KToolBar>
+#include <KAction>
+#include <KStandardAction>
+#include <KActionCollection>
+#include <sys/socket.h>
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 #include "ui_mainwindow.h"
@@ -45,52 +49,91 @@ namespace KDots
 		, m_ui (new Ui::MainWindow)
 		, m_destroyTable (false)
 		, m_table (NULL)
-		, m_undoAction (NULL)
-		, m_endAction (NULL)
 	{
 		m_ui->setupUi (this);
 		
+		KGameDifficulty::init (this, this, SLOT (difficultyHandler (KGameDifficulty::standardLevel)));
+		KGameDifficulty::addStandardLevel (KGameDifficulty::Easy);
+		KGameDifficulty::addStandardLevel (KGameDifficulty::Medium);
+		KGameDifficulty::addStandardLevel (KGameDifficulty::Hard);
+		
+		KGameDifficulty::setEnabled (false);
+		
 		statusBar ()->show ();
 		setCentralWidget (new QWidget (this));
-		setupGUI (Create, "kdotsui.rc");
 		initMenu ();
+		setupGUI (Default, "kdotsui.rc");
+	}
+	
+	MainWindow::~MainWindow ()
+	{
+		m_rival.reset ();
+	}
+	
+	void MainWindow::difficultyHandler (KGameDifficulty::standardLevel level)
+	{
+		int diff;
+		switch (level)
+		{
+			case KGameDifficulty::Easy:
+				diff = 1;
+			case KGameDifficulty::Medium:
+				diff = 2;
+			default:
+				diff = 3;
+		}
+		
+		if (m_rival)
+			m_rival->setDifficulty (diff);
 	}
 	
 	void MainWindow::initMenu ()
 	{
-		KMenuBar *currentBar = menuBar ();
+		KStandardAction::preferences (this, SLOT (onPreferences ()), actionCollection ());
 		
-		QMenu *settingMenu = new QMenu (i18n ("&Settings"));
-		QAction *settingAction = currentBar
-				->insertMenu (currentBar->actionAt ({1, 1}), settingMenu);
+		KAction *newAction = new KAction (KIcon ("file_new"), i18n ("&New game"), this);
+		newAction->setShortcut (Qt::CTRL + Qt::Key_N);
 		
-		settingMenu->addAction (KIcon ("configure"), i18n ("&Preferences..."),
-				this, SLOT (onPreferences ()));
+		connect (newAction,
+				SIGNAL (triggered (bool)),
+				this,
+				SLOT (onNewGame ()));
 		
-		QMenu *fileMenu = new QMenu (i18n ("&Game"));
-		fileMenu->addAction (KIcon ("file_new"), i18n ("&New game"), this,
-				SLOT (on_actionNewGame_triggered ()));
+		actionCollection ()->addAction ("NewGame", newAction);
 		
-		currentBar->insertMenu (settingAction, fileMenu);
-		menuBar ()->show ();
+		KAction *endAction = actionCollection ()->addAction ("EndGame", this, SLOT (endGame ()));
+		endAction->setIcon (KIcon ("window-close"));
+		endAction->setText (i18n ("&End game"));
+		endAction->setShortcut (Qt::CTRL + Qt::Key_E);
+		endAction->setEnabled (false);
 		
-		KToolBar *currentTools = toolBar ();
-		currentTools->addAction (KIcon ("file_new"), i18n ("&New game"), this,
-				SLOT (on_actionNewGame_triggered ()));
-		m_endAction = currentTools->addAction (KIcon ("window-close"),
-				i18n ("&End game"), this, SLOT (endGame ()));
-		m_endAction->setEnabled (false);
+		KAction *undoAction = actionCollection ()->addAction ("UndoGame", this, SLOT (undo ()));
+		undoAction->setIcon (KIcon ("undo"));
+		undoAction->setText (i18n ("&Undo"));
+		undoAction->setEnabled (false);
+		undoAction->setShortcut (Qt::CTRL + Qt::Key_Z);
 		
-		m_undoAction = currentTools->addAction (KIcon ("undo"), i18n ("Undo"), this, SLOT (undo ()));
-		m_undoAction->setEnabled (false);
-		currentTools->show ();
+		actionCollection ()->addAction ("UndoGame", undoAction);
+		
+		connect (this,
+				SIGNAL (endActionEnable (bool)),
+				endAction,
+				SLOT (setEnabled (bool)));
+		
+		connect (this,
+				SIGNAL (undoActionEnable (bool)),
+				undoAction,
+				SLOT (setEnabled (bool)));
 	}
 	
 	void MainWindow::endGame ()
 	{
 		m_table->deleteLater ();
+		m_table = NULL;
 		m_rival.reset ();
-		m_endAction->setEnabled (true);
+		
+		emit endActionEnable (false);
+		
 		statusBar ()->clearMessage ();
 	}
 	
@@ -122,15 +165,18 @@ namespace KDots
 		dialog.exec ();
 	}
 
-	void MainWindow::on_actionNewGame_triggered ()
+	void MainWindow::onNewGame ()
 	{
 		NewGameDialog dialog;
 		if (dialog.exec () != QDialog::Accepted)
 			return;
-
-		m_rival = dialog.rival ();
 		
-		m_undoAction->setEnabled (m_rival->canUndo ());
+		m_rival = dialog.rival ();
+		m_rival->setStatusBar (statusBar ());
+		
+		difficultyHandler (KGameDifficulty::level ());
+		
+		emit undoActionEnable (m_rival->canUndo ());
 		
 		connect (m_rival.get (),
 				SIGNAL (needDestroy ()),
@@ -161,13 +207,14 @@ namespace KDots
 
 		setCentralWidget (m_table);
 		m_table->show ();
-		m_endAction->setEnabled (true);
+		
+		emit endActionEnable (true);
 	}
 	
 	void MainWindow::destroyGame ()
 	{
 		m_destroyTable = true;
-		m_undoAction->setEnabled (false);
+		emit undoActionEnable (false);
 	}
 }
 
