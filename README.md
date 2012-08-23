@@ -1,6 +1,8 @@
 KDots
 =====
 
+[![KDots](http://i.imgur.com/koAZ5.png)](http://i.imgur.com/koAZ5.png)
+
 About
 =====
 KDots is the simple implementation of the game of dots written with Qt Toolkit.
