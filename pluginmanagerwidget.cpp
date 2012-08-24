@@ -25,6 +25,7 @@
  */
 #include "pluginmanagerwidget.hpp"
 #include <interface/iplugin.hpp>
+#include "kdots.h"
 #include "plugincontainer.hpp"
 #include "ui_pluginmanagerwidget.h"
 
@@ -39,7 +40,8 @@ namespace KDots
 		for (IPlugin *plugin : PluginContainer::instance ().plugins ().values ())
 			m_ui->PluginComboBox->addItem (plugin->icon (), plugin->name ());
 		
-		onIndexChanged (0);
+		m_ui->PluginComboBox->setCurrentIndex (Settings::lastPlugin ());
+		onIndexChanged (Settings::lastPlugin ());
 		
 		connect (m_ui->PluginComboBox,
 				SIGNAL (currentIndexChanged (int)),
@@ -51,6 +53,8 @@ namespace KDots
 	{
 		IPlugin *first = PluginContainer::instance ().plugin (m_ui->PluginComboBox->itemText (current));
 		m_ui->Description->setText (first->description ());
+		
+		Settings::setLastPlugin (current);
 	}
 
 	QString PluginManagerWidget::pluginName () const

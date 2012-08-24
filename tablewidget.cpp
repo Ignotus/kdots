@@ -36,6 +36,7 @@
 #include "stepqueue.hpp"
 #include "brushcombodelegate.hpp"
 #include "kdots.h"
+#include "graph.hpp"
 
 namespace KDots
 {

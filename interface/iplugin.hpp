@@ -28,17 +28,10 @@
 #include <QString>
 #include <QIcon>
 #include <QtPlugin>
-#include <kexportplugin.h>
-#include <kpluginfactory.h>
-#include <point.hpp>
-
-class QDialog;
 
 namespace KDots
 {
-	class DotTable;
 	class IRival;
-
 	class IPlugin : public QObject
 	{
 	public:

@@ -28,7 +28,6 @@
 #include <QObject>
 #include <include/newgamewidget.hpp>
 
-class QWidget;
 class QStatusBar;
 
 namespace KDots

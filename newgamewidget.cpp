@@ -26,6 +26,7 @@
 #include "newgamewidget.hpp"
 #include "ui_newgamewidget.h"
 #include <QMetaType>
+#include "kdots.h"
 #include "constants.hpp"
 #include "plugincontainer.hpp"
 
@@ -37,26 +38,34 @@ namespace KDots
 	{
 		m_ui->setupUi (this);
 		
+		m_ui->HeightSpinBox->setValue (Settings::lastHeight ());
+		m_ui->WidthSpinBox->setValue (Settings::lastWidth ());
+		m_ui->GameMode->setCurrentIndex (Settings::lastGameMode ());
+		m_ui->FirstMoving->setCurrentIndex (Settings::lastFirstMoving ());
 	}
 
 	int NewGameWidget::getHeight () const
 	{
-		return m_ui->HeightSpinBox->value ();
+		Settings::setLastHeight (m_ui->HeightSpinBox->value ());
+		return Settings::lastHeight ();
 	}
 
 	int NewGameWidget::getWidth () const
 	{
-		return m_ui->WidthSpinBox->value ();
+		Settings::setLastWidth (m_ui->WidthSpinBox->value ());
+		return Settings::lastWidth ();
 	}
 
 	GameMode NewGameWidget::getGameMode () const
 	{
-		return m_ui->GameMode->currentIndex () ? GameMode::EXTRA_TURN_MODE : GameMode::DEFAULT_MODE;
+		Settings::setLastGameMode (m_ui->GameMode->currentIndex ());
+		return Settings::lastGameMode () ? GameMode::EXTRA_TURN_MODE : GameMode::DEFAULT_MODE;
 	}
 
 	Owner NewGameWidget::getFirstMoving () const
 	{
-		return m_ui->FirstMoving->currentIndex () ? Owner::SECOND : Owner::FIRST;
+		Settings::setLastFirstMoving (m_ui->FirstMoving->currentIndex ());
+		return Settings::lastFirstMoving () ? Owner::SECOND : Owner::FIRST;
 	}
 
 	GameConfig NewGameWidget::getGameConfig () const
@@ -66,7 +75,7 @@ namespace KDots
 		config.m_height = getHeight ();
 		config.m_width = getWidth ();
 		config.m_mode = getGameMode ();
-
+		
 		return config;
 	}
 	

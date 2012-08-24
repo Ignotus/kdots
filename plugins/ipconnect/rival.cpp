@@ -24,15 +24,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "rival.hpp"
-#include <QMessageBox>
+#include <KMessageBox>
+#include <KDebug>
 #include <KLocalizedString>
 #ifdef NEW_LIBKDEGAMES
 # include <KgDifficulty>
 #else
 # include <KGameDifficulty>
 #endif
+#include <include/dottable.hpp>
 #include <include/stepqueue.hpp>
+#include <include/graph.hpp>
 #include "connectdialog.hpp"
+#include "configurationwidget.hpp"
 
 namespace KDots
 {
@@ -81,7 +85,6 @@ namespace KDots
 			
 			if (!m_configWidget->clientConfig (config))
 			{
-				qWarning () << Q_FUNC_INFO;
 				return GameConfig ();
 			}
 			
@@ -94,16 +97,16 @@ namespace KDots
 			
 			m_socket->connectToHost (config.m_host, config.m_port);
 
-			qDebug () << Q_FUNC_INFO << "Connecting to the server...";
+			kDebug () << "Connecting to the server...";
 			if (m_socket->waitForConnected (5000))
 			{
-				qDebug () << Q_FUNC_INFO << "Connected";
+				kDebug () << "Connected";
 				
 				if (m_socket->waitForReadyRead ())
 				{
-					qDebug () << Q_FUNC_INFO << "Reading Table config";
+					kDebug () << "Reading Table config";
 					const QByteArray& data = m_socket->readAll();
-					qDebug () << Q_FUNC_INFO << "Data size" << data.size ();
+					kDebug () << "Data size" << data.size ();
 					QDataStream in (&const_cast<QByteArray&> (data), QIODevice::ReadOnly);
 					QVariant variantData;
 					
@@ -113,14 +116,14 @@ namespace KDots
 					
 					if (!variantData.canConvert<GameConfig> ())
 					{
-						qWarning () << Q_FUNC_INFO << "Cannot convert to GameConfig: "
+						kWarning () << "Cannot convert to GameConfig: "
 								<< variantData.typeName ();
 					}
 					
 					const GameConfig& config = variantData.value<GameConfig> ();
 					if (!config.isInititialized ())
 					{
-						qWarning () << Q_FUNC_INFO << "Table config is invalid";
+						kWarning () << "Table config is invalid";
 						return GameConfig ();
 					}
 					else
@@ -130,7 +133,7 @@ namespace KDots
 								this,
 								SLOT (onReadyRead ()));
 						
-						QMessageBox::information (0,
+						KMessageBox::information (0,
 								i18n ("Connected"),
 								i18n ("Good luck have fun"));
 						return config;
@@ -164,7 +167,6 @@ namespace KDots
 			
 			//Create server
 			
-			qDebug () << Q_FUNC_INFO;
 			m_server = new QTcpServer (this);
 
 			connect (m_server,
@@ -198,17 +200,16 @@ namespace KDots
 			if (!m_socket)
 				return;
 			
-			qDebug () << Q_FUNC_INFO << "Sending point";
+			kDebug () << "Sending point";
 			QByteArray array;
 			QDataStream out (&array, QIODevice::WriteOnly);
 			
 			out << QVariant::fromValue<Point> (point);
-			qDebug () << Q_FUNC_INFO << m_socket->write (array);
+			kDebug () << m_socket->write (array);
 		}
 
 		void Rival::onNewConnectionHandle ()
 		{
-			qDebug () << Q_FUNC_INFO;
 			m_socket = m_server->nextPendingConnection ();
 			if (!m_socket)
 				return;
@@ -218,7 +219,7 @@ namespace KDots
 			out << QVariant::fromValue<GameConfig> (m_table->gameConfig ())
 					<< static_cast<quint32> (StepQueue::other (m_me));
 			m_socket->write (gameData);
-			qDebug () << Q_FUNC_INFO << "Game config sent";
+			kDebug () << "Game config sent";
 			connect (m_socket,
 					SIGNAL (readyRead ()),
 					this,

@@ -42,13 +42,11 @@ namespace KDots
 			std::vector<Point> m_pointStack;
 			Owner m_current, m_other;
 			int m_iterations;
-			QStatusBar *m_statusBar;
 		public:
 			Rival (QObject *parent = 0);
 			~Rival ();
 			bool isAllow () const;
 			
-			void setStatusBar (QStatusBar *bar);
 			void setDifficulty (int diff);
 		public slots:
 			void nextStep (const Point& point);

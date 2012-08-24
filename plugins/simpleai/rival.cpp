@@ -37,6 +37,7 @@
 #include <include/dottable.hpp>
 #include <include/stepqueue.hpp>
 #include <include/constants.hpp>
+#include <include/graph.hpp>
 #include "prioritymap.hpp"
 
 namespace KDots
@@ -49,7 +50,6 @@ namespace KDots
 			, m_current (FIRST)
 			, m_other (SECOND)
 			, m_iterations (3)
-			, m_statusBar (NULL)
 		{
 			PriorityMap::instance ();
 #ifdef NEW_LIBKDEGAMES
@@ -274,11 +274,5 @@ endloop:
 			m_current = m_table->stepQueue ()->getCurrentOwner ();
 			m_other = StepQueue::other (m_current);
 		}
-		
-		void Rival::setStatusBar (QStatusBar* bar)
-		{
-			Q_UNUSED (bar);
-		}
-
 	}
 }

@@ -25,7 +25,6 @@
  */
 #include "configurationwidget.hpp"
 #include "ui_configurationwidget.h"
-#include <QDebug>
 
 namespace KDots
 {

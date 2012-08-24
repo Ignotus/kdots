@@ -26,7 +26,7 @@
 #include "dottable.hpp"
 #include <KMessageBox>
 #include <KLocalizedString>
-#include <KDebug>
+#include "graph.hpp"
 #include "polygonfinder.hpp"
 #include "stepqueue.hpp"
 
@@ -116,7 +116,7 @@ namespace KDots
 
 		if (currentPoint.owner () != NONE || currentPoint.isCaptured ())
 			return;
-
+		
 		const Owner current = m_steps->getCurrentOwner ();
 
 		currentPoint.setOwner (current);

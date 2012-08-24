@@ -25,7 +25,7 @@
  */
 #include "connectdialog.hpp"
 #include <QTcpServer>
-#include <QDebug>
+#include <KDebug>
 #include "ui_connectdialog.h"
 
 namespace KDots
@@ -45,9 +45,9 @@ namespace KDots
 					SLOT (accept ()));
 			
 			if (m_server->listen (QHostAddress::Any, port))
-				qDebug () << Q_FUNC_INFO << "Listening the port" << port;
+				kDebug () << Q_FUNC_INFO << "Listening the port" << port;
 			else
-				qWarning () << Q_FUNC_INFO << "Couldn't listen the port " << port;
+				kWarning () << Q_FUNC_INFO << "Couldn't listen the port " << port;
 		}
 
 	}

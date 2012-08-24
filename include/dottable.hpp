@@ -27,12 +27,12 @@
 #define KDOTS_DOTTABLE_HPP
 #include <memory>
 #include <QObject>
-#include "graph.hpp"
 #include "gameconfig.hpp"
 #include "polygon.hpp"
 
 namespace KDots
 {
+	class Graph;
 	class StepQueue;
 	class KDOTS_EXPORT DotTable : public QObject
 	{
@@ -44,7 +44,7 @@ namespace KDots
 		std::vector<Polygon_ptr> m_polygons;
 	public:
 		DotTable (const GameConfig& config, QObject *parent = 0);
-
+		virtual ~DotTable () {}
 		GameConfig gameConfig () const;
 
 		void pushPoint (const Point& point);

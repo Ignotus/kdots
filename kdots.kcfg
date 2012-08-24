@@ -24,5 +24,22 @@
 		<default>0</default>
 	</entry>
 </group>
+<group name="Game">
+	<entry name="lastPlugin" type="Int">
+		<default>0</default>
+	</entry>
+	<entry name="lastHeight" type="Int">
+		<default>10</default>
+	</entry>
+	<entry name="lastWidth" type="Int">
+		<default>10</default>
+	</entry>
+	<entry name="lastGameMode" type="Int">
+		<default>0</default>
+	</entry>
+	<entry name="lastFirstMoving" type="Int">
+		<default>0</default>
+	</entry>
+</group>
 
 </kcfg>

@@ -25,13 +25,14 @@
  */
 #include "newgamedialog.hpp"
 #include <KDebug>
+#include <interface/irival.hpp>
+#include <interface/iplugin.hpp>
+#include <interface/iconfigurationwidget.hpp>
 #include "ui_newgamedialog.h"
 #include "pluginmanagerwidget.hpp"
 #include "newgamewidget.hpp"
 #include "plugincontainer.hpp"
-#include <interface/irival.hpp>
-#include <interface/iplugin.hpp>
-#include <interface/iconfigurationwidget.hpp>
+
 
 namespace KDots
 {

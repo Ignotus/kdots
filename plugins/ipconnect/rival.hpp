@@ -25,17 +25,18 @@
  */
 #ifndef KDOTS_PLUGINS_IPCONNECT_RIVAL_HPP
 #define KDOTS_PLUGINS_IPCONNECT_RIVAL_HPP
+#include <memory>
 #include <QObject>
 #include <QTcpSocket>
 #include <QTcpServer>
 #include <interface/irival.hpp>
-#include <include/dottable.hpp>
-#include "configurationwidget.hpp"
 
 namespace KDots
 {
+	class DotTable;
 	namespace ipconnect
 	{
+		class ConfigurationWidget;
 		class Rival : public KDots::IRival
 		{
 			Q_OBJECT

@@ -25,8 +25,6 @@
  */
 #include "polygonfinder.hpp"
 #include <algorithm>
-#include <iostream>
-#include <KDebug>
 #include "point.hpp"
 #include "constants.hpp"
 #include "graph.hpp"
