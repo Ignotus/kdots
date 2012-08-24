@@ -37,7 +37,7 @@ namespace KDots
 	class graph_iterator : public std::iterator<std::forward_iterator_tag, A>
 	{
 		Graph *m_graph;
-		int m_x, m_y;
+		std::size_t m_x, m_y;
 	public:
 		
 		Point point () const
@@ -52,14 +52,14 @@ namespace KDots
 		{
 		}
 		
-		graph_iterator (Graph *graph, int x = 0, int y = 0)
+		graph_iterator (Graph *graph, std::size_t x = 0, std::size_t y = 0)
 			: m_graph (graph)
 			, m_x (x)
 			, m_y (y)
 		{
 		}
 		
-		graph_iterator (const Graph *graph, int x = 0, int y = 0)
+		graph_iterator (const Graph *graph, std::size_t x = 0, std::size_t y = 0)
 			: m_graph (const_cast<Graph*> (graph))
 			, m_x (x)
 			, m_y (y)
@@ -120,12 +120,12 @@ namespace KDots
 		iterator end ();
 		const_iterator end () const;
 
-		inline int width () const
+		inline std::size_t width () const
 		{
 			return m_graph.size ();
 		}
 
-		inline int height () const
+		inline std::size_t height () const
 		{
 			return m_graph.front ().size ();
 		}

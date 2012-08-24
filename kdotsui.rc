@@ -11,6 +11,8 @@
       <text>File</text>
       <Action name="NewGame" />
       <Action name="EndGame" />
+	  <Separator />
+	  <Action name="Quit" />
     </Menu>
     <Menu noMerge="1" name="Game">
       <text>Game</text>

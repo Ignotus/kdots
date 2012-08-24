@@ -69,6 +69,8 @@ namespace KDots
 		void nextPlayer (const Point& lastPoint);
 	private:
 		void drawPolygon (PolyList polygons);
+		
+		void continueStep ();
 	};
 }
 

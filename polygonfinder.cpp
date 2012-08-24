@@ -112,7 +112,9 @@ namespace KDots
 			const int tempx = point.x () + GRAPH_DX[i];
 			const int tempy = point.y () + GRAPH_DY[i];
 
-			if (tempx < 0 || tempy < 0 || tempx >= m_graph.width () || tempy >= m_graph.height ())
+			if (tempx < 0 || tempy < 0
+					|| static_cast<std::size_t> (tempx) >= m_graph.width ()
+					|| static_cast<std::size_t> (tempy) >= m_graph.height ())
 				continue;
 
 			findPolygons (Point (tempx, tempy));

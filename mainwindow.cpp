@@ -137,13 +137,18 @@ namespace KDots
 		endAction->setShortcut (Qt::CTRL + Qt::Key_E);
 		endAction->setEnabled (false);
 		
+		KAction *quitAction = actionCollection ()->addAction ("Quit", this, SLOT (close ()));
+		quitAction->setIcon (KIcon ("exit"));
+		quitAction->setText (i18n ("&Quit"));
+		quitAction->setShortcut (Qt::CTRL + Qt::Key_Q);
+		
 		KAction *undoAction = actionCollection ()->addAction ("UndoGame", this, SLOT (undo ()));
 		undoAction->setIcon (KIcon ("undo"));
 		undoAction->setText (i18n ("&Undo"));
 		undoAction->setEnabled (false);
 		undoAction->setShortcut (Qt::CTRL + Qt::Key_Z);
 		
-		actionCollection ()->addAction ("UndoGame", undoAction);
+		//actionCollection ()->addAction ("UndoGame", undoAction);
 		
 		connect (this,
 				SIGNAL (endActionEnable (bool)),

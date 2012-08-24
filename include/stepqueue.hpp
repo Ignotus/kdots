@@ -25,7 +25,6 @@
  */
 #ifndef KDOTS_STEPQUEUE_HPP
 #define KDOTS_STEPQUEUE_HPP
-#include <list>
 #include "point.hpp"
 #include "constants.hpp"
 
@@ -34,7 +33,7 @@ namespace KDots
 	class KDOTS_EXPORT StepQueue
 	{
 		Owner m_firstOwner;
-		std::list<Point> m_firstPoints, m_secondPoints, m_points;
+		std::vector<Point> m_firstPoints, m_secondPoints, m_points;
 		int m_first, m_second;
 	protected:
 		Owner m_owner;
@@ -76,12 +75,12 @@ namespace KDots
 			return owner == FIRST ? m_first : m_second;
 		}
 
-		inline std::list<Point> getPoints (Owner owner) const
+		inline std::vector<Point> getPoints (Owner owner) const
 		{
 			return owner == SECOND ? m_secondPoints : m_firstPoints;
 		}
 		
-		inline std::list<Point> getAllPoints () const
+		inline std::vector<Point> getAllPoints () const
 		{
 			return m_points;
 		}

@@ -24,6 +24,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "dottable.hpp"
+#include <KMessageBox>
+#include <KLocalizedString>
+#include <KDebug>
 #include "polygonfinder.hpp"
 #include "stepqueue.hpp"
 
@@ -125,17 +128,17 @@ namespace KDots
 		//O(n)
 		const PolyList& polyList = findPolygon (point);
 
-		const std::list<Point>& points = m_steps->getPoints (StepQueue::other (current));
+		const auto& points = m_steps->getPoints (StepQueue::other (current));
 		if (points.empty () || polyList.empty ())
 		{
-			m_steps->nextStep ();
+			continueStep ();
 			emit nextPlayer (point);
 			return;
 		}
 		
 		const Owner otherOwner = StepQueue::other (current);
 	
-		const std::list<Point>& otherOwnerPoints = m_steps->getPoints (otherOwner);
+		const auto& otherOwnerPoints = m_steps->getPoints (otherOwner);
 		for (const Point& p : otherOwnerPoints)
 		{
 			GraphPoint& gpoint = graph[p];
@@ -177,8 +180,28 @@ namespace KDots
 		}
 		
 		drawPolygon (polyList);
-		m_steps->nextStep ();
+		
+		continueStep ();
 		emit nextPlayer (point);
+	}
+	
+	void DotTable::continueStep ()
+	{
+		const auto& allPoints = m_steps->getAllPoints ();
+		if (allPoints.size () == m_graph->width () * m_graph->height ())
+		{
+			const int first = m_steps->getMarks (FIRST);
+			const int second = m_steps->getMarks (SECOND);
+			
+			if (first > second)
+				KMessageBox::information (0, i18n ("The first player win!"), i18n ("The first player win!"));
+			else if (first < second)
+				KMessageBox::information (0, i18n ("The second player win!"), i18n ("The second player win!"));
+			else
+				KMessageBox::information (0, i18n ("Dead heat!"), i18n ("Dead heat!"));
+		}
+		
+		m_steps->nextStep ();
 	}
 
 	//Hardcore undo process
@@ -186,7 +209,7 @@ namespace KDots
 	{
 		m_graph.reset (new Graph (m_config.m_width, m_config.m_height));
 		m_polygons.clear ();
-		std::list<Point> points (m_steps->getAllPoints ());
+		auto points (m_steps->getAllPoints ());
 		
 		if (!points.empty ())
 			points.pop_back ();

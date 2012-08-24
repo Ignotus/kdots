@@ -131,7 +131,6 @@ namespace KDots
 		const float tableHeight = cellSize * m_height;
 
 		QPixmap pixmap (QSize (tableWidth, tableHeight));
-
 		pixmap.fill (Qt::white);
 
 		QPainter pixPainter (&pixmap);
@@ -143,7 +142,10 @@ namespace KDots
 
 		for (int i = cellSize, k = m_height * cellSize; i < k; i += cellSize)
 			pixPainter.drawLine (0, i, pixmap.width (), i);
-
+		
+		pixPainter.setPen (QPen (Qt::black, 3));
+		pixPainter.drawRect (0, 0, pixmap.width (), pixmap.height ());
+		
 		const Graph& graph = m_table->graph ();
 		const Point& lastPoint = m_table->stepQueue ()->lastPoint ();
 

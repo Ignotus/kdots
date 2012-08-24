@@ -97,8 +97,9 @@ namespace KDots
 							const int dy = currentPoint.y () - j;
 							const int newX = point.x () + dx;
 							const int newY = point.y () + dy;
-							if (newX < 0 || newY < 0 || newX >= graph.width ()
-									|| newY >= graph.height ())
+							if (newX < 0 || newY < 0
+									|| static_cast<std::size_t> (newX) >= graph.width ()
+									|| static_cast<std::size_t> (newY) >= graph.height ())
 								goto endloop;
 							
 							const MapElement el = map[j][i];
@@ -147,7 +148,8 @@ endloop:
 				{
 					const Point newPoint (point.x () + GRAPH_DX[i], point.y () + GRAPH_DY[i]);
 					if (newPoint.x () < 0 || newPoint.y () < 0
-							|| newPoint.x () >= graph.width () || newPoint.y () >= graph.height ())
+							|| static_cast<std::size_t> (newPoint.x ()) >= graph.width ()
+							|| static_cast<std::size_t> (newPoint.y ()) >= graph.height ())
 						continue;
 					
 					if (graph[newPoint].owner () != NONE)
@@ -242,7 +244,9 @@ endloop:
 				const int tempx = point.x () + GRAPH_DX[i];
 				const int tempy = point.y () + GRAPH_DY[i];
 
-				if (tempx < 0 || tempy < 0 || tempx >= gr.width () || tempy >= gr.height ())
+				if (tempx < 0 || tempy < 0
+						|| static_cast<std::size_t> (tempx) >= gr.width ()
+						|| static_cast<std::size_t> (tempy) >= gr.height ())
 					continue;
 				
 				const Point newPoint (tempx, tempy);
@@ -273,6 +277,7 @@ endloop:
 		
 		void Rival::setStatusBar (QStatusBar* bar)
 		{
+			Q_UNUSED (bar);
 		}
 
 	}
