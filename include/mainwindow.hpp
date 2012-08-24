@@ -27,7 +27,7 @@
 #define KDOTS_MAINWINDOW_HPP
 #include <memory>
 #include <KXmlGuiWindow>
-#ifdef KDEGAMES_4_9
+#ifdef NEW_LIBKDEGAMES
 # include <KgDifficulty>
 #else
 # include <KGameDifficulty>
@@ -57,7 +57,7 @@ namespace KDots
 		std::shared_ptr<IRival> m_rival;
 		bool m_destroyTable;
 		TableWidget *m_table;
-#ifdef KDEGAMES_4_9
+#ifdef NEW_LIBKDEGAMES
 		KgDifficulty *m_difficulty;
 #endif
 		void initMenu ();
@@ -68,7 +68,7 @@ namespace KDots
 		void onPreferences ();
 		void undo ();
 		void endGame ();
-#ifdef KDEGAMES_4_9
+#ifdef NEW_LIBKDEGAMES
 		void difficultyHandler (const KgDifficultyLevel *level);
 #else
 		void difficultyHandler (KGameDifficulty::standardLevel level);

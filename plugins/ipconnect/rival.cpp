@@ -26,7 +26,7 @@
 #include "rival.hpp"
 #include <QMessageBox>
 #include <KLocalizedString>
-#ifndef KDEGAMES_4_9
+#ifndef NEW_LIBKDEGAMES
 # include <KGameDifficulty>
 #endif
 #include <include/stepqueue.hpp>
@@ -42,7 +42,7 @@ namespace KDots
 			, m_server (NULL)
 			, m_me (NONE)
 		{
-#ifndef KDEGAMES_4_9
+#ifndef NEW_LIBKDEGAMES
 			KGameDifficulty::setEnabled (false);
 #endif
 		}

@@ -48,13 +48,13 @@ namespace KDots
 		, m_ui (new Ui::MainWindow)
 		, m_destroyTable (false)
 		, m_table (NULL)
-#ifdef KDEGAMES_4_9
+#ifdef NEW_LIBKDEGAMES
 		, m_difficulty (new KgDifficulty (this))
 #endif
 	{
 		m_ui->setupUi (this);
 
-#ifdef KDEGAMES_4_9
+#ifdef NEW_LIBKDEGAMES
 		m_difficulty->addStandardLevel (KgDifficultyLevel::Easy);
 		m_difficulty->addStandardLevel (KgDifficultyLevel::Medium);
 		m_difficulty->addStandardLevel (KgDifficultyLevel::Hard);
@@ -84,7 +84,7 @@ namespace KDots
 		m_rival.reset ();
 	}
 	
-#ifdef KDEGAMES_4_9
+#ifdef NEW_LIBKDEGAMES
 	void MainWindow::difficultyHandler (const KgDifficultyLevel *level)
 #else
 	void MainWindow::difficultyHandler (KGameDifficulty::standardLevel level)
@@ -92,7 +92,7 @@ namespace KDots
 	{
 		int diff;
 
-#ifdef KDEGAMES_4_9
+#ifdef NEW_LIBKDEGAMES
 		switch (level->standardLevel ())
 		{
 		case KgDifficultyLevel::Easy:
@@ -204,7 +204,7 @@ namespace KDots
 		
 		m_rival = dialog.rival ();
 		m_rival->setStatusBar (statusBar ());
-#ifdef KDEGAMES_4_9	
+#ifdef NEW_LIBKDEGAMES
 		difficultyHandler (m_difficulty->currentLevel ());
 #else
 		difficultyHandler (KGameDifficulty::level ());	

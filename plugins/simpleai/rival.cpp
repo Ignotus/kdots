@@ -28,7 +28,7 @@
 #include <algorithm>
 #include <QStatusBar>
 #include <QLabel>
-#ifndef KDEGAMES_4_9
+#ifndef NEW_LIBKDEGAMES
 # include <KGameDifficulty>
 #endif
 #include <include/point.hpp>
@@ -50,7 +50,7 @@ namespace KDots
 			, m_statusBar (NULL)
 		{
 			PriorityMap::instance ();
-#ifndef KDEGAMES_4_9
+#ifndef NEW_LIBKDEGAMES
 			KGameDifficulty::setEnabled (true);
 #endif
 		}
