@@ -61,7 +61,7 @@ namespace KDots
 				this,
 				SLOT (difficultyHandler (const KgDifficultyLevel*)));
 		
-		KgDifficultyGUI::init (this, Kg::difficulty ());
+		KgDifficultyGUI::init (this);
 		
 		Kg::difficulty ()->setEditable (false);
 #else
