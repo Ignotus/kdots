@@ -48,10 +48,13 @@ namespace KDots
 		, m_ui (new Ui::MainWindow)
 		, m_destroyTable (false)
 		, m_table (NULL)
+#ifdef KDEGAMES_4_9
 		, m_difficulty (new KgDifficulty (this))
+#endif
 	{
 		m_ui->setupUi (this);
-		
+
+#ifdef KDEGAMES_4_9
 		m_difficulty->addStandardLevel (KgDifficultyLevel::Easy);
 		m_difficulty->addStandardLevel (KgDifficultyLevel::Medium);
 		m_difficulty->addStandardLevel (KgDifficultyLevel::Hard);
@@ -62,7 +65,14 @@ namespace KDots
 				SLOT (difficultyHandler (const KgDifficultyLevel*)));
 		
 		KgDifficultyGUI::init (this, m_difficulty);
-		
+#else
+		KGameDifficulty::init (this, this, SLOT (difficultyHandler (KGameDifficulty::standardLevel)));
+		KGameDifficulty::addStandardLevel (KGameDifficulty::Easy);
+		KGameDifficulty::addStandardLevel (KGameDifficulty::Medium);
+		KGameDifficulty::addStandardLevel (KGameDifficulty::Hard);
+
+		KGameDifficulty::setEnabled (false);
+#endif	
 		statusBar ()->show ();
 		setCentralWidget (new QWidget (this));
 		initMenu ();
@@ -74,9 +84,15 @@ namespace KDots
 		m_rival.reset ();
 	}
 	
+#ifdef KDEGAMES_4_9
 	void MainWindow::difficultyHandler (const KgDifficultyLevel *level)
+#else
+	void MainWindow::difficultyHandler (KGameDifficulty::standardLevel level)
+#endif
 	{
 		int diff;
+
+#ifdef KDEGAMES_4_9
 		switch (level->standardLevel ())
 		{
 		case KgDifficultyLevel::Easy:
@@ -86,6 +102,17 @@ namespace KDots
 		default:
 			diff = 3;
 		}
+#else
+		switch (level)
+		{
+		case KGameDifficulty::Easy:
+			diff = 1;
+		case KGameDifficulty::Medium:
+			diff = 2;
+		default:
+			diff = 3;
+		}
+#endif
 		
 		if (m_rival)
 			m_rival->setDifficulty (diff);
@@ -177,9 +204,11 @@ namespace KDots
 		
 		m_rival = dialog.rival ();
 		m_rival->setStatusBar (statusBar ());
-		
+#ifdef KDEGAMES_4_9	
 		difficultyHandler (m_difficulty->currentLevel ());
-		
+#else
+		difficultyHandler (KGameDifficulty::level ());	
+#endif
 		emit undoActionEnable (m_rival->canUndo ());
 		
 		connect (m_rival.get (),

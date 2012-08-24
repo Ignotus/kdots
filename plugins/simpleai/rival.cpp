@@ -28,6 +28,9 @@
 #include <algorithm>
 #include <QStatusBar>
 #include <QLabel>
+#ifndef KDEGAMES_4_9
+# include <KGameDifficulty>
+#endif
 #include <include/point.hpp>
 #include <include/dottable.hpp>
 #include <include/stepqueue.hpp>
@@ -47,6 +50,9 @@ namespace KDots
 			, m_statusBar (NULL)
 		{
 			PriorityMap::instance ();
+#ifndef KDEGAMES_4_9
+			KGameDifficulty::setEnabled (true);
+#endif
 		}
 		
 		void Rival::setDifficulty (int diff)
