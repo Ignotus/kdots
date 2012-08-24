@@ -31,6 +31,7 @@ namespace KDots
 		: m_firstOwner (firstPlayer)
 		, m_first (0)
 		, m_second (0)
+		, m_emptyCaptured (0)
 		, m_owner (firstPlayer)
 		, m_captured (false)
 	{

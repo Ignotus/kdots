@@ -174,6 +174,7 @@ namespace KDots
 				if (isInPolygon (polygon, newPoint) && polygon->isFilled ())
 				{
 					itr->capture ();
+					m_steps->addEmptyCaptured ();
 					break;
 				}
 			}	
@@ -188,7 +189,7 @@ namespace KDots
 	void DotTable::continueStep ()
 	{
 		const auto& allPoints = m_steps->getAllPoints ();
-		if (allPoints.size () == m_graph->width () * m_graph->height ())
+		if (allPoints.size () + m_steps->emtyCapturedCount () == m_graph->width () * m_graph->height ())
 		{
 			const int first = m_steps->getMarks (FIRST);
 			const int second = m_steps->getMarks (SECOND);

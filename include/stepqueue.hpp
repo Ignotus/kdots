@@ -34,7 +34,7 @@ namespace KDots
 	{
 		Owner m_firstOwner;
 		std::vector<Point> m_firstPoints, m_secondPoints, m_points;
-		int m_first, m_second;
+		std::size_t m_first, m_second, m_emptyCaptured;
 	protected:
 		Owner m_owner;
 		bool m_captured;
@@ -54,7 +54,7 @@ namespace KDots
 		
 		inline void clear ()
 		{
-			m_first = m_second = 0;
+			m_first = m_second = m_emptyCaptured = 0;
 			m_owner  = m_firstOwner;
 			m_captured  = false;
 			m_firstPoints.clear ();
@@ -64,13 +64,23 @@ namespace KDots
 
 		void addPoint (const Point& point);
 		void addCaptured ();
+		
+		inline void addEmptyCaptured ()
+		{
+			++m_emptyCaptured;
+		}
+		
+		inline std::size_t emtyCapturedCount () const
+		{
+			return m_emptyCaptured;
+		}
 
 		inline Owner getCurrentOwner () const
 		{
 			return m_owner;
 		}
 
-		inline int getMarks (Owner owner) const
+		inline std::size_t getMarks (Owner owner) const
 		{
 			return owner == FIRST ? m_first : m_second;
 		}
