@@ -26,7 +26,9 @@
 #include "rival.hpp"
 #include <QMessageBox>
 #include <KLocalizedString>
-#ifndef NEW_LIBKDEGAMES
+#ifdef NEW_LIBKDEGAMES
+# include <KgDifficulty>
+#else
 # include <KGameDifficulty>
 #endif
 #include <include/stepqueue.hpp>
@@ -42,8 +44,10 @@ namespace KDots
 			, m_server (NULL)
 			, m_me (NONE)
 		{
-#ifndef NEW_LIBKDEGAMES
-			KGameDifficulty::setEnabled (false);
+#ifdef NEW_LIBKDEGAMES
+				Kg::difficulty ()->setEditable (false);
+#else
+				KGameDifficulty::setEnabled (false);
 #endif
 		}
 		

@@ -57,9 +57,6 @@ namespace KDots
 		std::shared_ptr<IRival> m_rival;
 		bool m_destroyTable;
 		TableWidget *m_table;
-#ifdef NEW_LIBKDEGAMES
-		KgDifficulty *m_difficulty;
-#endif
 		void initMenu ();
 
 	private slots:

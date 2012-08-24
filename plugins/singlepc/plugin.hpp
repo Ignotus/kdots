@@ -25,7 +25,9 @@
  */
 #ifndef KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
 #define KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
-#ifndef NEW_LIBKDEGAMES
+#ifdef NEW_LIBKDEGAMES
+# include <KgDifficulty>
+#else
 # include <KGameDifficulty>
 #endif
 #include <interface/iplugin.hpp>
@@ -43,7 +45,9 @@ namespace KDots
 			Rival (QObject *parent = 0)
 				: IRival (parent)
 			{
-#ifndef NEW_LIBKDEGAMES
+#ifdef NEW_LIBKDEGAMES
+				Kg::difficulty ()->setEditable (false);
+#else
 				KGameDifficulty::setEnabled (false);
 #endif
 			}

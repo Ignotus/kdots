@@ -28,7 +28,9 @@
 #include <algorithm>
 #include <QStatusBar>
 #include <QLabel>
-#ifndef NEW_LIBKDEGAMES
+#ifdef NEW_LIBKDEGAMES
+# include <KgDifficulty>
+#else
 # include <KGameDifficulty>
 #endif
 #include <include/point.hpp>
@@ -50,8 +52,10 @@ namespace KDots
 			, m_statusBar (NULL)
 		{
 			PriorityMap::instance ();
-#ifndef NEW_LIBKDEGAMES
-			KGameDifficulty::setEnabled (true);
+#ifdef NEW_LIBKDEGAMES
+				Kg::difficulty ()->setEditable (true);
+#else
+				KGameDifficulty::setEnabled (true);
 #endif
 		}
 		
