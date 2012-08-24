@@ -27,7 +27,11 @@
 #define KDOTS_MAINWINDOW_HPP
 #include <memory>
 #include <KXmlGuiWindow>
-#include <KGameDifficulty>
+#ifdef KDEGAMES_4_9
+# include <KgDifficulty>
+#else
+# include <KGameDifficulty>
+#endif
 #include "constants.hpp"
 
 namespace Ui
