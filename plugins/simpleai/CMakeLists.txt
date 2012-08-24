@@ -31,10 +31,7 @@ kde4_add_plugin (kdots_simpleai SHARED
 )
 
 TARGET_LINK_LIBRARIES (kdots_simpleai
-	${KDE4_KDECORE_LIBS}
-	${KDE4_KDEUI_LIBS}
-	${KDEGAMES_LIBRARY}
-	${QT_LIBRARIES}
+	${KDOTS_REQUIRED_LIBS}
 	kdotslib
 )
 

@@ -26,7 +26,6 @@
 #include "rival.hpp"
 #include <QMessageBox>
 #include <KLocalizedString>
-#include <KGameDifficulty>
 #include <include/stepqueue.hpp>
 #include "connectdialog.hpp"
 
@@ -40,7 +39,6 @@ namespace KDots
 			, m_server (NULL)
 			, m_me (NONE)
 		{
-			KGameDifficulty::setEnabled (false);
 		}
 		
 		Rival::~Rival ()

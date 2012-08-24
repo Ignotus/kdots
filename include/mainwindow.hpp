@@ -27,7 +27,7 @@
 #define KDOTS_MAINWINDOW_HPP
 #include <memory>
 #include <KXmlGuiWindow>
-#include <KGameDifficulty>
+#include <KgDifficulty>
 #include "constants.hpp"
 
 namespace Ui
@@ -53,7 +53,7 @@ namespace KDots
 		std::shared_ptr<IRival> m_rival;
 		bool m_destroyTable;
 		TableWidget *m_table;
-		//KAction *m_undoAction, *m_endAction;
+		KgDifficulty *m_difficulty;
 		
 		void initMenu ();
 
@@ -63,7 +63,7 @@ namespace KDots
 		void onPreferences ();
 		void undo ();
 		void endGame ();
-		void difficultyHandler (KGameDifficulty::standardLevel level);
+		void difficultyHandler (const KgDifficultyLevel *level);
 	
 	signals:
 		void undoActionEnable (bool);

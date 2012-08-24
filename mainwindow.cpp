@@ -32,7 +32,6 @@
 #include <KAction>
 #include <KStandardAction>
 #include <KActionCollection>
-#include <sys/socket.h>
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 #include "ui_mainwindow.h"
@@ -49,15 +48,20 @@ namespace KDots
 		, m_ui (new Ui::MainWindow)
 		, m_destroyTable (false)
 		, m_table (NULL)
+		, m_difficulty (new KgDifficulty (this))
 	{
 		m_ui->setupUi (this);
 		
-		KGameDifficulty::init (this, this, SLOT (difficultyHandler (KGameDifficulty::standardLevel)));
-		KGameDifficulty::addStandardLevel (KGameDifficulty::Easy);
-		KGameDifficulty::addStandardLevel (KGameDifficulty::Medium);
-		KGameDifficulty::addStandardLevel (KGameDifficulty::Hard);
+		m_difficulty->addStandardLevel (KgDifficultyLevel::Easy);
+		m_difficulty->addStandardLevel (KgDifficultyLevel::Medium);
+		m_difficulty->addStandardLevel (KgDifficultyLevel::Hard);
 		
-		KGameDifficulty::setEnabled (false);
+		connect (m_difficulty,
+				SIGNAL (currentLevelChanged (const KgDifficultyLevel*)),
+				this,
+				SLOT (difficultyHandler (const KgDifficultyLevel*)));
+		
+		KgDifficultyGUI::init (this, m_difficulty);
 		
 		statusBar ()->show ();
 		setCentralWidget (new QWidget (this));
@@ -70,17 +74,17 @@ namespace KDots
 		m_rival.reset ();
 	}
 	
-	void MainWindow::difficultyHandler (KGameDifficulty::standardLevel level)
+	void MainWindow::difficultyHandler (const KgDifficultyLevel *level)
 	{
 		int diff;
-		switch (level)
+		switch (level->standardLevel ())
 		{
-			case KGameDifficulty::Easy:
-				diff = 1;
-			case KGameDifficulty::Medium:
-				diff = 2;
-			default:
-				diff = 3;
+		case KgDifficultyLevel::Easy:
+			diff = 1;
+		case KgDifficultyLevel::Medium:
+			diff = 2;
+		default:
+			diff = 3;
 		}
 		
 		if (m_rival)
@@ -174,7 +178,7 @@ namespace KDots
 		m_rival = dialog.rival ();
 		m_rival->setStatusBar (statusBar ());
 		
-		difficultyHandler (KGameDifficulty::level ());
+		difficultyHandler (m_difficulty->currentLevel ());
 		
 		emit undoActionEnable (m_rival->canUndo ());
 		

@@ -18,8 +18,8 @@ Dependencies for building
 =========================
 * Qt Framework (QtGui, QtCore, QtNetwork) 4.8 or later.
 * cmake 2.6 or later.
-* KDELibs 4.6 or later
-* LibKDEGames
+* KDELibs 4.8 or later
+* LibKDEGames 4.9
 * A C++ compiler with C++11 support.
 
 Building

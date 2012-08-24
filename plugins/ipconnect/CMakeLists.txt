@@ -38,10 +38,8 @@ kde4_add_plugin (kdots_ipconnect SHARED
 )
 
 TARGET_LINK_LIBRARIES (kdots_ipconnect
-	${KDE4_KDECORE_LIBS}
-	${KDE4_KDEUI_LIBS}
+	${KDOTS_REQUIRED_LIBS}
 	${QT_LIBRARIES}
-	${KDEGAMES_LIBRARY}
 	kdotslib
 )
 

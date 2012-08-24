@@ -27,7 +27,6 @@
 #define KDOTS_PLUGINS_SIMPLEAI_RIVAL_HPP
 #include <memory>
 #include <QLabel>
-
 #include <interface/irival.hpp>
 
 namespace KDots
