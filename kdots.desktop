@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=KDots
+Exec=kdots
+#Icon=kdots
+Type=Application
+Categories=Qt;KDE;Game;BoardGame;
+GenericName=Game of dots
+Terminal=false
