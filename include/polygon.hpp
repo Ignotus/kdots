@@ -33,20 +33,21 @@
 
 namespace KDots
 {
-	class KDOTS_EXPORT Polygon : public std::list<Point>
+	typedef std::vector<Point> PolygonContainer;
+	class KDOTS_EXPORT Polygon : public PolygonContainer
 	{
 		bool m_filled;
 		Owner m_owner;
 		float m_area;
 	public:
 		Polygon ()
-			: std::list<Point> ()
+			: PolygonContainer ()
 			, m_filled (false)
 		{
 		}
 
-		Polygon (const std::list<Point>& a)
-			: std::list<Point> (a)
+		Polygon (const PolygonContainer& a)
+			: PolygonContainer (a)
 			, m_filled (false)
 		{
 		}

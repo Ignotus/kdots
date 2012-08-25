@@ -46,7 +46,7 @@ namespace KDots
 	{
 		return m_config;
 	}
-
+	
 	namespace
 	{
 		Point getPrevPoint (Polygon_ptr& polygon, Polygon::const_iterator current)
@@ -80,7 +80,7 @@ namespace KDots
 					return *next;
 			}
 		}
-		
+	
 		bool isInPolygon (Polygon_ptr polygon, const Point& point)
 		{
 			// k - a count of points in the same line with "point" object
@@ -106,6 +106,12 @@ namespace KDots
 			}
 
 			return i % 2;
+		}
+		
+		int doubleTriangleArea (const Point& a, const Point& b, const Point& c)
+		{
+			return std::abs ((b.x () - a.x ()) * (c.y () - a.y ())
+					- (c.x () - a.x ()) * (b.y () - a.y ()));
 		}
 	}
 
@@ -137,7 +143,7 @@ namespace KDots
 		}
 		
 		const Owner otherOwner = StepQueue::other (current);
-	
+		
 		const auto& otherOwnerPoints = m_steps->getPoints (otherOwner);
 		for (const Point& p : otherOwnerPoints)
 		{
@@ -145,7 +151,7 @@ namespace KDots
 			if (gpoint.isCaptured ())
 				continue;
 			
-			for (Polygon_ptr polygon : polyList)
+			for (const Polygon_ptr& polygon : polyList)
 			{
 				if (isInPolygon (polygon, p))
 				{
@@ -167,7 +173,7 @@ namespace KDots
 			if (itr->isCaptured () || itr->owner () != NONE)
 				continue;
 			
-			for (Polygon_ptr polygon : polyList)
+			for (const Polygon_ptr& polygon : polyList)
 			{
 				const Point& newPoint = itr.point ();
 
@@ -222,7 +228,7 @@ namespace KDots
 
 	void DotTable::drawPolygon (PolyList polygons)
 	{
-		for (Polygon_ptr polygon : polygons)
+		for (Polygon_ptr& polygon : polygons)
 		{
 			if (!polygon->isFilled ())
 				continue;

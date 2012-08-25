@@ -38,7 +38,7 @@ namespace KDots
 		, m_stepMap (graph.width (), std::vector<bool> (graph.height (), false))
 	{
 	}
-
+	
 	namespace
 	{
 		float area (const Polygon& polygon)

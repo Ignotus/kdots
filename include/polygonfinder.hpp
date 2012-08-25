@@ -39,12 +39,11 @@ namespace KDots
 	{
 		Graph& m_graph;
 		Owner m_current;
-		std::list<Point> m_cache;
+		PolygonContainer m_cache;
 		std::vector<std::vector<bool>> m_stepMap;
 		PolyList m_polygons;
 	public:
 		PolygonFinder (Graph& graph, Owner owner);
-
 		// O(n)
 		const PolyList& operator() (const Point& point);
 	private:
