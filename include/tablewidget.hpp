@@ -47,11 +47,12 @@ namespace KDots
 	public:
 		TableWidget (const GameConfig& config, std::shared_ptr<IRival> rival,
 				QWidget *parent = 0);
-		virtual ~TableWidget () {}
 		void undo ();
 	protected:
 		void mousePressEvent (QMouseEvent *event);
 		void paintEvent (QPaintEvent *event);
+	private slots:
+		void onStatusMessage ();
 	signals:
 		void updateStatusBar (const QString& msg);
 	};

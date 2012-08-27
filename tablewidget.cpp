@@ -60,7 +60,11 @@ namespace KDots
 		connect (m_table,
 				SIGNAL (nextPlayer(const Point&)),
 				this,
-				SLOT (repaint ()));
+				SLOT (update ()));
+		connect (m_table,
+				SIGNAL (nextPlayer (const Point&)),
+				this,
+				SLOT (onStatusMessage ()));
 	}
 
 	namespace
@@ -72,6 +76,14 @@ namespace KDots
 
 			return cellHeight > cellWidth ? cellWidth : cellHeight;
 		}
+	}
+	
+	void TableWidget::onStatusMessage ()
+	{
+		emit updateStatusBar (QString ("First:\t")
+				+ QString::number (m_table->stepQueue ()->getMarks (FIRST))
+				+ "\tSecond:\t"
+				+ QString::number (m_table->stepQueue ()->getMarks (SECOND)));
 	}
 
 	void TableWidget::mousePressEvent (QMouseEvent *event)
@@ -113,7 +125,6 @@ namespace KDots
 			return;
 
 		m_table->pushPoint (Point (x, y));
-		update ();
 	}
 	
 	void TableWidget::undo ()
@@ -224,11 +235,6 @@ namespace KDots
 		const int dx = (rectange.width () - tableWidth) / 2;
 		const int dy = (rectange.height () - tableHeight) / 2;
 		painter.drawPixmap (dx, dy, pixmap);
-
-		emit updateStatusBar (QString ("First:\t")
-				+ QString::number (m_table->stepQueue ()->getMarks (FIRST))
-				+ "\tSecond:\t"
-				+ QString::number (m_table->stepQueue ()->getMarks (SECOND)));
 	}
 }
 
