@@ -41,27 +41,27 @@ namespace KDots
 	
 	namespace
 	{
-		float area (const Polygon& polygon)
+		int doubleArea (const Polygon& polygon)
 		{
-			float res = 0;
+			int res = 0;
 			Point prevPoint = polygon.back ();
 			for (Polygon::const_iterator itr = polygon.begin (), itrEnd = polygon.end ();
 					 itr != itrEnd; ++itr)
 			{
-				res += (itr->x () - prevPoint.x ()) * float (itr->y () + prevPoint.y ()) / 2; 
+				res += (itr->x () - prevPoint.x ()) * (itr->y () + prevPoint.y ()); 
 				prevPoint = *itr;
 			} 
 			
 			return std::abs (res);
 		}
 		
-		float maxSize (const PolyList& polygonList)
+		int maxSize (const PolyList& polygonList)
 		{
-			float max = 0;
+			int max = 0;
 
 			for (const Polygon_ptr& ptr : polygonList)
 			{
-				const float currArea = area (*ptr);
+				const int currArea = doubleArea (*ptr);
 				ptr->setArea (currArea);
 				if (currArea > max)
 					max = currArea;
@@ -75,7 +75,7 @@ namespace KDots
 	{
 		findPolygons (point);
 
-		const float max = maxSize (m_polygons);
+		const int max = maxSize (m_polygons);
 		m_polygons.erase (std::remove_if (m_polygons.begin (), m_polygons.end (),
 						[&max] (const Polygon_ptr& ptr)
 						{
@@ -88,11 +88,6 @@ namespace KDots
 
 	void PolygonFinder::findPolygons (const Point& point)
 	{
-		const GraphPoint& graphPoint = m_graph[point];
-
-		if (graphPoint.isCaptured () || graphPoint.owner () != m_current)
-			return;
-
 		if (m_cache.size () > 3 && point == m_cache.front ())
 		{
 			m_polygons.push_back (Polygon_ptr (new Polygon (m_cache)));
@@ -105,7 +100,7 @@ namespace KDots
 		m_cache.push_back (point);
 		m_stepMap[point.x ()][point.y ()] = true;
 
-		for (int i = 0; i < 8; ++i)
+		for (int i = 0; i < DIRECTION_COUNT; ++i)
 		{
 			const int tempx = point.x () + GRAPH_DX[i];
 			const int tempy = point.y () + GRAPH_DY[i];
@@ -114,8 +109,14 @@ namespace KDots
 					|| static_cast<std::size_t> (tempx) >= m_graph.width ()
 					|| static_cast<std::size_t> (tempy) >= m_graph.height ())
 				continue;
+			
+			const Point newPoint (tempx, tempy);
+			const GraphPoint& graphPoint = m_graph[newPoint];
 
-			findPolygons (Point (tempx, tempy));
+			if (graphPoint.isCaptured () || graphPoint.owner () != m_current)
+				continue;
+			
+			findPolygons (newPoint);
 		}
 
 		m_cache.pop_back ();

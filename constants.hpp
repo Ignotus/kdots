@@ -27,6 +27,7 @@
 #define KDOTS_CONSTANTS_HPP
 #include <QString>
 #include <kdemacros.h>
+#include "point.hpp"
 #ifndef KDOTS_EXPORT
 # if defined(MAKE_KDOTS_LIB)
    // We are building this library
@@ -55,10 +56,12 @@ namespace KDots
 		FIRST,
 		SECOND
 	};
+	
+	const int DIRECTION_COUNT = 8;
 
-	const int GRAPH_DX[8] = {0, 1, 1, 1, 0, -1, -1, -1};
-	const int GRAPH_DY[8] = {1, 1, 0, -1, -1, -1, 0, 1};
-
+	const int GRAPH_DX[DIRECTION_COUNT] = {0, 1, 1, 1, 0, -1, -1, -1};
+	const int GRAPH_DY[DIRECTION_COUNT] = {1, 1, 0, -1, -1, -1, 0, 1};
+	
 	const QString PLUGIN_SUFFIX = "kdots_";
 }
 

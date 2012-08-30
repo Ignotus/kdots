@@ -42,17 +42,17 @@ namespace KDots
 		StepQueue (Owner firstPlayer);
 		virtual ~StepQueue () {}
 		
-		inline Owner firstOwner () const
+		Owner firstOwner () const
 		{
 			return m_firstOwner;
 		}
 		
-		inline Point lastPoint () const
+		Point lastPoint () const
 		{
 			return m_points.empty () ? Point () : m_points.back ();
 		}
 		
-		inline void clear ()
+		void clear ()
 		{
 			m_first = m_second = m_emptyCaptured = 0;
 			m_owner  = m_firstOwner;
@@ -65,42 +65,42 @@ namespace KDots
 		void addPoint (const Point& point);
 		void addCaptured ();
 		
-		inline void addEmptyCaptured ()
+		void addEmptyCaptured ()
 		{
 			++m_emptyCaptured;
 		}
 		
-		inline std::size_t emtyCapturedCount () const
+		std::size_t emtyCapturedCount () const
 		{
 			return m_emptyCaptured;
 		}
 
-		inline Owner getCurrentOwner () const
+		Owner getCurrentOwner () const
 		{
 			return m_owner;
 		}
 
-		inline std::size_t getMarks (Owner owner) const
+		std::size_t getMarks (Owner owner) const
 		{
 			return owner == FIRST ? m_first : m_second;
 		}
 
-		inline std::vector<Point> getPoints (Owner owner) const
+		std::vector<Point> getPoints (Owner owner) const
 		{
 			return owner == SECOND ? m_secondPoints : m_firstPoints;
 		}
 		
-		inline std::vector<Point> getAllPoints () const
+		std::vector<Point> getAllPoints () const
 		{
 			return m_points;
 		}
 
-		inline static Owner other (Owner player)
+		static Owner other (Owner player)
 		{
 			return player == FIRST ? SECOND : FIRST;
 		}
 
-		virtual Owner nextStep ()
+		Owner nextStep ()
 		{
 			m_captured = false;
 			return (m_owner = other (m_owner));

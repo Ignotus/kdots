@@ -26,6 +26,7 @@
 #include "dottable.hpp"
 #include <KMessageBox>
 #include <KLocalizedString>
+#include <KDebug>
 #include "graph.hpp"
 #include "polygonfinder.hpp"
 #include "stepqueue.hpp"
@@ -95,6 +96,9 @@ namespace KDots
 					++itr;
 					continue;
 				}
+				
+				if (itr->x () == point.x ())
+					return true;	
 
 				const Point& prevPoint = getPrevPoint (polygon, itr);
 				const Point& nextPoint = getNextPoint (polygon, shift, itr);
@@ -106,12 +110,6 @@ namespace KDots
 			}
 
 			return i % 2;
-		}
-		
-		int doubleTriangleArea (const Point& a, const Point& b, const Point& c)
-		{
-			return std::abs ((b.x () - a.x ()) * (c.y () - a.y ())
-					- (c.x () - a.x ()) * (b.y () - a.y ()));
 		}
 	}
 
@@ -225,6 +223,62 @@ namespace KDots
 		for (const Point& point : points)
 			pushPoint (point);
 	}
+	
+	namespace
+	{
+		Polygon::iterator next (Polygon& polygon, Polygon::iterator current)
+		{
+			if (current == --polygon.end ())
+				return polygon.begin ();
+			else
+				return ++current;
+		}
+		
+		int sqrLength (const Point& first, const Point& second)
+		{
+			const int dx = second.x () - first.x ();
+			const int dy = second.y () - first.y ();
+			return dx * dx + dy * dy;
+		}
+	}
+	
+	void DotTable::resizePolygon (Polygon_ptr polygon)
+	{
+		const Owner current = m_steps->getCurrentOwner ();
+		
+		for (Polygon::iterator itr = polygon->begin (), endItr = polygon->end ();
+				 itr != endItr; ++itr)
+		{
+			for (int i = 0; i < DIRECTION_COUNT; ++i)
+			{
+				const int tempx = itr->x () + GRAPH_DX[i];
+				const int tempy = itr->y () + GRAPH_DY[i];
+
+				if (tempx < 0 || tempy < 0
+						|| static_cast<std::size_t> (tempx) >= m_graph->width ()
+						|| static_cast<std::size_t> (tempy) >= m_graph->height ())
+					continue;
+				
+				const Point newPoint (tempx, tempy);
+				const GraphPoint& graphPoint = (*m_graph)[newPoint];
+
+				if (graphPoint.owner () != current || graphPoint.isCaptured ())
+					continue;
+				
+				Polygon::iterator nextItr = next (*polygon, itr);
+				
+				const int sum = sqrLength (newPoint, *itr) + sqrLength (newPoint, *nextItr);
+				
+				if (sum != 2 && sum != 3)
+					continue;
+				
+				if (isInPolygon (polygon, newPoint))
+					continue;
+				
+				polygon->insert (nextItr, newPoint);
+			}
+		} 
+	}
 
 	void DotTable::drawPolygon (PolyList polygons)
 	{
@@ -232,6 +286,8 @@ namespace KDots
 		{
 			if (!polygon->isFilled ())
 				continue;
+			
+			resizePolygon (polygon);
 			
 			polygon->setOwner (m_steps->getCurrentOwner ());
 			m_polygons.push_back (polygon);
@@ -247,4 +303,4 @@ namespace KDots
 	}
 }
 
-#include "include/dottable.moc"
+#include "dottable.moc"

@@ -33,11 +33,11 @@
 #else
 # include <KGameDifficulty>
 #endif
-#include <include/point.hpp>
-#include <include/dottable.hpp>
-#include <include/stepqueue.hpp>
-#include <include/constants.hpp>
-#include <include/graph.hpp>
+#include <point.hpp>
+#include <dottable.hpp>
+#include <stepqueue.hpp>
+#include <constants.hpp>
+#include <graph.hpp>
 #include "prioritymap.hpp"
 
 namespace KDots
@@ -239,7 +239,7 @@ endloop:
 			float max_imp =  -m_iterations;
 			
 			int i = 0;
-			for (; i < 8; ++i)
+			for (; i < DIRECTION_COUNT; ++i)
 			{
 				const int tempx = point.x () + GRAPH_DX[i];
 				const int tempy = point.y () + GRAPH_DY[i];

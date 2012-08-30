@@ -44,12 +44,12 @@ namespace KDots
 
 		static PluginContainer& instance ();
 
-		inline const PluginMap& plugins () const
+		const PluginMap& plugins () const
 		{
 			return m_pluginMap;
 		}
 
-		inline IPlugin* plugin (const QString& name)
+		IPlugin* plugin (const QString& name)
 		{
 			PluginMap::const_iterator itr = m_pluginMap.find (name);
 			return itr != m_pluginMap.end () ? *itr : NULL;

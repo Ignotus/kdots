@@ -23,4 +23,68 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#include "polygon.hpp"
+#ifndef KDOTS_POLYGON_HPP
+#define KDOTS_POLYGON_HPP
+#include <list>
+#include <vector>
+#include <memory>
+#include "point.hpp"
+#include "constants.hpp"
+
+namespace KDots
+{
+	typedef std::vector<Point> PolygonContainer;
+	class KDOTS_EXPORT Polygon : public PolygonContainer
+	{
+		bool m_filled;
+		Owner m_owner;
+		int m_area;
+	public:
+		Polygon ()
+			: PolygonContainer ()
+			, m_filled (false)
+		{
+		}
+
+		Polygon (const PolygonContainer& a)
+			: PolygonContainer (a)
+			, m_filled (false)
+		{
+		}
+		
+		void setArea (int area)
+		{
+			m_area = area;
+		}
+		
+		int area () const
+		{
+			return m_area;
+		}
+
+		bool isFilled () const
+		{
+			return m_filled;
+		}
+
+		void setFilled (bool filled)
+		{
+			m_filled = filled;
+		}
+		
+		Owner owner () const
+		{
+			return m_owner;
+		}
+		
+		void setOwner (Owner own)
+		{
+			m_owner = own;
+		}
+	};
+	
+	typedef std::shared_ptr<Polygon> Polygon_ptr;
+	typedef std::vector<Polygon_ptr> PolyList;
+}
+
+#endif

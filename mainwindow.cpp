@@ -255,4 +255,4 @@ namespace KDots
 	}
 }
 
-#include "include/mainwindow.moc"
+#include "mainwindow.moc"

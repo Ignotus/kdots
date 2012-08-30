@@ -32,9 +32,9 @@
 #else
 # include <KGameDifficulty>
 #endif
-#include <include/dottable.hpp>
-#include <include/stepqueue.hpp>
-#include <include/graph.hpp>
+#include <dottable.hpp>
+#include <stepqueue.hpp>
+#include <graph.hpp>
 #include "connectdialog.hpp"
 #include "configurationwidget.hpp"
 

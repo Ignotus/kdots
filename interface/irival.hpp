@@ -26,7 +26,8 @@
 #ifndef KDOTS_IRIVAL_HPP
 #define KDOTS_IRIVAL_HPP
 #include <QObject>
-#include <include/newgamewidget.hpp>
+#include <newgamewidget.hpp>
+#include <point.hpp>
 
 class QStatusBar;
 
@@ -34,7 +35,6 @@ namespace KDots
 {
 	class DotTable;
 	class IConfigurationWidget;
-	class Point;
 	
 	class IRival : public QObject
 	{

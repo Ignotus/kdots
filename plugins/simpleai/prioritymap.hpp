@@ -27,8 +27,8 @@
 #define KDOTS_PLUGINS_SIMPLEAI_PRIORITY_HPP
 #include <list>
 #include <vector>
-#include <include/constants.hpp>
-#include <include/point.hpp>
+#include <constants.hpp>
+#include <point.hpp>
 
 struct stat;
 namespace KDots
@@ -55,11 +55,11 @@ namespace KDots
 			Point m_current;
 			float m_priority;
 
-			inline MapData ()
+			MapData ()
 			{
 			}
 			
-			inline MapData (const MapType& map, const Point& current, float priority)
+			MapData (const MapType& map, const Point& current, float priority)
 				: m_map (map)
 				, m_current (current)
 				, m_priority (priority)

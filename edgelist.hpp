@@ -23,59 +23,76 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_GRAPHPOINT_HPP
-#define KDOTS_GRAPHPOINT_HPP
-#include "edgelist.hpp"
-#include "constants.hpp"
+#ifndef KDOTS_EDGELIST_HPP
+#define KDOTS_EDGELIST_HPP
+#include <stdexcept>
+#include "point.hpp"
 
 namespace KDots
 {
-	class KDOTS_EXPORT GraphPoint
+	template<int SIZE>
+	class KDOTS_EXPORT EdgeList
 	{
+		int m_count;
+		Point m_pointList[SIZE];
 	public:
-		typedef EdgeList<8> GraphEdges;
+		EdgeList()
+			: m_count (0)
+		{}
 
-	private:
-		bool m_captured;
-		Owner m_owner;
-		GraphEdges m_edges;
-
-	public:
-		inline
-		GraphPoint (Owner owner = NONE)
-			: m_captured (false)
-			, m_owner (owner)
+		bool addEdge (const Point& point)
 		{
+			if (m_count == SIZE || hasPoint (point))
+				return false;
+
+			m_pointList[m_count++] = point;
+			return true;
 		}
 
-		inline bool isCaptured () const
+		int size () const
 		{
-			return m_captured;
+			return m_count;
 		}
 
-		inline void capture ()
+		bool hasPoint (const Point& point)
 		{
-			m_captured = true;
+			for (int i = 0;  i < m_count; ++i)
+			{
+				if (m_pointList[i] == point)
+					return true;
+			}
+
+			return false;
 		}
 
-		inline void setOwner (Owner owner)
+		Point& operator[] (int index)
 		{
-			m_owner = owner;
+			return const_cast<EdgeList<SIZE>&> (static_cast<const EdgeList<SIZE>&> (*this) [index]);
 		}
 
-		inline Owner owner () const
+		const Point& operator[] (int index) const
 		{
-			return m_owner;
+			if (index >= 0 && index < m_count)
+				throw std::runtime_error ("beyond the limit of the array");
+			return m_pointList[index];
 		}
 
-		GraphEdges& edges ()
+		bool removeEdge (const Point& toPoint)
 		{
-			return m_edges;
-		}
+			for (int i = 0; i < m_count; ++i)
+			{
+				if (m_pointList[i] == toPoint)
+				{
+					m_count--;
 
-		const GraphEdges& edges () const
-		{
-			return m_edges;
+					if (i != m_count)
+						m_pointList[i] = m_pointList[m_count];
+
+					return true;
+				}
+			}
+
+			return false;
 		}
 	};
 }

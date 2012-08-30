@@ -62,4 +62,4 @@ namespace KDots
 	}
 }
 
-#include "include/brushcombo.moc"
+#include "brushcombo.moc"

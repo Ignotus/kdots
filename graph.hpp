@@ -120,32 +120,32 @@ namespace KDots
 		iterator end ();
 		const_iterator end () const;
 
-		inline std::size_t width () const
+		std::size_t width () const
 		{
 			return m_graph.size ();
 		}
 
-		inline std::size_t height () const
+		std::size_t height () const
 		{
 			return m_graph.front ().size ();
 		}
 
-		inline GraphPoint& operator[] (const Point& index)
+		GraphPoint& operator[] (const Point& index)
 		{
 			return m_graph[index.x ()][index.y ()];
 		}
 
-		inline const GraphPoint& operator[] (const Point& index) const
+		const GraphPoint& operator[] (const Point& index) const
 		{
 			return m_graph[index.x ()][index.y ()];
 		}
 
-		inline std::vector<GraphPoint>& operator[] (int index)
+		std::vector<GraphPoint>& operator[] (int index)
 		{
 			return m_graph[index];
 		}
 
-		inline const std::vector<GraphPoint>& operator[] (int index) const
+		const std::vector<GraphPoint>& operator[] (int index) const
 		{
 			return m_graph[index];
 		}

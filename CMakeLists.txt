@@ -1,6 +1,11 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 PROJECT (kdots)
 
+SET (CMAKE_MODULE_PATH
+	${CMAKE_MODULE_PATH}
+	${CMAKE_CURRENT_SOURCE_DIR}/cmake
+)
+
 FIND_PACKAGE (Qt4 REQUIRED)
 FIND_PACKAGE (KDE4 REQUIRED)
 
@@ -10,17 +15,9 @@ IF (KDEGAMES_FOUND)
 	ADD_DEFINITIONS(-DOLD_LIBKDEGAMES)
 ELSE (KDEGAMES_FOUND)
 	FIND_PACKAGE (KDEGames REQUIRED)
+	MESSAGE(STATUS "Found KDEGames")
 	ADD_DEFINITIONS (-DNEW_LIBKDEGAMES)
 ENDIF (KDEGAMES_FOUND)
-
-#IF (KDEGAMES_LIBRARY)
-#    MESSAGE(STATUS "FOUND ${KDEGAMES_LIBRARY}")
-#    ADD_DEFINITIONS (-DNEW_LIBKDEGAMES)
-#ELSE (KDEGAMES_LIBRARY)
-#    MESSAGE(STATUS "NOT FOUND")
-#    FIND_PACKAGE (LibKDEGames REQUIRED)
-#    ADD_DEFINITIONS (-DOLD_LIBKDEGAMES)
-#ENDIF (KDEGAMES_LIBRARY)
 
 INCLUDE (KDE4Defaults)
 
@@ -47,7 +44,7 @@ INCLUDE_DIRECTORIES (
 	${QT_INCLUDES}
 )
 
-SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -fexceptions")
 
 SET (PLUGIN_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/plugins)
 SET (KDOTS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
@@ -60,7 +57,6 @@ ENDIF (UNIX)
 
 SET (SRCS
 	brushcombo.cpp
-	graphpoint.cpp
 	graph.cpp
 	dottable.cpp
 	stepqueue.cpp
@@ -69,7 +65,6 @@ SET (SRCS
 	newgamedialog.cpp
 	mainwindow.cpp
 	polygonfinder.cpp
-	polygon.cpp
 	plugincontainer.cpp
 	pluginmanagerwidget.cpp
 	gameconfig.cpp
@@ -79,24 +74,24 @@ SET (SRCS
 )
 
 SET (HEADERS
-	include/brushcombo.hpp
-	include/graphpoint.hpp
-	include/graph.hpp
-	include/dottable.hpp
-	include/stepqueue.hpp
-	include/tablewidget.hpp
-	include/edgelist.hpp
-	include/point.hpp
-	include/newgamedialog.hpp
-	include/newgamewidget.hpp
-	include/mainwindow.hpp
-	include/constants.hpp
-	include/polygonfinder.hpp
-	include/polygon.hpp
-	include/plugincontainer.hpp
-	include/pluginmanagerwidget.hpp
-	include/gameconfig.hpp
-	include/brushcombodelegate.hpp
+	brushcombo.hpp
+	graphpoint.hpp
+	graph.hpp
+	dottable.hpp
+	stepqueue.hpp
+	tablewidget.hpp
+	edgelist.hpp
+	point.hpp
+	newgamedialog.hpp
+	newgamewidget.hpp
+	mainwindow.hpp
+	constants.hpp
+	polygonfinder.hpp
+	polygon.hpp
+	plugincontainer.hpp
+	pluginmanagerwidget.hpp
+	gameconfig.hpp
+	brushcombodelegate.hpp
 )
 
 SET (INTERFACE_HEAD

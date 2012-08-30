@@ -238,4 +238,4 @@ namespace KDots
 	}
 }
 
-#include "include/tablewidget.moc"
+#include "tablewidget.moc"

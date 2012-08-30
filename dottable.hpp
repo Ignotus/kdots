@@ -23,75 +23,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_EDGELIST_HPP
-#define KDOTS_EDGELIST_HPP
-#include "point.hpp"
+#ifndef KDOTS_DOTTABLE_HPP
+#define KDOTS_DOTTABLE_HPP
+#include <memory>
+#include <QObject>
+#include "gameconfig.hpp"
+#include "polygon.hpp"
 
 namespace KDots
 {
-	template<int SIZE>
-	class KDOTS_EXPORT EdgeList
+	class Graph;
+	class StepQueue;
+	class KDOTS_EXPORT DotTable : public QObject
 	{
-		int m_count;
-		Point m_pointList[SIZE];
+		Q_OBJECT
+
+		std::unique_ptr<Graph> m_graph;
+		std::shared_ptr<StepQueue> m_steps;
+		GameConfig m_config;
+		std::vector<Polygon_ptr> m_polygons;
 	public:
-		inline EdgeList()
-			: m_count (0)
-		{}
+		DotTable (const GameConfig& config, QObject *parent = 0);
+		virtual ~DotTable () {}
+		GameConfig gameConfig () const;
 
-		inline bool addEdge (const Point& point)
+		void pushPoint (const Point& point);
+		
+		std::vector<Polygon_ptr> polygons ()
 		{
-			if (m_count == SIZE || hasPoint (point))
-				return false;
-
-			m_pointList[m_count++] = point;
-			return true;
+			return m_polygons;
 		}
 
-		inline int size () const
+		Graph& graph () const
 		{
-			return m_count;
+			return *m_graph;
 		}
 
-		inline bool hasPoint (const Point& point)
+		std::shared_ptr<StepQueue> stepQueue ()
 		{
-			for (int i = 0;  i < m_count; ++i)
-			{
-				if (m_pointList[i] == point)
-					return true;
-			}
-
-			return false;
+			return m_steps;
 		}
-
-		inline Point& operator[] (int index)
-		{
-			return const_cast<EdgeList<SIZE>&> (static_cast<const EdgeList<SIZE>&> (*this) [index]);
-		}
-
-		inline const Point& operator[] (int index) const
-		{
-			Point def;
-			return index >= 0 && index < m_count ? m_pointList[index] : def;
-		}
-
-		inline bool removeEdge (const Point& toPoint)
-		{
-			for (int i = 0; i < m_count; ++i)
-			{
-				if (m_pointList[i] == toPoint)
-				{
-					m_count--;
-
-					if (i != m_count)
-						m_pointList[i] = m_pointList[m_count];
-
-					return true;
-				}
-			}
-
-			return false;
-		}
+		
+		void undo ();
+	signals:
+		void nextPlayer (const Point& lastPoint);
+	private:
+		void drawPolygon (PolyList polygons);
+		void resizePolygon (Polygon_ptr polygon);
+		
+		void continueStep ();
 	};
 }
 

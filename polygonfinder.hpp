@@ -23,4 +23,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#include "graphpoint.hpp"
+#ifndef KDOTS_POLYGONFINDER_HPP
+#define KDOTS_POLYGONFINDER_HPP
+#include <memory>
+#include <list>
+#include "polygon.hpp"
+#include "constants.hpp"
+
+namespace KDots
+{
+	struct Graph;
+
+	class PolygonFinder
+	{
+		Graph& m_graph;
+		Owner m_current;
+		PolygonContainer m_cache;
+		std::vector<std::vector<bool>> m_stepMap;
+		PolyList m_polygons;
+	public:
+		PolygonFinder (Graph& graph, Owner owner);
+		// O(n)
+		const PolyList& operator() (const Point& point);
+	private:
+		void findPolygons (const Point& point);
+	};
+
+}
+
+#endif

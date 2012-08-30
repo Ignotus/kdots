@@ -63,4 +63,4 @@ namespace KDots
 	}
 }
 
-#include "include/pluginmanagerwidget.moc"
+#include "pluginmanagerwidget.moc"

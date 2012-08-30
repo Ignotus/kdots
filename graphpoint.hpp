@@ -23,90 +23,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_POINT_HPP
-#define KDOTS_POINT_HPP
-#include <QMetaType>
+#ifndef KDOTS_GRAPHPOINT_HPP
+#define KDOTS_GRAPHPOINT_HPP
+#include "edgelist.hpp"
 #include "constants.hpp"
 
 namespace KDots
 {
-	class KDOTS_EXPORT Point
+	class KDOTS_EXPORT GraphPoint
 	{
-		int m_x, m_y;
 	public:
-		inline Point ()
-			: m_x (-1)
-			, m_y (-1)
-		{}
-		
-		bool isInitialized () const
-		{
-			return m_x < 0 || m_y < 0;
-		}
-		
-		inline Point (int x, int y)
-			: m_x (x)
-			, m_y (y)
-		{}
+		typedef EdgeList<DIRECTION_COUNT> GraphEdges;
 
-		inline int x () const
+	private:
+		bool m_captured;
+		Owner m_owner;
+		GraphEdges m_edges;
+
+	public:
+		GraphPoint (Owner owner = NONE)
+			: m_captured (false)
+			, m_owner (owner)
 		{
-			return m_x;
 		}
 
-		inline int y () const
+		bool isCaptured () const
 		{
-			return m_y;
+			return m_captured;
 		}
 
-		inline void setX (int x)
+		void capture ()
 		{
-			m_x = x;
+			m_captured = true;
 		}
 
-		inline void setY (int y)
+		void setOwner (Owner owner)
 		{
-			m_y = y;
-		}
-		
-		Point operator* (int val) const
-		{
-			return Point (m_x * val, m_y * val);
-		}
-		
-		Point operator+ (int val) const
-		{
-			return Point (m_x + val, m_y + val);
+			m_owner = owner;
 		}
 
-		inline bool operator== (const Point& a) const
+		Owner owner () const
 		{
-			return m_x == a.m_x && m_y == a.m_y;
+			return m_owner;
 		}
 
-		inline bool operator!= (const Point& a) const
+		GraphEdges& edges ()
 		{
-			return ! (*this == a);
+			return m_edges;
 		}
 
-		inline bool empty () const
+		const GraphEdges& edges () const
 		{
-			return m_x == -1 || m_y == -1;
+			return m_edges;
 		}
-		
-		
-		
-		friend QDataStream& operator<< (QDataStream& out, const KDots::Point& obj);
-		friend QDataStream& operator>> (QDataStream& in, KDots::Point& obj);
 	};
-	
-	QDataStream& operator<< (QDataStream& out, const KDots::Point& obj);
-
-	QDataStream& operator>> (QDataStream& in, KDots::Point& obj);
 }
-
-Q_DECLARE_METATYPE (KDots::Point);
-
-
 
 #endif

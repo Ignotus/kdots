@@ -109,4 +109,4 @@ namespace KDots
 	}
 }
 
-#include "include/brushcombodelegate.moc"
+#include "brushcombodelegate.moc"
