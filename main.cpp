@@ -31,14 +31,8 @@
 #include "mainwindow.hpp"
 #include "gameconfig.hpp"
 
-int main (int argc, char **argv)
+void initAboutData(KAboutData& aboutData)
 {
-	KAboutData aboutData ("kdots", 0,
-		ki18n ("kdots"), "0.5b",
-		ki18n ("A prototype of the game of dots."),
-		KAboutData::License_BSD,
-		ki18n ("Copyright (c) 2011-2012 Minh Ngo"));
-	
 	aboutData.setHomepage ("https://github.com/Ignotus/kdots");
 	aboutData.setBugAddress ("nlminhtl@gmail.com");
 	aboutData.addAuthor (ki18n ("Minh Ngo"),
@@ -49,6 +43,21 @@ int main (int argc, char **argv)
 	aboutData.addCredit (ki18n ("Bohdan Rybak"),
 			ki18n ("Game engine tester"),
 			"brainerazer@gmail.com");
+	
+	aboutData.addCredit (ki18n ("Artem Sereda"),
+			ki18n ("Arch Linux package maintainer"),
+			"overmind88@gmail.com");
+}
+
+int main (int argc, char **argv)
+{
+	KAboutData aboutData ("kdots", 0,
+		ki18n ("kdots"), "0.5b",
+		ki18n ("A prototype of the game of dots."),
+		KAboutData::License_BSD,
+		ki18n ("Copyright (c) 2011-2012 Minh Ngo"));
+	
+	initAboutData (aboutData);
 	
 	KCmdLineArgs::init (argc, argv, &aboutData);
  
