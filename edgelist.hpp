@@ -72,7 +72,7 @@ namespace KDots
 
 		const Point& operator[] (int index) const
 		{
-			if (index >= 0 && index < m_count)
+			if (index < 0 || index >= m_count)
 				throw std::runtime_error ("beyond the limit of the array");
 			return m_pointList[index];
 		}

@@ -233,13 +233,6 @@ namespace KDots
 			else
 				return ++current;
 		}
-		
-		int sqrLength (const Point& first, const Point& second)
-		{
-			const int dx = second.x () - first.x ();
-			const int dy = second.y () - first.y ();
-			return dx * dx + dy * dy;
-		}
 	}
 	
 	void DotTable::resizePolygon (Polygon_ptr polygon)
@@ -267,7 +260,7 @@ namespace KDots
 				
 				Polygon::iterator nextItr = next (*polygon, itr);
 				
-				const int sum = sqrLength (newPoint, *itr) + sqrLength (newPoint, *nextItr);
+				const int sum = Point::sqrLength (newPoint, *itr) + Point::sqrLength (newPoint, *nextItr);
 				
 				if (sum != 2 && sum != 3)
 					continue;

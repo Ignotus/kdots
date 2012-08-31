@@ -236,10 +236,6 @@ namespace KDots
 		connect (m_table,
 				SIGNAL (updateStatusBar (const QString&)),
 				statusBar (),
-				SLOT (clearMessage ()));
-		connect (m_table,
-				SIGNAL (updateStatusBar (const QString&)),
-				statusBar (),
 				SLOT (showMessage (const QString&)));
 
 		setCentralWidget (m_table);

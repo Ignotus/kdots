@@ -50,6 +50,7 @@ namespace KDots
 		void undo ();
 	protected:
 		void mousePressEvent (QMouseEvent *event);
+		void mouseMoveEvent (QMouseEvent *event);
 		void paintEvent (QPaintEvent *event);
 	private slots:
 		void onStatusMessage ();

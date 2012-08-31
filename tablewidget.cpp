@@ -78,6 +78,23 @@ namespace KDots
 		}
 	}
 	
+	void TableWidget::mouseMoveEvent (QMouseEvent *event)
+	{
+		QWidget::mouseMoveEvent (event);
+		/*
+		if (!m_rival->isAllow ())
+			return;
+
+		const Point& res = calculatePoint (event);
+		if (!res.isInitialized ())
+			return;
+		
+		if (res.x () >= m_width - 1 || res.x () < 0
+				|| res.y () < 0 || res.y () >= m_height - 1)
+			return;
+		*/
+	}
+	
 	void TableWidget::onStatusMessage ()
 	{
 		emit updateStatusBar (QString ("First:\t")
@@ -120,8 +137,9 @@ namespace KDots
 			return;
 		else if (dy < firstPart)
 			--y;
-
-		if (x >= m_width - 1 || x < 0 || y < 0 || y >= m_height - 1)
+		
+		if (x >= m_width - 1 || x < 0
+				|| y < 0 || y >= m_height - 1)
 			return;
 
 		m_table->pushPoint (Point (x, y));

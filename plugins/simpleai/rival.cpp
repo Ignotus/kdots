@@ -33,6 +33,7 @@
 #else
 # include <KGameDifficulty>
 #endif
+#include <KDebug>
 #include <point.hpp>
 #include <dottable.hpp>
 #include <stepqueue.hpp>
@@ -223,8 +224,33 @@ endloop:
 				}
 			}
 			
+			/*
+			auto maxSize = [&points] (const Point& lastPoint) {
+				int distance = 10000;
+				int id = 0;
+				int index = 0;
+				for (const Point& point : points)
+				{
+					const int sqrDistance = Point::sqrLength (point, lastPoint);
+					if (sqrDistance < distance)
+					{
+						distance = sqrDistance;
+						index = id;
+					}
+					
+					++id;
+				}
+				
+				return index;
+			};
+			*/
+			
 			if (!points.empty ())
+			{
+				//const int index = maxSize (point);
+				//kDebug () << "index: " << index;
 				m_table->pushPoint (points[rand () % points.size ()]);
+			}
 		}
 		
 		void Rival::calcImportanceTree (float& importance, const Point& point, int iteration)
