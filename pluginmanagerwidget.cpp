@@ -24,9 +24,11 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "pluginmanagerwidget.hpp"
+#include <QStandardItemModel>
 #include <interface/iplugin.hpp>
 #include "kdots.h"
 #include "plugincontainer.hpp"
+#include "pluginwidgetdelegate.hpp"
 #include "ui_pluginmanagerwidget.h"
 
 namespace KDots
@@ -37,29 +39,37 @@ namespace KDots
 	{
 		m_ui->setupUi (this);
 		
+		QStandardItemModel *model = new QStandardItemModel (this);
 		for (IPlugin *plugin : PluginContainer::instance ().plugins ().values ())
-			m_ui->PluginComboBox->addItem (plugin->icon (), plugin->name ());
+			model->appendRow (new QStandardItem (plugin->icon (), plugin->name ()));
 		
-		m_ui->PluginComboBox->setCurrentIndex (Settings::lastPlugin ());
-		onIndexChanged (Settings::lastPlugin ());
-		
-		connect (m_ui->PluginComboBox,
-				SIGNAL (currentIndexChanged (int)),
+		m_ui->PluginList->setModel (model);
+		m_ui->PluginList->setItemDelegate (new PluginWidgetDelegate (m_ui->PluginList));
+		m_ui->PluginList->setSelectionMode (QAbstractItemView::SingleSelection);
+		m_ui->PluginList->setEditTriggers (QAbstractItemView::NoEditTriggers);
+		connect (m_ui->PluginList,
+				SIGNAL (clicked (const QModelIndex&)),
 				this,
-				SLOT (onIndexChanged (int)));
+				SLOT (onIndexChanged (const QModelIndex&)));
+		
+		const QModelIndex& index =model->index (Settings::lastPlugin (), 0);
+		m_ui->PluginList->selectionModel ()->select (index, QItemSelectionModel::Select);
+		onIndexChanged (index);
 	}
 	
-	void PluginManagerWidget::onIndexChanged (int current)
+	void PluginManagerWidget::onIndexChanged (const QModelIndex& current)
 	{
-		IPlugin *first = PluginContainer::instance ().plugin (m_ui->PluginComboBox->itemText (current));
+		const QString& pluginName = current.data ().toString ();
+		IPlugin *first = PluginContainer::instance ().plugin (pluginName);
 		m_ui->Description->setText (first->description ());
 		
-		Settings::setLastPlugin (current);
+		Settings::setLastPlugin (current.row ());
 	}
 
 	QString PluginManagerWidget::pluginName () const
 	{
-		return m_ui->PluginComboBox->currentText ();
+		return m_ui->PluginList->selectionModel ()->selectedRows ()
+				.at (0).data ().toString ();
 	}
 }
 

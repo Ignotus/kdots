@@ -56,6 +56,11 @@ namespace KDots
 				{
 					return "Playing by internet connection";
 				}
+				
+				KIcon icon () const
+				{
+					return KIcon ("network-connect");
+				}
 			};
 
 	}

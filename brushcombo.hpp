@@ -32,7 +32,6 @@ namespace KDots
 {
 	class KDOTS_EXPORT BrushCombo : public KComboBox
 	{
-		Q_OBJECT
 	public:
 		BrushCombo (QWidget* parent = 0);
 		void paintEvent (QPaintEvent *e);

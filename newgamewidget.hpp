@@ -38,7 +38,6 @@ namespace KDots
 {
 	class NewGameWidget : public QWidget
 	{
-		Q_OBJECT
 	public:
 		NewGameWidget (QWidget *parent = 0);
 

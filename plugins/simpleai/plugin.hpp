@@ -56,6 +56,11 @@ namespace KDots
 			{
 				return "Playing with the simple AI";
 			}
+			
+			KIcon icon () const
+			{
+				return KIcon ("games-config-board");
+			}
 		};
 
 	}

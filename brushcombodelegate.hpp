@@ -32,7 +32,6 @@ namespace KDots
 {
 	class BrushComboDelegate : public QStyledItemDelegate
 	{
-		Q_OBJECT
 	public:
 		static const QVector<Qt::BrushStyle>& brushes ();
 		static Qt::BrushStyle getBrushStyle (int index);

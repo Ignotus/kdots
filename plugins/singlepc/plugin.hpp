@@ -96,6 +96,11 @@ namespace KDots
 			{
 				return "Playing in the single PC";
 			}
+			
+			KIcon icon () const
+			{
+				return KIcon ();
+			}
 		};
 
 	}

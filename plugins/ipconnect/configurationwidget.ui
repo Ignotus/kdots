@@ -20,7 +20,7 @@
    <string>Game configuration</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="1" column="0">
+   <item row="0" column="0">
     <widget class="KTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
@@ -30,6 +30,16 @@
        <string>Create Game</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>You are:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="1">
         <widget class="QSpinBox" name="listenPort">
          <property name="maximum">
@@ -37,6 +47,16 @@
          </property>
          <property name="value">
           <number>6666</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Connecting port:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
@@ -54,26 +74,6 @@
          </item>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Connecting port:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>You are:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tabWidgetPage2">
@@ -81,6 +81,16 @@
        <string>Join Game</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_5">
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Port:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="1">
         <widget class="KLineEdit" name="host">
          <property name="inputMask">
@@ -108,16 +118,6 @@
          </property>
          <property name="value">
           <number>6666</number>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Port:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>

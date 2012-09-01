@@ -56,6 +56,7 @@ IF (UNIX)
 ENDIF (UNIX)
 
 SET (SRCS
+	pluginwidgetdelegate.cpp
 	brushcombo.cpp
 	graph.cpp
 	dottable.cpp
@@ -74,6 +75,7 @@ SET (SRCS
 )
 
 SET (HEADERS
+	pluginwidgetdelegate.hpp
 	brushcombo.hpp
 	graphpoint.hpp
 	graph.hpp

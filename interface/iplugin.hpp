@@ -26,7 +26,7 @@
 #ifndef KDOTS_IPLUGIN_HPP
 #define KDOTS_IPLUGIN_HPP
 #include <QString>
-#include <QIcon>
+#include <KIcon>
 #include <QtPlugin>
 
 namespace KDots
@@ -54,9 +54,9 @@ namespace KDots
 
 		/** @brief Returns a plugin icon.
 		*/
-		virtual QIcon icon () const
+		virtual KIcon icon () const
 		{
-			return QIcon ();
+			return KIcon ();
 		}
 	};
 

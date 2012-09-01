@@ -23,32 +23,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_PLUGINMANAGERWIDGET_HPP
-#define KDOTS_PLUGINMANAGERWIDGET_HPP
-#include <QWidget>
+#ifndef KDOTS_PLUGINWIDGETDELEGATE_HPP
+#define KDOTS_PLUGINWIDGETDELEGATE_HPP
+#include <QItemDelegate>
 
-class QComboBox;
-class QModelIndex;
-
-namespace Ui
-{
-	class PluginManagerWidget;
-}
+class KIcon;
 
 namespace KDots
 {
-	class PluginManagerWidget : public QWidget
+	class PluginWidgetDelegate : public QItemDelegate
 	{
-		Q_OBJECT
-		
-		Ui::PluginManagerWidget *m_ui;
 	public:
-		PluginManagerWidget (QWidget *parent = 0);
+		PluginWidgetDelegate (QObject *parent = 0);
 		
-		QString pluginName () const;
-	private slots:
-		void onIndexChanged (const QModelIndex& current);
+		QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
+		{
+			Q_UNUSED (index);
+			return QSize (option.rect.width (), 50);
+		}
+		
+		void updateEditorGeometry (QWidget *editor, const QStyleOptionViewItem& option,
+				const QModelIndex& index) const;
+		
+		void paint (QPainter *painter, const QStyleOptionViewItem& option,
+				const QModelIndex& index) const;
+	private:
+		void drawIcon (QPainter *painter, const QStyleOptionViewItem& option, const KIcon& icon) const;
 	};
 }
 
-#endif
+#endif 
