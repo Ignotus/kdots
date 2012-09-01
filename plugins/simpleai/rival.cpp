@@ -62,7 +62,7 @@ namespace KDots
 		
 		void Rival::setDifficulty (int diff)
 		{
-			m_iterations = diff;
+			m_iterations = diff + 2;
 		}
 		
 		Rival::~Rival()
@@ -224,8 +224,7 @@ endloop:
 				}
 			}
 			
-			/*
-			auto maxSize = [&points] (const Point& lastPoint) {
+			auto minSize = [&points] (const Point& lastPoint) {
 				int distance = 10000;
 				int id = 0;
 				int index = 0;
@@ -241,15 +240,15 @@ endloop:
 					++id;
 				}
 				
+				kDebug () << "Min size:" << distance;
 				return index;
 			};
-			*/
 			
 			if (!points.empty ())
 			{
-				//const int index = maxSize (point);
+				const int index = minSize (point);
 				//kDebug () << "index: " << index;
-				m_table->pushPoint (points[rand () % points.size ()]);
+				m_table->pushPoint (points[index]);
 			}
 		}
 		

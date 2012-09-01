@@ -280,7 +280,7 @@ namespace KDots
 			if (!polygon->isFilled ())
 				continue;
 			
-			resizePolygon (polygon);
+			//resizePolygon (polygon);
 			
 			polygon->setOwner (m_steps->getCurrentOwner ());
 			m_polygons.push_back (polygon);
