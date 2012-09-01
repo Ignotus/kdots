@@ -45,7 +45,7 @@ namespace KDots
 	{
 		m_ui->setupUi (this);
 			
-		m_ui->Grid->addWidget (m_pluginManager, 0, 0, Qt::AlignCenter);
+		m_ui->Grid->addWidget (m_pluginManager, 0, 0);
 		
 		connect (m_ui->NextButton,
 				SIGNAL (clicked (bool)),
@@ -103,7 +103,7 @@ namespace KDots
 			return;
 		}
 		
-		m_ui->Grid->addWidget (m_configWidget , 0, 0, Qt::AlignCenter);
+		m_ui->Grid->addWidget (m_configWidget , 0, 0);
 		
 		connect (m_configWidget,
 				SIGNAL (needCreateTable (bool)),
@@ -143,7 +143,7 @@ namespace KDots
 		m_ui->NextButton->setEnabled (false);
 		m_ui->OKButton->setEnabled (true);
 		m_game = new NewGameWidget (this);
-		m_ui->Grid->addWidget (m_game, 0, 0, Qt::AlignCenter);
+		m_ui->Grid->addWidget (m_game, 0, 0);
 	}
 	
 }
