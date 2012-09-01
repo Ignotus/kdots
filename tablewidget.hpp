@@ -27,8 +27,8 @@
 #define KDOTS_TABLEWIDGET_HPP
 #include <memory>
 #include <QWidget>
-#include <QDebug>
 #include "constants.hpp"
+#include "point.hpp"
 
 class QPainter;
 
@@ -37,7 +37,6 @@ namespace KDots
 	class IRival;
 	class DotTable;
 	struct GameConfig;
-	class Point;
 
 	class TableWidget : public QWidget
 	{
@@ -47,6 +46,7 @@ namespace KDots
 		int m_height, m_width;
 
 		std::shared_ptr<KDots::IRival> m_rival;
+		Point m_underMousePoint;
 	public:
 		TableWidget (const GameConfig& config, std::shared_ptr<IRival> rival,
 				QWidget *parent = 0);
@@ -60,6 +60,7 @@ namespace KDots
 		void drawPolygons (QPainter& painter, float cellSize);
 		void fillPolygon (QPainter& painter, float cellSize);
 		void drawLastPoint (QPainter& painter, float cellSize);
+		void drawUnderMousePoint (QPainter& painter, float cellSize);
 	private slots:
 		void onStatusMessage ();
 	signals:

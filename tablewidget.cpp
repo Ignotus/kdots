@@ -49,6 +49,7 @@ namespace KDots
 		, m_rival (rival)
 	{
 		setMinimumSize (400, 400);
+		setMouseTracking (true);
 
 		rival->setDotTable (m_table);
 
@@ -123,19 +124,13 @@ namespace KDots
 	
 	void TableWidget::mouseMoveEvent (QMouseEvent *event)
 	{
-		QWidget::mouseMoveEvent (event);
-		/*
-		if (!m_rival->isAllow ())
-			return;
-
-		const Point& res = calculatePoint (event);
-		if (!res.isInitialized ())
-			return;
+		Point point;
+		calculatePoint (point, event);
+		const bool needRepaint = (point != m_underMousePoint);
+		m_underMousePoint = point;
 		
-		if (res.x () >= m_width - 1 || res.x () < 0
-				|| res.y () < 0 || res.y () >= m_height - 1)
-			return;
-		*/
+		if (needRepaint)
+			update ();
 	}
 	
 	void TableWidget::onStatusMessage ()
@@ -148,11 +143,11 @@ namespace KDots
 
 	void TableWidget::mousePressEvent (QMouseEvent *event)
 	{
-		Point newPoint;
-		calculatePoint (newPoint, event);
-
-		if (newPoint.isInitialized ())
-			m_table->pushPoint (newPoint);
+		Point point;
+		calculatePoint (point, event);
+		
+		if (point.isInitialized ())
+			m_table->pushPoint (point);
 	}
 	
 	void TableWidget::undo ()
@@ -223,6 +218,27 @@ namespace KDots
 		}
 	}
 	
+	void TableWidget::drawUnderMousePoint (QPainter& painter, float cellSize)
+	{
+		if (!m_underMousePoint.isInitialized ())
+			return;
+		
+		const Graph& graph = m_table->graph ();
+		const QColor firstColor (Settings::firstPointColor ());
+		const QColor secondColor (Settings::secondPointColor ());
+		
+		const QPen firtBorder (firstColor, 0.5), secondBorder (secondColor, 0.5);
+		
+		
+		painter.setPen (graph[m_underMousePoint].owner () == FIRST
+				? firtBorder
+				: secondBorder);
+						
+		painter.setBrush (Qt::NoBrush);
+		const Point& newPoint = m_underMousePoint + 1;
+		painter.drawEllipse (QPointF (newPoint.x (), newPoint.y ()) * cellSize, 6, 6);
+	}
+	
 	void TableWidget::fillPolygon (QPainter& painter, float cellSize)
 	{
 		const QColor firstColor (Settings::firstPointColor ());
@@ -278,6 +294,7 @@ namespace KDots
 		fillPolygon (pixPainter, cellSize);
 		drawLastPoint (pixPainter, cellSize);
 		drawPolygons (pixPainter, cellSize);
+		drawUnderMousePoint (pixPainter, cellSize);
 		
 		QPainter painter (this);
 		const int dx = (rectange.width () - tableWidth) / 2;
