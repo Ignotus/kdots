@@ -41,7 +41,7 @@ namespace KDots
 		
 		bool isInitialized () const
 		{
-			return m_x < 0 || m_y < 0;
+			return m_x >= 0 && m_y >= 0;
 		}
 		
 		Point (int x, int y)

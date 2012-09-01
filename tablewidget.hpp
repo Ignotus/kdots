@@ -30,11 +30,14 @@
 #include <QDebug>
 #include "constants.hpp"
 
+class QPainter;
+
 namespace KDots
 {
 	class IRival;
 	class DotTable;
 	struct GameConfig;
+	class Point;
 
 	class TableWidget : public QWidget
 	{
@@ -52,6 +55,11 @@ namespace KDots
 		void mousePressEvent (QMouseEvent *event);
 		void mouseMoveEvent (QMouseEvent *event);
 		void paintEvent (QPaintEvent *event);
+	private:
+		void calculatePoint (Point& point, QMouseEvent *event);
+		void drawPolygons (QPainter& painter, float cellSize);
+		void fillPolygon (QPainter& painter, float cellSize);
+		void drawLastPoint (QPainter& painter, float cellSize);
 	private slots:
 		void onStatusMessage ();
 	signals:

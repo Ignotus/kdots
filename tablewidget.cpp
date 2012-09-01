@@ -78,6 +78,49 @@ namespace KDots
 		}
 	}
 	
+	void TableWidget::calculatePoint (Point& point, QMouseEvent *event)
+	{
+		if (!m_rival->isAllow ())
+			return;
+		
+		const QRect& rectange = rect ();
+
+		const float cellSize = cell_size (rectange, m_height, m_width);
+
+		float dx = (rectange.width () - cellSize * m_width) / 2;
+
+		float dy = (rectange.height () - cellSize * m_height) / 2;
+
+		int x = (event->x () - dx) / cellSize;
+
+		int y = (event->y () - dy) / cellSize;
+
+		const float firstPart = cellSize / 3;
+
+		const float lastPart = cellSize * 2 / 3;
+
+		dx = event->x () - dx - x * cellSize;
+		
+		if (dx > firstPart && dx < lastPart)
+			return;
+		else if (dx < firstPart)
+			--x;
+
+		dy = event->y () - dy - y * cellSize;
+
+		if (dy > firstPart && dy < lastPart)
+			return;
+		else if (dy < firstPart)
+			--y;
+		
+		if (x >= m_width - 1 || x < 0
+				|| y < 0 || y >= m_height - 1)
+			return;
+		
+		point.setX (x);
+		point.setY (y);
+	}
+	
 	void TableWidget::mouseMoveEvent (QMouseEvent *event)
 	{
 		QWidget::mouseMoveEvent (event);
@@ -105,44 +148,11 @@ namespace KDots
 
 	void TableWidget::mousePressEvent (QMouseEvent *event)
 	{
-		if (!m_rival->isAllow ())
-			return;
-		
-		const QRect& rectange = rect ();
+		Point newPoint;
+		calculatePoint (newPoint, event);
 
-		const float cellSize = cell_size (rectange, m_height, m_width);
-
-		float dx = (rectange.width () - cellSize * m_width) / 2;
-
-		float dy = (rectange.height () - cellSize * m_height) / 2;
-
-		int x = (event->x () - dx) / cellSize;
-
-		int y = (event->y () - dy) / cellSize;
-
-		const float firstPart = cellSize / 3;
-
-		const float lastPart = cellSize * 2 / 3;
-
-		dx = event->x () - dx - x * cellSize;
-
-		if (dx > firstPart && dx < lastPart)
-			return;
-		else if (dx < firstPart)
-			--x;
-
-		dy = event->y () - dy - y * cellSize;
-
-		if (dy > firstPart && dy < lastPart)
-			return;
-		else if (dy < firstPart)
-			--y;
-		
-		if (x >= m_width - 1 || x < 0
-				|| y < 0 || y >= m_height - 1)
-			return;
-
-		m_table->pushPoint (Point (x, y));
+		if (newPoint.isInitialized ())
+			m_table->pushPoint (newPoint);
 	}
 	
 	void TableWidget::undo ()
@@ -150,6 +160,95 @@ namespace KDots
 		setUpdatesEnabled (false);
 		m_table->undo ();
 		setUpdatesEnabled (true);
+	}
+	
+	void TableWidget::drawPolygons (QPainter& painter, float cellSize)
+	{
+		const QColor& firstColor = Settings::firstPointColor ();
+		const QColor& secondColor = Settings::secondPointColor ();
+		
+		const QBrush firstBrush (firstColor), secondBrush (secondColor);
+		const QPen firstPen (firstColor, 1.5), secondPen (secondColor, 1.5);
+		
+		const Graph& graph = m_table->graph ();
+		
+		for (Graph::const_iterator itr = graph.begin (), itrEnd = graph.end ();
+				itr != itrEnd; ++itr)
+		{
+			if (itr->owner () == NONE)
+					continue;
+
+			painter.setPen (itr->owner () == FIRST
+					? firstPen
+					: secondPen);
+
+			painter.setBrush (itr->owner () == FIRST
+					? firstBrush
+					: secondBrush);
+			
+			const Point& currPoint = itr.point () + 1;
+
+			painter.drawEllipse (QPointF (currPoint.x (), currPoint.y ()) * cellSize, 3, 3);
+				
+			const GraphPoint::GraphEdges& edges = itr->edges ();
+
+			for (int j = 0; j < edges.size (); ++j)
+			{
+				const Point& lastPoint = edges[j] + 1;
+
+				painter.drawLine (QPointF (currPoint.x (), currPoint.y ()) * cellSize,
+						QPointF (lastPoint.x (), lastPoint.y ()) * cellSize);
+			}
+		}
+	}
+	
+	void TableWidget::drawLastPoint (QPainter& painter, float cellSize)
+	{
+		const Graph& graph = m_table->graph ();
+		const Point& lastPoint = m_table->stepQueue ()->lastPoint ();
+		const QColor firstColor (Settings::firstPointColor ());
+		const QColor secondColor (Settings::secondPointColor ());
+		
+		const QPen firtBorder (firstColor, 0.5), secondBorder (secondColor, 0.5);
+		
+		if (!lastPoint.empty ())
+		{
+			painter.setPen (graph[lastPoint].owner () == FIRST
+					? firtBorder
+					: secondBorder);
+						
+			painter.setBrush (Qt::NoBrush);
+			const Point& newPoint = lastPoint + 1;
+			painter.drawEllipse (QPointF (newPoint.x (), newPoint.y ()) * cellSize, 6, 6);
+		}
+	}
+	
+	void TableWidget::fillPolygon (QPainter& painter, float cellSize)
+	{
+		const QColor firstColor (Settings::firstPointColor ());
+		const QColor secondColor (Settings::secondPointColor ());
+		
+		const auto& polygonVector = m_table->polygons ();
+		
+		const QBrush firstPolyBrush (firstColor,
+				BrushComboDelegate::getBrushStyle (Settings::firstFillStyle ()));
+		const QBrush secondPolyBrush (secondColor,
+				BrushComboDelegate::getBrushStyle (Settings::secondFillStyle ()));
+		
+		for (Polygon_ptr polygon : polygonVector)
+		{
+			QPolygon qPoly;
+			for (const Point& point : *polygon)
+			{
+				const Point& newPoint = point + 1;
+				qPoly << QPoint (newPoint.x (), newPoint.y ()) * cellSize;
+			}
+			QPainterPath path;
+			path.addPolygon (qPoly);
+			painter.fillPath (path, polygon->owner () == FIRST
+					? firstPolyBrush
+					: secondPolyBrush);
+		}
 	}
 
 	void TableWidget::paintEvent (QPaintEvent *event)
@@ -176,78 +275,9 @@ namespace KDots
 		pixPainter.setPen (QPen (Qt::black, 3));
 		pixPainter.drawRect (0, 0, pixmap.width (), pixmap.height ());
 		
-		const Graph& graph = m_table->graph ();
-		const Point& lastPoint = m_table->stepQueue ()->lastPoint ();
-
-		const QColor& firstColor = Settings::firstPointColor ();
-		const QColor& secondColor = Settings::secondPointColor ();
-		
-		const QBrush firstBrush (firstColor), secondBrush (secondColor);
-
-		const QPen firstPen (firstColor, 1.5), secondPen (secondColor, 1.5),
-				firtBorder (firstColor, 0.5), secondBorder (secondColor, 0.5);
-				
-		const std::vector<Polygon_ptr>& polygonVector = m_table->polygons ();
-		
-		const QBrush firstPolyBrush (firstColor,
-				BrushComboDelegate::getBrushStyle (Settings::firstFillStyle ()));
-		const QBrush secondPolyBrush (secondColor,
-				BrushComboDelegate::getBrushStyle (Settings::secondFillStyle ()));
-		
-		for (Polygon_ptr polygon : polygonVector)
-		{
-			QPolygon qPoly;
-			for (const Point& point : *polygon)
-			{
-				const Point& newPoint = point + 1;
-				qPoly << QPoint (newPoint.x (), newPoint.y ()) * cellSize;
-			}
-			QPainterPath path;
-			path.addPolygon (qPoly);
-			pixPainter.fillPath (path, polygon->owner () == FIRST
-					? firstPolyBrush
-					: secondPolyBrush);
-		}
-				
-		if (!lastPoint.empty ())
-		{
-			pixPainter.setPen (graph[lastPoint].owner () == FIRST
-					? firtBorder
-					: secondBorder);
-						
-			pixPainter.setBrush (Qt::NoBrush);
-			const Point& newPoint = lastPoint + 1;
-			pixPainter.drawEllipse (QPointF (newPoint.x (), newPoint.y ()) * cellSize, 6, 6);
-		}
-		
-		for (Graph::const_iterator itr = graph.begin (), itrEnd = graph.end ();
-				itr != itrEnd; ++itr)
-		{
-			if (itr->owner () == NONE)
-					continue;
-
-			pixPainter.setPen (itr->owner () == FIRST
-					? firstPen
-					: secondPen);
-
-			pixPainter.setBrush (itr->owner () == FIRST
-					? firstBrush
-					: secondBrush);
-			
-			const Point& currPoint = itr.point () + 1;
-
-			pixPainter.drawEllipse (QPointF (currPoint.x (), currPoint.y ()) * cellSize, 3, 3);
-				
-			const GraphPoint::GraphEdges& edges = itr->edges ();
-
-			for (int j = 0; j < edges.size (); ++j)
-			{
-				const Point& lastPoint = edges[j] + 1;
-
-				pixPainter.drawLine (QPointF (currPoint.x (), currPoint.y ()) * cellSize,
-						QPointF (lastPoint.x (), lastPoint.y ()) * cellSize);
-			}
-		}
+		fillPolygon (pixPainter, cellSize);
+		drawLastPoint (pixPainter, cellSize);
+		drawPolygons (pixPainter, cellSize);
 		
 		QPainter painter (this);
 		const int dx = (rectange.width () - tableWidth) / 2;
