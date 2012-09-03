@@ -79,65 +79,69 @@ namespace KDots
 		
 		namespace
 		{
-			float calcImportance(const Graph& graph, const Point& point, const Owner currentOwner)
+			bool hasMask (const Graph& graph, const Point& point, const MapData& mask)
+			{
+				const Owner currentOwner = graph[point].owner ();
+				const Owner otherOwner = StepQueue::other (currentOwner);
+				const MapType& map = mask.m_map;
+				const Point& currentPoint = mask.m_current;
+					
+				for (std::size_t j = 0, height = map.size (), i,
+						width = map.front ().size (); j < height; ++j)
+				{
+					for (i = 0; i < width; ++i)
+					{
+						const Point newPoint (currentPoint.x () - i + point.x (),
+								currentPoint.y () - j + point.y ());
+					
+						if (!graph.isValid (newPoint))
+							return false;
+						
+						const MapElement el = map[j][i];
+						const GraphPoint& graphPoint = graph[newPoint];
+						const Owner own = graphPoint.owner ();
+						const bool captured = graphPoint.isCaptured ();
+						switch (el)
+						{
+						case EM: //Empty
+							if (own != NONE || captured)
+								return false;
+							break;
+						case FI: //First
+							if (own != otherOwner || captured)
+								return false;
+							break;
+						case SE: //Second
+							if (own != currentOwner || captured)
+								return false;
+							break;
+						case PF: // Possibly first
+							if (own == currentOwner || captured)
+								return false;
+							break;
+						case PS: // Possibly second
+							if (own == otherOwner || captured)
+								return false;
+						default:
+							break;
+						}
+					}
+				}
+				
+				return true;
+			}
+			
+			float calcImportance(const Graph& graph, const Point& point)
 			{
 				float priority = -0.5;
-				const Owner otherOwner = StepQueue::other (currentOwner);
 				
 				for (const MapData& table : PriorityMap::instance ().priorityMap ())
 				{
-					const MapType& map = table.m_map;
-					const Point& currentPoint = table.m_current;
-					
-					for (std::size_t j = 0, height = map.size (), i,
-							width = map.front ().size (); j < height; ++j)
-					{
-						for (i = 0; i < width; ++i)
-						{
-							const int dx = currentPoint.x () - i;
-							const int dy = currentPoint.y () - j;
-							const int newX = point.x () + dx;
-							const int newY = point.y () + dy;
-							if (newX < 0 || newY < 0
-									|| static_cast<std::size_t> (newX) >= graph.width ()
-									|| static_cast<std::size_t> (newY) >= graph.height ())
-								goto endloop;
-							
-							const MapElement el = map[j][i];
-							const GraphPoint& graphPoint = graph[newX][newY];
-							const Owner own = graphPoint.owner ();
-							const bool captured = graphPoint.isCaptured ();
-							switch (el)
-							{
-							case EM: //Empty
-								if (own != NONE || captured)
-									goto endloop;
-								break;
-							case FI: //First
-								if (own != otherOwner || captured)
-									goto endloop;
-								break;
-							case SE: //Second
-								if (own != currentOwner || captured)
-									goto endloop;
-								break;
-							case PF: // Possibly first
-								if (own == currentOwner || captured)
-									goto endloop;
-								break;
-							case PS: // Possibly second
-								if (own == otherOwner || captured)
-									goto endloop;
-							default:
-								break;
-							}
-						}
-					}
+					if (!hasMask (graph, point, table))
+						continue;
 					
 					if (table.m_priority > priority)
 						priority = table.m_priority;
-endloop:
-					;
 				}
 				
 				return priority;
@@ -145,12 +149,10 @@ endloop:
 			
 			bool isEmptyAround (const Graph& graph, const Point& point)
 			{
-				for (int i = 0; i < 8; ++i)
+				for (int i = 0; i < DIRECTION_COUNT; ++i)
 				{
 					const Point newPoint (point.x () + GRAPH_DX[i], point.y () + GRAPH_DY[i]);
-					if (newPoint.x () < 0 || newPoint.y () < 0
-							|| static_cast<std::size_t> (newPoint.x ()) >= graph.width ()
-							|| static_cast<std::size_t> (newPoint.y ()) >= graph.height ())
+					if (!graph.isValid (newPoint))
 						continue;
 					
 					if (graph[newPoint].owner () != NONE)
@@ -240,14 +242,12 @@ endloop:
 					++id;
 				}
 				
-				kDebug () << "Min size:" << distance;
 				return index;
 			};
 			
 			if (!points.empty ())
 			{
 				const int index = minSize (point);
-				//kDebug () << "index: " << index;
 				m_table->pushPoint (points[index]);
 			}
 		}
@@ -256,7 +256,7 @@ endloop:
 		{
 			const Graph& gr = m_table->graph ();
 
-			importance += calcImportance (gr, point, m_current);
+			importance += calcImportance (gr, point);
 			m_pointStack.push_back (point);
 			if (iteration == m_iterations) // Need configure this feature
 				return;
@@ -266,15 +266,10 @@ endloop:
 			int i = 0;
 			for (; i < DIRECTION_COUNT; ++i)
 			{
-				const int tempx = point.x () + GRAPH_DX[i];
-				const int tempy = point.y () + GRAPH_DY[i];
-
-				if (tempx < 0 || tempy < 0
-						|| static_cast<std::size_t> (tempx) >= gr.width ()
-						|| static_cast<std::size_t> (tempy) >= gr.height ())
+				const Point newPoint (point.x () + GRAPH_DX[i], point.y () + GRAPH_DY[i]);
+				if (!gr.isValid (newPoint))
 					continue;
 				
-				const Point newPoint (tempx, tempy);
 				const GraphPoint& newGrPoint = gr[newPoint];
 				
 				if (!newGrPoint.isCaptured () && newGrPoint.owner () == NONE
@@ -288,7 +283,7 @@ endloop:
 				}
 			}
 			
-			if (i != 8)
+			if (i != DIRECTION_COUNT)
 				importance += max_imp;
 		}
 		

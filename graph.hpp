@@ -34,6 +34,63 @@ namespace KDots
 	class Graph;
 	
 	template<class A>
+	class graph_iterator;
+	
+	class KDOTS_EXPORT Graph
+	{
+		std::vector<std::vector<GraphPoint>> m_graph;
+	public:
+		typedef graph_iterator<GraphPoint> iterator;
+		typedef graph_iterator<const GraphPoint> const_iterator;
+		
+		Graph (int width, int height);
+		
+		iterator begin ();
+		const_iterator begin () const;
+		
+		iterator end ();
+		const_iterator end () const;
+		
+		bool isValid (const Point& point) const
+		{
+			return point > Point () && point < Point (width (), height ());
+		}
+
+		std::size_t width () const
+		{
+			return m_graph.size ();
+		}
+
+		std::size_t height () const
+		{
+			return m_graph.front ().size ();
+		}
+
+		GraphPoint& operator[] (const Point& index)
+		{
+			return m_graph[index.x ()][index.y ()];
+		}
+
+		const GraphPoint& operator[] (const Point& index) const
+		{
+			return m_graph[index.x ()][index.y ()];
+		}
+
+		std::vector<GraphPoint>& operator[] (int index)
+		{
+			return m_graph[index];
+		}
+
+		const std::vector<GraphPoint>& operator[] (int index) const
+		{
+			return m_graph[index];
+		}
+
+		void addEdge (const KDots::Point& first, const KDots::Point& second);
+		void removeEdge (const Point& first, const Point& second);
+	};
+	
+	template<class A>
 	class graph_iterator : public std::iterator<std::forward_iterator_tag, A>
 	{
 		Graph *m_graph;
@@ -91,11 +148,28 @@ namespace KDots
 			return m_graph != other.m_graph || m_x != other.m_x || m_y != other.m_y;
 		}
 		
-		A& operator* ();
+		A& operator* ()
+		{
+			return (*m_graph)[m_x][m_y];
+		}
 		
-		A* operator-> ();
+		A* operator-> ()
+		{
+			return &(*m_graph)[m_x][m_y];
+		}
 		
-		graph_iterator& operator++ ();
+		graph_iterator& operator++ ()
+		{
+			if (m_x + 1 == m_graph->width ())
+			{
+				m_x = 0;
+				++m_y;
+			}
+			else
+				++m_x;
+			
+			return *this;
+		}
 		
 		graph_iterator operator++ (int)
 		{
@@ -104,81 +178,6 @@ namespace KDots
 			return res;
 		}
 	};
-	
-	class KDOTS_EXPORT Graph
-	{
-		std::vector<std::vector<GraphPoint>> m_graph;
-	public:
-		typedef graph_iterator<GraphPoint> iterator;
-		typedef graph_iterator<const GraphPoint> const_iterator;
-		
-		Graph (int width, int height);
-		
-		iterator begin ();
-		const_iterator begin () const;
-		
-		iterator end ();
-		const_iterator end () const;
-
-		std::size_t width () const
-		{
-			return m_graph.size ();
-		}
-
-		std::size_t height () const
-		{
-			return m_graph.front ().size ();
-		}
-
-		GraphPoint& operator[] (const Point& index)
-		{
-			return m_graph[index.x ()][index.y ()];
-		}
-
-		const GraphPoint& operator[] (const Point& index) const
-		{
-			return m_graph[index.x ()][index.y ()];
-		}
-
-		std::vector<GraphPoint>& operator[] (int index)
-		{
-			return m_graph[index];
-		}
-
-		const std::vector<GraphPoint>& operator[] (int index) const
-		{
-			return m_graph[index];
-		}
-
-		void addEdge (const KDots::Point& first, const KDots::Point& second);
-		void removeEdge (const Point& first, const Point& second);
-	};
-	
-	template<class A>
-	A& graph_iterator<A>::operator* ()
-	{
-		return (*m_graph)[m_x][m_y];
-	}
-	
-	template<class A>
-	A* graph_iterator<A>::operator-> ()
-	{
-		return &(*m_graph)[m_x][m_y];
-	}
-
-	template<class A>
-	graph_iterator<A>& graph_iterator<A>::operator++ ()
-	{
-		if (m_x + 1 == m_graph->width ())
-		{
-			m_x = 0;
-			++m_y;
-		}
-		else
-			++m_x;
-		
-		return *this;
-	}
 }
 
 #endif

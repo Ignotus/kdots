@@ -244,16 +244,11 @@ namespace KDots
 		{
 			for (int i = 0; i < DIRECTION_COUNT; ++i)
 			{
-				const int tempx = itr->x () + GRAPH_DX[i];
-				const int tempy = itr->y () + GRAPH_DY[i];
-
-				if (tempx < 0 || tempy < 0
-						|| static_cast<std::size_t> (tempx) >= m_graph->width ()
-						|| static_cast<std::size_t> (tempy) >= m_graph->height ())
+				const Point newPoint (itr->x () + GRAPH_DX[i], itr->y () + GRAPH_DY[i]);
+				if (!m_graph->isValid (newPoint))
 					continue;
 				
-				const Point newPoint (tempx, tempy);
-				const GraphPoint& graphPoint = (*m_graph)[newPoint];
+				const GraphPoint& graphPoint = m_graph->operator[] (newPoint);
 
 				if (graphPoint.owner () != current || graphPoint.isCaptured ())
 					continue;
