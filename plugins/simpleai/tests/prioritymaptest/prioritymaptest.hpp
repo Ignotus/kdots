@@ -68,7 +68,6 @@ private slots:
 		for (const MapData& data : dataList)
 		{
 			++k;
-			qDebug () << Q_FUNC_INFO << __LINE__ << k;
 			QVERIFY (data.m_map[data.m_current.y ()][ data.m_current.x ()] == MapElement::CU);
 			
 		}
@@ -117,6 +116,8 @@ private slots:
 			{3, 1},
 			0.1
 		};
+		
+		qDebug () << answer.toString ();
 		
 		QVERIFY (rotated == answer);
 		

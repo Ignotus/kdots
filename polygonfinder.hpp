@@ -34,15 +34,16 @@ namespace KDots
 {
 	struct Graph;
 
-	class PolygonFinder
+	class KDOTS_EXPORT PolygonFinder
 	{
-		Graph& m_graph;
+		const Graph& m_graph;
 		Owner m_current;
 		PolygonContainer m_cache;
 		std::vector<std::vector<bool>> m_stepMap;
 		PolyList m_polygons;
+		Point m_first;
 	public:
-		PolygonFinder (Graph& graph, Owner owner);
+		PolygonFinder (const Graph& graph, Owner owner);
 		// O(n)
 		const PolyList& operator() (const Point& point);
 	private:

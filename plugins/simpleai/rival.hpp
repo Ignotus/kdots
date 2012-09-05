@@ -33,6 +33,8 @@ namespace KDots
 {
 	namespace simpleai
 	{
+		struct MapData;
+		
 		class Rival : public KDots::IRival
 		{
 			Q_OBJECT
@@ -53,7 +55,12 @@ namespace KDots
 			
 			void setDotTable (DotTable *table);
 		private:
+			bool hasMask (const Point& point, const MapData& mask);
+			float calcImportance(const Point& point);
 			void calcImportanceTree (float& importance, const Point& point, int iteration);
+			void calcRange (int& min_x, int& min_y, int& max_x, int& max_y);
+			bool hasCaptured (const Point& point, Owner current);
+			
 		signals:
 			void createDotTable (const GameConfig& config);
 			void needDestroy ();

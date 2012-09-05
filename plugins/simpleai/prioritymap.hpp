@@ -27,6 +27,7 @@
 #define KDOTS_PLUGINS_SIMPLEAI_PRIORITY_HPP
 #include <list>
 #include <vector>
+#include <KDebug>
 #include <constants.hpp>
 #include <point.hpp>
 
@@ -64,6 +65,50 @@ namespace KDots
 				, m_current (current)
 				, m_priority (priority)
 			{
+			}
+			
+			QString toString() const
+			{
+				QString res;
+				for (std::size_t j = 0; j < m_map.size (); ++j)
+				{
+					res += "\n{ ";
+					for (std::size_t i = 0; i < m_map.front ().size (); ++i)
+					{
+						switch (m_map[j][i])
+						{
+							case EM: //Empty
+								res += "EM ";
+								break;
+							case NM: // Does not matter
+								res += "NM ";
+								break;
+							case FI: //First
+								res += "FI ";
+								break;
+							case SE: //Second
+								res += "SE ";
+								break;
+							case PF: // Possibly first
+								res += "PF ";
+								break;
+							case PS: // Possibly second
+								res += "PS ";
+								break;
+							case CU: // Current
+								res += "CU ";
+								break;
+							default:
+								kDebug () << "WTF?";
+						}
+					}
+					res += "}";
+					
+				}
+				
+				res += "\n";
+				
+				return res;
 			}
 			
 			bool operator== (const MapData& other) const;

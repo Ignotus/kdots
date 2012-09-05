@@ -32,7 +32,7 @@
 namespace KDots
 {
   
-	PolygonFinder::PolygonFinder (Graph& graph, Owner owner)
+	PolygonFinder::PolygonFinder (const Graph& graph, Owner owner)
 		: m_graph (graph)
 		, m_current (owner)
 		, m_stepMap (graph.width (), std::vector<bool> (graph.height (), false))
@@ -73,6 +73,7 @@ namespace KDots
 
 	const PolyList& PolygonFinder::operator() (const Point& point)
 	{
+		m_first = point;
 		findPolygons (point);
 
 		const int max = maxSize (m_polygons);
@@ -109,7 +110,8 @@ namespace KDots
 
 			const GraphPoint& graphPoint = m_graph[newPoint];
 
-			if (graphPoint.isCaptured () || graphPoint.owner () != m_current)
+			if (newPoint != m_first
+					&& (graphPoint.isCaptured () || graphPoint.owner () != m_current))
 				continue;
 			
 			findPolygons (newPoint);

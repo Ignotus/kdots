@@ -44,6 +44,9 @@ namespace KDots
 		std::vector<Polygon_ptr> m_polygons;
 	public:
 		DotTable (const GameConfig& config, QObject *parent = 0);
+		
+		static bool isInPolygon (Polygon_ptr polygon, const Point& point);
+		
 		virtual ~DotTable () {}
 		GameConfig gameConfig () const;
 

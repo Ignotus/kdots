@@ -81,36 +81,36 @@ namespace KDots
 					return *next;
 			}
 		}
+	}
 	
-		bool isInPolygon (Polygon_ptr polygon, const Point& point)
+	bool DotTable::isInPolygon (Polygon_ptr polygon, const Point& point)
+	{
+		// k - a count of points in the same line with "point" object
+		// i - crosses count
+		int i = 0, shift;
+
+		Polygon::const_iterator itr = polygon->begin (), itrEnd = polygon->end ();
+		while (itr != itrEnd)
 		{
-			// k - a count of points in the same line with "point" object
-			// i - crosses count
-			int i = 0, shift;
-
-			Polygon::const_iterator itr = polygon->begin (), itrEnd = polygon->end ();
-			while (itr != itrEnd)
+			if (itr->y () != point.y ())
 			{
-				if (itr->y () != point.y ())
-				{
-					++itr;
-					continue;
-				}
-				
-				if (itr->x () == point.x ())
-					return true;	
-
-				const Point& prevPoint = getPrevPoint (polygon, itr);
-				const Point& nextPoint = getNextPoint (polygon, shift, itr);
-
-				if (itr->x () < point.x () && prevPoint.y () != nextPoint.y () && shift == 1)
-					++i;
-				
 				++itr;
+				continue;
 			}
+			
+			if (itr->x () == point.x ())
+				return true;	
 
-			return i % 2;
+			const Point& prevPoint = getPrevPoint (polygon, itr);
+			const Point& nextPoint = getNextPoint (polygon, shift, itr);
+
+			if (itr->x () < point.x () && prevPoint.y () != nextPoint.y () && shift == 1)
+				++i;
+			
+			++itr;
 		}
+
+		return i % 2;
 	}
 
 	void DotTable::pushPoint (const Point& point)

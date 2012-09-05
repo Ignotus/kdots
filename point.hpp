@@ -85,9 +85,19 @@ namespace KDots
 			return m_x < other.m_x && m_y < other.m_y;
 		}
 		
+		bool operator<= (const Point& other) const
+		{
+			return m_x <= other.m_x && m_y <= other.m_y;
+		}
+		
 		bool operator> (const Point& other) const
 		{
 			return m_y > other.m_y && m_x > other.m_x;
+		}
+		
+		bool operator>= (const Point& other) const
+		{
+			return m_y >= other.m_y && m_x >= other.m_x;
 		}
 
 		bool operator== (const Point& a) const
