@@ -25,6 +25,7 @@
  */
 #ifndef KDOTS_STEPQUEUE_HPP
 #define KDOTS_STEPQUEUE_HPP
+#include <KDebug>
 #include "point.hpp"
 #include "constants.hpp"
 
@@ -97,6 +98,8 @@ namespace KDots
 
 		static Owner other (Owner player)
 		{
+			if (player == NONE)
+				kWarning () << "player == NONE";
 			return player == FIRST ? SECOND : FIRST;
 		}
 

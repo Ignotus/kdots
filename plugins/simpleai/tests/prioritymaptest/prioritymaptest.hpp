@@ -26,6 +26,8 @@
 #pragma once
 #include <QtTest>
 #include <QObject>
+#include <rival.hpp>
+#include <graph.hpp>
 #include "prioritymap.hpp"
 using namespace KDots::simpleai;
 
@@ -55,6 +57,69 @@ class PriorityMapTest : public QObject
 {
 	Q_OBJECT
 private slots:
+	void maskCheckingTest ()
+	{
+		KDots::Graph graph (3, 3);
+		graph[KDots::Point (0, 1)].setOwner (KDots::FIRST);
+		graph[KDots::Point (1, 0)].setOwner (KDots::FIRST);
+		graph[KDots::Point (2, 1)].setOwner (KDots::FIRST);
+		graph[KDots::Point (2, 2)].setOwner (KDots::FIRST);
+		graph[KDots::Point (1, 1)].setOwner (KDots::SECOND);
+		
+		const MapData data {
+			{
+				{NM, FI, NM},
+				{FI, SE, FI},
+				{EM, CU, PF}
+			},
+			{1, 2},
+			0.9
+		};
+		
+		const MapData& newData1 = PriorityMap::rotate (data);
+		
+		const MapData checkData1 {
+			{
+				{EM, FI, NM},
+				{CU, SE, FI},
+				{PF, FI, NM}
+			},
+			{0, 1},
+			0.9
+		};
+		QVERIFY (newData1 == checkData1);
+		
+		const MapData& newData2 = PriorityMap::rotate (newData1);
+		
+		const MapData checkData2 {
+			{
+				{PF, CU, EM},
+				{FI, SE, FI},
+				{NM, FI, NM}
+			},
+			{1, 0},
+			0.9
+		};
+		
+		QVERIFY (newData2 == checkData2);
+		
+		const MapData& newData3 = PriorityMap::rotate (newData2);
+		
+		const MapData checkData3 {
+			{
+				{NM, FI, PF},
+				{FI, SE, CU},
+				{NM, FI, EM}
+			},
+			{2, 1},
+			0.9
+		};
+		
+		QVERIFY (newData3 == checkData3);
+		
+		QVERIFY (KDots::simpleai::Rival::hasMask (graph, KDots::Point(1, 2), data, KDots::SECOND));
+	}
+	
 	void sizeTest ()
 	{
 		const std::list<MapData>& dataList = PriorityMap::instance ().priorityMap ();

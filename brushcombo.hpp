@@ -30,7 +30,7 @@
 
 namespace KDots
 {
-	class KDOTS_EXPORT BrushCombo : public KComboBox
+	class BrushCombo : public KComboBox
 	{
 	public:
 		BrushCombo (QWidget* parent = 0);

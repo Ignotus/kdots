@@ -25,7 +25,9 @@
  */
 #include "rival.hpp"
 #include <ctime>
+#include <iostream>
 #include <algorithm>
+#include <stack>
 #include <QStatusBar>
 #include <QLabel>
 #ifdef NEW_LIBKDEGAMES
@@ -61,15 +63,6 @@ namespace KDots
 #endif
 		}
 		
-		void Rival::setDifficulty (int diff)
-		{
-			m_iterations = diff;
-		}
-		
-		Rival::~Rival()
-		{
-		}
-		
 		bool Rival::isAllow () const
 		{
 			if (!m_table)
@@ -78,22 +71,17 @@ namespace KDots
 			return m_table->stepQueue ()->getCurrentOwner () == m_table->stepQueue ()->firstOwner ();
 		}
 		
-		bool Rival::hasMask (const Point& point, const MapData& mask)
+		bool Rival::hasMask (const Graph& graph, const Point& point, const MapData& mask, const Owner current)
 		{
-			const Graph& graph = m_table->graph ();
-			const Owner currentOwner = m_table->stepQueue ()->getCurrentOwner ();
-			const Owner otherOwner = StepQueue::other (currentOwner);
-			
 			const MapType& map = mask.m_map;
 			const Point& currentPoint = mask.m_current;
-				
-			for (std::size_t j = 0, height = map.size (), i,
-					width = map.front ().size (); j < height; ++j)
+			const Owner other = StepQueue::other (current);
+			
+			for (std::size_t j = 0, height = map.size (), i, width = map.front ().size (); j < height; ++j)
 			{
 				for (i = 0; i < width; ++i)
 				{
-					const Point newPoint (currentPoint.x () - i + point.x (),
-							currentPoint.y () - j + point.y ());
+					const Point& newPoint = point - currentPoint + Point (i, j);
 				
 					if (!graph.isValid (newPoint))
 						return false;
@@ -101,11 +89,10 @@ namespace KDots
 					const MapElement el = map[j][i];
 					const GraphPoint& graphPoint = graph[newPoint];
 					const Owner own = graphPoint.owner ();
-					const bool captured = graphPoint.isCaptured ();
 					
-					if (captured)
+					if (graphPoint.isCaptured ())
 						return false;
-
+					
 					switch (el)
 					{
 					case EM: //Empty
@@ -113,25 +100,22 @@ namespace KDots
 							return false;
 						break;
 					case FI: //First
-						if (own != otherOwner)
+						if (own != other)
 							return false;
 						break;
 					case SE: //Second
-						if (own != currentOwner)
+						if (own != current)
 							return false;
 						break;
 					case PF: // Possibly first
-						if (own == currentOwner)
+						if (own == current)
 							return false;
 						break;
 					case PS: // Possibly second
-						if (own == otherOwner)
+						if (own == other)
 							return false;
 						break;
-					case NM: case CU:
-						break;
-					default:
-						kDebug () << "WTF";
+					case NM: case CU: default:
 						break;
 					}
 				}
@@ -140,32 +124,24 @@ namespace KDots
 			return true;
 		}
 		
-		float Rival::calcImportance(const Point& point)
+		float Rival::calcPriority(const Point& point)
 		{
-				float priority = -0.5;
-			
-			int id = 0;
+			float priority = 2;
+			const Graph& graph = m_table->graph ();
 			for (const MapData& table : PriorityMap::instance ().priorityMap ())
 			{
-				if (!hasMask (point, table))
-				{
-					++id;
+				if (!hasMask (graph, point, table, m_current))
 					continue;
+				else
+				{
+					kDebug () << "Found";
 				}
-// 				else
-// 				{
-// 					kDebug () << "Found mask #" << id << "\n"
-// 							<< table.toString ()
-// 							<< "in the point {" << point.x () << ", " << point.y () << "}";
-// 				}
 				
-					if (table.m_priority > priority)
-						priority = table.m_priority;
-				
-				++id;
+				if (table.m_priority < priority)
+					priority = table.m_priority;
 			}
 			
-			return priority;
+			return priority > 1.5 ? 0 : priority;
 		}
 	
 		namespace
@@ -184,26 +160,6 @@ namespace KDots
 				
 				return true;
 			}
-			
-			bool minSize (const Point& lastPoint, const std::vector<Point> points)
-			{
-				int distance = 10000;
-				int id = 0;
-				int index = 0;
-				for (const Point& point : points)
-				{
-					const int sqrDistance = Point::sqrLength (point, lastPoint);
-					if (sqrDistance < distance)
-					{
-						distance = sqrDistance;
-						index = id;
-					}
-					
-					++id;
-				}
-				
-				return index;
-			};
 		}
 		
 		void Rival::calcRange (int& min_x, int& min_y, int& max_x, int& max_y)
@@ -214,7 +170,7 @@ namespace KDots
 				for (i = 0; i < max_i; ++i)
 				{
 					const GraphPoint& point = graph[Point (i, j)];
-					if (point.owner () != NONE)
+					if (point.owner () == m_other)
 					{
 						if (i - 1 < min_x)
 							min_x = i - 1;
@@ -230,7 +186,7 @@ namespace KDots
 			}
 		}
 		
-		bool Rival::hasCaptured (const Point& point, Owner current)
+		bool Rival::hasCaptured (const KDots::Point& point, KDots::Owner current) const
 		{
 			const Graph& graph = m_table->graph ();
 			auto steps = m_table->stepQueue ();
@@ -239,9 +195,7 @@ namespace KDots
 			//O(n)
 			const PolyList& polyList = findPolygon (point);
 
-			const Owner otherOwner = StepQueue::other (current);
-			
-			const auto& otherOwnerPoints = steps->getPoints (otherOwner);
+			const auto& otherOwnerPoints = steps->getPoints (m_other);
 			for (const Point& p : otherOwnerPoints)
 			{
 				const GraphPoint& gpoint = graph[p];
@@ -250,8 +204,7 @@ namespace KDots
 				
 				for (const Polygon_ptr& polygon : polyList)
 				{
-					if (DotTable::isInPolygon (polygon, p)
-							&& gpoint.owner () == otherOwner)
+					if (DotTable::isInPolygon (polygon, p) && gpoint.owner () == m_other)
 						return true;
 				}
 			}
@@ -259,102 +212,51 @@ namespace KDots
 			return false;
 		}
 		
+		std::vector<Point> Rival::possibleMoves () const
+		{
+			return m_points;
+		}
+		
 		void Rival::nextStep (const Point& point)
 		{
 			if (isAllow ())
 				return;
 			
-			int min_x = point.x () - 1, min_y = point.y () - 1;
-			int max_x = point.x () + 1, max_y = point.y () + 1;
-			calcRange (min_x, min_y, max_x, max_y);
-			
-			m_pointStack.clear ();
-			
-			std::vector<Point> points;
-			float max_priority = -0.5 * m_iterations;
 			const Graph& graph = m_table->graph ();
-			for (Graph::const_iterator itr = graph.begin (), itrEnd = graph.end ();
-					itr != itrEnd; ++itr)
+			
+			m_points.clear ();
+			
+			float maxPrio = -2;
+			for (Graph::const_iterator itr = graph.begin (), end = graph.end (); itr != end; ++itr)
 			{
-				if (itr->owner () != NONE || itr->isCaptured ())
+				if (itr->isCaptured () || itr->owner () != NONE)
 					continue;
 				
-				const Point& newPoint = itr.point ();
-				
-				if (isEmptyAround (graph, newPoint))
-					continue;
-				
-				if (!(newPoint >= Point (min_x, min_y)
-						&& newPoint <= Point (max_x, max_y)))
-					continue;
-				
-				float imp = 0;
-				calcImportanceTree (imp, newPoint, 1);
-				
-				if (imp == max_priority)
-					points.push_back (newPoint);
-				else if (imp > max_priority)
+				const Point& curr = itr.point ();
+				const float prio = calcPriority (curr);
+				if (prio > maxPrio)
 				{
-					max_priority = imp;
-					kDebug () << "Max priority is changed to" << max_priority;
-					points.clear ();
-					points.push_back (newPoint);
+					m_points.clear ();
+					maxPrio = prio;
+					m_points.push_back (curr);
 				}
+				else if (prio == maxPrio)
+					m_points.push_back (curr);
 			}
 			
-			if (!points.empty ())
+			if (!m_points.empty ())
 			{
-				//const int index = minSize (point, points);
-				srand (std::time (NULL));
-				m_table->pushPoint (points[rand () % points.size ()]);
+				std::srand (std::time (NULL));
+				m_table->pushPoint (m_points[std::rand () % m_points.size ()]);
 			}
-		}
-		
-		void Rival::calcImportanceTree (float& importance, const Point& point, int iteration)
-		{
-			const Owner current = m_table->stepQueue ()->getCurrentOwner ();
-			if (hasCaptured (point, current))
-				importance += 0.9;
-			else
-				importance += calcImportance (point);
-			
-			m_pointStack.push_back (point);
-			if (iteration == m_iterations) // Need configure this feature
-				return;
-			
-			float max_imp =  -m_iterations;
-			
-			int i = 0;
-			const Graph& graph = m_table->graph ();
-			for (; i < DIRECTION_COUNT; ++i)
-			{
-				const Point newPoint (point.x () + GRAPH_DX[i], point.y () + GRAPH_DY[i]);
-				if (!graph.isValid (newPoint))
-					continue;
-				
-				const GraphPoint& newGrPoint = graph[newPoint];
-				
-				if (!newGrPoint.isCaptured () && newGrPoint.owner () == NONE
-						&& std::find (m_pointStack.begin (), m_pointStack.end (), newPoint) == m_pointStack.end ())
-				{
-					float imp = 0;
-					calcImportanceTree (imp, newPoint, iteration + 1);
-					
-						if (max_imp == -m_iterations || imp < max_imp)
-							max_imp = imp;
-				}
-			}
-			
-			if (i != DIRECTION_COUNT)
-				importance += max_imp;
 		}
 		
 		void Rival::setDotTable (DotTable *table)
 		{
 			m_table = table;
 			
-			m_current = m_table->stepQueue ()->getCurrentOwner ();
-			m_other = StepQueue::other (m_current);
+			m_other = m_table->stepQueue ()->getCurrentOwner ();
+			m_current = StepQueue::other (m_other);
 		}
 	}
 }

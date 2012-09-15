@@ -31,35 +31,42 @@
 
 namespace KDots
 {
+	class Graph;
 	namespace simpleai
 	{
 		struct MapData;
 		
-		class Rival : public KDots::IRival
+		class KDOTS_EXPORT Rival : public KDots::IRival
 		{
 			Q_OBJECT
 			Q_INTERFACES (KDots::IRival)
 			
 			DotTable *m_table;
-			std::vector<Point> m_pointStack;
 			Owner m_current, m_other;
 			int m_iterations;
+			std::vector<Point> m_points;
 		public:
 			Rival (QObject *parent = 0);
-			~Rival ();
-			bool isAllow () const;
+			~Rival () {}
 			
-			void setDifficulty (int diff);
+			bool isAllow () const;
+			static bool hasMask (const Graph& graph, const Point& point, const MapData& mask, const Owner current);
+			
+			void setDifficulty (int diff)
+			{
+				m_iterations = diff;
+			}
+			
+			std::vector<Point> possibleMoves () const;
+			
 		public slots:
 			void nextStep (const Point& point);
-			
 			void setDotTable (DotTable *table);
+			
 		private:
-			bool hasMask (const Point& point, const MapData& mask);
-			float calcImportance(const Point& point);
-			void calcImportanceTree (float& importance, const Point& point, int iteration);
+			float calcPriority (const Point& point);
 			void calcRange (int& min_x, int& min_y, int& max_x, int& max_y);
-			bool hasCaptured (const Point& point, Owner current);
+			bool hasCaptured (const Point& point, Owner current) const;
 			
 		signals:
 			void createDotTable (const GameConfig& config);

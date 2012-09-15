@@ -47,6 +47,11 @@ namespace KDots
 		virtual ~IRival ()
 		{
 		}
+		
+		virtual std::vector<Point> possibleMoves () const
+		{
+			return std::vector<Point> ();
+		}
 
 		virtual IConfigurationWidget* configureWidget ()
 		{

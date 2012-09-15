@@ -216,6 +216,16 @@ namespace KDots
 			const Point& newPoint = lastPoint + 1;
 			painter.drawEllipse (QPointF (newPoint.x (), newPoint.y ()) * cellSize, 6, 6);
 		}
+		
+		const std::vector<Point>& possiblePoints = m_rival->possibleMoves ();
+		for (const Point& point : possiblePoints)
+		{
+			painter.setPen (Qt::gray);
+						
+			painter.setBrush (Qt::NoBrush);
+			const Point& newPoint = point + 1;
+			painter.drawEllipse (QPointF (newPoint.x (), newPoint.y ()) * cellSize, 10, 10);
+		}
 	}
 	
 	void TableWidget::drawUnderMousePoint (QPainter& painter, float cellSize)

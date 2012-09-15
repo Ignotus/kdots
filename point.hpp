@@ -80,6 +80,16 @@ namespace KDots
 			return Point (m_x + val, m_y + val);
 		}
 		
+		Point operator- (const Point& point) const
+		{
+			return Point (m_x + point.m_x, m_y + point.m_y);
+		}
+		
+		Point operator+ (const Point& point) const
+		{
+			return Point (m_x - point.m_x, m_y - point.m_y);
+		}
+		
 		bool operator< (const Point& other) const
 		{
 			return m_x < other.m_x && m_y < other.m_y;

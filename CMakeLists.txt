@@ -55,44 +55,51 @@ IF (UNIX)
 	SET (PLUGINS_DIR ${DATA_INSTALL_DIR}/kdots/plugins)
 ENDIF (UNIX)
 
-SET (SRCS
-	pluginwidgetdelegate.cpp
-	brushcombo.cpp
+SET (KDOTSLIB_SRCS
 	graph.cpp
 	dottable.cpp
 	stepqueue.cpp
-	tablewidget.cpp
-	newgamewidget.cpp
-	newgamedialog.cpp
-	mainwindow.cpp
 	polygonfinder.cpp
-	plugincontainer.cpp
-	pluginmanagerwidget.cpp
 	gameconfig.cpp
 	point.cpp
-	brushcombodelegate.cpp
-	kdots.kcfgc
 )
 
-SET (HEADERS
-	pluginwidgetdelegate.hpp
-	brushcombo.hpp
+SET (KDOTSLIB_HEADERS
 	graphpoint.hpp
 	graph.hpp
 	dottable.hpp
 	stepqueue.hpp
-	tablewidget.hpp
 	edgelist.hpp
 	point.hpp
-	newgamedialog.hpp
-	newgamewidget.hpp
-	mainwindow.hpp
 	constants.hpp
 	polygonfinder.hpp
 	polygon.hpp
+	gameconfig.hpp
+)
+
+SET (SRCS
+	plugincontainer.cpp
+	pluginmanagerwidget.cpp
+	newgamewidget.cpp
+	newgamedialog.cpp
+	mainwindow.cpp
+	tablewidget.cpp
+	pluginwidgetdelegate.cpp
+	brushcombo.cpp
+	brushcombodelegate.cpp
+	main.cpp
+	kdots.kcfgc
+)
+
+SET (HEADERS
 	plugincontainer.hpp
 	pluginmanagerwidget.hpp
-	gameconfig.hpp
+	newgamedialog.hpp
+	newgamewidget.hpp
+	mainwindow.hpp
+	tablewidget.hpp
+	pluginwidgetdelegate.hpp
+	brushcombo.hpp
 	brushcombodelegate.hpp
 )
 
@@ -110,6 +117,7 @@ SET (FORMS
 	ui/boardconfigwidget.ui
 )
 
+
 KDE4_ADD_UI_FILES (SRCS ${FORMS})
 KDE4_ADD_KCFG_FILES (SRCS kdots.kcfgc)
 INSTALL (FILES kdots.kcfg DESTINATION ${KCFG_INSTALL_DIR})
@@ -124,11 +132,11 @@ SET (KDOTS_REQUIRED_LIBS
 )
 
 KDE4_ADD_LIBRARY (kdotslib SHARED
-	${SRCS}
+	${KDOTSLIB_SRCS}
 )
 
 KDE4_ADD_EXECUTABLE (kdots
-	main.cpp
+	${SRCS}
 	${INTERFACE_HEAD}
 )
 

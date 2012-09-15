@@ -46,7 +46,7 @@ namespace KDots
 	class TableWidget;
 	class IRival;
 
-	class KDOTS_EXPORT MainWindow : public KXmlGuiWindow
+	class MainWindow : public KXmlGuiWindow
 	{
 		Q_OBJECT
 	public:
