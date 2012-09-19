@@ -27,5 +27,6 @@
 #define CONFIG_HPP
 
 #define PLUGINS_DIR "${PLUGINS_DIR}"
+#define VERSION "${KDOTS_VERSION}"
 
 #endif

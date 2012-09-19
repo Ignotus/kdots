@@ -28,6 +28,7 @@
 #include <KLocale>
 #include <KCmdLineArgs>
 #include <brushcombo.hpp>
+#include <config.hpp>
 #include "mainwindow.hpp"
 #include "gameconfig.hpp"
 
@@ -52,7 +53,7 @@ void initAboutData(KAboutData& aboutData)
 int main (int argc, char **argv)
 {
 	KAboutData aboutData ("kdots", 0,
-		ki18n ("kdots"), "0.5b",
+		ki18n ("kdots"), VERSION,
 		ki18n ("A prototype of the game of dots."),
 		KAboutData::License_BSD,
 		ki18n ("Copyright (c) 2011-2012 Minh Ngo"));
