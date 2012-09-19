@@ -53,7 +53,7 @@ namespace KDots
 			, m_table (NULL)
 			, m_current (FIRST)
 			, m_other (SECOND)
-			, m_iterations (3)
+			, m_iterations (1)
 		{
 			PriorityMap::instance ();
 #ifdef NEW_LIBKDEGAMES
@@ -90,7 +90,7 @@ namespace KDots
 					const GraphPoint& graphPoint = graph[newPoint];
 					const Owner own = graphPoint.owner ();
 					
-					if (graphPoint.isCaptured ())
+					if (graphPoint.isCaptured () && el != NM)
 						return false;
 					
 					switch (el)
@@ -124,18 +124,44 @@ namespace KDots
 			return true;
 		}
 		
-		float Rival::calcPriority(const Point& point)
+		float Rival::calcPriority (const Point& point)
 		{
 			float priority = 2;
 			const Graph& graph = m_table->graph ();
+			
+			if (m_iterations > 1 && hasCaptured (point, m_current))
+				return 1.0;
+			
+			if (m_iterations > 2)
+			{
+				bool captured = hasCaptured (point, m_other);
+				if (captured)
+				{
+					for (int i = 0; i < DIRECTION_COUNT; ++i)
+					{
+						const Point newPoint (point.x () + GRAPH_DX[i], point.y () + GRAPH_DY[i]);
+						if (!graph.isValid (newPoint))
+							continue;
+						
+						if (graph[newPoint].owner () != NONE)
+							continue;
+						
+						if (hasCaptured (newPoint, m_other))
+						{
+							captured = false;
+							break;
+						}
+					}
+				}
+				
+				if (captured)
+					return 0.99;
+			}
+			
 			for (const MapData& table : PriorityMap::instance ().priorityMap ())
 			{
 				if (!hasMask (graph, point, table, m_current))
 					continue;
-				else
-				{
-					kDebug () << "Found";
-				}
 				
 				if (table.m_priority < priority)
 					priority = table.m_priority;
@@ -222,6 +248,11 @@ namespace KDots
 			if (isAllow ())
 				return;
 			
+			int min_x = point.x () - 1, min_y = point.y () - 1;
+			int max_x = point.x () + 1, max_y = point.y () + 1;
+			calcRange (min_x, min_y, max_x, max_y);
+			const Point minPoint (min_x, min_y), maxPoint (max_x, max_y); 
+			
 			const Graph& graph = m_table->graph ();
 			
 			m_points.clear ();
@@ -233,6 +264,9 @@ namespace KDots
 					continue;
 				
 				const Point& curr = itr.point ();
+				if (!(curr >= minPoint && curr <= maxPoint))
+					continue;
+				
 				const float prio = calcPriority (curr);
 				if (prio > maxPrio)
 				{
