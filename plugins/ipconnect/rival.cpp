@@ -144,7 +144,7 @@ namespace KDots
 			{
 				QMessageBox::warning (0,
 						i18n ("Warning!"),
-						i18n ("Cannot connect to the server: ") + m_socket->errorString ());
+						i18n ("Cannot connect to the server: %1", m_socket->errorString ()));
 				
 				emit needDestroy ();
 			}
