@@ -1,6 +1,8 @@
 [Desktop Entry]
 Name=KDots
 Name[cs]=KDots
+Name[et]=KDots
+Name[fr]=KDots
 Name[ga]=KDots
 Name[nl]=KDots
 Name[pt]=KDots
@@ -14,6 +16,8 @@ Exec=kdots
 Type=Application
 Categories=Qt;KDE;Game;BoardGame;
 GenericName=Game of dots
+GenericName[et]=Punktimäng
+GenericName[fr]=Jeu de points
 GenericName[ga]=Cluiche poncanna
 GenericName[nl]=Spel met punten
 GenericName[pt]=Jogo de pontos
