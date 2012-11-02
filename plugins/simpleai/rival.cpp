@@ -230,7 +230,7 @@ namespace KDots
 				
 				for (const Polygon_ptr& polygon : polyList)
 				{
-					if (DotTable::isInPolygon (polygon, p) && gpoint.owner () == m_other)
+					if (DotTable::isInPolygon (*polygon, p) && gpoint.owner () == m_other)
 						return true;
 				}
 			}

@@ -125,6 +125,13 @@ namespace KDots
 			return m_x == -1 || m_y == -1;
 		}
 		
+		int sqrLength (const Point& second) const
+		{
+			const int dx = second.x () - m_x;
+			const int dy = second.y () - m_y;
+			return dx * dx + dy * dy;
+		}
+		
 		static int sqrLength (const Point& first, const Point& second)
 		{
 			const int dx = second.x () - first.x ();

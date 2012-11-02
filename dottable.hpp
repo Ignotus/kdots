@@ -45,7 +45,7 @@ namespace KDots
 	public:
 		DotTable (const GameConfig& config, QObject *parent = 0);
 		
-		static bool isInPolygon (Polygon_ptr polygon, const Point& point);
+		static bool isInPolygon (const Polygon& polygon, const KDots::Point& point);
 		
 		virtual ~DotTable () {}
 		GameConfig gameConfig () const;
@@ -72,7 +72,7 @@ namespace KDots
 		void nextPlayer (const Point& lastPoint);
 	private:
 		void drawPolygon (PolyList polygons);
-		void resizePolygon (Polygon_ptr polygon);
+		void resizePolygon (Polygon& polygon);
 		
 		void continueStep ();
 	};

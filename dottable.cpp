@@ -24,6 +24,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "dottable.hpp"
+#include <iostream>
 #include <KMessageBox>
 #include <KLocalizedString>
 #include <KDebug>
@@ -50,13 +51,13 @@ namespace KDots
 	
 	namespace
 	{
-		Point getPrevPoint (Polygon_ptr& polygon, Polygon::const_iterator current)
+		Point getPrevPoint (const Polygon& polygon, Polygon::const_iterator current)
 		{
 			const int currentY = current->y ();
 			for (Polygon::const_iterator prev = current;;)
 			{
-				if (prev == polygon->begin ())
-					prev = --polygon->end ();
+				if (prev == polygon.begin ())
+					prev = --polygon.end ();
 				else
 					--prev;
 				
@@ -65,15 +66,15 @@ namespace KDots
 			}
 		}
 		
-		Point getNextPoint (Polygon_ptr& polygon, int& shift, Polygon::const_iterator current)
+		Point getNextPoint (const Polygon& polygon, int& shift, Polygon::const_iterator current)
 		{
 			const int currentY = current->y ();
 			shift = 0;
 			for (Polygon::const_iterator next = current;;)
 			{
 				++shift;
-				if (next == --polygon->end ())
-					next = polygon->begin ();
+				if (next == --polygon.end ())
+					next = polygon.begin ();
 				else
 					++next;
 				
@@ -83,13 +84,13 @@ namespace KDots
 		}
 	}
 	
-	bool DotTable::isInPolygon (Polygon_ptr polygon, const Point& point)
+	bool DotTable::isInPolygon (const Polygon& polygon, const Point& point)
 	{
 		// k - a count of points in the same line with "point" object
 		// i - crosses count
 		int i = 0, shift;
 
-		Polygon::const_iterator itr = polygon->begin (), itrEnd = polygon->end ();
+		Polygon::const_iterator itr = polygon.begin (), itrEnd = polygon.end ();
 		while (itr != itrEnd)
 		{
 			if (itr->y () != point.y ())
@@ -151,7 +152,7 @@ namespace KDots
 			
 			for (const Polygon_ptr& polygon : polyList)
 			{
-				if (isInPolygon (polygon, p))
+				if (isInPolygon (*polygon, p))
 				{
 					if (gpoint.owner () == otherOwner)
 					{
@@ -175,7 +176,7 @@ namespace KDots
 			{
 				const Point& newPoint = itr.point ();
 
-				if (isInPolygon (polygon, newPoint) && polygon->isFilled ())
+				if (isInPolygon (*polygon, newPoint) && polygon->isFilled ())
 				{
 					itr->capture ();
 					m_steps->addEmptyCaptured ();
@@ -224,48 +225,72 @@ namespace KDots
 			pushPoint (point);
 	}
 	
-	namespace
+	void DotTable::resizePolygon (Polygon& polygon)
 	{
-		Polygon::iterator next (Polygon& polygon, Polygon::iterator current)
-		{
-			if (current == --polygon.end ())
-				return polygon.begin ();
-			else
-				return ++current;
-		}
-	}
-	
-	void DotTable::resizePolygon (Polygon_ptr polygon)
-	{
-		const Owner current = m_steps->getCurrentOwner ();
+		auto next = [&polygon] (Polygon::iterator current) {
+			return ++current == polygon.end() ? polygon.begin() : current; 
+		};
 		
-		for (Polygon::iterator itr = polygon->begin (), endItr = polygon->end ();
-				 itr != endItr; ++itr)
+		for (Polygon::iterator point = polygon.begin (), end = polygon.end ();
+				point != end;
+				++point)
 		{
+			const auto secondPoint = next (point);
+			const auto thirdPoint = next (secondPoint);
+			
+			const Point& current = *point;
 			for (int i = 0; i < DIRECTION_COUNT; ++i)
 			{
-				const Point newPoint (itr->x () + GRAPH_DX[i], itr->y () + GRAPH_DY[i]);
+				const Point newPoint (current.x () + GRAPH_DX[i], current.y () + GRAPH_DY[i]);
 				if (!m_graph->isValid (newPoint))
+					return;
+				
+				const GraphPoint& newGrPoint = (*m_graph)[newPoint];
+				
+				if (newGrPoint.owner () != m_steps->getCurrentOwner ())
 					continue;
 				
-				const GraphPoint& graphPoint = m_graph->operator[] (newPoint);
-
-				if (graphPoint.owner () != current || graphPoint.isCaptured ())
-					continue;
-				
-				Polygon::iterator nextItr = next (*polygon, itr);
-				
-				const int sum = Point::sqrLength (newPoint, *itr) + Point::sqrLength (newPoint, *nextItr);
-				
-				if (sum != 2 && sum != 3)
+				if (newGrPoint.isCaptured ()
+						|| newPoint == *secondPoint
+						|| newPoint == *thirdPoint)
 					continue;
 				
 				if (isInPolygon (polygon, newPoint))
 					continue;
 				
-				polygon->insert (nextItr, newPoint);
+				const int flen = point->sqrLength (newPoint);
+				const int slen = secondPoint->sqrLength (newPoint);
+				const int tlen = thirdPoint->sqrLength (newPoint);
+				
+				if (flen == 1)
+				{
+					if ((slen == 1 && tlen <= 2) || slen == 2)
+					{
+						*secondPoint = newPoint;
+						break;
+					}
+					else if (slen == 1 && tlen > 2)
+					{
+						point = polygon.insert (secondPoint, newPoint);
+						break;
+					}
+				}
+				else if (flen == 2 && slen == 1)
+				{
+					if (tlen <= 2)
+					{
+						*secondPoint = newPoint;
+						break;
+					}
+					else
+					{
+						point = polygon.insert (secondPoint, newPoint);
+						break;
+					}
+				}
 			}
-		} 
+			
+		}
 	}
 
 	void DotTable::drawPolygon (PolyList polygons)
@@ -275,7 +300,12 @@ namespace KDots
 			if (!polygon->isFilled ())
 				continue;
 			
-			//resizePolygon (polygon);
+			if (polygon.get () == NULL)
+			{
+				std::cerr << "Polygon == NULL" << std::endl;
+			}
+			
+			resizePolygon (*polygon);
 			
 			polygon->setOwner (m_steps->getCurrentOwner ());
 			m_polygons.push_back (polygon);
