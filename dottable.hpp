@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -30,52 +30,47 @@
 #include "gameconfig.hpp"
 #include "polygon.hpp"
 
-namespace KDots
-{
-	class Graph;
-	class StepQueue;
-	class KDOTS_EXPORT DotTable : public QObject
-	{
-		Q_OBJECT
-
-		std::unique_ptr<Graph> m_graph;
-		std::shared_ptr<StepQueue> m_steps;
-		GameConfig m_config;
-		std::vector<Polygon_ptr> m_polygons;
-	public:
-		DotTable (const GameConfig& config, QObject *parent = 0);
-		
-		static bool isInPolygon (Polygon_ptr polygon, const Point& point);
-		
-		virtual ~DotTable () {}
-		GameConfig gameConfig () const;
-
-		void pushPoint (const Point& point);
-		
-		std::vector<Polygon_ptr> polygons ()
-		{
-			return m_polygons;
-		}
-
-		Graph& graph () const
-		{
-			return *m_graph;
-		}
-
-		std::shared_ptr<StepQueue> stepQueue ()
-		{
-			return m_steps;
-		}
-		
-		void undo ();
-	signals:
-		void nextPlayer (const Point& lastPoint);
-	private:
-		void drawPolygon (PolyList polygons);
-		void resizePolygon (Polygon_ptr polygon);
-		
-		void continueStep ();
-	};
+namespace KDots {
+  class Graph;
+  class StepQueue;
+  class KDOTS_EXPORT DotTable : public QObject {
+      Q_OBJECT
+      
+      std::unique_ptr<Graph> m_graph;
+      std::shared_ptr<StepQueue> m_steps;
+      GameConfig m_config;
+      std::vector<Polygon_ptr> m_polygons;
+    public:
+      DotTable(const GameConfig& config, QObject *parent = 0);
+      
+      static bool isInPolygon(Polygon_ptr polygon, const Point& point);
+      
+      virtual ~DotTable() {}
+      GameConfig gameConfig() const;
+      
+      void pushPoint(const Point& point);
+      
+      std::vector<Polygon_ptr> polygons() {
+        return m_polygons;
+      }
+      
+      Graph& graph() const {
+        return *m_graph;
+      }
+      
+      std::shared_ptr<StepQueue> stepQueue() {
+        return m_steps;
+      }
+      
+      void undo();
+    signals:
+      void nextPlayer(const Point& lastPoint);
+    private:
+      void drawPolygon(PolyList polygons);
+      void resizePolygon(Polygon_ptr polygon);
+      
+      void continueStep();
+  };
 }
 
 #endif

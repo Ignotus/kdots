@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -31,73 +31,61 @@
 
 class QStatusBar;
 
-namespace KDots
-{
-	class DotTable;
-	class IConfigurationWidget;
-	
-	class IRival : public QObject
-	{
-	public:
-		IRival (QObject *parent = 0)
-			: QObject (parent)
-		{
-		}
-		
-		virtual ~IRival ()
-		{
-		}
-		
-		virtual std::vector<Point> possibleMoves () const
-		{
-			return std::vector<Point> ();
-		}
-
-		virtual IConfigurationWidget* configureWidget ()
-		{
-			return NULL;
-		}
-		
-		virtual bool isAllow () const = 0;
-		
-		virtual GameConfig getGameConfig ()
-		{
-			return GameConfig ();
-		}
-	
-		//slots
-		virtual void nextStep (const Point& point)
-		{
-			Q_UNUSED (point);
-		}
-		
-		virtual void setDotTable (DotTable *table)
-		{
-			Q_UNUSED (table);
-		}
-		
-		virtual void setStatusBar (QStatusBar *bar)
-		{
-			Q_UNUSED (bar);
-		}
-		
-		virtual void setDifficulty (int diff)
-		{
-			Q_UNUSED (diff);
-		}
-				
-		virtual bool canUndo () const
-		{
-			return false;
-		}
-		
-	protected: //signals
-		virtual void createDotTable (const GameConfig& config) = 0;
-		
-		virtual void needDestroy () = 0;
-	};
+namespace KDots {
+  class DotTable;
+  class IConfigurationWidget;
+  
+  class IRival : public QObject {
+    public:
+      IRival(QObject *parent = 0)
+        : QObject(parent) {
+      }
+      
+      virtual ~IRival() {
+      }
+      
+      virtual std::vector<Point> possibleMoves() const {
+        return std::vector<Point> ();
+      }
+      
+      virtual IConfigurationWidget *configureWidget() {
+        return NULL;
+      }
+      
+      virtual bool isAllow() const = 0;
+      
+      virtual GameConfig getGameConfig() {
+        return GameConfig();
+      }
+      
+      //slots
+      virtual void nextStep(const Point& point) {
+        Q_UNUSED(point);
+      }
+      
+      virtual void setDotTable(DotTable *table) {
+        Q_UNUSED(table);
+      }
+      
+      virtual void setStatusBar(QStatusBar *bar) {
+        Q_UNUSED(bar);
+      }
+      
+      virtual void setDifficulty(int diff) {
+        Q_UNUSED(diff);
+      }
+      
+      virtual bool canUndo() const {
+        return false;
+      }
+      
+    protected: //signals
+      virtual void createDotTable(const GameConfig& config) = 0;
+      
+      virtual void needDestroy() = 0;
+  };
 }
 
-Q_DECLARE_INTERFACE (KDots::IRival, "com.github.ignotus.kdots.IRival/1.0");
+Q_DECLARE_INTERFACE(KDots::IRival, "com.github.ignotus.kdots.IRival/1.0");
 
 #endif

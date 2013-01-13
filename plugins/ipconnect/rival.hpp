@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -31,46 +31,43 @@
 #include <QTcpServer>
 #include <interface/irival.hpp>
 
-namespace KDots
-{
-	class DotTable;
-	namespace ipconnect
-	{
-		class ConfigurationWidget;
-		class Rival : public KDots::IRival
-		{
-			Q_OBJECT
-
-			DotTable *m_table;
-			QTcpSocket *m_socket;
-			QTcpServer *m_server;
-			
-			Owner m_me;
-			
-			std::unique_ptr<ConfigurationWidget> m_configWidget;
-		public:
-			Rival (QObject *parent = 0);
-			virtual ~Rival ();
-			
-			GameConfig getGameConfig ();
-			
-			IConfigurationWidget* configureWidget ();
-
-			void setDotTable (DotTable *table);
-
-			bool isAllow () const;
-
-		public slots:
-			void nextStep (const Point& point);
-			
-		private slots:
-			void onNewConnectionHandle ();
-			void onReadyRead ();
-			void onDisconnected ();
-		signals:
-			void createDotTable (const GameConfig& config);
-			void needDestroy ();
-		};
-	}
+namespace KDots {
+  class DotTable;
+  namespace ipconnect {
+    class ConfigurationWidget;
+    class Rival : public KDots::IRival {
+        Q_OBJECT
+        
+        DotTable *m_table;
+        QTcpSocket *m_socket;
+        QTcpServer *m_server;
+        
+        Owner m_me;
+        
+        std::unique_ptr<ConfigurationWidget> m_configWidget;
+      public:
+        Rival(QObject *parent = 0);
+        virtual ~Rival();
+        
+        GameConfig getGameConfig();
+        
+        IConfigurationWidget *configureWidget();
+        
+        void setDotTable(DotTable *table);
+        
+        bool isAllow() const;
+        
+      public slots:
+        void nextStep(const Point& point);
+        
+      private slots:
+        void onNewConnectionHandle();
+        void onReadyRead();
+        void onDisconnected();
+      signals:
+        void createDotTable(const GameConfig& config);
+        void needDestroy();
+    };
+  }
 }
 #endif

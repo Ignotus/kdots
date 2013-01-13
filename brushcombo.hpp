@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -28,14 +28,12 @@
 #include <KComboBox>
 #include "constants.hpp"
 
-namespace KDots
-{
-	class BrushCombo : public KComboBox
-	{
-	public:
-		BrushCombo (QWidget* parent = 0);
-		void paintEvent (QPaintEvent *e);
-	};
+namespace KDots {
+  class BrushCombo : public KComboBox {
+    public:
+      BrushCombo(QWidget *parent = 0);
+      void paintEvent(QPaintEvent *e);
+  };
 }
 
 #endif

@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -26,45 +26,39 @@
 #ifndef KDOTS_PLUGINS_IPCONNECT_CONFIGURATIONWIDGET_HPP
 #define KDOTS_PLUGINS_IPCONNECT_CONFIGURATIONWIDGET_HPP
 #include <interface/iconfigurationwidget.hpp>
-namespace Ui
-{
-	class ConfigurationWidget;
+namespace Ui {
+  class ConfigurationWidget;
 }
 
 
-namespace KDots
-{
-	namespace ipconnect
-	{
-		struct ServerConfig
-		{
-			int m_port;
-			int user;
-		};
-		
-		struct ClientConfig
-		{
-			QString m_host;
-			int m_port;
-		};
-		
-		class ConfigurationWidget : public IConfigurationWidget
-		{
-			Q_OBJECT
-
-			Ui::ConfigurationWidget *m_ui;
-		public:
-			ConfigurationWidget (QWidget *parent = 0);
-			
-			bool clientConfig (ClientConfig& config);
-			bool serverConfig (ServerConfig& config);
-			
-		private slots:
-			void onTabChanged (int index);
-		signals:
-			void needCreateTable (bool);
-		};
-	}
+namespace KDots {
+  namespace ipconnect {
+    struct ServerConfig {
+      int m_port;
+      int user;
+    };
+    
+    struct ClientConfig {
+      QString m_host;
+      int m_port;
+    };
+    
+    class ConfigurationWidget : public IConfigurationWidget {
+        Q_OBJECT
+        
+        Ui::ConfigurationWidget *m_ui;
+      public:
+        ConfigurationWidget(QWidget *parent = 0);
+        
+        bool clientConfig(ClientConfig& config);
+        bool serverConfig(ServerConfig& config);
+        
+      private slots:
+        void onTabChanged(int index);
+      signals:
+        void needCreateTable(bool);
+    };
+  }
 }
 
 #endif

@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -29,38 +29,34 @@
 #include <KIcon>
 #include <QtPlugin>
 
-namespace KDots
-{
-	class IRival;
-	class IPlugin : public QObject
-	{
-	public:
-		IPlugin (QObject *parent = 0)
-			: QObject (parent)
-		{
-		}
-		
-		virtual ~IPlugin () {}
-
-		/** @brief Returns a plugin name.
-		*/
-		virtual QString name () const = 0;
-
-		/** @brief Returns a plugin description.
-		*/
-		virtual QString description () const = 0;
-
-		virtual IRival* createRival () = 0;
-
-		/** @brief Returns a plugin icon.
-		*/
-		virtual KIcon icon () const
-		{
-			return KIcon ();
-		}
-	};
-
+namespace KDots {
+  class IRival;
+  class IPlugin : public QObject {
+    public:
+      IPlugin(QObject *parent = 0)
+        : QObject(parent) {
+      }
+      
+      virtual ~IPlugin() {}
+      
+      /** @brief Returns a plugin name.
+      */
+      virtual QString name() const = 0;
+      
+      /** @brief Returns a plugin description.
+      */
+      virtual QString description() const = 0;
+      
+      virtual IRival *createRival() = 0;
+      
+      /** @brief Returns a plugin icon.
+      */
+      virtual KIcon icon() const {
+        return KIcon();
+      }
+  };
+  
 }
 
-Q_DECLARE_INTERFACE (KDots::IPlugin, "com.github.ignotus.kdots.IPlugin/1.0");
+Q_DECLARE_INTERFACE(KDots::IPlugin, "com.github.ignotus.kdots.IPlugin/1.0");
 #endif

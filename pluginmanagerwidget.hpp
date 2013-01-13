@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -30,25 +30,22 @@
 class QComboBox;
 class QModelIndex;
 
-namespace Ui
-{
-	class PluginManagerWidget;
+namespace Ui {
+  class PluginManagerWidget;
 }
 
-namespace KDots
-{
-	class PluginManagerWidget : public QWidget
-	{
-		Q_OBJECT
-		
-		Ui::PluginManagerWidget *m_ui;
-	public:
-		PluginManagerWidget (QWidget *parent = 0);
-		
-		QString pluginName () const;
-	private slots:
-		void onIndexChanged (const QModelIndex& current);
-	};
+namespace KDots {
+  class PluginManagerWidget : public QWidget {
+      Q_OBJECT
+      
+      Ui::PluginManagerWidget *m_ui;
+    public:
+      PluginManagerWidget(QWidget *parent = 0);
+      
+      QString pluginName() const;
+    private slots:
+      void onIndexChanged(const QModelIndex& current);
+  };
 }
 
 #endif

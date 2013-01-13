@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -29,94 +29,82 @@
 #include "constants.hpp"
 #include "graph.hpp"
 
-namespace KDots
-{
+namespace KDots {
+
+  PolygonFinder::PolygonFinder(const Graph& graph, Owner owner)
+    : m_graph(graph)
+    , m_current(owner)
+    , m_stepMap(graph.width(), std::vector<bool> (graph.height(), false)) {
+  }
   
-	PolygonFinder::PolygonFinder (const Graph& graph, Owner owner)
-		: m_graph (graph)
-		, m_current (owner)
-		, m_stepMap (graph.width (), std::vector<bool> (graph.height (), false))
-	{
-	}
-	
-	namespace
-	{
-		int doubleArea (const Polygon& polygon)
-		{
-			int res = 0;
-			Point prevPoint = polygon.back ();
-			for (Polygon::const_iterator itr = polygon.begin (), itrEnd = polygon.end ();
-					 itr != itrEnd; ++itr)
-			{
-				res += (itr->x () - prevPoint.x ()) * (itr->y () + prevPoint.y ()); 
-				prevPoint = *itr;
-			} 
-			
-			return std::abs (res);
-		}
-		
-		int maxSize (const PolyList& polygonList)
-		{
-			int max = 0;
-
-			for (const Polygon_ptr& ptr : polygonList)
-			{
-				const int currArea = doubleArea (*ptr);
-				ptr->setArea (currArea);
-				if (currArea > max)
-					max = currArea;
-			}
-
-			return max;
-		}
-	}
-
-	const PolyList& PolygonFinder::operator() (const Point& point)
-	{
-		m_first = point;
-		findPolygons (point);
-
-		const int max = maxSize (m_polygons);
-		m_polygons.erase (std::remove_if (m_polygons.begin (), m_polygons.end (),
-						[&max] (const Polygon_ptr& ptr)
-						{
-							return ptr->area () < max;
-						}),
-				m_polygons.end ());
-		
-		return m_polygons;
-	}
-
-	void PolygonFinder::findPolygons (const Point& point)
-	{
-		if (m_cache.size () > 3 && point == m_cache.front ())
-		{
-			m_polygons.push_back (Polygon_ptr (new Polygon (m_cache)));
-			return;
-		}
-
-		if (m_stepMap[point.x ()][point.y ()])
-			return;
-
-		m_cache.push_back (point);
-		m_stepMap[point.x ()][point.y ()] = true;
-
-		for (int i = 0; i < DIRECTION_COUNT; ++i)
-		{
-			const Point newPoint (point.x () + GRAPH_DX[i], point.y () + GRAPH_DY[i]);
-			
-			if (!m_graph.isValid (newPoint))
-				continue;
-
-			const GraphPoint& graphPoint = m_graph[newPoint];
-
-			if (newPoint != m_first
-					&& (graphPoint.isCaptured () || graphPoint.owner () != m_current))
-				continue;
-			
-			findPolygons (newPoint);
-		}
-
-		m_cache.pop_back ();
-	}
+  namespace {
+    int doubleArea(const Polygon& polygon) {
+      int res = 0;
+      Point prevPoint = polygon.back();
+      for (Polygon::const_iterator itr = polygon.begin(), itrEnd = polygon.end();
+           itr != itrEnd; ++itr) {
+        res += (itr->x() - prevPoint.x()) * (itr->y() + prevPoint.y());
+        prevPoint = *itr;
+      }
+      
+      return std::abs(res);
+    }
+    
+    int maxSize(const PolyList& polygonList) {
+      int max = 0;
+      
+for (const Polygon_ptr & ptr : polygonList) {
+        const int currArea = doubleArea(*ptr);
+        ptr->setArea(currArea);
+        if (currArea > max)
+          max = currArea;
+      }
+      
+      return max;
+    }
+  }
+  
+  const PolyList& PolygonFinder::operator()(const Point& point) {
+    m_first = point;
+    findPolygons(point);
+    
+    const int max = maxSize(m_polygons);
+    m_polygons.erase(std::remove_if(m_polygons.begin(), m_polygons.end(),
+    [&max](const Polygon_ptr & ptr) {
+      return ptr->area() < max;
+    }),
+                     m_polygons.end());
+                     
+    return m_polygons;
+  }
+  
+  void PolygonFinder::findPolygons(const Point& point) {
+    if (m_cache.size() > 3 && point == m_cache.front()) {
+      m_polygons.push_back(Polygon_ptr(new Polygon(m_cache)));
+      return;
+    }
+    
+    if (m_stepMap[point.x()][point.y()])
+      return;
+      
+    m_cache.push_back(point);
+    m_stepMap[point.x()][point.y()] = true;
+    
+    for (int i = 0; i < DIRECTION_COUNT; ++i) {
+      const Point newPoint(point.x() + GRAPH_DX[i], point.y() + GRAPH_DY[i]);
+      
+      if (!m_graph.isValid(newPoint))
+        continue;
+        
+      const GraphPoint& graphPoint = m_graph[newPoint];
+      
+      if (newPoint != m_first
+          && (graphPoint.isCaptured() || graphPoint.owner() != m_current))
+        continue;
+        
+      findPolygons(newPoint);
+    }
+    
+    m_cache.pop_back();
+  }
 }

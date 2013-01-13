@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -29,27 +29,24 @@
 
 class KIcon;
 
-namespace KDots
-{
-	class PluginWidgetDelegate : public QItemDelegate
-	{
-	public:
-		PluginWidgetDelegate (QObject *parent = 0);
-		
-		QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
-		{
-			Q_UNUSED (index);
-			return QSize (option.rect.width (), 50);
-		}
-		
-		void updateEditorGeometry (QWidget *editor, const QStyleOptionViewItem& option,
-				const QModelIndex& index) const;
-		
-		void paint (QPainter *painter, const QStyleOptionViewItem& option,
-				const QModelIndex& index) const;
-	private:
-		void drawIcon (QPainter *painter, const QStyleOptionViewItem& option, const KIcon& icon) const;
-	};
+namespace KDots {
+  class PluginWidgetDelegate : public QItemDelegate {
+    public:
+      PluginWidgetDelegate(QObject *parent = 0);
+      
+      QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const {
+        Q_UNUSED(index);
+        return QSize(option.rect.width(), 50);
+      }
+      
+      void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem& option,
+                                const QModelIndex& index) const;
+                                
+      void paint(QPainter *painter, const QStyleOptionViewItem& option,
+                 const QModelIndex& index) const;
+    private:
+      void drawIcon(QPainter *painter, const QStyleOptionViewItem& option, const KIcon& icon) const;
+  };
 }
 
-#endif 
+#endif

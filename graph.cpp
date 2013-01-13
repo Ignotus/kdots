@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -25,44 +25,36 @@
  */
 #include "graph.hpp"
 
-namespace KDots
-{
-	Graph::Graph (int width, int height)
-		: m_graph (width, std::vector<GraphPoint> (height))
-	{
-	}
-	
-	Graph::iterator Graph::begin ()
-	{
-		return iterator (this);
-	}
-		
-	Graph::const_iterator Graph::begin () const
-	{
-		return const_iterator (this);
-	}
-		
-	Graph::iterator Graph::end ()
-	{
-		iterator itr (this, 0, height ());
-		return itr;
-	}
-		
-	Graph::const_iterator Graph::end () const
-	{
-		const_iterator itr (this, 0, height ());
-		return itr;
-	}
-
-	void Graph::addEdge (const Point& first, const Point& second)
-	{
-		m_graph[first.x ()][first.y ()].edges ().addEdge (second);
-		m_graph[second.x ()][second.y ()].edges ().addEdge (first);
-	}
-
-	void Graph::removeEdge (const Point& first, const Point& second)
-	{
-		m_graph[first.x ()][first.y ()].edges ().removeEdge (second);
-		m_graph[second.x ()][second.y ()].edges ().removeEdge (first);
-	}
+namespace KDots {
+  Graph::Graph(int width, int height)
+    : m_graph(width, std::vector<GraphPoint> (height)) {
+  }
+  
+  Graph::iterator Graph::begin() {
+    return iterator(this);
+  }
+  
+  Graph::const_iterator Graph::begin() const {
+    return const_iterator(this);
+  }
+  
+  Graph::iterator Graph::end() {
+    iterator itr(this, 0, height());
+    return itr;
+  }
+  
+  Graph::const_iterator Graph::end() const {
+    const_iterator itr(this, 0, height());
+    return itr;
+  }
+  
+  void Graph::addEdge(const Point& first, const Point& second) {
+    m_graph[first.x()][first.y()].edges().addEdge(second);
+    m_graph[second.x()][second.y()].edges().addEdge(first);
+  }
+  
+  void Graph::removeEdge(const Point& first, const Point& second) {
+    m_graph[first.x()][first.y()].edges().removeEdge(second);
+    m_graph[second.x()][second.y()].edges().removeEdge(first);
+  }
 }

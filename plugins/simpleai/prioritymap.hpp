@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -32,105 +32,94 @@
 #include <point.hpp>
 
 struct stat;
-namespace KDots
-{
-	namespace simpleai
-	{
-		enum MapElement
-		{
-			EM, //Empty
-			NM, // Does not matter
-			FI, //First
-			SE, //Second
-			PF, // Possibly first
-			PS, // Possibly second
-			CU // Current
-		};
-		
-		typedef std::vector<MapElement> MapLine;
-		typedef std::vector<MapLine> MapType;
-		
-		struct KDOTS_EXPORT MapData
-		{
-			MapType m_map;
-			Point m_current;
-			float m_priority;
-
-			MapData ()
-			{
-			}
-			
-			MapData (const MapType& map, const Point& current, float priority)
-				: m_map (map)
-				, m_current (current)
-				, m_priority (priority)
-			{
-			}
-			
-			QString toString() const
-			{
-				QString res;
-				for (std::size_t j = 0; j < m_map.size (); ++j)
-				{
-					res += "\n{ ";
-					for (std::size_t i = 0; i < m_map.front ().size (); ++i)
-					{
-						switch (m_map[j][i])
-						{
-							case EM: //Empty
-								res += "EM ";
-								break;
-							case NM: // Does not matter
-								res += "NM ";
-								break;
-							case FI: //First
-								res += "FI ";
-								break;
-							case SE: //Second
-								res += "SE ";
-								break;
-							case PF: // Possibly first
-								res += "PF ";
-								break;
-							case PS: // Possibly second
-								res += "PS ";
-								break;
-							case CU: // Current
-								res += "CU ";
-								break;
-							default:
-								kDebug () << "WTF?";
-						}
-					}
-					res += "}";
-					
-				}
-				
-				res += "\n";
-				
-				return res;
-			}
-			
-			bool operator== (const MapData& other) const;
-			bool operator!= (const MapData& other) const;
-		};
-		
-		class KDOTS_EXPORT PriorityMap
-		{
-			std::list<MapData> m_priorityMap;
-			
-			PriorityMap ();
-			PriorityMap (const PriorityMap&);
-			PriorityMap& operator= (const PriorityMap&);
-		public:
-			static PriorityMap& instance ();
-			
-			static MapData inverse (const MapData& data);
-			static MapData rotate (const MapData& data);
-			
-			const std::list<MapData>& priorityMap ();
-		};
-	}
+namespace KDots {
+  namespace simpleai {
+    enum MapElement {
+      EM, //Empty
+      NM, // Does not matter
+      FI, //First
+      SE, //Second
+      PF, // Possibly first
+      PS, // Possibly second
+      CU // Current
+    };
+    
+    typedef std::vector<MapElement> MapLine;
+    typedef std::vector<MapLine> MapType;
+    
+    struct KDOTS_EXPORT MapData {
+      MapType m_map;
+      Point m_current;
+      float m_priority;
+      
+      MapData() {
+      }
+      
+      MapData(const MapType& map, const Point& current, float priority)
+        : m_map(map)
+        , m_current(current)
+        , m_priority(priority) {
+      }
+      
+      QString toString() const {
+        QString res;
+        for (std::size_t j = 0; j < m_map.size(); ++j) {
+          res += "\n{ ";
+          for (std::size_t i = 0; i < m_map.front().size(); ++i) {
+            switch (m_map[j][i]) {
+              case EM: //Empty
+                res += "EM ";
+                break;
+              case NM: // Does not matter
+                res += "NM ";
+                break;
+              case FI: //First
+                res += "FI ";
+                break;
+              case SE: //Second
+                res += "SE ";
+                break;
+              case PF: // Possibly first
+                res += "PF ";
+                break;
+              case PS: // Possibly second
+                res += "PS ";
+                break;
+              case CU: // Current
+                res += "CU ";
+                break;
+              default:
+                kDebug() << "WTF?";
+            }
+          }
+          res += "}";
+          
+        }
+        
+        res += "\n";
+        
+        return res;
+      }
+      
+      bool operator== (const MapData& other) const;
+      bool operator!= (const MapData& other) const;
+    };
+    
+    class KDOTS_EXPORT PriorityMap {
+        std::list<MapData> m_priorityMap;
+        
+        PriorityMap();
+        PriorityMap(const PriorityMap&);
+        PriorityMap& operator= (const PriorityMap&);
+      public:
+        static PriorityMap& instance();
+        
+        static MapData inverse(const MapData& data);
+        static MapData rotate(const MapData& data);
+        
+        const std::list<MapData>& priorityMap();
+    };
+  }
 }
 
 #endif

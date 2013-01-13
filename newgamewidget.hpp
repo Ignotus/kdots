@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -29,27 +29,24 @@
 #include "constants.hpp"
 #include "gameconfig.hpp"
 
-namespace Ui
-{
-	class NewGameWidget;
+namespace Ui {
+  class NewGameWidget;
 }
 
-namespace KDots
-{
-	class NewGameWidget : public QWidget
-	{
-	public:
-		NewGameWidget (QWidget *parent = 0);
-
-		int getHeight () const;
-		int getWidth () const;
-		GameMode getGameMode () const;
-		Owner getFirstMoving () const;
-
-		GameConfig getGameConfig () const;
-	private:
-		Ui::NewGameWidget *m_ui;
-	};
+namespace KDots {
+  class NewGameWidget : public QWidget {
+    public:
+      NewGameWidget(QWidget *parent = 0);
+      
+      int getHeight() const;
+      int getWidth() const;
+      GameMode getGameMode() const;
+      Owner getFirstMoving() const;
+      
+      GameConfig getGameConfig() const;
+    private:
+      Ui::NewGameWidget *m_ui;
+  };
 }
 
 

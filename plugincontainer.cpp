@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -32,52 +32,45 @@
 #include "constants.hpp"
 #include "config.hpp"
 
-namespace KDots
-{
-	PluginContainer& PluginContainer::instance ()
-	{
-		static PluginContainer obj;
-		return obj;
-	}
-	
-	bool PluginContainer::findPlugin (const QDir& pluginsDir)
-	{
-		bool foundFlag = false;
-		for (const QString& fileName : pluginsDir.entryList ({PLUGIN_SUFFIX + "*"}, QDir::Files))
-		{
-			QPluginLoader pluginLoader (pluginsDir.absoluteFilePath (fileName));
-			IPlugin *iplugin = qobject_cast<IPlugin *> (pluginLoader.instance ());
-
-			if (iplugin)
-			{
-				foundFlag = true;
-				kDebug () << "Loading the plugin:" << iplugin->name ();
-				m_pluginMap.insert (iplugin->name (), iplugin);
-			}
-			else
-			{
-				kDebug () << pluginLoader.errorString ();
-				kDebug () << "Cannot load the plugin " << fileName;
-			}
-		}
-		
-		return foundFlag;
-	}
-
-	void PluginContainer::loadPlugins ()
-	{
-		QDir currentDir (qApp->applicationDirPath ());
-		if (!currentDir.cd ("plugins") || !findPlugin (currentDir))
-		{
+namespace KDots {
+  PluginContainer& PluginContainer::instance() {
+    static PluginContainer obj;
+    return obj;
+  }
+  
+  bool PluginContainer::findPlugin(const QDir& pluginsDir) {
+    bool foundFlag = false;
+for (const QString & fileName : pluginsDir.entryList( {
+    PLUGIN_SUFFIX + "*"
+  }, QDir::Files)) {
+      QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
+      IPlugin *iplugin = qobject_cast<IPlugin *> (pluginLoader.instance());
+      
+      if (iplugin) {
+        foundFlag = true;
+        kDebug() << "Loading the plugin:" << iplugin->name();
+        m_pluginMap.insert(iplugin->name(), iplugin);
+      } else {
+        kDebug() << pluginLoader.errorString();
+        kDebug() << "Cannot load the plugin " << fileName;
+      }
+    }
+    
+    return foundFlag;
+  }
+  
+  void PluginContainer::loadPlugins() {
+    QDir currentDir(qApp->applicationDirPath());
+    if (!currentDir.cd("plugins") || !findPlugin(currentDir)) {
 #ifdef Q_OS_UNIX
-			QDir libdir (PLUGINS_DIR);
-			if (!libdir.exists () || !findPlugin (libdir))
-				kDebug () << "Plugins not found in " << libdir.absolutePath ();
+      QDir libdir(PLUGINS_DIR);
+      if (!libdir.exists() || !findPlugin(libdir))
+        kDebug() << "Plugins not found in " << libdir.absolutePath();
 #else
-			kDebug () << "Plugins not found";
-#endif	
-		}
-
-		
-	}
+      kDebug() << "Plugins not found";
+#endif
+    }
+    
+    
+  }
 }

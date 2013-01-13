@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -29,36 +29,31 @@
 
 class QDir;
 
-namespace KDots
-{
-	class IPlugin;
-	class PluginContainer
-	{
-		typedef QMap<QString, IPlugin*> PluginMap;
-		PluginMap m_pluginMap;
-	public:
-		PluginContainer ()
-		{
-			loadPlugins ();
-		}
-
-		static PluginContainer& instance ();
-
-		const PluginMap& plugins () const
-		{
-			return m_pluginMap;
-		}
-
-		IPlugin* plugin (const QString& name)
-		{
-			PluginMap::const_iterator itr = m_pluginMap.find (name);
-			return itr != m_pluginMap.end () ? *itr : NULL;
-		}
-
-	private:
-		void loadPlugins ();
-		bool findPlugin (const QDir& dir);
-	};
+namespace KDots {
+  class IPlugin;
+  class PluginContainer {
+      typedef QMap<QString, IPlugin *> PluginMap;
+      PluginMap m_pluginMap;
+    public:
+      PluginContainer() {
+        loadPlugins();
+      }
+      
+      static PluginContainer& instance();
+      
+      const PluginMap& plugins() const {
+        return m_pluginMap;
+      }
+      
+      IPlugin *plugin(const QString& name) {
+        PluginMap::const_iterator itr = m_pluginMap.find(name);
+        return itr != m_pluginMap.end() ? *itr : NULL;
+      }
+      
+    private:
+      void loadPlugins();
+      bool findPlugin(const QDir& dir);
+  };
 }
 
 #endif

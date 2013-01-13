@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -28,73 +28,62 @@
 #include <stdexcept>
 #include "point.hpp"
 
-namespace KDots
-{
-	template<int SIZE>
-	class KDOTS_EXPORT EdgeList
-	{
-		int m_count;
-		Point m_pointList[SIZE];
-	public:
-		EdgeList()
-			: m_count (0)
-		{}
-
-		bool addEdge (const Point& point)
-		{
-			if (m_count == SIZE || hasPoint (point))
-				return false;
-
-			m_pointList[m_count++] = point;
-			return true;
-		}
-
-		int size () const
-		{
-			return m_count;
-		}
-
-		bool hasPoint (const Point& point)
-		{
-			for (int i = 0;  i < m_count; ++i)
-			{
-				if (m_pointList[i] == point)
-					return true;
-			}
-
-			return false;
-		}
-
-		Point& operator[] (int index)
-		{
-			return const_cast<EdgeList<SIZE>&> (static_cast<const EdgeList<SIZE>&> (*this) [index]);
-		}
-
-		const Point& operator[] (int index) const
-		{
-			if (index < 0 || index >= m_count)
-				throw std::runtime_error ("beyond the limit of the array");
-			return m_pointList[index];
-		}
-
-		bool removeEdge (const Point& toPoint)
-		{
-			for (int i = 0; i < m_count; ++i)
-			{
-				if (m_pointList[i] == toPoint)
-				{
-					m_count--;
-
-					if (i != m_count)
-						m_pointList[i] = m_pointList[m_count];
-
-					return true;
-				}
-			}
-
-			return false;
-		}
-	};
+namespace KDots {
+  template<int SIZE>
+  class KDOTS_EXPORT EdgeList {
+      int m_count;
+      Point m_pointList[SIZE];
+    public:
+      EdgeList()
+        : m_count(0)
+      {}
+      
+      bool addEdge(const Point& point) {
+        if (m_count == SIZE || hasPoint(point))
+          return false;
+          
+        m_pointList[m_count++] = point;
+        return true;
+      }
+      
+      int size() const {
+        return m_count;
+      }
+      
+      bool hasPoint(const Point& point) {
+        for (int i = 0;  i < m_count; ++i) {
+          if (m_pointList[i] == point)
+            return true;
+        }
+        
+        return false;
+      }
+      
+      Point& operator[](int index) {
+        return const_cast<EdgeList<SIZE>&>(static_cast<const EdgeList<SIZE>&>(*this) [index]);
+      }
+      
+      const Point& operator[](int index) const {
+        if (index < 0 || index >= m_count)
+          throw std::runtime_error("beyond the limit of the array");
+        return m_pointList[index];
+      }
+      
+      bool removeEdge(const Point& toPoint) {
+        for (int i = 0; i < m_count; ++i) {
+          if (m_pointList[i] == toPoint) {
+            m_count--;
+            
+            if (i != m_count)
+              m_pointList[i] = m_pointList[m_count];
+              
+            return true;
+          }
+        }
+        
+        return false;
+      }
+  };
 }
 
 #endif

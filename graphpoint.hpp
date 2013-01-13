@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -28,55 +28,46 @@
 #include "edgelist.hpp"
 #include "constants.hpp"
 
-namespace KDots
-{
-	class KDOTS_EXPORT GraphPoint
-	{
-	public:
-		typedef EdgeList<DIRECTION_COUNT> GraphEdges;
-
-	private:
-		bool m_captured;
-		Owner m_owner;
-		GraphEdges m_edges;
-
-	public:
-		GraphPoint (Owner owner = NONE)
-			: m_captured (false)
-			, m_owner (owner)
-		{
-		}
-
-		bool isCaptured () const
-		{
-			return m_captured;
-		}
-
-		void capture ()
-		{
-			m_captured = true;
-		}
-
-		void setOwner (Owner owner)
-		{
-			m_owner = owner;
-		}
-
-		Owner owner () const
-		{
-			return m_owner;
-		}
-
-		GraphEdges& edges ()
-		{
-			return m_edges;
-		}
-
-		const GraphEdges& edges () const
-		{
-			return m_edges;
-		}
-	};
+namespace KDots {
+  class KDOTS_EXPORT GraphPoint {
+    public:
+      typedef EdgeList<DIRECTION_COUNT> GraphEdges;
+      
+    private:
+      bool m_captured;
+      Owner m_owner;
+      GraphEdges m_edges;
+      
+    public:
+      GraphPoint(Owner owner = NONE)
+        : m_captured(false)
+        , m_owner(owner) {
+      }
+      
+      bool isCaptured() const {
+        return m_captured;
+      }
+      
+      void capture() {
+        m_captured = true;
+      }
+      
+      void setOwner(Owner owner) {
+        m_owner = owner;
+      }
+      
+      Owner owner() const {
+        return m_owner;
+      }
+      
+      GraphEdges& edges() {
+        return m_edges;
+      }
+      
+      const GraphEdges& edges() const {
+        return m_edges;
+      }
+  };
 }
 
 #endif

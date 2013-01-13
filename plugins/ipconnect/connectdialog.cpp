@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -28,29 +28,26 @@
 #include <KDebug>
 #include "ui_connectdialog.h"
 
-namespace KDots
-{
-	namespace ipconnect
-	{
-		ConnectDialog::ConnectDialog (QTcpServer* server, int port, QWidget* parent)
-			: QDialog (parent)
-			, m_ui (new Ui::ConnectDialog)
-			, m_server (server)
-		{
-			m_ui->setupUi (this);
-			
-			connect (server,
-					SIGNAL (newConnection ()),
-					this,
-					SLOT (accept ()));
-			
-			if (m_server->listen (QHostAddress::Any, port))
-				kDebug () << Q_FUNC_INFO << "Listening the port" << port;
-			else
-				kWarning () << Q_FUNC_INFO << "Couldn't listen the port " << port;
-		}
-
-	}
+namespace KDots {
+  namespace ipconnect {
+    ConnectDialog::ConnectDialog(QTcpServer *server, int port, QWidget *parent)
+      : QDialog(parent)
+      , m_ui(new Ui::ConnectDialog)
+      , m_server(server) {
+      m_ui->setupUi(this);
+      
+      connect(server,
+              SIGNAL(newConnection()),
+              this,
+              SLOT(accept()));
+              
+      if (m_server->listen(QHostAddress::Any, port))
+        kDebug() << Q_FUNC_INFO << "Listening the port" << port;
+      else
+        kWarning() << Q_FUNC_INFO << "Couldn't listen the port " << port;
+    }
+    
+  }
 }
 
 #include "connectdialog.moc"

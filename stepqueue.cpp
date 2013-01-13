@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -25,40 +25,35 @@
  */
 #include "stepqueue.hpp"
 
-namespace KDots
-{
-	StepQueue::StepQueue (Owner firstPlayer)
-		: m_firstOwner (firstPlayer)
-		, m_first (0)
-		, m_second (0)
-		, m_emptyCaptured (0)
-		, m_owner (firstPlayer)
-		, m_captured (false)
-	{
-	}
-
-	void StepQueue::addPoint (const Point& point)
-	{
-		m_points.push_back (point);
-		if (getCurrentOwner () == FIRST)
-			m_firstPoints.push_back (point);
-		else
-			m_secondPoints.push_back (point);
-	}
-
-	void StepQueue::addCaptured ()
-	{
-		m_captured = true;
-
-		if (getCurrentOwner () == FIRST)
-			++m_first;
-		else
-			++m_second;
-	}
-
-	ExtraStepQueue::ExtraStepQueue (Owner firstPlayer)
-		: StepQueue (firstPlayer)
-	{
-	}
-
+namespace KDots {
+  StepQueue::StepQueue(Owner firstPlayer)
+    : m_firstOwner(firstPlayer)
+    , m_first(0)
+    , m_second(0)
+    , m_emptyCaptured(0)
+    , m_owner(firstPlayer)
+    , m_captured(false) {
+  }
+  
+  void StepQueue::addPoint(const Point& point) {
+    m_points.push_back(point);
+    if (getCurrentOwner() == FIRST)
+      m_firstPoints.push_back(point);
+    else
+      m_secondPoints.push_back(point);
+  }
+  
+  void StepQueue::addCaptured() {
+    m_captured = true;
+    
+    if (getCurrentOwner() == FIRST)
+      ++m_first;
+    else
+      ++m_second;
+  }
+  
+  ExtraStepQueue::ExtraStepQueue(Owner firstPlayer)
+    : StepQueue(firstPlayer) {
+  }
+  
 }

@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -30,26 +30,24 @@
 #include "polygon.hpp"
 #include "constants.hpp"
 
-namespace KDots
-{
-	struct Graph;
-
-	class KDOTS_EXPORT PolygonFinder
-	{
-		const Graph& m_graph;
-		Owner m_current;
-		PolygonContainer m_cache;
-		std::vector<std::vector<bool>> m_stepMap;
-		PolyList m_polygons;
-		Point m_first;
-	public:
-		PolygonFinder (const Graph& graph, Owner owner);
-		// O(n)
-		const PolyList& operator() (const Point& point);
-	private:
-		void findPolygons (const Point& point);
-	};
-
+namespace KDots {
+  struct Graph;
+  
+  class KDOTS_EXPORT PolygonFinder {
+      const Graph& m_graph;
+      Owner m_current;
+      PolygonContainer m_cache;
+      std::vector<std::vector<bool>> m_stepMap;
+      PolyList m_polygons;
+      Point m_first;
+    public:
+      PolygonFinder(const Graph& graph, Owner owner);
+      // O(n)
+      const PolyList& operator()(const Point& point);
+    private:
+      void findPolygons(const Point& point);
+  };
+  
 }
 
 #endif

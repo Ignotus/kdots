@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -41,214 +41,201 @@
 #include "plugincontainer.hpp"
 #include "kdots.h"
 
-namespace KDots
-{
-	MainWindow::MainWindow (QWidget *parent)
-		: KXmlGuiWindow (parent)
-		, m_ui (new Ui::MainWindow)
-		, m_destroyTable (false)
-		, m_table (NULL)
-	{
-		m_ui->setupUi (this);
-
+namespace KDots {
+  MainWindow::MainWindow(QWidget *parent)
+    : KXmlGuiWindow(parent)
+    , m_ui(new Ui::MainWindow)
+    , m_destroyTable(false)
+    , m_table(NULL) {
+    m_ui->setupUi(this);
+    
 #ifdef NEW_LIBKDEGAMES
-		Kg::difficulty ()->addStandardLevel (KgDifficultyLevel::Easy);
-		Kg::difficulty ()->addStandardLevel (KgDifficultyLevel::Medium);
-		Kg::difficulty ()->addStandardLevel (KgDifficultyLevel::Hard);
-		
-		connect (Kg::difficulty (),
-				SIGNAL (currentLevelChanged (const KgDifficultyLevel*)),
-				this,
-				SLOT (difficultyHandler (const KgDifficultyLevel*)));
-		
-		KgDifficultyGUI::init (this);
-		
-		Kg::difficulty ()->setEditable (false);
+    Kg::difficulty()->addStandardLevel(KgDifficultyLevel::Easy);
+    Kg::difficulty()->addStandardLevel(KgDifficultyLevel::Medium);
+    Kg::difficulty()->addStandardLevel(KgDifficultyLevel::Hard);
+    
+    connect(Kg::difficulty(),
+            SIGNAL(currentLevelChanged(const KgDifficultyLevel *)),
+            this,
+            SLOT(difficultyHandler(const KgDifficultyLevel *)));
+            
+    KgDifficultyGUI::init(this);
+    
+    Kg::difficulty()->setEditable(false);
 #else
-		KGameDifficulty::init (this, this, SLOT (difficultyHandler (KGameDifficulty::standardLevel)));
-		KGameDifficulty::addStandardLevel (KGameDifficulty::Easy);
-		KGameDifficulty::addStandardLevel (KGameDifficulty::Medium);
-		KGameDifficulty::addStandardLevel (KGameDifficulty::Hard);
-
-		KGameDifficulty::setEnabled (false);
-#endif	
-		statusBar ()->show ();
-		setCentralWidget (new QWidget (this));
-		initMenu ();
-		setupGUI (Default, "kdotsui.rc");
-	}
-	
-	MainWindow::~MainWindow ()
-	{
-		m_rival.reset ();
-	}
-	
-#ifdef NEW_LIBKDEGAMES
-	void MainWindow::difficultyHandler (const KgDifficultyLevel *level)
-#else
-	void MainWindow::difficultyHandler (KGameDifficulty::standardLevel level)
+    KGameDifficulty::init(this, this, SLOT(difficultyHandler(KGameDifficulty::standardLevel)));
+    KGameDifficulty::addStandardLevel(KGameDifficulty::Easy);
+    KGameDifficulty::addStandardLevel(KGameDifficulty::Medium);
+    KGameDifficulty::addStandardLevel(KGameDifficulty::Hard);
+    
+    KGameDifficulty::setEnabled(false);
 #endif
-	{
-		int diff;
-
+    statusBar()->show();
+    setCentralWidget(new QWidget(this));
+    initMenu();
+    setupGUI(Default, "kdotsui.rc");
+  }
+  
+  MainWindow::~MainWindow() {
+    m_rival.reset();
+  }
+  
 #ifdef NEW_LIBKDEGAMES
-		switch (level->standardLevel ())
-		{
-		case KgDifficultyLevel::Easy:
-			diff = 1;
-		case KgDifficultyLevel::Medium:
-			diff = 2;
-		default:
-			diff = 3;
-		}
+  void MainWindow::difficultyHandler(const KgDifficultyLevel *level)
 #else
-		switch (level)
-		{
-		case KGameDifficulty::Easy:
-			diff = 1;
-		case KGameDifficulty::Medium:
-			diff = 2;
-		default:
-			diff = 3;
-		}
+  void MainWindow::difficultyHandler(KGameDifficulty::standardLevel level)
 #endif
-		
-		if (m_rival)
-			m_rival->setDifficulty (diff);
-	}
-	
-	void MainWindow::initMenu ()
-	{
-		KStandardAction::preferences (this, SLOT (onPreferences ()), actionCollection ());
-		
-		KAction *newAction = new KAction (KIcon ("file_new"), i18n ("&New game"), this);
-		newAction->setShortcut (Qt::CTRL + Qt::Key_N);
-		
-		connect (newAction,
-				SIGNAL (triggered (bool)),
-				this,
-				SLOT (onNewGame ()));
-		
-		actionCollection ()->addAction ("NewGame", newAction);
-		
-		KAction *endAction = actionCollection ()->addAction ("EndGame", this, SLOT (endGame ()));
-		endAction->setIcon (KIcon ("window-close"));
-		endAction->setText (i18n ("&End game"));
-		endAction->setShortcut (Qt::CTRL + Qt::Key_E);
-		endAction->setEnabled (false);
-		
-		KAction *quitAction = actionCollection ()->addAction ("Quit", this, SLOT (close ()));
-		quitAction->setIcon (KIcon ("exit"));
-		quitAction->setText (i18n ("&Quit"));
-		quitAction->setShortcut (Qt::CTRL + Qt::Key_Q);
-		
-		KAction *undoAction = actionCollection ()->addAction ("UndoGame", this, SLOT (undo ()));
-		undoAction->setIcon (KIcon ("undo"));
-		undoAction->setText (i18n ("&Undo"));
-		undoAction->setEnabled (false);
-		undoAction->setShortcut (Qt::CTRL + Qt::Key_Z);
-		
-		//actionCollection ()->addAction ("UndoGame", undoAction);
-		
-		connect (this,
-				SIGNAL (endActionEnable (bool)),
-				endAction,
-				SLOT (setEnabled (bool)));
-		
-		connect (this,
-				SIGNAL (undoActionEnable (bool)),
-				undoAction,
-				SLOT (setEnabled (bool)));
-	}
-	
-	void MainWindow::endGame ()
-	{
-		m_table->deleteLater ();
-		m_table = NULL;
-		m_rival.reset ();
-		
-		emit endActionEnable (false);
-		
-		statusBar ()->clearMessage ();
-	}
-	
-	void MainWindow::undo ()
-	{
-		if (m_table && m_rival && m_rival->canUndo ())
-			m_table->undo ();
-	}
-	
-	void MainWindow::onPreferences ()
-	{
-		KConfigDialog dialog (this, i18n ("Preferences"), Settings::self ());
-		
-		QWidget *board = new QWidget;
-		
-		Ui::BoardConfigWidget *boardUi = new Ui::BoardConfigWidget;
-		boardUi->setupUi (board);
-			
-		dialog.addPage (board, i18n ("Board"), QLatin1String ("games-config-options"));
-		
-		if (m_table)
-		{
-			connect (&dialog,
-					SIGNAL (accepted ()),
-					m_table,
-					SLOT (update ()));
-		}
-		
-		dialog.exec ();
-	}
-
-	void MainWindow::onNewGame ()
-	{
-		NewGameDialog dialog;
-		if (dialog.exec () != QDialog::Accepted)
-			return;
-		
-		m_rival = dialog.rival ();
-		m_rival->setStatusBar (statusBar ());
+  {
+    int diff;
+    
 #ifdef NEW_LIBKDEGAMES
-		difficultyHandler (Kg::difficulty ()->currentLevel ());
+    switch (level->standardLevel()) {
+      case KgDifficultyLevel::Easy:
+        diff = 1;
+      case KgDifficultyLevel::Medium:
+        diff = 2;
+      default:
+        diff = 3;
+    }
 #else
-		difficultyHandler (KGameDifficulty::level ());	
+    switch (level) {
+      case KGameDifficulty::Easy:
+        diff = 1;
+      case KGameDifficulty::Medium:
+        diff = 2;
+      default:
+        diff = 3;
+    }
 #endif
-		emit undoActionEnable (m_rival->canUndo ());
-		
-		connect (m_rival.get (),
-				SIGNAL (needDestroy ()),
-				this,
-				SLOT (destroyGame ()));
-
-		const GameConfig& config = dialog.gameConfig ();
-		
-		if (!config.isInititialized ())
-			return;
-
-		m_table = new TableWidget (config, m_rival, this);
-		
-		if (m_destroyTable)
-		{
-			endGame ();
-			return;
-		}
-
-		connect (m_table,
-				SIGNAL (updateStatusBar (const QString&)),
-				statusBar (),
-				SLOT (showMessage (const QString&)));
-
-		setCentralWidget (m_table);
-		m_table->show ();
-		
-		emit endActionEnable (true);
-	}
-	
-	void MainWindow::destroyGame ()
-	{
-		m_destroyTable = true;
-		emit undoActionEnable (false);
-	}
+    
+    if (m_rival)
+      m_rival->setDifficulty(diff);
+  }
+  
+  void MainWindow::initMenu() {
+    KStandardAction::preferences(this, SLOT(onPreferences()), actionCollection());
+    
+    KAction *newAction = new KAction(KIcon("file_new"), i18n("&New game"), this);
+    newAction->setShortcut(Qt::CTRL + Qt::Key_N);
+    
+    connect(newAction,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(onNewGame()));
+            
+    actionCollection()->addAction("NewGame", newAction);
+    
+    KAction *endAction = actionCollection()->addAction("EndGame", this, SLOT(endGame()));
+    endAction->setIcon(KIcon("window-close"));
+    endAction->setText(i18n("&End game"));
+    endAction->setShortcut(Qt::CTRL + Qt::Key_E);
+    endAction->setEnabled(false);
+    
+    KAction *quitAction = actionCollection()->addAction("Quit", this, SLOT(close()));
+    quitAction->setIcon(KIcon("exit"));
+    quitAction->setText(i18n("&Quit"));
+    quitAction->setShortcut(Qt::CTRL + Qt::Key_Q);
+    
+    KAction *undoAction = actionCollection()->addAction("UndoGame", this, SLOT(undo()));
+    undoAction->setIcon(KIcon("undo"));
+    undoAction->setText(i18n("&Undo"));
+    undoAction->setEnabled(false);
+    undoAction->setShortcut(Qt::CTRL + Qt::Key_Z);
+    
+    //actionCollection ()->addAction ("UndoGame", undoAction);
+    
+    connect(this,
+            SIGNAL(endActionEnable(bool)),
+            endAction,
+            SLOT(setEnabled(bool)));
+            
+    connect(this,
+            SIGNAL(undoActionEnable(bool)),
+            undoAction,
+            SLOT(setEnabled(bool)));
+  }
+  
+  void MainWindow::endGame() {
+    m_table->deleteLater();
+    m_table = NULL;
+    m_rival.reset();
+    
+    emit endActionEnable(false);
+    
+    statusBar()->clearMessage();
+  }
+  
+  void MainWindow::undo() {
+    if (m_table && m_rival && m_rival->canUndo())
+      m_table->undo();
+  }
+  
+  void MainWindow::onPreferences() {
+    KConfigDialog dialog(this, i18n("Preferences"), Settings::self());
+    
+    QWidget *board = new QWidget;
+    
+    Ui::BoardConfigWidget *boardUi = new Ui::BoardConfigWidget;
+    boardUi->setupUi(board);
+    
+    dialog.addPage(board, i18n("Board"), QLatin1String("games-config-options"));
+    
+    if (m_table) {
+      connect(&dialog,
+              SIGNAL(accepted()),
+              m_table,
+              SLOT(update()));
+    }
+    
+    dialog.exec();
+  }
+  
+  void MainWindow::onNewGame() {
+    NewGameDialog dialog;
+    if (dialog.exec() != QDialog::Accepted)
+      return;
+      
+    m_rival = dialog.rival();
+    m_rival->setStatusBar(statusBar());
+#ifdef NEW_LIBKDEGAMES
+    difficultyHandler(Kg::difficulty()->currentLevel());
+#else
+    difficultyHandler(KGameDifficulty::level());
+#endif
+    emit undoActionEnable(m_rival->canUndo());
+    
+    connect(m_rival.get(),
+            SIGNAL(needDestroy()),
+            this,
+            SLOT(destroyGame()));
+            
+    const GameConfig& config = dialog.gameConfig();
+    
+    if (!config.isInititialized())
+      return;
+      
+    m_table = new TableWidget(config, m_rival, this);
+    
+    if (m_destroyTable) {
+      endGame();
+      return;
+    }
+    
+    connect(m_table,
+            SIGNAL(updateStatusBar(const QString&)),
+            statusBar(),
+            SLOT(showMessage(const QString&)));
+            
+    setCentralWidget(m_table);
+    m_table->show();
+    
+    emit endActionEnable(true);
+  }
+  
+  void MainWindow::destroyGame() {
+    m_destroyTable = true;
+    emit undoActionEnable(false);
+  }
 }
 
 #include "mainwindow.moc"

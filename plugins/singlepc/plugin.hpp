@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -33,77 +33,64 @@
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 
-namespace KDots
-{
-	namespace singlepc
-	{
-		class KDE_EXPORT Rival : public KDots::IRival
-		{
-			Q_OBJECT
-			Q_INTERFACES (KDots::IRival)
-		public:
-			Rival (QObject *parent = 0)
-				: IRival (parent)
-			{
+namespace KDots {
+  namespace singlepc {
+    class KDE_EXPORT Rival : public KDots::IRival {
+        Q_OBJECT
+        Q_INTERFACES(KDots::IRival)
+      public:
+        Rival(QObject *parent = 0)
+          : IRival(parent) {
 #ifdef NEW_LIBKDEGAMES
-				Kg::difficulty ()->setEditable (false);
+          Kg::difficulty()->setEditable(false);
 #else
-				KGameDifficulty::setEnabled (false);
+          KGameDifficulty::setEnabled(false);
 #endif
-			}
-
-			bool isAllow () const
-			{
-				return true;
-			}
-		
-			bool canUndo () const
-			{
-				return true;
-			}
-
-		public slots:
-			void nextStep (const Point& point)
-			{
-				Q_UNUSED (point);
-			}
-		signals:
-			void createDotTable (const GameConfig& config);
-			void needDestroy ();
-		};
-
-		class KDE_EXPORT Plugin : public KDots::IPlugin
-		{
-			Q_OBJECT
-			Q_INTERFACES (KDots::IPlugin)
-		public:
-			Plugin (QObject *parent = 0)
-				: IPlugin (parent)
-			{
-			}
-
-			IRival* createRival ()
-			{
-				return new Rival;
-			}
-
-			QString name () const
-			{
-				return "singlepc";
-			}
-
-			QString description () const
-			{
-				return "Playing in the single PC";
-			}
-			
-			KIcon icon () const
-			{
-				return KIcon ();
-			}
-		};
-
-	}
+        }
+        
+        bool isAllow() const {
+          return true;
+        }
+        
+        bool canUndo() const {
+          return true;
+        }
+        
+      public slots:
+        void nextStep(const Point& point) {
+          Q_UNUSED(point);
+        }
+      signals:
+        void createDotTable(const GameConfig& config);
+        void needDestroy();
+    };
+    
+    class KDE_EXPORT Plugin : public KDots::IPlugin {
+        Q_OBJECT
+        Q_INTERFACES(KDots::IPlugin)
+      public:
+        Plugin(QObject *parent = 0)
+          : IPlugin(parent) {
+        }
+        
+        IRival *createRival() {
+          return new Rival;
+        }
+        
+        QString name() const {
+          return "singlepc";
+        }
+        
+        QString description() const {
+          return "Playing in the single PC";
+        }
+        
+        KIcon icon() const {
+          return KIcon();
+        }
+    };
+    
+  }
 }
 
 #endif

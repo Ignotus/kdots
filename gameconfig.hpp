@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -29,29 +29,26 @@
 #include "constants.hpp"
 #include "point.hpp"
 
-namespace KDots
-{
-	struct KDOTS_EXPORT GameConfig
-	{
-		int m_width, m_height;
-		GameMode m_mode;
-		Owner m_firstOwner;
-		
-		GameConfig ()
-			: m_width (-1)
-		{}
-		
-		bool isInititialized () const
-		{
-			return m_width != -1;
-		}
-		
-		static void registerMeta ();
-	};
-
+namespace KDots {
+  struct KDOTS_EXPORT GameConfig {
+    int m_width, m_height;
+    GameMode m_mode;
+    Owner m_firstOwner;
+    
+    GameConfig()
+      : m_width(-1)
+    {}
+    
+    bool isInititialized() const {
+      return m_width != -1;
+    }
+    
+    static void registerMeta();
+  };
+  
 }
 
-Q_DECLARE_METATYPE (KDots::GameConfig);
+Q_DECLARE_METATYPE(KDots::GameConfig);
 
 QDataStream& operator<< (QDataStream& out, const KDots::GameConfig& obj);
 

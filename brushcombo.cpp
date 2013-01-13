@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -28,38 +28,35 @@
 #include <QStylePainter>
 #include "brushcombodelegate.hpp"
 
-namespace KDots
-{
-	BrushCombo::BrushCombo (QWidget* parent)
-		: KComboBox (parent)
-	{
-		for (int i = 0; i < 15; ++i)
-			addItem (QString::number (i));
-		
-		setItemDelegate (new BrushComboDelegate (this));
-	}
-	
-	void BrushCombo::paintEvent (QPaintEvent*)
-	{
-		QStylePainter painter (this);
-		QStyleOptionComboBox opt;
-		initStyleOption (&opt);
-		painter.drawComplexControl (QStyle::CC_ComboBox, opt);
-
-		const QRect& rect = painter.style ()->subControlRect (QStyle::CC_ComboBox,
-				&opt, QStyle::SC_ComboBoxEditField, this);
-		
-		QPixmap pixmap (rect.size () - QSize (4, 4));
-		QPainter pixPainter (&pixmap);
-		pixPainter.setRenderHint (QStylePainter::Antialiasing);
-		pixPainter.fillRect (pixmap.rect (), Qt::white);
-		pixPainter.fillRect (pixmap.rect (),
-				BrushComboDelegate::brushes ()[currentIndex ()]);
-		pixPainter.drawRect (pixmap.rect ());
-		
-		QPainter genPainter (this);
-		genPainter.drawPixmap (rect.x () + 2, rect.y () + 2, pixmap);
-	}
+namespace KDots {
+  BrushCombo::BrushCombo(QWidget *parent)
+    : KComboBox(parent) {
+    for (int i = 0; i < 15; ++i)
+      addItem(QString::number(i));
+      
+    setItemDelegate(new BrushComboDelegate(this));
+  }
+  
+  void BrushCombo::paintEvent(QPaintEvent *) {
+    QStylePainter painter(this);
+    QStyleOptionComboBox opt;
+    initStyleOption(&opt);
+    painter.drawComplexControl(QStyle::CC_ComboBox, opt);
+    
+    const QRect& rect = painter.style()->subControlRect(QStyle::CC_ComboBox,
+                        &opt, QStyle::SC_ComboBoxEditField, this);
+                        
+    QPixmap pixmap(rect.size() - QSize(4, 4));
+    QPainter pixPainter(&pixmap);
+    pixPainter.setRenderHint(QStylePainter::Antialiasing);
+    pixPainter.fillRect(pixmap.rect(), Qt::white);
+    pixPainter.fillRect(pixmap.rect(),
+                        BrushComboDelegate::brushes()[currentIndex()]);
+    pixPainter.drawRect(pixmap.rect());
+    
+    QPainter genPainter(this);
+    genPainter.drawPixmap(rect.x() + 2, rect.y() + 2, pixmap);
+  }
 }
 
 #include "brushcombo.moc"

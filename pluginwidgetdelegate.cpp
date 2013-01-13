@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -30,51 +30,43 @@
 #include "plugincontainer.hpp"
 #include "interface/iplugin.hpp"
 
-namespace KDots
-{
-	PluginWidgetDelegate::PluginWidgetDelegate (QObject *parent)
-		: QItemDelegate (parent)
-	{
-		
-	}
-	
-	void PluginWidgetDelegate::updateEditorGeometry (QWidget *editor,
-			const QStyleOptionViewItem& option, const QModelIndex&) const
-	{
-		editor->setGeometry (option.rect);
-	}
-	
-	void PluginWidgetDelegate::paint (QPainter *painter, const QStyleOptionViewItem& option,
-			const QModelIndex& index) const
-	{
-		QStyleOptionViewItemV4 myOption = option;
-		KApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
-		const QString& pluginName = index.data ().toString ();
-		
-		const QRect textRect (option.rect.x (), option.rect.y () + 30,
-				option.rect.width (), option.rect.height () - 30);
-		
-		painter->drawText (textRect, Qt::AlignCenter, pluginName);
-		IPlugin *plug = PluginContainer::instance ().plugin (pluginName);
-		if (plug)
-		{
-			const KIcon& plugIcon = plug->icon ();
-			if (plugIcon.isNull ())
-			{
-				const KIcon newIcon ("applications-boardgames");
-				drawIcon (painter, option, newIcon);
-			}
-			else
-				drawIcon (painter, option, plugIcon);
-		}
-	}
-	
-	void PluginWidgetDelegate::drawIcon (QPainter *painter,
-			const QStyleOptionViewItem& option, const KIcon& icon) const
-	{
-		const int delta = (option.rect.width () - 32) / 2;
-		const QRect iconRect (option.rect.x () + delta, option.rect.y () + 2, 28, 28);
-		const QPixmap& pixMap = icon.pixmap (iconRect.size ());
-		painter->drawPixmap (iconRect, pixMap, pixMap.rect ());
-	}
+namespace KDots {
+  PluginWidgetDelegate::PluginWidgetDelegate(QObject *parent)
+    : QItemDelegate(parent) {
+    
+  }
+  
+  void PluginWidgetDelegate::updateEditorGeometry(QWidget *editor,
+      const QStyleOptionViewItem& option, const QModelIndex&) const {
+    editor->setGeometry(option.rect);
+  }
+  
+  void PluginWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewItem& option,
+                                   const QModelIndex& index) const {
+    QStyleOptionViewItemV4 myOption = option;
+    KApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
+    const QString& pluginName = index.data().toString();
+    
+    const QRect textRect(option.rect.x(), option.rect.y() + 30,
+                         option.rect.width(), option.rect.height() - 30);
+                         
+    painter->drawText(textRect, Qt::AlignCenter, pluginName);
+    IPlugin *plug = PluginContainer::instance().plugin(pluginName);
+    if (plug) {
+      const KIcon& plugIcon = plug->icon();
+      if (plugIcon.isNull()) {
+        const KIcon newIcon("applications-boardgames");
+        drawIcon(painter, option, newIcon);
+      } else
+        drawIcon(painter, option, plugIcon);
+    }
+  }
+  
+  void PluginWidgetDelegate::drawIcon(QPainter *painter,
+                                      const QStyleOptionViewItem& option, const KIcon& icon) const {
+    const int delta = (option.rect.width() - 32) / 2;
+    const QRect iconRect(option.rect.x() + delta, option.rect.y() + 2, 28, 28);
+    const QPixmap& pixMap = icon.pixmap(iconRect.size());
+    painter->drawPixmap(iconRect, pixMap, pixMap.rect());
+  }
 }

@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -27,22 +27,19 @@
 #define KDOTS_ICONFIGURATIONWIDGET_HPP
 #include <QWidget>
 
-namespace KDots
-{
-	struct GameConfig;
-	class IConfigurationWidget : public QWidget
-	{
-	public:
-		IConfigurationWidget (QWidget *parent = 0)
-			: QWidget (parent)
-		{
-		}
-	
-	protected:
-		virtual void needCreateTable (bool) = 0;
-	};
+namespace KDots {
+  struct GameConfig;
+  class IConfigurationWidget : public QWidget {
+    public:
+      IConfigurationWidget(QWidget *parent = 0)
+        : QWidget(parent) {
+      }
+      
+    protected:
+      virtual void needCreateTable(bool) = 0;
+  };
 }
 
-Q_DECLARE_INTERFACE (KDots::IConfigurationWidget, "com.github.ignotus.kdots.IConfigurationWidget/1.0");
+Q_DECLARE_INTERFACE(KDots::IConfigurationWidget, "com.github.ignotus.kdots.IConfigurationWidget/1.0");
 
 #endif

@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -27,27 +27,23 @@
 #define KDOTS_PLUGINS_IPCONNECT_CONNECTDIALOG_HPP
 #include <QDialog>
 
-namespace Ui
-{
-	class ConnectDialog;
+namespace Ui {
+  class ConnectDialog;
 }
 
 class QTcpServer;
 
-namespace KDots
-{
-	namespace ipconnect
-	{
-		class ConnectDialog : public QDialog
-		{
-			Q_OBJECT
-			
-			Ui::ConnectDialog *m_ui;
-			QTcpServer *m_server;
-		public:
-			ConnectDialog (QTcpServer *server, int port, QWidget *parent = 0);
-		};
-	}
+namespace KDots {
+  namespace ipconnect {
+    class ConnectDialog : public QDialog {
+        Q_OBJECT
+        
+        Ui::ConnectDialog *m_ui;
+        QTcpServer *m_server;
+      public:
+        ConnectDialog(QTcpServer *server, int port, QWidget *parent = 0);
+    };
+  }
 }
 
 #endif

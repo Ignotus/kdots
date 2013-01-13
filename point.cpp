@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -25,17 +25,14 @@
  */
 #include "point.hpp"
 
-namespace KDots
-{
-	QDataStream& operator<< (QDataStream& out, const KDots::Point& obj)
-	{
-		out << (quint32) obj.m_x << (quint32) obj.m_y;
-		return out;
-	}
-
-	QDataStream& operator>> (QDataStream& in, KDots::Point& obj)
-	{
-		in >> (quint32&) obj.m_x >> (quint32&) obj.m_y;
-		return in;
-	}
+namespace KDots {
+  QDataStream& operator<< (QDataStream& out, const KDots::Point& obj) {
+    out << (quint32) obj.m_x << (quint32) obj.m_y;
+    return out;
+  }
+  
+  QDataStream& operator>> (QDataStream& in, KDots::Point& obj) {
+    in >> (quint32&) obj.m_x >> (quint32&) obj.m_y;
+    return in;
+  }
 }

@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -30,55 +30,48 @@
 #include "constants.hpp"
 #include "plugincontainer.hpp"
 
-namespace KDots
-{
-	NewGameWidget::NewGameWidget (QWidget *parent)
-		: QWidget (parent)
-		, m_ui (new Ui::NewGameWidget)
-	{
-		m_ui->setupUi (this);
-		
-		m_ui->HeightSpinBox->setValue (Settings::lastHeight ());
-		m_ui->WidthSpinBox->setValue (Settings::lastWidth ());
-		m_ui->GameMode->setCurrentIndex (Settings::lastGameMode ());
-		m_ui->FirstMoving->setCurrentIndex (Settings::lastFirstMoving ());
-	}
-
-	int NewGameWidget::getHeight () const
-	{
-		Settings::setLastHeight (m_ui->HeightSpinBox->value ());
-		return Settings::lastHeight ();
-	}
-
-	int NewGameWidget::getWidth () const
-	{
-		Settings::setLastWidth (m_ui->WidthSpinBox->value ());
-		return Settings::lastWidth ();
-	}
-
-	GameMode NewGameWidget::getGameMode () const
-	{
-		Settings::setLastGameMode (m_ui->GameMode->currentIndex ());
-		return Settings::lastGameMode () ? GameMode::EXTRA_TURN_MODE : GameMode::DEFAULT_MODE;
-	}
-
-	Owner NewGameWidget::getFirstMoving () const
-	{
-		Settings::setLastFirstMoving (m_ui->FirstMoving->currentIndex ());
-		return Settings::lastFirstMoving () ? Owner::SECOND : Owner::FIRST;
-	}
-
-	GameConfig NewGameWidget::getGameConfig () const
-	{
-		GameConfig config;
-		config.m_firstOwner = getFirstMoving ();
-		config.m_height = getHeight ();
-		config.m_width = getWidth ();
-		config.m_mode = getGameMode ();
-		
-		return config;
-	}
-	
+namespace KDots {
+  NewGameWidget::NewGameWidget(QWidget *parent)
+    : QWidget(parent)
+    , m_ui(new Ui::NewGameWidget) {
+    m_ui->setupUi(this);
+    
+    m_ui->HeightSpinBox->setValue(Settings::lastHeight());
+    m_ui->WidthSpinBox->setValue(Settings::lastWidth());
+    m_ui->GameMode->setCurrentIndex(Settings::lastGameMode());
+    m_ui->FirstMoving->setCurrentIndex(Settings::lastFirstMoving());
+  }
+  
+  int NewGameWidget::getHeight() const {
+    Settings::setLastHeight(m_ui->HeightSpinBox->value());
+    return Settings::lastHeight();
+  }
+  
+  int NewGameWidget::getWidth() const {
+    Settings::setLastWidth(m_ui->WidthSpinBox->value());
+    return Settings::lastWidth();
+  }
+  
+  GameMode NewGameWidget::getGameMode() const {
+    Settings::setLastGameMode(m_ui->GameMode->currentIndex());
+    return Settings::lastGameMode() ? GameMode::EXTRA_TURN_MODE : GameMode::DEFAULT_MODE;
+  }
+  
+  Owner NewGameWidget::getFirstMoving() const {
+    Settings::setLastFirstMoving(m_ui->FirstMoving->currentIndex());
+    return Settings::lastFirstMoving() ? Owner::SECOND : Owner::FIRST;
+  }
+  
+  GameConfig NewGameWidget::getGameConfig() const {
+    GameConfig config;
+    config.m_firstOwner = getFirstMoving();
+    config.m_height = getHeight();
+    config.m_width = getWidth();
+    config.m_mode = getGameMode();
+    
+    return config;
+  }
+  
 }
 
 #include "newgamewidget.moc"

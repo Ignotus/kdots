@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -30,10 +30,10 @@
 #include "point.hpp"
 #ifndef KDOTS_EXPORT
 # if defined(MAKE_KDOTS_LIB)
-   // We are building this library
+// We are building this library
 #  define KDOTS_EXPORT KDE_EXPORT
 # else
-   // We are using this library
+// We are using this library
 #  define KDOTS_EXPORT KDE_IMPORT
 # endif
 #endif
@@ -42,27 +42,24 @@
 #  define KDOTS_EXPORT_DEPRECATED KDE_DEPRECATED KDOTS_EXPORT
 # endif
 
-namespace KDots
-{
-	enum GameMode
-	{
-		EXTRA_TURN_MODE,
-		DEFAULT_MODE
-	};
-
-	enum Owner
-	{
-		NONE,
-		FIRST,
-		SECOND
-	};
-	
-	const int DIRECTION_COUNT = 8;
-
-	const int GRAPH_DX[DIRECTION_COUNT] = {0, 1, 1, 1, 0, -1, -1, -1};
-	const int GRAPH_DY[DIRECTION_COUNT] = {1, 1, 0, -1, -1, -1, 0, 1};
-	
-	const QString PLUGIN_SUFFIX = "kdots_";
+namespace KDots {
+  enum GameMode {
+    EXTRA_TURN_MODE,
+    DEFAULT_MODE
+  };
+  
+  enum Owner {
+    NONE,
+    FIRST,
+    SECOND
+  };
+  
+  const int DIRECTION_COUNT = 8;
+  
+  const int GRAPH_DX[DIRECTION_COUNT] = {0, 1, 1, 1, 0, -1, -1, -1};
+  const int GRAPH_DY[DIRECTION_COUNT] = {1, 1, 0, -1, -1, -1, 0, 1};
+  
+  const QString PLUGIN_SUFFIX = "kdots_";
 }
 
 #endif

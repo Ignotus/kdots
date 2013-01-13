@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -25,6 +25,6 @@
  */
 #include "plugin.hpp"
 
-Q_EXPORT_PLUGIN2 (kdots_singlepc, KDots::singlepc::Plugin)
+Q_EXPORT_PLUGIN2(kdots_singlepc, KDots::singlepc::Plugin)
 
 #include "plugin.moc"

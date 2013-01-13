@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -29,50 +29,46 @@
 #include <QLabel>
 #include <interface/irival.hpp>
 
-namespace KDots
-{
-	class Graph;
-	namespace simpleai
-	{
-		struct MapData;
-		
-		class KDOTS_EXPORT Rival : public KDots::IRival
-		{
-			Q_OBJECT
-			Q_INTERFACES (KDots::IRival)
-			
-			DotTable *m_table;
-			Owner m_current, m_other;
-			int m_iterations;
-			std::vector<Point> m_points;
-		public:
-			Rival (QObject *parent = 0);
-			~Rival () {}
-			
-			bool isAllow () const;
-			static bool hasMask (const Graph& graph, const Point& point, const MapData& mask, const Owner current);
-			
-			void setDifficulty (int diff)
-			{
-				m_iterations = diff;
-			}
-			
-			std::vector<Point> possibleMoves () const;
-			
-		public slots:
-			void nextStep (const Point& point);
-			void setDotTable (DotTable *table);
-			
-		private:
-			float calcPriority (const Point& point);
-			void calcRange (int& min_x, int& min_y, int& max_x, int& max_y);
-			bool hasCaptured (const Point& point, Owner current) const;
-			
-		signals:
-			void createDotTable (const GameConfig& config);
-			void needDestroy ();
-		};
-	}
+namespace KDots {
+  class Graph;
+  namespace simpleai {
+    struct MapData;
+    
+    class KDOTS_EXPORT Rival : public KDots::IRival {
+        Q_OBJECT
+        Q_INTERFACES(KDots::IRival)
+        
+        DotTable *m_table;
+        Owner m_current, m_other;
+        int m_iterations;
+        std::vector<Point> m_points;
+      public:
+        Rival(QObject *parent = 0);
+        ~Rival() {}
+        
+        bool isAllow() const;
+        static bool hasMask(const Graph& graph, const Point& point, const MapData& mask, const Owner current);
+        
+        void setDifficulty(int diff) {
+          m_iterations = diff;
+        }
+        
+        std::vector<Point> possibleMoves() const;
+        
+      public slots:
+        void nextStep(const Point& point);
+        void setDotTable(DotTable *table);
+        
+      private:
+        float calcPriority(const Point& point);
+        void calcRange(int& min_x, int& min_y, int& max_x, int& max_y);
+        bool hasCaptured(const Point& point, Owner current) const;
+        
+      signals:
+        void createDotTable(const GameConfig& config);
+        void needDestroy();
+    };
+  }
 }
 
 #endif

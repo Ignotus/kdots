@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+find . -name "*.[hc]pp" -exec astyle --style=java --indent=spaces=2 -SNwYpUHCEn -k3 -W1 {} \;

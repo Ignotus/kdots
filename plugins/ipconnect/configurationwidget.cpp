@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -26,61 +26,51 @@
 #include "configurationwidget.hpp"
 #include "ui_configurationwidget.h"
 
-namespace KDots
-{
-	namespace ipconnect
-	{
-		namespace
-		{
-			enum Tabs
-			{
-				CreateGameTab = 0,
-				JoinGameTab = 1
-			};
-		}
-		
-		ConfigurationWidget::ConfigurationWidget (QWidget *parent)
-			: IConfigurationWidget (parent)
-			, m_ui (new Ui::ConfigurationWidget)
-		{
-			m_ui->setupUi (this);
-			
-			connect (m_ui->tabWidget,
-					SIGNAL (currentChanged (int)),
-					this,
-					SLOT (onTabChanged (int)));
-		}
-		
-		void ConfigurationWidget::onTabChanged (int index)
-		{
-			emit needCreateTable (index == CreateGameTab);
-		}
-		
-		bool ConfigurationWidget::clientConfig (ClientConfig& config)
-		{
-			if (m_ui->tabWidget->currentIndex () == CreateGameTab)
-				return false;
-			else
-			{
-				config.m_host = m_ui->host->text ();
-				config.m_port = m_ui->connectionPort->value ();
-				return true;
-			}
-		}
-		
-		bool ConfigurationWidget::serverConfig (ServerConfig& config)
-		{
-			if (m_ui->tabWidget->currentIndex () == JoinGameTab)
-				return false;
-			else
-			{
-				config.m_port = m_ui->listenPort->value ();
-				config.user = m_ui->user->currentIndex ();
-				return true;
-			}
-		}
-
-	}
+namespace KDots {
+  namespace ipconnect {
+    namespace {
+      enum Tabs {
+        CreateGameTab = 0,
+        JoinGameTab = 1
+      };
+    }
+    
+    ConfigurationWidget::ConfigurationWidget(QWidget *parent)
+      : IConfigurationWidget(parent)
+      , m_ui(new Ui::ConfigurationWidget) {
+      m_ui->setupUi(this);
+      
+      connect(m_ui->tabWidget,
+              SIGNAL(currentChanged(int)),
+              this,
+              SLOT(onTabChanged(int)));
+    }
+    
+    void ConfigurationWidget::onTabChanged(int index) {
+      emit needCreateTable(index == CreateGameTab);
+    }
+    
+    bool ConfigurationWidget::clientConfig(ClientConfig& config) {
+      if (m_ui->tabWidget->currentIndex() == CreateGameTab)
+        return false;
+      else {
+        config.m_host = m_ui->host->text();
+        config.m_port = m_ui->connectionPort->value();
+        return true;
+      }
+    }
+    
+    bool ConfigurationWidget::serverConfig(ServerConfig& config) {
+      if (m_ui->tabWidget->currentIndex() == JoinGameTab)
+        return false;
+      else {
+        config.m_port = m_ui->listenPort->value();
+        config.user = m_ui->user->currentIndex();
+        return true;
+      }
+    }
+    
+  }
 }
 
 #include "configurationwidget.moc"

@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -32,40 +32,38 @@
 
 class QPainter;
 
-namespace KDots
-{
-	class IRival;
-	class DotTable;
-	struct GameConfig;
-
-	class TableWidget : public QWidget
-	{
-		Q_OBJECT
-
-		DotTable *m_table;
-		int m_height, m_width;
-
-		std::shared_ptr<KDots::IRival> m_rival;
-		Point m_underMousePoint;
-	public:
-		TableWidget (const GameConfig& config, std::shared_ptr<IRival> rival,
-				QWidget *parent = 0);
-		void undo ();
-	protected:
-		void mousePressEvent (QMouseEvent *event);
-		void mouseMoveEvent (QMouseEvent *event);
-		void paintEvent (QPaintEvent *event);
-	private:
-		void calculatePoint (Point& point, QMouseEvent *event);
-		void drawPolygons (QPainter& painter, float cellSize);
-		void fillPolygon (QPainter& painter, float cellSize);
-		void drawLastPoint (QPainter& painter, float cellSize);
-		void drawUnderMousePoint (QPainter& painter, float cellSize);
-	private slots:
-		void onStatusMessage ();
-	signals:
-		void updateStatusBar (const QString& msg);
-	};
+namespace KDots {
+  class IRival;
+  class DotTable;
+  struct GameConfig;
+  
+  class TableWidget : public QWidget {
+      Q_OBJECT
+      
+      DotTable *m_table;
+      int m_height, m_width;
+      
+      std::shared_ptr<KDots::IRival> m_rival;
+      Point m_underMousePoint;
+    public:
+      TableWidget(const GameConfig& config, std::shared_ptr<IRival> rival,
+                  QWidget *parent = 0);
+      void undo();
+    protected:
+      void mousePressEvent(QMouseEvent *event);
+      void mouseMoveEvent(QMouseEvent *event);
+      void paintEvent(QPaintEvent *event);
+    private:
+      void calculatePoint(Point& point, QMouseEvent *event);
+      void drawPolygons(QPainter& painter, float cellSize);
+      void fillPolygon(QPainter& painter, float cellSize);
+      void drawLastPoint(QPainter& painter, float cellSize);
+      void drawUnderMousePoint(QPainter& painter, float cellSize);
+    private slots:
+      void onStatusMessage();
+    signals:
+      void updateStatusBar(const QString& msg);
+  };
 }
 
 #endif

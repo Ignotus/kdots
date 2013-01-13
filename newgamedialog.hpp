@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -29,40 +29,37 @@
 #include <QDialog>
 #include "gameconfig.hpp"
 
-namespace Ui
-{
-	class NewGameDialog;
+namespace Ui {
+  class NewGameDialog;
 }
 
-namespace KDots
-{
-	class IRival;
-	class IConfigurationWidget;
-	class PluginManagerWidget;
-	class NewGameWidget;
-	
-	class NewGameDialog : public QDialog
-	{
-		Q_OBJECT
-		
-		Ui::NewGameDialog *m_ui;
-		NewGameWidget *m_game;
-		PluginManagerWidget *m_pluginManager;
-		IConfigurationWidget *m_configWidget;
-	
-		mutable std::shared_ptr<IRival> m_rival;
-	public:
-		NewGameDialog (QWidget *parent = 0);
-		~NewGameDialog ();
-		
-		std::shared_ptr<IRival> rival () const;
-		
-		GameConfig gameConfig () const;
-	private slots:
-		void pluginWidget ();
-		void gameWidget ();
-		void onNeedCreateTable (bool);
-	};
+namespace KDots {
+  class IRival;
+  class IConfigurationWidget;
+  class PluginManagerWidget;
+  class NewGameWidget;
+  
+  class NewGameDialog : public QDialog {
+      Q_OBJECT
+      
+      Ui::NewGameDialog *m_ui;
+      NewGameWidget *m_game;
+      PluginManagerWidget *m_pluginManager;
+      IConfigurationWidget *m_configWidget;
+      
+      mutable std::shared_ptr<IRival> m_rival;
+    public:
+      NewGameDialog(QWidget *parent = 0);
+      ~NewGameDialog();
+      
+      std::shared_ptr<IRival> rival() const;
+      
+      GameConfig gameConfig() const;
+    private slots:
+      void pluginWidget();
+      void gameWidget();
+      void onNeedCreateTable(bool);
+  };
 }
 
 #endif

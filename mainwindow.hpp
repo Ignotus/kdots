@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -34,46 +34,43 @@
 #endif
 #include "constants.hpp"
 
-namespace Ui
-{
-	class MainWindow;
+namespace Ui {
+  class MainWindow;
 }
 
 class KAction;
 
-namespace KDots
-{
-	class TableWidget;
-	class IRival;
-
-	class MainWindow : public KXmlGuiWindow
-	{
-		Q_OBJECT
-	public:
-		MainWindow (QWidget *parent = 0);
-		~MainWindow ();
-	private:
-		Ui::MainWindow *m_ui;
-		std::shared_ptr<IRival> m_rival;
-		bool m_destroyTable;
-		TableWidget *m_table;
-		void initMenu ();
-
-	private slots:
-		void onNewGame ();
-		void destroyGame ();
-		void onPreferences ();
-		void undo ();
-		void endGame ();
+namespace KDots {
+  class TableWidget;
+  class IRival;
+  
+  class MainWindow : public KXmlGuiWindow {
+      Q_OBJECT
+    public:
+      MainWindow(QWidget *parent = 0);
+      ~MainWindow();
+    private:
+      Ui::MainWindow *m_ui;
+      std::shared_ptr<IRival> m_rival;
+      bool m_destroyTable;
+      TableWidget *m_table;
+      void initMenu();
+      
+    private slots:
+      void onNewGame();
+      void destroyGame();
+      void onPreferences();
+      void undo();
+      void endGame();
 #ifdef NEW_LIBKDEGAMES
-		void difficultyHandler (const KgDifficultyLevel *level);
+      void difficultyHandler(const KgDifficultyLevel *level);
 #else
-		void difficultyHandler (KGameDifficulty::standardLevel level);
+      void difficultyHandler(KGameDifficulty::standardLevel level);
 #endif
-	signals:
-		void undoActionEnable (bool);
-		void endActionEnable (bool);
-	};
+    signals:
+      void undoActionEnable(bool);
+      void endActionEnable(bool);
+  };
 }
 
 #endif

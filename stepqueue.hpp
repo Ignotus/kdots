@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -29,105 +29,90 @@
 #include "point.hpp"
 #include "constants.hpp"
 
-namespace KDots
-{
-	class KDOTS_EXPORT StepQueue
-	{
-		Owner m_firstOwner;
-		std::vector<Point> m_firstPoints, m_secondPoints, m_points;
-		std::size_t m_first, m_second, m_emptyCaptured;
-	protected:
-		Owner m_owner;
-		bool m_captured;
-	public:
-		StepQueue (Owner firstPlayer);
-		virtual ~StepQueue () {}
-		
-		Owner firstOwner () const
-		{
-			return m_firstOwner;
-		}
-		
-		Point lastPoint () const
-		{
-			return m_points.empty () ? Point () : m_points.back ();
-		}
-		
-		void clear ()
-		{
-			m_first = m_second = m_emptyCaptured = 0;
-			m_owner  = m_firstOwner;
-			m_captured  = false;
-			m_firstPoints.clear ();
-			m_secondPoints.clear ();
-			m_points.clear ();
-		}
-
-		void addPoint (const Point& point);
-		void addCaptured ();
-		
-		void addEmptyCaptured ()
-		{
-			++m_emptyCaptured;
-		}
-		
-		std::size_t emtyCapturedCount () const
-		{
-			return m_emptyCaptured;
-		}
-
-		Owner getCurrentOwner () const
-		{
-			return m_owner;
-		}
-
-		std::size_t getMarks (Owner owner) const
-		{
-			return owner == FIRST ? m_first : m_second;
-		}
-
-		std::vector<Point> getPoints (Owner owner) const
-		{
-			return owner == SECOND ? m_secondPoints : m_firstPoints;
-		}
-		
-		std::vector<Point> getAllPoints () const
-		{
-			return m_points;
-		}
-
-		static Owner other (Owner player)
-		{
-			if (player == NONE)
-				kWarning () << "player == NONE";
-			return player == FIRST ? SECOND : FIRST;
-		}
-
-		Owner nextStep ()
-		{
-			m_captured = false;
-			return (m_owner = other (m_owner));
-		}
-	};
-
-	class ExtraStepQueue : public StepQueue
-	{
-	public:
-		ExtraStepQueue (Owner firstPlayer);
-
-		Owner
-		nextStep ()
-		{
-			if (m_captured)
-				return m_owner;
-
-			m_captured = false;
-
-			return (m_owner = other (m_owner));
-		}
-	};
-
-
+namespace KDots {
+  class KDOTS_EXPORT StepQueue {
+      Owner m_firstOwner;
+      std::vector<Point> m_firstPoints, m_secondPoints, m_points;
+      std::size_t m_first, m_second, m_emptyCaptured;
+    protected:
+      Owner m_owner;
+      bool m_captured;
+    public:
+      StepQueue(Owner firstPlayer);
+      virtual ~StepQueue() {}
+      
+      Owner firstOwner() const {
+        return m_firstOwner;
+      }
+      
+      Point lastPoint() const {
+        return m_points.empty() ? Point() : m_points.back();
+      }
+      
+      void clear() {
+        m_first = m_second = m_emptyCaptured = 0;
+        m_owner  = m_firstOwner;
+        m_captured  = false;
+        m_firstPoints.clear();
+        m_secondPoints.clear();
+        m_points.clear();
+      }
+      
+      void addPoint(const Point& point);
+      void addCaptured();
+      
+      void addEmptyCaptured() {
+        ++m_emptyCaptured;
+      }
+      
+      std::size_t emtyCapturedCount() const {
+        return m_emptyCaptured;
+      }
+      
+      Owner getCurrentOwner() const {
+        return m_owner;
+      }
+      
+      std::size_t getMarks(Owner owner) const {
+        return owner == FIRST ? m_first : m_second;
+      }
+      
+      std::vector<Point> getPoints(Owner owner) const {
+        return owner == SECOND ? m_secondPoints : m_firstPoints;
+      }
+      
+      std::vector<Point> getAllPoints() const {
+        return m_points;
+      }
+      
+      static Owner other(Owner player) {
+        if (player == NONE)
+          kWarning() << "player == NONE";
+        return player == FIRST ? SECOND : FIRST;
+      }
+      
+      Owner nextStep() {
+        m_captured = false;
+        return (m_owner = other(m_owner));
+      }
+  };
+  
+  class ExtraStepQueue : public StepQueue {
+    public:
+      ExtraStepQueue(Owner firstPlayer);
+      
+      Owner
+      nextStep() {
+        if (m_captured)
+          return m_owner;
+          
+        m_captured = false;
+        
+        return (m_owner = other(m_owner));
+      }
+  };
+  
+  
 }
 
 #endif

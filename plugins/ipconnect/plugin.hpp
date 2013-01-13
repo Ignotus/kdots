@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -28,42 +28,34 @@
 #include <interface/iplugin.hpp>
 #include "rival.hpp"
 
-namespace KDots
-{
-	namespace ipconnect
-	{
-			class Plugin : public KDots::IPlugin
-			{
-				Q_OBJECT
-				Q_INTERFACES (KDots::IPlugin)
-			public:
-				Plugin (QObject *parent = 0)
-					: IPlugin (parent)
-				{
-				}
-
-				IRival* createRival ()
-				{
-					return new Rival;
-				}
-
-				QString name () const
-				{
-					return "ipconnect";
-				}
-
-				QString description () const
-				{
-					return "Playing by internet connection";
-				}
-				
-				KIcon icon () const
-				{
-					return KIcon ("network-connect");
-				}
-			};
-
-	}
+namespace KDots {
+  namespace ipconnect {
+    class Plugin : public KDots::IPlugin {
+        Q_OBJECT
+        Q_INTERFACES(KDots::IPlugin)
+      public:
+        Plugin(QObject *parent = 0)
+          : IPlugin(parent) {
+        }
+        
+        IRival *createRival() {
+          return new Rival;
+        }
+        
+        QString name() const {
+          return "ipconnect";
+        }
+        
+        QString description() const {
+          return "Playing by internet connection";
+        }
+        
+        KIcon icon() const {
+          return KIcon("network-connect");
+        }
+    };
+    
+  }
 }
 
 #endif
