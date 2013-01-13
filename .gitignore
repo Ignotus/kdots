@@ -1,4 +1,6 @@
 *.qm
+*.swp
+*.swo
 builds/
 backup/
 debug/
