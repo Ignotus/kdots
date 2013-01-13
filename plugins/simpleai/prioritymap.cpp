@@ -485,7 +485,7 @@ namespace KDots {
     
     PriorityMap::PriorityMap()
       : m_priorityMap(PRIORITY_MAP) {
-for (const MapData & data : PRIORITY_MAP) {
+        foreach (const MapData & data, PRIORITY_MAP) {
         const MapData& invertedData = inverse(data);
         m_priorityMap.push_back(invertedData);
         

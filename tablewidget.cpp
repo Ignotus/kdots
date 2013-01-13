@@ -204,7 +204,7 @@ namespace KDots {
     }
     
     const std::vector<Point>& possiblePoints = m_rival->possibleMoves();
-for (const Point & point : possiblePoints) {
+    foreach (const Point& point, possiblePoints) {
       painter.setPen(Qt::gray);
       
       painter.setBrush(Qt::NoBrush);
@@ -244,9 +244,9 @@ for (const Point & point : possiblePoints) {
     const QBrush secondPolyBrush(secondColor,
                                  BrushComboDelegate::getBrushStyle(Settings::secondFillStyle()));
                                  
-for (Polygon_ptr polygon : polygonVector) {
+    foreach (const Polygon_ptr& polygon, polygonVector) {
       QPolygon qPoly;
-for (const Point & point : *polygon) {
+      foreach (const Point& point, *polygon) {
         const Point& newPoint = point + 1;
         qPoly << QPoint(newPoint.x(), newPoint.y()) * cellSize;
       }

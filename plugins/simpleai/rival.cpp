@@ -147,7 +147,7 @@ namespace KDots {
           return 0.99;
       }
       
-for (const MapData & table : PriorityMap::instance().priorityMap()) {
+      foreach (const MapData& table, PriorityMap::instance().priorityMap()) {
         if (!hasMask(graph, point, table, m_current))
           continue;
           
@@ -202,12 +202,13 @@ for (const MapData & table : PriorityMap::instance().priorityMap()) {
       const PolyList& polyList = findPolygon(point);
       
       const auto& otherOwnerPoints = steps->getPoints(m_other);
-for (const Point & p : otherOwnerPoints) {
+      
+      foreach (const Point& p, otherOwnerPoints) {
         const GraphPoint& gpoint = graph[p];
         if (gpoint.isCaptured())
           continue;
           
-for (const Polygon_ptr & polygon : polyList) {
+      foreach (const Polygon_ptr& polygon, polyList) {
           if (DotTable::isInPolygon(polygon, p) && gpoint.owner() == m_other)
             return true;
         }

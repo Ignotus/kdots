@@ -53,7 +53,7 @@ namespace KDots {
     int maxSize(const PolyList& polygonList) {
       int max = 0;
       
-for (const Polygon_ptr & ptr : polygonList) {
+      foreach (const Polygon_ptr& ptr, polygonList) {
         const int currArea = doubleArea(*ptr);
         ptr->setArea(currArea);
         if (currArea > max)

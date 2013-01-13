@@ -130,12 +130,12 @@ namespace KDots {
     const Owner otherOwner = StepQueue::other(current);
     
     const auto& otherOwnerPoints = m_steps->getPoints(otherOwner);
-for (const Point & p : otherOwnerPoints) {
+    foreach (const Point& p, otherOwnerPoints) {
       GraphPoint& gpoint = graph[p];
       if (gpoint.isCaptured())
         continue;
-        
-for (const Polygon_ptr & polygon : polyList) {
+    
+      foreach (const Polygon_ptr& polygon, polyList) {
         if (isInPolygon(polygon, p)) {
           if (gpoint.owner() == otherOwner) {
             polygon->setFilled(true);
@@ -153,7 +153,7 @@ for (const Polygon_ptr & polygon : polyList) {
       if (itr->isCaptured() || itr->owner() != NONE)
         continue;
         
-for (const Polygon_ptr & polygon : polyList) {
+      foreach (const Polygon_ptr& polygon, polyList) {
         const Point& newPoint = itr.point();
         
         if (isInPolygon(polygon, newPoint) && polygon->isFilled()) {
@@ -197,7 +197,7 @@ for (const Polygon_ptr & polygon : polyList) {
       points.pop_back();
     m_steps->clear();
     
-for (const Point & point : points)
+    foreach (const Point& point, points)
       pushPoint(point);
   }
   
@@ -241,7 +241,7 @@ for (const Point & point : points)
   }
   
   void DotTable::drawPolygon(PolyList polygons) {
-for (Polygon_ptr & polygon : polygons) {
+    foreach (const Polygon_ptr& polygon, polygons) {
       if (!polygon->isFilled())
         continue;
         
@@ -252,7 +252,7 @@ for (Polygon_ptr & polygon : polygons) {
       
       Point prevPoint = polygon->back();
       
-for (const Point & currPoint : *polygon.get()) {
+    foreach (const Point& currPoint, *polygon.get()) {
         m_graph->addEdge(prevPoint, currPoint);
         prevPoint = currPoint;
       }

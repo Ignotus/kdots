@@ -38,7 +38,7 @@ namespace KDots {
     m_ui->setupUi(this);
     
     QStandardItemModel *model = new QStandardItemModel(this);
-for (IPlugin * plugin : PluginContainer::instance().plugins().values())
+    foreach (IPlugin * plugin, PluginContainer::instance().plugins().values())
       model->appendRow(new QStandardItem(plugin->icon(), plugin->name()));
       
     m_ui->PluginList->setModel(model);
