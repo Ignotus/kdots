@@ -38,9 +38,15 @@ include_directories(
 
 set(SRCS
   main.cpp
+  matrix.cpp
+  tablemodel.cpp
+  tableview.cpp
 )
 
 set(HEADERS
+  matrix.h
+  tablemodel.h
+  tableview.h
 )
 
 kde4_add_executable(kdots ${SRCS})
