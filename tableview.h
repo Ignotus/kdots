@@ -14,16 +14,20 @@ class TableView : public QWidget {
     
   protected:
     void mouseReleaseEvent(QMouseEvent *e);
+    void paintEvent(QPaintEvent *e);
     
   private:
-    QPoint modelPoint(const QPoint& widgetPoint) const;
+    bool modelPoint(const QPoint& widgetPoint, QPoint& modelPoint) const;
+    bool viewPoint(const QPoint& modelPoint, QPoint& viewPoint) const;
+    
     void drawLines(QPainter& painter);
     void drawDots(QPainter& painter);
     void drawDotsBorder(QPainter& painter);
-  
-  public slots:
-    void updateView();
+    QSize pixmapSize() const;
+    QPoint padding() const;
     
+    float squareSize() const;
+  
   signals:
     void pointPut(const QPoint& point);
   

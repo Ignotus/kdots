@@ -41,12 +41,14 @@ set(SRCS
   matrix.cpp
   tablemodel.cpp
   tableview.cpp
+  pdata.cpp
 )
 
 set(HEADERS
   matrix.h
   tablemodel.h
   tableview.h
+  pdata.h
 )
 
 kde4_add_executable(kdots ${SRCS})

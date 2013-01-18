@@ -6,6 +6,11 @@
 
 class QSize;
 
+const std::size_t DIRECTION_COUNT = 8;
+
+const int DX[] = {-1, 0, 1, 1,  1,  0, -1, -1};
+const int DY[] = { 1, 1, 1, 0, -1, -1, -1,  0};
+
 template<class T>
 class Matrix {
   public:
