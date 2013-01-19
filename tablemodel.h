@@ -22,8 +22,6 @@ class TableModel : public QObject {
     
     const Matrix<PData>& data() const;
     
-    const QSize& size() const;
-    
     const QPoint& lastPoint() const;
  
   public slots:
@@ -36,7 +34,6 @@ class TableModel : public QObject {
     void dataChanged();
     
   private:
-    QSize m_size;
     Matrix<PData> m_data;
     OwnerDetector *m_ownerDetector;
     PolygonFinder *m_polygonFinder;

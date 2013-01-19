@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include <QMouseEvent>
 #include <QPainter>
 
@@ -53,7 +55,7 @@ void TableView::paintEvent(QPaintEvent * /*e */) {
 
 //TODO: Caching this value somewhere
 float TableView::squareSize() const {
-  const QSize& ms = m_model->size();
+  const QSize& ms = m_model->data().size();
   const QSize& ws = size();
   
   return std::min(float(ws.width()) / (ms.width() + 1),
@@ -61,7 +63,7 @@ float TableView::squareSize() const {
 }
 
 QSize TableView::pixmapSize() const {
-  return (m_model->size() + QSize(1, 1)) * squareSize();
+  return (m_model->data().size() + QSize(1, 1)) * squareSize();
 }
 
 bool TableView::modelPoint(const QPoint& widgetPoint, QPoint& mp) const {
@@ -72,14 +74,14 @@ bool TableView::modelPoint(const QPoint& widgetPoint, QPoint& mp) const {
   const float xc = dp.x() / sz;
   const float yc = dp.y() / sz;
   
-  mp.setX(std::round(xc));
-  mp.setY(std::round(yc));
+  mp.setX(round(xc));
+  mp.setY(round(yc));
   
-  const QSize& ms = m_model->size();
+  const QSize& ms = m_model->data().size();
   if (mp.x() < 0 || mp.y() < 0 || mp.x() >= ms.width() || mp.y() >= ms.height())
     return false;
   
-  const float r2 = std::pow(mp.x() - xc, 2) + std::pow(mp.y() - yc, 2); 
+  const float r2 = pow(mp.x() - xc, 2) + pow(mp.y() - yc, 2); 
   
   return r2 < 0.3 * 0.3;
 }
@@ -89,7 +91,7 @@ QPoint TableView::viewPoint(const QPoint& modelPoint) const {
 }
 
 void TableView::drawLines(QPainter& painter) {
-  const QSize& ms = m_model->size();
+  const QSize& ms = m_model->data().size();
   const QPaintDevice *device = painter.device();
   const int w = device->width();
   const int h = device->height();
@@ -110,7 +112,7 @@ void TableView::drawLines(QPainter& painter) {
 void TableView::drawDots(QPainter& painter) {
   typedef Matrix<PData> MatrixType;
   const MatrixType& matrix = m_model->data();
-  const QSize& ms = m_model->size();
+  const QSize& ms = m_model->data().size();
   
   for (int i = 0, xmax = ms.width(); i < xmax; ++i) {
     for (int j = 0, ymax = ms.height(); j < ymax; ++j) {
@@ -127,7 +129,7 @@ void TableView::drawDots(QPainter& painter) {
 void TableView::drawDotsBorder(QPainter& painter) {
   typedef Matrix<PData> MatrixType;
   const MatrixType& matrix = m_model->data();
-  const QSize& ms = m_model->size();
+  const QSize& ms = m_model->data().size();
   
   for (int i = 0, xmax = ms.width(); i < xmax; ++i) {
     for (int j = 0, ymax = ms.height(); j < ymax; ++j) {

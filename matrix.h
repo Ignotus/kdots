@@ -18,7 +18,13 @@ class Matrix {
     typedef std::vector<MatrixLineType> MatrixDataType;
     
     Matrix(const QSize& size)
-    : m_data(MatrixDataType(size.width(), MatrixLineType(size.height()))) {
+    : m_data(MatrixDataType(size.width(), MatrixLineType(size.height())))
+    , m_size(size) {
+    }
+    
+    Matrix(const QSize& size, const T& initValue)
+    : m_data(MatrixDataType(size.width(), MatrixLineType(size.height(), initValue)))
+    , m_size(size) {
     }
     
     T& operator[](const QPoint& point) {
@@ -36,6 +42,11 @@ class Matrix {
     const MatrixLineType& operator[](int x) const {
       return m_data[x];
     }
+    
+    const QSize& size() const {
+      return m_size;
+    }
   private:
     MatrixDataType m_data;
+    QSize m_size;
 };

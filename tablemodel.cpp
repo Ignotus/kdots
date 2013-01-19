@@ -6,7 +6,6 @@
 
 TableModel::TableModel(const QSize& size, QObject *parent)
 : QObject(parent)
-, m_size(size)
 , m_data(size)
 , m_ownerDetector(NULL)
 , m_polygonFinder(NULL)
@@ -22,10 +21,6 @@ void TableModel::setOwnerDetector(OwnerDetector *detector) {
 
 void TableModel::setPolygonFinder(PolygonFinder *finder) {
   m_polygonFinder = finder;
-}
-
-const QSize& TableModel::size() const {
-  return m_size;
 }
 
 const Matrix<PData>& TableModel::data() const {
@@ -57,7 +52,7 @@ void TableModel::putPoint(const QPoint& point) {
 bool TableModel::findCapturedBorders(const QPoint& point) {
   const QList<QPolygon>& polygons = m_polygonFinder->findPolygons(point);
   
-  const QSize& ms = size();
+  const QSize& ms = m_data.size();
   const int currentOwn = m_ownerDetector->owner();
   
   bool foundBorders = false;
