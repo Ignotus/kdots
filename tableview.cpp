@@ -133,7 +133,7 @@ void TableView::drawDotsBorder(QPainter& painter) {
     for (int j = 0, ymax = ms.height(); j < ymax; ++j) {
       const PData& point = matrix[i][j];
       const int own = point.owner();
-      if (!own) {
+      if (!own || !point.isBorder()) {
         continue;
       }
       
@@ -145,6 +145,10 @@ void TableView::drawDotsBorder(QPainter& painter) {
         const int newx = i + DX[k];
         const int newy = j + DY[k];
         
+        if (!matrix[newx][newy].isBorder()) {
+          continue;
+        }
+        
         if (newx < 0 || newy < 0 || newx >= ms.width() || newy >= ms.height()) {
           continue;
         }
@@ -153,7 +157,7 @@ void TableView::drawDotsBorder(QPainter& painter) {
           continue;
         }
         
-        painter.drawLine(newx, newy, i, j);
+        painter.drawLine(viewPoint(QPoint(newx, newy)), viewPoint(QPoint(i, j)));
       }
     }
   }

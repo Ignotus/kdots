@@ -2,7 +2,8 @@
 
 PData::PData()
 : m_border(false)
-, m_owner(0) {
+, m_owner(0)
+, m_isCaptured(false) {
 }
     
 void PData::changeToBorder() {
@@ -20,4 +21,12 @@ void PData::setOwner(int owner) {
 
 int PData::owner() const {
   return m_owner;
+}
+
+void PData::capture() {
+  m_isCaptured = true;
+}
+
+bool PData::isCaptured() const {
+  return m_isCaptured;
 }

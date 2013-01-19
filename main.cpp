@@ -3,6 +3,7 @@
 #include "tablemodel.h"
 #include "tableview.h"
 #include "ownerdetector.h"
+#include "polygondfsfinder.h"
 
 int main(int argc, char **argv) {
   QApplication app(argc, argv);
@@ -11,8 +12,10 @@ int main(int argc, char **argv) {
   TableModel model(QSize(5, 5));
   
   AdditionalMove detector(2, 1);
-  
   model.setOwnerDetector(&detector);
+  
+  PolygonDFSFinder finder(model.data());
+  model.setPolygonFinder(&finder);
   
   view.setModel(&model);
   

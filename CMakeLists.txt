@@ -44,6 +44,8 @@ set(SRCS
   pdata.cpp
   ownerdetector.cpp
   configuration.cpp
+  polygonfinder.cpp
+  polygondfsfinder.cpp
 )
 
 set(HEADERS
@@ -53,6 +55,8 @@ set(HEADERS
   pdata.h
   ownerdetector.h
   configuration.h
+  polygonfinder.h
+  polygondfsfinder.h
 )
 
 kde4_add_executable(kdots ${SRCS})

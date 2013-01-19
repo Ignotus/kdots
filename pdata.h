@@ -9,7 +9,11 @@ class PData {
     void setOwner(int owner);
     int owner() const;
     
+    void capture();
+    bool isCaptured() const;
+    
   private:  
     bool m_border;
     int m_owner;
+    bool m_isCaptured;
 };

@@ -9,6 +9,7 @@
 
 class QPoint;
 class OwnerDetector;
+class PolygonFinder;
 class TableModel : public QObject {
     Q_OBJECT
     
@@ -17,6 +18,7 @@ class TableModel : public QObject {
     virtual ~TableModel();
     
     void setOwnerDetector(OwnerDetector *detector);
+    void setPolygonFinder(PolygonFinder *finder);
     
     const Matrix<PData>& data() const;
     
@@ -37,5 +39,6 @@ class TableModel : public QObject {
     QSize m_size;
     Matrix<PData> m_data;
     OwnerDetector *m_ownerDetector;
+    PolygonFinder *m_polygonFinder;
     QPoint m_lastPoint;
 };
