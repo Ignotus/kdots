@@ -3,3 +3,7 @@
 PolygonFinder::PolygonFinder(const Matrix<PData>& matrix)
 : m_matrix(matrix) {
 }
+
+PolygonFinder::~PolygonFinder() {
+
+}

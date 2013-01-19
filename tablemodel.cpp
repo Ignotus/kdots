@@ -45,17 +45,17 @@ void TableModel::putPoint(const QPoint& point) {
   const int current = m_ownerDetector->owner();
   dot.setOwner(current);
   
-  bool isCaptured;
-  if (isCaptured = findCapturedBorders(point)) {
+  const bool isCaptured = findCapturedBorders(point);
+  if (isCaptured) {
     dot.changeToBorder();
   }
   
-  qDebug() << m_ownerDetector->nextOwner(isCaptured);
+  m_ownerDetector->nextOwner(isCaptured);
   emit dataChanged();
 }
 
 bool TableModel::findCapturedBorders(const QPoint& point) {
-  const QVector<QPolygon>& polygons = m_polygonFinder->findPolygons(point);
+  const QList<QPolygon>& polygons = m_polygonFinder->findPolygons(point);
   
   const QSize& ms = size();
   const int currentOwn = m_ownerDetector->owner();

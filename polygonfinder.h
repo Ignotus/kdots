@@ -1,5 +1,5 @@
 #pragma once
-#include <QVector>
+#include <QList>
 #include <QPolygon>
 
 class PData;
@@ -10,8 +10,8 @@ class Matrix;
 class PolygonFinder {
   public:
     PolygonFinder(const Matrix<PData>& matrix);
-    
-    virtual QVector<QPolygon> findPolygons(const QPoint& first) = 0;
+    virtual ~PolygonFinder();    
+    virtual const QList<QPolygon>& findPolygons(const QPoint& first) = 0;
     
   protected:
     const Matrix<PData>& m_matrix;
