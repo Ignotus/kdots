@@ -114,13 +114,45 @@ void TableView::drawDots(QPainter& painter) {
     for (int j = 0, ymax = ms.height(); j < ymax; ++j) {
       const PData& point = matrix[i][j];
       if (point.owner()) {
-        painter.setBrush(QBrush(Configuration::instance().pointColor(point.owner())));
+        const QColor& brushColor = Configuration::instance().pointColor(point.owner());
+        painter.setBrush(QBrush(brushColor));
         painter.drawPoint(viewPoint(QPoint(i, j)));
       }
     }
   }
-    
 }
 
 void TableView::drawDotsBorder(QPainter& painter) {
+  typedef Matrix<PData> MatrixType;
+  const MatrixType& matrix = m_model->data();
+  const QSize& ms = m_model->size();
+  
+  for (int i = 0, xmax = ms.width(); i < xmax; ++i) {
+    for (int j = 0, ymax = ms.height(); j < ymax; ++j) {
+      const PData& point = matrix[i][j];
+      const int own = point.owner();
+      if (!own) {
+        continue;
+      }
+      
+      const QPen pen(Configuration::instance().pointColor(own));
+      
+      painter.setPen(pen);
+      
+      for (int k = 0; k < DIRECTION_COUNT; ++k) {
+        const int newx = i + DX[k];
+        const int newy = j + DY[k];
+        
+        if (newx < 0 || newy < 0 || newx >= ms.width() || newy >= ms.height()) {
+          continue;
+        }
+        
+        if (newx < i || (newx == i && newy < j)) {
+          continue;
+        }
+        
+        painter.drawLine(newx, newy, i, j);
+      }
+    }
+  }
 }
