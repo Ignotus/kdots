@@ -18,7 +18,7 @@ class TableView : public QWidget {
     
   private:
     bool modelPoint(const QPoint& widgetPoint, QPoint& modelPoint) const;
-    bool viewPoint(const QPoint& modelPoint, QPoint& viewPoint) const;
+    QPoint viewPoint(const QPoint& modelPoint) const;
     
     void drawLines(QPainter& painter);
     void drawDots(QPainter& painter);

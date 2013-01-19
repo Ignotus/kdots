@@ -6,7 +6,7 @@ set(CMAKE_MODULE_PATH
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake
 )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall")
 
 find_package(Qt4 REQUIRED)
 find_package(KDE4 REQUIRED)
@@ -42,6 +42,8 @@ set(SRCS
   tablemodel.cpp
   tableview.cpp
   pdata.cpp
+  ownerdetector.cpp
+  configuration.cpp
 )
 
 set(HEADERS
@@ -49,6 +51,8 @@ set(HEADERS
   tablemodel.h
   tableview.h
   pdata.h
+  ownerdetector.h
+  configuration.h
 )
 
 kde4_add_executable(kdots ${SRCS})

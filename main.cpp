@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QDebug>
 #include "tablemodel.h"
 #include "tableview.h"
 #include "ownerdetector.h"

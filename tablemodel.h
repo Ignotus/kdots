@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 
+#include <QDebug>
 #include <QObject>
 
 #include "matrix.h"

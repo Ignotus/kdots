@@ -2,16 +2,9 @@
 
 class OwnerDetector {
   public:
-    OwnerDetector(int owners, int first)
-    : m_owners(owners)
-    , m_currentOwner(first) {
-    }
-    
-    virtual ~OwnerDetector() {}
-    
-    int owner() const {
-      return m_currentOwner;
-    }
+    OwnerDetector(int owners, int first);  
+    virtual ~OwnerDetector();
+    int owner() const;
     
     virtual int nextOwner(bool isCaptured) = 0;
   
@@ -22,30 +15,16 @@ class OwnerDetector {
 
 class WithoutAdditionalMove : public OwnerDetector {
   public:
-    WithoutAdditionalMove(int owners, int first)
-    : OwnerDetector(owners, first) {
-    }
+    WithoutAdditionalMove(int owners, int first);
     
-    int nextOwner(bool) {
-        if (m_currentOwner + 1 == m_owners)
-          return (m_currentOwner = 1);
-        else
-          return ++m_currentOwner;
-      }
+    int nextOwner(bool);
 };
 
 class AdditionalMove : public WithoutAdditionalMove {
   public:
-    AdditionalMove(int owners, int first)
-    : WithoutAdditionalMove(owners, first) {
-    }
+    AdditionalMove(int owners, int first);
     
-    int nextOwner(bool isCaptured) {
-      if (isCaptured)
-        return m_currentOwner;
-      
-      return WithoutAdditionalMove::nextOwner(isCaptured);
-    }
+    int nextOwner(bool isCaptured);
 };
 
 
