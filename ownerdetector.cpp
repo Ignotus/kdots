@@ -17,7 +17,7 @@ WithoutAdditionalMove::WithoutAdditionalMove(int owners, int first)
 }
     
 int WithoutAdditionalMove::nextOwner(bool) {
-  if (m_currentOwner + 1 == m_owners)
+  if (m_currentOwner == m_owners)
     return (m_currentOwner = 1);
   else
     return ++m_currentOwner;

@@ -44,9 +44,10 @@ void TableModel::putPoint(const QPoint& point) {
     dot.changeToBorder();
   }
   
-  m_ownerDetector->nextOwner(isCaptured);
+  qDebug() << m_ownerDetector->nextOwner(isCaptured);
+  emit dataChanged();
 }
 
 bool TableModel::findCapturedBorders(const QPoint& point) {
-  return true;
+  return false;
 }

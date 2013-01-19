@@ -35,6 +35,7 @@ QPoint TableView::padding() const {
 }
 
 void TableView::paintEvent(QPaintEvent * /*e */) {
+  qDebug() << Q_FUNC_INFO;
   const QSize& buffSize = pixmapSize();
   QPixmap buffer(buffSize);
   buffer.fill(Qt::white);
@@ -84,7 +85,7 @@ bool TableView::modelPoint(const QPoint& widgetPoint, QPoint& mp) const {
 }
 
 QPoint TableView::viewPoint(const QPoint& modelPoint) const {
-  return padding() +  modelPoint * squareSize();
+  return (modelPoint + QPoint(1, 1)) * squareSize();
 }
 
 void TableView::drawLines(QPainter& painter) {
@@ -95,6 +96,7 @@ void TableView::drawLines(QPainter& painter) {
   
   const float zero = 0.00001;
   const float sz = squareSize();
+  qDebug() << "Check: " << sz;
   const float shift = sz;
   for (float x = sz; x + shift - w < zero; x += shift) {
     painter.drawLine(x, 0, x, h);
@@ -116,7 +118,7 @@ void TableView::drawDots(QPainter& painter) {
       if (point.owner()) {
         const QColor& brushColor = Configuration::instance().pointColor(point.owner());
         painter.setBrush(QBrush(brushColor));
-        painter.drawPoint(viewPoint(QPoint(i, j)));
+        painter.drawEllipse(viewPoint(QPoint(i, j)), 5, 5);
       }
     }
   }
