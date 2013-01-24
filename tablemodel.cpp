@@ -60,9 +60,10 @@ bool TableModel::findCapturedBorders(const QPoint& point) {
     bool hasPoint = false;
     for (int i = 0, xmax = ms.width(); i < xmax; ++i) {
       for (int j = 0, ymax = ms.height(); j < ymax; ++j) {
-        PData& point = m_data[i][j];
+        const QPoint currentPoint(i, j);
+        PData& point = m_data[currentPoint];
         if (point.owner() && point.owner() != currentOwn && !point.isCaptured()) {
-          if (polygon.containsPoint(QPoint(i, j), Qt::OddEvenFill)) {
+          if (polygon.containsPoint(currentPoint, Qt::OddEvenFill)) {
             point.capture();
             hasPoint = true;
           }

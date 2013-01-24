@@ -46,7 +46,10 @@ class Matrix {
     const QSize& size() const {
       return m_size;
     }
+    
   private:
     MatrixDataType m_data;
     QSize m_size;
 };
+
+bool isValid(const QPoint& point, const QSize& ms);

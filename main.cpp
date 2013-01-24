@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
   QApplication app(argc, argv);
   
   TableView view;
-  TableModel model(QSize(5, 5));
+  TableModel model(QSize(10, 10));
   
   AdditionalMove detector(2, 1);
   model.setOwnerDetector(&detector);

@@ -9,33 +9,44 @@ PolygonDFSFinder::PolygonDFSFinder(const Matrix<PData>& matrix)
 PolygonDFSFinder::~PolygonDFSFinder() {
 }
 
+bool PolygonDFSFinder::contains(const QPolygon& owner, const QPolygon& subject) {
+  foreach (const QPoint& point, subject) {
+    if (!owner.containsPoint(point, Qt::WindingFill)) {
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+
+
 const QList<QPolygon>& PolygonDFSFinder::findPolygons(const QPoint& first) {
   m_first = first;
   m_owner = m_matrix[first].owner();
   
   m_acc.clear();
-  m_pointCache.clear();
-  m_pointCache << first;
   
   Matrix<char> matrixCache(m_matrix.size(), 0);
-  matrixCache[first] = 1;
+  QPolygon pointQueue;
   
-  m_pointCache << first;
-  
-  recursiveFind(first, matrixCache);
+  recursiveFind(first, QPoint(-1, -1), matrixCache, pointQueue);
   
   return m_acc;
 }
 
-void PolygonDFSFinder::recursiveFind(const QPoint& point, Matrix< char >& matrixCache) {
-  const QSize& ms = m_matrix.size();
-  
+void PolygonDFSFinder::recursiveFind(const QPoint& point,
+                                     const QPoint& previous,
+                                     Matrix<char>& matrixCache,
+                                     QPolygon& pointQueue) {
   matrixCache[point] = 1;
+  pointQueue.push_back(point);
+  
+  const QSize& ms = m_matrix.size();
   for (int k = 0; k < DIRECTION_COUNT; ++k) {
     const QPoint newPoint(point.x() + DX[k], point.y() + DY[k]);
     
-    if (newPoint.x() < 0 || newPoint.y() < 0
-        || newPoint.x() >= ms.width() || newPoint.y() >= ms.height()) {
+    if (!isValid(newPoint, ms)) {
       continue;
     }
     
@@ -45,18 +56,23 @@ void PolygonDFSFinder::recursiveFind(const QPoint& point, Matrix< char >& matrix
       continue;
     }
     
-    if (newPoint == m_first) {
-      m_acc << m_pointCache;
+    if (newPoint == previous) {
       continue;
     }
     
-    if (matrixCache[newPoint]) {
-      continue;
+    if (pointQueue.size() > 3)
+    {
+      if (newPoint == m_first) {
+        m_acc << pointQueue;
+        continue;
+      } else if (matrixCache[newPoint]) {
+        continue;
+      }
     }
     
-    m_pointCache.push_back(newPoint);
-    recursiveFind(newPoint, matrixCache);
+    recursiveFind(newPoint, point, matrixCache, pointQueue);
   }
   
-  m_pointCache.pop_back();
+  matrixCache[point] = 0;
+  pointQueue.pop_back();
 }

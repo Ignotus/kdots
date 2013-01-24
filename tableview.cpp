@@ -37,7 +37,6 @@ QPoint TableView::padding() const {
 }
 
 void TableView::paintEvent(QPaintEvent * /*e */) {
-  qDebug() << Q_FUNC_INFO;
   const QSize& buffSize = pixmapSize();
   QPixmap buffer(buffSize);
   buffer.fill(Qt::white);
@@ -98,7 +97,7 @@ void TableView::drawLines(QPainter& painter) {
   
   const float zero = 0.00001;
   const float sz = squareSize();
-  qDebug() << "Check: " << sz;
+  
   const float shift = sz;
   for (float x = sz; x + shift - w < zero; x += shift) {
     painter.drawLine(x, 0, x, h);
@@ -133,9 +132,10 @@ void TableView::drawDotsBorder(QPainter& painter) {
   
   for (int i = 0, xmax = ms.width(); i < xmax; ++i) {
     for (int j = 0, ymax = ms.height(); j < ymax; ++j) {
-      const PData& point = matrix[i][j];
-      const int own = point.owner();
-      if (!own || !point.isBorder()) {
+      const QPoint point(i, j);
+      const PData& pdata = matrix[point];
+      const int own = pdata.owner();
+      if (!own || !pdata.isBorder()) {
         continue;
       }
       
@@ -144,22 +144,19 @@ void TableView::drawDotsBorder(QPainter& painter) {
       painter.setPen(pen);
       
       for (int k = 0; k < DIRECTION_COUNT; ++k) {
-        const int newx = i + DX[k];
-        const int newy = j + DY[k];
+        const QPoint newPoint(i + DX[k], j + DY[k]);
         
-        if (!matrix[newx][newy].isBorder()) {
+        const PData& pdata = matrix[newPoint];
+        
+        if (!isValid(newPoint, ms) || pdata.owner() != own || !pdata.isBorder()) {
           continue;
         }
         
-        if (newx < 0 || newy < 0 || newx >= ms.width() || newy >= ms.height()) {
+        if (newPoint.x() < i || (newPoint.x() == i && newPoint.y() < j)) {
           continue;
         }
         
-        if (newx < i || (newx == i && newy < j)) {
-          continue;
-        }
-        
-        painter.drawLine(viewPoint(QPoint(newx, newy)), viewPoint(QPoint(i, j)));
+        painter.drawLine(viewPoint(newPoint), viewPoint(point));
       }
     }
   }
