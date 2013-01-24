@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <iostream>
 
 #include <QSize>
 #include <QPoint>
@@ -45,6 +46,17 @@ class Matrix {
     
     const QSize& size() const {
       return m_size;
+    }
+    
+    void print() const {
+      std::cout << "===============================" << std::endl;
+      for (int i = 0; i < m_size.height(); ++i) {
+        for (int j = 0; j < m_size.width(); ++j) {
+          std::cout << (int)m_data[j][i];
+        }
+        
+        std::cout << std::endl;
+      }
     }
     
   private:

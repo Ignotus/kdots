@@ -30,3 +30,8 @@ void PData::capture() {
 bool PData::isCaptured() const {
   return m_isCaptured;
 }
+
+std::ostream& operator<< (std::ostream& out, const PData& data) {
+  out << data.owner();
+  return out;
+}

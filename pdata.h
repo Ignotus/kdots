@@ -1,4 +1,5 @@
 #pragma once
+#include <ostream>
 
 class PData {
   public:
@@ -17,3 +18,5 @@ class PData {
     int m_owner;
     bool m_isCaptured;
 };
+
+std::ostream& operator<< (std::ostream& out, const PData& data);
