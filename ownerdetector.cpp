@@ -12,6 +12,10 @@ int OwnerDetector::owner() const {
   return m_currentOwner;
 }
 
+int OwnerDetector::owners() const {
+  return m_owners;
+}
+
 WithoutAdditionalMove::WithoutAdditionalMove(int owners, int first)
 : OwnerDetector(owners, first) {
 }

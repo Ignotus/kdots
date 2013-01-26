@@ -5,6 +5,7 @@ class OwnerDetector {
     OwnerDetector(int owners, int first);  
     virtual ~OwnerDetector();
     int owner() const;
+    int owners() const;
     
     virtual int nextOwner(bool isCaptured) = 0;
   

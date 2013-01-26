@@ -23,6 +23,8 @@ class TableModel : public QObject {
     const Matrix<PData>& data() const;
     
     const QPoint& lastPoint() const;
+    
+    int ownerCount() const;
  
   public slots:
     void putPoint(const QPoint& point);

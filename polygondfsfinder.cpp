@@ -1,4 +1,3 @@
-#include <QDebug>
 #include "polygondfsfinder.h"
 #include "matrix.h"
 #include "pdata.h"
@@ -42,9 +41,8 @@ void PolygonDFSFinder::recursiveFind(const QPoint& point,
   pointQueue.push_back(point);
   
   const QSize& ms = m_matrix.size();
-  for (int k = 0; k < DIRECTION_COUNT; ++k) {
+  for (std::size_t k = 0; k < DIRECTION_COUNT; ++k) {
     const QPoint newPoint(point.x() + DX[k], point.y() + DY[k]);
-    
     if (!isValid(newPoint, ms)) {
       continue;
     }
@@ -62,8 +60,6 @@ void PolygonDFSFinder::recursiveFind(const QPoint& point,
     if (pointQueue.size() > 3)
     {
       if (newPoint == m_first) {
-        matrixCache.print();
-        qDebug() << newPoint;
         m_acc << pointQueue;
         continue;
       } else if (matrixCache[newPoint]) {
@@ -74,6 +70,5 @@ void PolygonDFSFinder::recursiveFind(const QPoint& point,
     recursiveFind(newPoint, point, matrixCache, pointQueue);
   }
   
-  matrixCache[point] = 0;
   pointQueue.pop_back();
 }

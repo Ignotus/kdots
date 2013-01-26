@@ -20,6 +20,8 @@ void TableView::setModel(TableModel *model) {
   
   connect(model, SIGNAL(dataChanged()), this, SLOT(update()));
   connect(this, SIGNAL(pointPut(QPoint)), model, SLOT(putPoint(QPoint)));
+  
+  Configuration::instance().setOwnerCount(m_model->ownerCount());
 }
 
 void TableView::mouseReleaseEvent(QMouseEvent *e) {
@@ -45,8 +47,10 @@ void TableView::paintEvent(QPaintEvent * /*e */) {
   painter.setRenderHint(QPainter::Antialiasing);
   
   drawLines(painter);
-  drawDots(painter);
-  drawDotsBorder(painter);
+  if (m_model) {
+    drawDots(painter);
+    drawDotsBorder(painter);
+  }
   
   QPainter wPainter(this);
   wPainter.drawPixmap(padding(), buffer);
@@ -90,7 +94,6 @@ QPoint TableView::viewPoint(const QPoint& modelPoint) const {
 }
 
 void TableView::drawLines(QPainter& painter) {
-  const QSize& ms = m_model->data().size();
   const QPaintDevice *device = painter.device();
   const int w = device->width();
   const int h = device->height();
@@ -117,8 +120,8 @@ void TableView::drawDots(QPainter& painter) {
     for (int j = 0, ymax = ms.height(); j < ymax; ++j) {
       const PData& point = matrix[i][j];
       if (point.owner()) {
-        const QColor& brushColor = Configuration::instance().pointColor(point.owner());
-        painter.setBrush(QBrush(brushColor));
+        const QBrush& brush = Configuration::instance().pointBrush(point.owner());
+        painter.setBrush(brush);
         painter.drawEllipse(viewPoint(QPoint(i, j)), 5, 5);
       }
     }
@@ -139,11 +142,9 @@ void TableView::drawDotsBorder(QPainter& painter) {
         continue;
       }
       
-      const QPen pen(Configuration::instance().pointColor(own));
+      painter.setPen(Configuration::instance().pointPen(own));
       
-      painter.setPen(pen);
-      
-      for (int k = 0; k < DIRECTION_COUNT; ++k) {
+      for (std::size_t k = 0; k < DIRECTION_COUNT; ++k) {
         const QPoint newPoint(i + DX[k], j + DY[k]);
         
         const PData& pdata = matrix[newPoint];

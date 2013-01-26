@@ -27,6 +27,10 @@ const Matrix<PData>& TableModel::data() const {
   return m_data;
 }
 
+int TableModel::ownerCount() const {
+  return m_ownerDetector->owners();
+}
+
 const QPoint& TableModel::lastPoint() const {
   return m_lastPoint;
 }
@@ -66,27 +70,25 @@ bool TableModel::findCapturedBorders(const QPoint& point) {
           if (polygon.containsPoint(currentPoint, Qt::OddEvenFill)) {
             point.capture();
             hasPoint = true;
-            
-            qDebug() << "Has point: " << currentPoint << " in ";
-            qDebug() << polygon;
           }
         }
       }
     }
     
-    if (hasPoint) {
-      foundBorders = true;
+    if (!hasPoint)
+      continue;
+    
+    foundBorders = true;
       
-      foreach (const QPoint& point, polygon) {
-        m_data[point].changeToBorder();
-        for (int i = 0, xmax = ms.width(); i < xmax; ++i) {
-          for (int j = 0, ymax = ms.height(); j < ymax; ++j) {
-            const QPoint currentPoint(i, j);
-            PData& point = m_data[currentPoint];
-            if (!point.owner() && !point.isCaptured()) {
-              if (polygon.containsPoint(currentPoint, Qt::OddEvenFill)) {
-                point.capture();
-              }
+    foreach (const QPoint& point, polygon) {
+      m_data[point].changeToBorder();
+      for (int i = 0, xmax = ms.width(); i < xmax; ++i) {
+        for (int j = 0, ymax = ms.height(); j < ymax; ++j) {
+          const QPoint currentPoint(i, j);
+          PData& point = m_data[currentPoint];
+          if (!point.owner() && !point.isCaptured()) {
+            if (polygon.containsPoint(currentPoint, Qt::OddEvenFill)) {
+              point.capture();
             }
           }
         }
