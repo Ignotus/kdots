@@ -12,8 +12,7 @@ class PolygonDFSFinder : public PolygonFinder {
     const QList<QPolygon>& findPolygons(const QPoint& first);
     
   private:
-    void recursiveFind(const QPoint& point, const QPoint& previous,
-                       Matrix<char>& matrixCache, QPolygon& pointQueue);
+    void recursiveFind(const QPoint& point, Matrix<char>& matrixCache, QPolygon& pointQueue);
     
     bool contains(const QPolygon& owner, const QPolygon& subject);
     

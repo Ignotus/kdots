@@ -6,20 +6,20 @@ set(CMAKE_MODULE_PATH
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake
 )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -fexceptions -std=c++0x -Wall")
+add_definitions(-std=c++0x -Wall)
 
 find_package(Qt4 REQUIRED)
 find_package(KDE4 REQUIRED)
 
-find_package(LibKDEGames)
+#find_package(LibKDEGames)
 
-if(KDEGAMES_FOUND)
-  add_definitions(-DOLD_LIBKDEGAMES)
-else(KDEGAMES_FOUND)
-  find_package(KDEGames REQUIRED)
-  message(STATUS "Found KDEGames")
-  add_definitions(-DNEW_LIBKDEGAMES)
-endif(KDEGAMES_FOUND)
+#if(KDEGAMES_FOUND)
+#  add_definitions(-DOLD_LIBKDEGAMES)
+#else(KDEGAMES_FOUND)
+#  find_package(KDEGames REQUIRED)
+#  message(STATUS "Found KDEGames")
+#  add_definitions(-DNEW_LIBKDEGAMES)
+#endif(KDEGAMES_FOUND)
 
 include(KDE4Defaults)
 
