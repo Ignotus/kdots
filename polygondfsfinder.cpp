@@ -20,8 +20,6 @@ bool PolygonDFSFinder::contains(const QPolygon& owner, const QPolygon& subject) 
   return true;
 }
 
-
-
 const QList<QPolygon>& PolygonDFSFinder::findPolygons(const QPoint& first) {
   m_first = first;
   m_owner = m_matrix[first].owner();

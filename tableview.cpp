@@ -1,4 +1,4 @@
-#include <math.h>
+#include <cmath>
 
 #include <QMouseEvent>
 #include <QPainter>
@@ -95,15 +95,15 @@ void TableView::drawLines(QPainter& painter) {
   const int w = device->width();
   const int h = device->height();
   
-  const float zero = 0.00001;
+  const double zero = 0.001;
   const float sz = squareSize();
   
   const float shift = sz;
-  for (float x = sz; x + shift - w < zero; x += shift) {
+  for (float x = sz; w - x > zero; x += shift) {
     painter.drawLine(x, 0, x, h);
   }
   
-  for (float y = sz; y + shift - h < zero; y += shift) {
+  for (float y = sz; h - y > zero; y += shift) {
     painter.drawLine(0, y, w, y);
   }
 }
