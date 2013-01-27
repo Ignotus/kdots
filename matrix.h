@@ -4,6 +4,7 @@
 
 #include <QSize>
 #include <QPoint>
+#include <QPolygon>
 
 class QSize;
 
@@ -65,3 +66,4 @@ class Matrix {
 };
 
 bool isValid(const QPoint& point, const QSize& ms);
+QPoint next(const QPolygon::const_iterator& it,const QPolygon& poly);

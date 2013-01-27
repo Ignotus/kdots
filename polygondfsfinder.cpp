@@ -36,22 +36,8 @@ const QList<QPolygon>& PolygonDFSFinder::findPolygons(const QPoint& first) {
   return m_acc;
 }
 
-namespace {
-  QPoint next(const QPolygon::const_iterator& it,const QPolygon& poly) {
-    const QPolygon::const_iterator ifend = it + 1;
-    if (ifend == poly.end())
-      return *poly.begin();
-    
-    return *ifend;
-  }
-}
-
 void PolygonDFSFinder::resizeLastPolygon() {
-  if (m_acc.empty()) {
-    return;
-  }
-  
-  QPolygon& last = m_acc.front();
+  QPolygon& last = m_acc.back();
   
   const int own = m_matrix[m_first].owner();
   

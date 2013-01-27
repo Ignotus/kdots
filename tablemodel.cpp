@@ -1,4 +1,5 @@
 #include <QPoint>
+#include <QDebug>
 
 #include "tablemodel.h"
 #include "ownerdetector.h"
@@ -80,6 +81,16 @@ bool TableModel::findCapturedBorders(const QPoint& point) {
       continue;
     
     foundBorders = true;
+    
+    for (QPolygon::const_iterator it = polygon.begin(), end = polygon.end();
+         it != end;
+         ++it) {
+      const QPoint& first = *it;
+      const QPoint& second = next(it, polygon);
+      
+      m_data[first].addBorderTo(first, second);
+      m_data[second].addBorderTo(second, first);
+    }
       
     foreach (const QPoint& point, polygon) {
       m_data[point].changeToBorder();

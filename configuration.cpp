@@ -1,7 +1,7 @@
 #include <stdexcept>
 
-#include <QDebug>
 #include <QPen>
+#include <QDebug>
 
 #include "configuration.h"
 
@@ -39,7 +39,6 @@ void Configuration::setOwnerCount(int count) {
   m_brush = new QBrush[count];
   
   for (int i = 0; i < count; ++i) {
-    qDebug() << COLORS[i];
     m_pens[i].setColor(COLORS[i]);
     m_brush[i].setColor(COLORS[i]);
     m_brush[i].setStyle(Qt::SolidPattern);
