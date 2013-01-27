@@ -1,4 +1,3 @@
-#include <QList>
 #include <QPair>
 #include <QDebug>
 
@@ -37,6 +36,51 @@ const QList<QPolygon>& PolygonDFSFinder::findPolygons(const QPoint& first) {
   return m_acc;
 }
 
+namespace {
+  QPoint next(const QPolygon::const_iterator& it,const QPolygon& poly) {
+    const QPolygon::const_iterator ifend = it + 1;
+    if (ifend == poly.end())
+      return *poly.begin();
+    
+    return *ifend;
+  }
+}
+
+void PolygonDFSFinder::resizeLastPolygon() {
+  if (m_acc.empty()) {
+    return;
+  }
+  
+  QPolygon& last = m_acc.front();
+  
+  const int own = m_matrix[m_first].owner();
+  
+  for (QPolygon::iterator it = last.begin(); it != last.end(); ++it) {
+    const QPoint& first = *it;
+    const QPoint& second = next(it, last);
+    
+    if (first.x() == second.x() || first.y() == second.y()) {
+      continue;
+    }
+    
+    const QPoint newPoints[] = {QPoint(first.x(), second.y()),
+                                QPoint(second.x(), first.y())};
+                                          
+    for (std::size_t i = 0; i < sizeof(newPoints) / sizeof(QPoint); ++i) {
+      const QPoint& current = newPoints[i];
+      const PData& data = m_matrix[current];
+      if (data.owner() != own || data.isCaptured()
+          || last.containsPoint(current, Qt::OddEvenFill)) {
+        continue;
+      }
+      
+      it = last.insert(it + 1, current);
+      
+      break;
+    }
+  }
+}
+
 void PolygonDFSFinder::recursiveFind(const QPoint& point,
                                      Matrix<char>& matrixCache,
                                      QPolygon& pointQueue) {
@@ -46,30 +90,33 @@ void PolygonDFSFinder::recursiveFind(const QPoint& point,
   const QSize& ms = m_matrix.size();
   
   typedef QPair<QPoint, int> PriorityType;
-  QList<PriorityType> priorities;
+  QVector<PriorityType> priorities;
+  priorities.reserve(DIRECTION_COUNT);
+  
   for (std::size_t k = 0; k < DIRECTION_COUNT; ++k) {
     const QPoint newPoint(point.x() + DX[k], point.y() + DY[k]);
     if (!isValid(newPoint, ms)) {
-      priorities.push_back(PriorityType(newPoint, -1));
+      priorities << PriorityType(newPoint, -1);
       continue;
     }
     
     if (pointQueue.size() > 3 && newPoint == m_first) {
       m_acc << pointQueue;
-      priorities.push_back(PriorityType(newPoint, -1));
+      resizeLastPolygon();
+      priorities << PriorityType(newPoint, -1);
       continue;
     }
     
     const PData& pd = m_matrix[newPoint];
     
     if (pd.owner() != m_owner || pd.isCaptured() || matrixCache[newPoint]) {
-      priorities.push_back(PriorityType(newPoint, -1));
+      priorities << PriorityType(newPoint, -1);
       continue;
     }
     
     const int prio = std::abs(newPoint.x() - m_first.x()) + std::abs(newPoint.y() - m_first.y());
     
-    priorities.push_back(PriorityType(newPoint, prio));
+    priorities << PriorityType(newPoint, prio);
   }
   
   std::sort(priorities.begin(),
@@ -79,12 +126,14 @@ void PolygonDFSFinder::recursiveFind(const QPoint& point,
                 return first.second > second.second;
             });
   
-  foreach(const PriorityType& prio, priorities) {
+  foreach (const PriorityType& prio, priorities) {
     if (prio.second == -1)
       break;
     
     recursiveFind(prio.first, matrixCache, pointQueue);
   }
+  
+  
   
   pointQueue.pop_back();
 }

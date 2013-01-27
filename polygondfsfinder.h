@@ -13,6 +13,7 @@ class PolygonDFSFinder : public PolygonFinder {
     
   private:
     void recursiveFind(const QPoint& point, Matrix<char>& matrixCache, QPolygon& pointQueue);
+    void resizeLastPolygon();
     
     bool contains(const QPolygon& owner, const QPolygon& subject);
     
