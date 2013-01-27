@@ -37,6 +37,7 @@ include_directories(
 )
 
 set(SRCS
+  mainwindow.cpp
   main.cpp
   matrix.cpp
   tablemodel.cpp
@@ -50,6 +51,7 @@ set(SRCS
 )
 
 set(HEADERS
+  mainwindow.h
   matrix.h
   tablemodel.h
   tableview.h
@@ -61,6 +63,12 @@ set(HEADERS
   pointcounter.h
 )
 
+set(FORMS
+  ui/mainwindow.ui
+)
+
+kde4_add_ui_files(SRCS ${FORMS})
+
 kde4_add_executable(kdots ${SRCS})
 
-target_link_libraries(kdots ${QT_LIBRARIES})
+target_link_libraries(kdots ${QT_LIBRARIES} ${KDE4_KDECORE_LIBS} ${KDEGAMES_LIBRARY})

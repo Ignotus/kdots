@@ -8,8 +8,6 @@
 TableModel::TableModel(const QSize& size, QObject *parent)
 : QObject(parent)
 , m_data(size)
-, m_ownerDetector(NULL)
-, m_polygonFinder(NULL)
 , m_lastPoint(-1, -1) {
 }
 
@@ -17,11 +15,11 @@ TableModel::~TableModel() {
 }
 
 void TableModel::setOwnerDetector(OwnerDetector *detector) {
-  m_ownerDetector = detector;
+  m_ownerDetector.reset(detector);
 }
 
 void TableModel::setPolygonFinder(PolygonFinder *finder) {
-  m_polygonFinder = finder;
+  m_polygonFinder.reset(finder);
 }
 
 const Matrix<PData>& TableModel::data() const {

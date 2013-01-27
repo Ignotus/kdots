@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <vector>
 
 #include <QObject>
@@ -37,7 +38,7 @@ class TableModel : public QObject {
     
   private:
     Matrix<PData> m_data;
-    OwnerDetector *m_ownerDetector;
-    PolygonFinder *m_polygonFinder;
+    std::unique_ptr<OwnerDetector> m_ownerDetector;
+    std::unique_ptr<PolygonFinder> m_polygonFinder;
     QPoint m_lastPoint;
 };
