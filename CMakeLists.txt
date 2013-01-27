@@ -46,6 +46,7 @@ set(SRCS
   configuration.cpp
   polygonfinder.cpp
   polygondfsfinder.cpp
+  pointcounter.cpp
 )
 
 set(HEADERS
@@ -57,6 +58,7 @@ set(HEADERS
   configuration.h
   polygonfinder.h
   polygondfsfinder.h
+  pointcounter.h
 )
 
 kde4_add_executable(kdots ${SRCS})

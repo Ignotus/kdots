@@ -1,6 +1,10 @@
 #pragma once
-#include <QList>
-#include <QPolygon>
+
+class QPolygon;
+class QPoint;
+
+template<class T>
+class QList;
 
 class PData;
 

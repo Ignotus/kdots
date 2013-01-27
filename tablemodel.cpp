@@ -61,7 +61,7 @@ bool TableModel::findCapturedBorders(const QPoint& point) {
   const int currentOwn = m_ownerDetector->owner();
   
   bool foundBorders = false;
-  QList<QPoint> capturedPoints;
+  QVector<QPoint> capturedPoints;
   foreach (const QPolygon& polygon, polygons) {
     bool hasPoint = false;
     for (int i = 0, xmax = ms.width(); i < xmax; ++i) {
@@ -110,6 +110,10 @@ bool TableModel::findCapturedBorders(const QPoint& point) {
   
   foreach (const QPoint& point, capturedPoints) {
     m_data[point].capture();
+  }
+  
+  if (foundBorders) {
+    emit pointCaptured(currentOwn, capturedPoints.size());
   }
   
   return foundBorders;

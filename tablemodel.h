@@ -33,6 +33,7 @@ class TableModel : public QObject {
   
   signals:
     void dataChanged();
+    void pointCaptured(int owner, int count);
     
   private:
     Matrix<PData> m_data;

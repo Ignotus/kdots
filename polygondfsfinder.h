@@ -1,5 +1,9 @@
 #pragma once
+#include <QPoint>
+#include <QList>
 #include "polygonfinder.h"
+
+class QPolygon;
 
 template<class T>
 class Matrix;

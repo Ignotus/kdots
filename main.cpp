@@ -3,6 +3,7 @@
 #include "tableview.h"
 #include "ownerdetector.h"
 #include "polygondfsfinder.h"
+#include "pointcounter.h"
 
 int main(int argc, char **argv) {
   QApplication app(argc, argv);
@@ -19,6 +20,11 @@ int main(int argc, char **argv) {
   view.setModel(&model);
   
   view.show();
+  
+  PointCounter counter(model.ownerCount());
+  
+  QObject::connect(&model, SIGNAL(pointCaptured(int, int)), &counter, SLOT(onPointCaptured(int, int)));
+          
   
   return app.exec();
 }
