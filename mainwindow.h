@@ -15,7 +15,8 @@ class MainWindow : public QMainWindow {
   public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    
+  
+  public slots:
     void init();
     
   private:

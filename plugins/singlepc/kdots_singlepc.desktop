@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Service
+Icon=computer
+Name=SinglePC
+Comment=SinglePC KDots Plugin
+ServiceTypes=KDots/Plugin
+
+X-KDE-PluginInfo-Author=Minh Ngo
+X-KDE-PluginInfo-Email=minh@fedoraproject.org
+X-KDE-PluginInfo-Version=2.0
+X-KDE-PluginInfo-Category=Service
+X-KDE-PluginInfo-License=BSD
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-Library=kdots_singlepc
+

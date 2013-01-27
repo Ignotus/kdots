@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "tablemodel.h"
@@ -5,11 +7,17 @@
 #include "ownerdetector.h"
 #include "polygondfsfinder.h"
 #include "pointcounter.h"
+#include "pluginloader.h"
 
 MainWindow::MainWindow(QWidget *parent)
 : QMainWindow(parent)
 , m_ui(new Ui::MainWindow) {
   m_ui->setupUi(this);
+  
+  connect(m_ui->actionNew, SIGNAL(triggered(bool)), this, SLOT(init()));
+  
+  PluginLoader *loader = new PluginLoader(this);
+  loader->loadPlugins();
 }
 
 MainWindow::~MainWindow() {

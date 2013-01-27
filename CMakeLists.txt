@@ -6,7 +6,7 @@ set(CMAKE_MODULE_PATH
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake
 )
 
-add_definitions(-std=c++0x -Wall)
+add_definitions(-std=c++11 -Wall)
 
 find_package(Qt4 REQUIRED)
 find_package(KDE4 REQUIRED)
@@ -36,6 +36,8 @@ include_directories(
   ${QT_INCLUDES}
 )
 
+set(KDOTS_INTERFACES ${CMAKE_CURRENT_SOURCE_DIR}/interfaces/)
+
 set(SRCS
   mainwindow.cpp
   main.cpp
@@ -48,9 +50,10 @@ set(SRCS
   polygonfinder.cpp
   polygondfsfinder.cpp
   pointcounter.cpp
+  pluginloader.cpp
 )
 
-set(HEADERS
+set(HDRS
   mainwindow.h
   matrix.h
   tablemodel.h
@@ -61,6 +64,7 @@ set(HEADERS
   polygonfinder.h
   polygondfsfinder.h
   pointcounter.h
+  pluginloader.h
 )
 
 set(FORMS
@@ -69,6 +73,16 @@ set(FORMS
 
 kde4_add_ui_files(SRCS ${FORMS})
 
-kde4_add_executable(kdots ${SRCS})
+kde4_add_executable(kdots ${SRCS} ${HDRS})
 
-target_link_libraries(kdots ${QT_LIBRARIES} ${KDE4_KDECORE_LIBS} ${KDEGAMES_LIBRARY})
+target_link_libraries(kdots
+    kdotscore
+    ${QT_LIBRARIES}
+    ${KDE4_KDECORE_LIBS}
+    ${KDE4_KDEUI_LIBS}
+    ${KDEGAMES_LIBRARY})
+
+install(TARGETS kdots DESTINATION ${BIN_INSTALL_DIR})
+
+add_subdirectory(plugins)
+add_subdirectory(interfaces)

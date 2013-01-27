@@ -4,7 +4,7 @@ PData::PData()
 : m_border(false)
 , m_isCaptured(false) 
 , m_owner(0)
-, m_borders({0, 0, 0, 0, 0, 0, 0, 0}) {
+, m_borders{0, 0, 0, 0, 0, 0, 0, 0} {
 }
     
 void PData::changeToBorder() {
