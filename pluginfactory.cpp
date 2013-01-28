@@ -11,12 +11,8 @@ PluginFactory::PluginFactory(QObject *parent)
 PluginFactory::~PluginFactory() {
 }
 
-const KService* PluginFactory::info(const QString& name) const {
-  QMap<QString, KService::Ptr>::const_iterator it = m_metadata.find(name);
-  if (it == m_metadata.end())
-    return NULL;
-  
-  return it.value().constData();
+const QMap<QString, KService::Ptr>& PluginFactory::info() const {
+  return m_metadata;
 }
 
 const IPlugin* PluginFactory::plugin(const QString& name) const {

@@ -17,7 +17,7 @@ class PluginFactory : public QObject {
     void loadPlugins();
     
     QList<QString> availablePlugins() const;
-    const KService* info(const QString& name) const;
+    const QMap<QString, KService::Ptr>& info() const;
     const IPlugin* plugin(const QString& name) const;
     
   private:
