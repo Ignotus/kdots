@@ -7,7 +7,7 @@
 #include "ownerdetector.h"
 #include "polygondfsfinder.h"
 #include "pointcounter.h"
-#include "pluginloader.h"
+#include "pluginfactory.h"
 
 MainWindow::MainWindow(QWidget *parent)
 : QMainWindow(parent)
@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
   
   connect(m_ui->actionNew, SIGNAL(triggered(bool)), this, SLOT(init()));
   
-  PluginLoader *loader = new PluginLoader(this);
+  PluginFactory *loader = new PluginFactory(this);
   loader->loadPlugins();
 }
 

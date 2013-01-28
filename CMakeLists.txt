@@ -6,7 +6,7 @@ set(CMAKE_MODULE_PATH
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake
 )
 
-add_definitions(-std=c++11 -Wall)
+add_definitions(-std=c++0x -Wall)
 
 find_package(Qt4 REQUIRED)
 find_package(KDE4 REQUIRED)
@@ -50,7 +50,7 @@ set(SRCS
   polygonfinder.cpp
   polygondfsfinder.cpp
   pointcounter.cpp
-  pluginloader.cpp
+  pluginfactory.cpp
 )
 
 set(HDRS
@@ -64,7 +64,7 @@ set(HDRS
   polygonfinder.h
   polygondfsfinder.h
   pointcounter.h
-  pluginloader.h
+  pluginfactory.h
 )
 
 set(FORMS
