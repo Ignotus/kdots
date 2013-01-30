@@ -8,6 +8,7 @@
 #include "polygondfsfinder.h"
 #include "pointcounter.h"
 #include "pluginfactory.h"
+#include "pluginfactoryview.h"
 
 MainWindow::MainWindow(QWidget *parent)
 : QMainWindow(parent)
@@ -18,9 +19,14 @@ MainWindow::MainWindow(QWidget *parent)
   
   PluginFactory *loader = new PluginFactory(this);
   loader->loadPlugins();
+  
+  PluginFactoryView *factoryView = new PluginFactoryView;
+  factoryView->setModel(loader);
+  factoryView->show();
 }
 
 MainWindow::~MainWindow() {
+  delete m_ui;
 }
 
 void MainWindow::init() {

@@ -39,8 +39,8 @@ include_directories(
 set(KDOTS_INTERFACES ${CMAKE_CURRENT_SOURCE_DIR}/interfaces/)
 
 set(SRCS
-  mainwindow.cpp
   main.cpp
+  mainwindow.cpp
   matrix.cpp
   tablemodel.cpp
   tableview.cpp
@@ -51,6 +51,8 @@ set(SRCS
   polygondfsfinder.cpp
   pointcounter.cpp
   pluginfactory.cpp
+  plugindelegate.cpp
+  pluginfactoryview.cpp
 )
 
 set(HDRS
@@ -65,10 +67,13 @@ set(HDRS
   polygondfsfinder.h
   pointcounter.h
   pluginfactory.h
+  plugindelegate.h
+  pluginfactoryview.h
 )
 
 set(FORMS
   ui/mainwindow.ui
+  ui/pluginfactoryview.ui
 )
 
 kde4_add_ui_files(SRCS ${FORMS})
