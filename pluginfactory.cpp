@@ -29,11 +29,15 @@ QList<QString> PluginFactory::availablePlugins() const {
 
 void PluginFactory::loadPlugins() {
   KService::List offers = KServiceTypeTrader::self()->query("KDots/Plugin");
+  
+  foreach (const KService::Ptr& shared, offers) {
+    m_metadata[shared->name()] = shared;
+  }
  
   KService::List::const_iterator iter;
   for(iter = offers.begin(); iter < offers.end(); ++iter) {
     KService::Ptr service = *iter;
- 
+    
     KPluginFactory *factory = KPluginLoader(service->library()).factory();
  
     if (!factory) {
@@ -47,7 +51,6 @@ void PluginFactory::loadPlugins() {
     if (plugin) {
       qDebug() << Q_FUNC_INFO <<  "Load plugin:" << service->name();
       m_plugins[service->name()] = plugin;
-      m_metadata[service->name()] = service;
     } else {
       qDebug() << Q_FUNC_INFO << "Cannot load a plugin";
     }
