@@ -7,6 +7,7 @@ set(SRCS
 set(HDRS
   iplugin.h
   pluginmacros.h
+  tableconfig.h
 )
 
 kde4_add_library(kdotscore SHARED ${SRCS})

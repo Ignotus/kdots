@@ -27,6 +27,10 @@ class PluginFactory : public QObject {
    
   public slots:
     void setCurrentPlugin(const QString& name);
+    void emitCurrentPlugin();
+    
+  signals:
+    void pluginSet(IPlugin *plugin);
     
   private:
     QMap<QString, IPlugin*> m_plugins;

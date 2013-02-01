@@ -40,6 +40,10 @@ KService::Ptr PluginFactory::info(const QString& name) const {
   return *it;
 }
 
+void PluginFactory::emitCurrentPlugin() {
+  emit pluginSet(currentPlugin());
+}
+
 void PluginFactory::setCurrentPlugin(const QString& name) {
   m_currentPluginName = name;
 }
@@ -78,7 +82,7 @@ void PluginFactory::loadPlugins() {
     IPlugin *plugin = factory->create<IPlugin>(this);
  
     if (plugin) {
-      qDebug() << Q_FUNC_INFO <<  "Load plugin:" << service->name();
+      qDebug() << Q_FUNC_INFO <<  "Load plugin:" << service->name() << plugin;
       m_plugins[service->name()] = plugin;
     } else {
       qDebug() << Q_FUNC_INFO << "Cannot load a plugin";

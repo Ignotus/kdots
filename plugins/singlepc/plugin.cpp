@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <pluginmacros.h>
 #include "plugin.h"
 
@@ -7,14 +8,6 @@ Plugin::Plugin(QObject *parent, const QVariantList& varlist)
 : IPlugin(parent, varlist) {
 }
 
-QString Plugin::name() const {
-  return "Single PC";
-}
-  
-QString Plugin::description() const {
-  return "Playing KDots";
-}
-  
-IRival* Plugin::createRival() const {
-  return NULL;
+void Plugin::configure(QObject *owner) {
+  emit createTable();
 }

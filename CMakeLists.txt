@@ -53,6 +53,8 @@ set(SRCS
   pluginfactory.cpp
   plugindelegate.cpp
   pluginfactoryview.cpp
+  newgamedialog.cpp
+  newgamefactory.cpp
 )
 
 set(HDRS
@@ -69,11 +71,15 @@ set(HDRS
   pluginfactory.h
   plugindelegate.h
   pluginfactoryview.h
+  newgamedialog.h
+  newgamefactory.h
 )
 
 set(FORMS
   ui/mainwindow.ui
   ui/pluginfactoryview.ui
+  ui/newgamedialog.ui
+  ui/newgamefactory.ui
 )
 
 kde4_add_ui_files(SRCS ${FORMS})

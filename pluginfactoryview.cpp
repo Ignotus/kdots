@@ -11,6 +11,7 @@ PluginFactoryView::PluginFactoryView(QWidget *parent)
 }
 
 PluginFactoryView::~PluginFactoryView() {
+  delete m_ui;
 }
 
 void PluginFactoryView::setModel(PluginFactory *factory) {

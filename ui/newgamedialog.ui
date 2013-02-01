@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NewGameDialog</class>
+ <widget class="QDialog" name="NewGameDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>483</width>
+    <height>333</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>New Game</string>
+  </property>
+  <layout class="QGridLayout" name="controlGrid">
+   <item row="1" column="2">
+    <widget class="KPushButton" name="okButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>OK</string>
+     </property>
+     <property name="icon">
+      <iconset theme="dialog-ok">
+       <normaloff/>
+      </iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="KPushButton" name="nextButton">
+     <property name="text">
+      <string>Next</string>
+     </property>
+     <property name="icon">
+      <iconset theme="go-next">
+       <normaloff/>
+      </iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="KPushButton" name="cancelButton">
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+     <property name="icon">
+      <iconset theme="dialog-cancel">
+       <normaloff/>
+      </iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <layout class="QGridLayout" name="grid"/>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KPushButton</class>
+   <extends>QPushButton</extends>
+   <header>kpushbutton.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>cancelButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>NewGameDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>67</x>
+     <y>284</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>okButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>NewGameDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>331</x>
+     <y>284</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
