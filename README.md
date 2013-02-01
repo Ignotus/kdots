@@ -9,6 +9,8 @@ where the lines cross.
 
 Screenshots and addtional information are located in the [wiki](https://github.com/Ignotus/kdots/wiki).
 
+Releases are here https://github.com/Ignotus/kdots/tags
+
 License
 =======
 Look the [COPYING](https://github.com/Ignotus/kdots/blob/master/COPYING) file for more information.
