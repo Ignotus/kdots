@@ -19,6 +19,7 @@ Exec=kdots
 Type=Application
 Categories=Qt;KDE;Game;BoardGame;
 GenericName=Game of dots
+GenericName[de]=Spiel mit Punkten
 GenericName[et]=Punktimäng
 GenericName[fr]=Jeu de points
 GenericName[ga]=Cluiche poncanna
