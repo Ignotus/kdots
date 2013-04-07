@@ -2,6 +2,7 @@
 Name=KDots
 Name[cs]=KDots
 Name[de]=KDots
+Name[es]=KDots
 Name[et]=KDots
 Name[fr]=KDots
 Name[ga]=KDots
@@ -22,6 +23,7 @@ Type=Application
 Categories=Qt;KDE;Game;BoardGame;
 GenericName=Game of dots
 GenericName[de]=Spiel mit Punkten
+GenericName[es]=Juego de puntos
 GenericName[et]=Punktimäng
 GenericName[fr]=Jeu de points
 GenericName[ga]=Cluiche poncanna
