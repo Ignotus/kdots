@@ -44,9 +44,14 @@ void DotTable::putSecondPlayer(std::size_t x, std::size_t y)
 {
 }
 
-bool operator==(const DotTable& other) const
+bool DotTable::operator==(const DotTable& other) const
 {
     return false;
+}
+
+bool DotTable::operator!=(const DotTable& other) const
+{
+    return true;
 }
 
 std::ostream& operator<<(std::ostream& out, const DotTable& table)

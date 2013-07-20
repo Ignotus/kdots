@@ -28,6 +28,7 @@ public:
     void putSecondPlayer(std::size_t x, std::size_t y);
     
     bool operator==(const DotTable& other) const;
+    bool operator!=(const DotTable& other) const;
 };
 
 std::ostream& operator<<(std::ostream& out, const DotTable& table);
