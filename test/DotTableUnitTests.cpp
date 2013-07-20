@@ -61,3 +61,20 @@ BOOST_AUTO_TEST_CASE(PlayingStrategiesTest)
     checkStrategy(new WithoutExtraMovePlayingStrategy);
     checkStrategy(new WithExtraMovePlayingStrategy);
 }
+
+BOOST_AUTO_TEST_CASE(DotTableOperations)
+{
+    DotTable table1(3, 3);
+    DotTable table2(3, 3);
+    BOOST_REQUIRE(table1 == table2);
+   
+    table2.put(1, 1);
+    table2.put(1, 0);
+    BOOST_REQUIRE(table1 != table2);
+    
+    std::stringstream ss;
+    ss << table1;
+    ss >> table2;
+    BOOST_REQUIRE(table1 == table2);
+   
+}

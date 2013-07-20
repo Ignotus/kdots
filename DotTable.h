@@ -26,4 +26,9 @@ public:
     void put(std::size_t x, std::size_t y);
     void putFirstPlayer(std::size_t x, std::size_t y);
     void putSecondPlayer(std::size_t x, std::size_t y);
+    
+    bool operator==(const DotTable& other) const;
 };
+
+std::ostream& operator<<(std::ostream& out, const DotTable& table);
+std::istream& operator>>(std::istream& in, DotTable& table);
