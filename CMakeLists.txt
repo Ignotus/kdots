@@ -21,18 +21,24 @@ include_directories(
 )
 
 set(SRCS
+    WithExtraMovePlayingStrategy.cpp
+    WithoutExtraMovePlayingStrategy.cpp
     Cell.cpp
     DotTable.cpp
 )
 
-set(HDRS
+set(HDRS 
+    WithExtraMovePlayingStrategy.h
+    WithoutExtraMovePlayingStrategy.h
     Cell.h
     DotTable.h
+    IPlayingStrategy.h
+    
 )
 
 add_library(kdotslib ${SRCS} ${HDRS})
 
-add_executable(kdots main.cpp)
+add_executable(kdots  main.cpp)
 
 target_link_libraries(kdots kdotslib)
 
