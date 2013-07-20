@@ -11,8 +11,8 @@ const std::size_t HEIGHT = 3;
 BOOST_AUTO_TEST_CASE(InitializationTest)
 {
     DotTable table(WIDTH, HEIGHT);
-    BOOST_CHECK_EQUAL(table.height(), WIDTH);
-    BOOST_CHECK_EQUAL(table.width(), HEIGHT);
+    BOOST_CHECK_EQUAL(table.height(), HEIGHT);
+    BOOST_CHECK_EQUAL(table.width(), WIDTH);
     
     BOOST_CHECK(table.cell(WIDTH + 2, HEIGHT + 2) == nullptr);
     
