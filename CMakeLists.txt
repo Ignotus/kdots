@@ -21,6 +21,7 @@ include_directories(
 )
 
 set(SRCS
+    BorderLine.cpp
     WithExtraMovePlayingStrategy.cpp
     WithoutExtraMovePlayingStrategy.cpp
     Cell.cpp
@@ -28,6 +29,7 @@ set(SRCS
 )
 
 set(HDRS 
+    BorderLine.h
     WithExtraMovePlayingStrategy.h
     WithoutExtraMovePlayingStrategy.h
     Cell.h
