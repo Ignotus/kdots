@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(UndoStackTest)
     for (int i = 0; i < 4; ++i)
     {
         const Cell *ccell = table.cell(points[i][0], points[i][1]);
-        BOOST_CHECK(ccell->beginBorders() != ccell.endBorders());
+        BOOST_CHECK(ccell->beginBorders() != ccell->endBorders());
     }
     
     BOOST_CHECK(table.undo() == true);
