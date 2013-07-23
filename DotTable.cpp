@@ -5,6 +5,7 @@ DotTable::DotTable(std::size_t width, std::size_t height, char firstOwner)
     : mWidth(width)
     , mHeight(height)
     , mFirstPlayer(firstOwner)
+    , mpUndoStack(NULL)
 {
 }
 
@@ -44,9 +45,9 @@ void DotTable::putSecondPlayer(std::size_t x, std::size_t y)
 {
 }
 
-bool DotTable::undo()
+void DotTable::registerUndoManager(UndoStack *stack)
 {
-    return false;
+    mpUndoStack = stack;
 }
 
 bool DotTable::operator==(const DotTable& other) const
