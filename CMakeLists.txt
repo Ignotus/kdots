@@ -21,6 +21,9 @@ include_directories(
 )
 
 set(SRCS
+    UndoObject.cpp
+    UndoStack.cpp
+    UndoState.cpp
     BorderLine.cpp
     WithExtraMovePlayingStrategy.cpp
     WithoutExtraMovePlayingStrategy.cpp
@@ -28,7 +31,10 @@ set(SRCS
     DotTable.cpp
 )
 
-set(HDRS 
+set(HDRS
+    UndoObject.h
+    UndoStack.h
+    UndoState.h
     BorderLine.h
     WithExtraMovePlayingStrategy.h
     WithoutExtraMovePlayingStrategy.h

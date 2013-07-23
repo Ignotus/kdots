@@ -44,6 +44,11 @@ void DotTable::putSecondPlayer(std::size_t x, std::size_t y)
 {
 }
 
+bool DotTable::undo()
+{
+    return false;
+}
+
 bool DotTable::operator==(const DotTable& other) const
 {
     return false;

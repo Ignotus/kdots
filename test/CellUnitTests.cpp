@@ -13,6 +13,8 @@ BOOST_AUTO_TEST_CASE(CellTest)
     
     BOOST_CHECK(cell.owner() == Cell::FIRST_OWNER);
     
+    BOOST_CHECK(cell.beginBorders() == cell.endBorders());
+    
     cell.addBorder(BorderLine(1, 0));
     
     BOOST_CHECK(cell.hasBorder(BorderLine(1, 0)) == true);

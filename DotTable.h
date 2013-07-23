@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include "Cell.h"
+#include "UndoStack.h"
 
 class IPlayingStrategy;
 
@@ -12,6 +13,8 @@ class DotTable
     const char mFirstPlayer;
     std::vector< std::vector< Cell > > mData;
     std::unique_ptr<IPlayingStrategy> mPlayingStategy;
+    
+    UndoStack mUndoStack;
 public:
     DotTable(std::size_t width, std::size_t height, char firstPlayer = Cell::FIRST_OWNER);
     ~DotTable();
@@ -29,6 +32,8 @@ public:
     
     bool operator==(const DotTable& other) const;
     bool operator!=(const DotTable& other) const;
+    
+    bool undo();
 };
 
 std::ostream& operator<<(std::ostream& out, const DotTable& table);
