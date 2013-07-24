@@ -5,6 +5,7 @@
 
 class UndoStack;
 class IPlayingStrategy;
+class IPlayer;
 
 class DotTable
 {
@@ -15,12 +16,18 @@ class DotTable
     std::unique_ptr<IPlayingStrategy> mPlayingStategy;
     
     UndoStack *mpUndoStack;
+    IPlayer *mpFirstPlayer;
+    IPlayer *mpSecondPlayer;
 public:
     DotTable(std::size_t width, std::size_t height, char firstPlayer = Cell::FIRST_OWNER);
     ~DotTable();
     
     std::size_t width() const;
     std::size_t height() const;
+    
+    //TODO: give an access only for IPlayer instances
+    void registerPlayer(IPlayer *player);
+    void unregisterPlayer(IPlayer *player);
     
     void setPlayingStrategy(std::unique_ptr<IPlayingStrategy> strategy);
     

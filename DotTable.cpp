@@ -1,16 +1,50 @@
+#include <cassert>
 #include "DotTable.h"
 #include "IPlayingStrategy.h"
+#include "IPlayer.h"
 
 DotTable::DotTable(std::size_t width, std::size_t height, char firstOwner)
     : mWidth(width)
     , mHeight(height)
     , mFirstPlayer(firstOwner)
-    , mpUndoStack(NULL)
+    , mpUndoStack(nullptr)
+    , mpFirstPlayer(nullptr)
+    , mpSecondPlayer(nullptr)
 {
 }
 
 DotTable::~DotTable()
 {
+}
+
+void DotTable::registerPlayer(IPlayer *player)
+{
+    switch (player->player())
+    {
+    case Cell::FIRST_OWNER:
+        mpFirstPlayer = player;
+        break;
+    case Cell::SECOND_OWNER:
+        mpSecondPlayer = player;
+        break;
+    default:
+        assert(0);
+    }
+}
+
+void DotTable::unregisterPlayer(IPlayer *player)
+{
+    switch (player->player())
+    {
+    case Cell::FIRST_OWNER:
+        mpFirstPlayer = nullptr;
+        break;
+    case Cell::SECOND_OWNER:
+        mpSecondPlayer = nullptr;
+        break;
+    default:
+        assert(0);
+    }
 }
 
 std::size_t DotTable::width() const

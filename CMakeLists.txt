@@ -21,6 +21,7 @@ include_directories(
 )
 
 set(SRCS
+    IPlayer.cpp
     UndoObject.cpp
     UndoStack.cpp
     UndoState.cpp
@@ -32,6 +33,7 @@ set(SRCS
 )
 
 set(HDRS
+    IPlayer.h
     UndoObject.h
     UndoStack.h
     UndoState.h
