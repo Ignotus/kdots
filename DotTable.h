@@ -23,13 +23,13 @@ public:
     void registerPlayer(IPlayer *player);
     void unregisterPlayer(IPlayer *player);
     
-    void setPlayingStrategy(std::unique_ptr<IPlayingStrategy> strategy);
+    void setPlayingStrategy(std::unique_ptr< IPlayingStrategy > strategy);
     
     const Cell* cell(std::size_t x, std::size_t y) const;
     
-    void put(std::size_t x, std::size_t y);
-    void putFirstPlayer(std::size_t x, std::size_t y);
-    void putSecondPlayer(std::size_t x, std::size_t y);
+    
+    bool putFirstPlayer(std::size_t x, std::size_t y);
+    bool putSecondPlayer(std::size_t x, std::size_t y);
     
     bool operator==(const DotTable& other) const;
     bool operator!=(const DotTable& other) const;
@@ -39,7 +39,7 @@ public:
 private:
     class Private;
     
-    std::unique_ptr<Private> m_p;
+    std::unique_ptr< Private > m_p;
 };
 
 std::ostream& operator<<(std::ostream& out, const DotTable& table);

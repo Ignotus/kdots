@@ -37,26 +37,26 @@ namespace
         DotTable table(WIDTH, HEIGHT, Cell::FIRST_OWNER);
         
         table.setPlayingStrategy(std::unique_ptr<IPlayingStrategy>(strategy));
-        table.put(0, 0);
+        BOOST_CHECK(table.putFirstPlayer(0, 0));
         
         BOOST_CHECK(table.cell(0, 0)->owner() == Cell::FIRST_OWNER);
-        table.put(0, 0);
+        BOOST_CHECK(table.putSecondPlayer(0, 0) == false);
         BOOST_CHECK(table.cell(0, 0)->owner() == Cell::FIRST_OWNER);
-        table.put(1, 0);
+        BOOST_CHECK(table.putSecondPlayer(1, 0));
         BOOST_CHECK(table.cell(1, 0)->owner() == Cell::SECOND_OWNER);
-        table.put(0, 1);
+        BOOST_CHECK(table.putFirstPlayer(0, 1));
         BOOST_CHECK(table.cell(0, 1)->owner() == Cell::FIRST_OWNER);
         
-        table.putFirstPlayer(1, 1);
+        BOOST_CHECK(table.putFirstPlayer(1, 1) == false);
         BOOST_CHECK(table.cell(1, 1)->owner() == Cell::NO_OWNER);
         
-        table.putSecondPlayer(1, 1);
+        BOOST_CHECK(table.putSecondPlayer(1, 1));
         BOOST_CHECK(table.cell(1, 1)->owner() == Cell::SECOND_OWNER);
         
-        table.putSecondPlayer(2, 2);
+        BOOST_CHECK(table.putSecondPlayer(2, 2) == false);
         BOOST_CHECK(table.cell(2, 2)->owner() == Cell::NO_OWNER);
         
-        table.putFirstPlayer(2, 2);
+        BOOST_CHECK(table.putFirstPlayer(2, 2));
         BOOST_CHECK(table.cell(2, 2)->owner() == Cell::FIRST_OWNER);
     }
 }
@@ -77,8 +77,8 @@ BOOST_AUTO_TEST_CASE(DotTableOperations)
     DotTable table2(3, 3);
     BOOST_REQUIRE(table1 == table2);
    
-    table2.put(1, 1);
-    table2.put(1, 0);
+    table2.putFirstPlayer(1, 1);
+    table2.putSecondPlayer(1, 0);
     BOOST_REQUIRE(table1 != table2);
     
     std::stringstream ss;

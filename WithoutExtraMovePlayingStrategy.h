@@ -9,6 +9,7 @@ public:
     virtual char nextPlayer(bool isCaptured) const;
     virtual void init(char firstPlayer);
     virtual char nextTurn(bool isCaptured);
+    virtual char currentPlayer() const;
     
 private:
     WithExtraMovePlayingStrategy mPlayingStrategy;

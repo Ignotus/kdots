@@ -18,3 +18,10 @@ char WithoutExtraMovePlayingStrategy::nextTurn(bool isCaptured)
 {
     return mPlayingStrategy.nextTurn(0);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+
+char WithoutExtraMovePlayingStrategy::currentPlayer() const
+{
+    return mPlayingStrategy.currentPlayer();
+}

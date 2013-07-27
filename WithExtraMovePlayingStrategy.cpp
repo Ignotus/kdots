@@ -49,3 +49,10 @@ char WithExtraMovePlayingStrategy::nextTurn(bool isCaptured)
     return mCurrentPlayer;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+char WithExtraMovePlayingStrategy::currentPlayer() const
+{
+    return mCurrentPlayer;
+}
+

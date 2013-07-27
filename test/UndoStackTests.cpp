@@ -16,7 +16,10 @@ BOOST_AUTO_TEST_CASE(UndoStackTest)
                                {1, 2}};
     for (int i = 0; i < 4; ++i)
     {
-        table.put(points[i][0], points[i][1]);
+        if (i % 2 == 0)
+            table.putFirstPlayer(points[i][0], points[i][1]);
+        else
+            table.putSecondPlayer(points[i][0], points[i][1]);
     }
     
     for (int i = 0; i < 4; ++i)

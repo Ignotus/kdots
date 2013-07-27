@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(PlayerInterfaceTests)
     table.registerPlayer(&player1);
     table.registerPlayer(&player2);
     
-    table.put(0, 0);
+    table.putFirstPlayer(0, 0);
     
     BOOST_CHECK(player1.hasTurn() == true);
     BOOST_CHECK(player2.hasTurn() == true);

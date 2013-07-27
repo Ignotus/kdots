@@ -8,8 +8,11 @@ BOOST_AUTO_TEST_CASE(CellTest)
     Cell cell;
     
     BOOST_CHECK(cell.owner() == Cell::NO_OWNER);
+    BOOST_CHECK(cell.hasOwner() == false);
     
     cell.setOwner(Cell::FIRST_OWNER);
+    
+    BOOST_CHECK(cell.hasOwner());
     
     BOOST_CHECK(cell.owner() == Cell::FIRST_OWNER);
     

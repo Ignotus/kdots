@@ -14,9 +14,10 @@ public:
     void removerBorder(const BorderLine& border);
     
     bool hasBorder(const BorderLine& border) const;
+    bool hasOwner() const;
     
-    std::unordered_set<BorderLine>::const_iterator beginBorders() const;
-    std::unordered_set<BorderLine>::const_iterator endBorders() const;
+    std::unordered_set< BorderLine >::const_iterator beginBorders() const;
+    std::unordered_set< BorderLine >::const_iterator endBorders() const;
     
 public:
     enum Owner
@@ -28,5 +29,5 @@ public:
     
 private:
     char mOwner;
-    std::unordered_set<BorderLine> mBorders;
+    std::unordered_set< BorderLine > mBorders;
 };
