@@ -19,6 +19,8 @@ BOOST_AUTO_TEST_CASE(WithoutExtraMovePlayingStrategyTest)
     BOOST_CHECK(s1.nextTurn(0) == Cell::FIRST_OWNER);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 BOOST_AUTO_TEST_CASE(WithExtraMovePlayingStrategyTest)
 {
     WithExtraMovePlayingStrategy s2;

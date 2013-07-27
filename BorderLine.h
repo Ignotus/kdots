@@ -3,10 +3,6 @@
 
 class BorderLine
 {
-    const signed char mDx;
-    const signed char mDy;
-    bool mIsLeftCaptured;
-    bool mIsRightCaptured;
 public:
     BorderLine();
     BorderLine(signed char dx, signed char dy);
@@ -22,6 +18,12 @@ public:
     
     bool operator==(const BorderLine& other) const;
     bool operator!=(const BorderLine& other) const;
+    
+private:
+    const signed char mDx;
+    const signed char mDy;
+    bool mIsLeftCaptured;
+    bool mIsRightCaptured;
 };
 
 namespace std
@@ -30,7 +32,7 @@ namespace std
     class hash<BorderLine>
     {
     public:
-        std::size_t operator()(const BorderLine& s) const 
+        inline std::size_t operator()(const BorderLine& s) const
         {
             const std::size_t h1 = std::hash<signed char>()(s.dx());
             const std::size_t h2 = std::hash<signed char>()(s.dy());

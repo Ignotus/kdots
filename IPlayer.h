@@ -4,14 +4,12 @@
 class DotTable;
 class IPlayer
 {
-    DotTable *mpTable;
-    const char mPlayer;
 public:
     IPlayer(char player);
     virtual ~IPlayer();
     
-    void registerTable(DotTable *table);
-    void unregisterTable();
+    void setTable(DotTable *table);
+    void unsetTable();
     
     char player() const;
     
@@ -22,4 +20,8 @@ public:
 protected:
     const DotTable* dotTable() const;
     void put(std::size_t x, std::size_t y);
+    
+private:
+    DotTable *mpTable;
+    const char mPlayer;
 };

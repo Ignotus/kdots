@@ -10,7 +10,7 @@ IPlayer::IPlayer(char player)
 
 IPlayer::~IPlayer()
 {
-    unregisterTable();
+    unsetTable();
 }
 
 void IPlayer::put(std::size_t x, std::size_t y)
@@ -42,17 +42,12 @@ const DotTable* IPlayer::dotTable() const
     return mpTable;
 }
 
-void IPlayer::registerTable(DotTable *table)
+void IPlayer::setTable(DotTable *table)
 {
     mpTable = table;
-    mpTable->registerPlayer(this);
 }
 
-void IPlayer::unregisterTable()
+void IPlayer::unsetTable()
 {
-    if (mpTable != nullptr)
-    {
-        mpTable->unregisterPlayer(this);
-        mpTable = nullptr;
-    }
+    mpTable = nullptr;
 }

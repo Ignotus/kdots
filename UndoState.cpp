@@ -1,9 +1,12 @@
 #include "UndoState.h"
+#include "UndoObject.h"
 
 void UndoState::addUndoObject(std::shared_ptr< UndoObject >& undoObject)
 {
     mUndoObjects.push(undoObject);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 void UndoState::undo()
 {

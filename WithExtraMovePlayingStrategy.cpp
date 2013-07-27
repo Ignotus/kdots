@@ -7,16 +7,22 @@ WithExtraMovePlayingStrategy::WithExtraMovePlayingStrategy()
 {
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 char WithExtraMovePlayingStrategy::nextPlayer(bool isCaptured) const
 {
     assert(mCurrentPlayer != Cell::NO_OWNER);
     return Cell::NO_OWNER;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 void WithExtraMovePlayingStrategy::init(char firstPlayer)
 {
 
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 char WithExtraMovePlayingStrategy::nextTurn(bool isCaptured)
 {

@@ -28,39 +28,48 @@ BOOST_AUTO_TEST_CASE(InitializationTest)
     }
 }
 
-void checkStrategy(IPlayingStrategy *strategy)
+////////////////////////////////////////////////////////////////////////////////
+
+namespace
 {
-    DotTable table(WIDTH, HEIGHT, Cell::FIRST_OWNER);
-    
-    table.setPlayingStrategy(std::unique_ptr<IPlayingStrategy>(strategy));
-    table.put(0, 0);
-    
-    BOOST_CHECK(table.cell(0, 0)->owner() == Cell::FIRST_OWNER);
-    table.put(0, 0);
-    BOOST_CHECK(table.cell(0, 0)->owner() == Cell::FIRST_OWNER);
-    table.put(1, 0);
-    BOOST_CHECK(table.cell(1, 0)->owner() == Cell::SECOND_OWNER);
-    table.put(0, 1);
-    BOOST_CHECK(table.cell(0, 1)->owner() == Cell::FIRST_OWNER);
-    
-    table.putFirstPlayer(1, 1);
-    BOOST_CHECK(table.cell(1, 1)->owner() == Cell::NO_OWNER);
-    
-    table.putSecondPlayer(1, 1);
-    BOOST_CHECK(table.cell(1, 1)->owner() == Cell::SECOND_OWNER);
-    
-    table.putSecondPlayer(2, 2);
-    BOOST_CHECK(table.cell(2, 2)->owner() == Cell::NO_OWNER);
-    
-    table.putFirstPlayer(2, 2);
-    BOOST_CHECK(table.cell(2, 2)->owner() == Cell::FIRST_OWNER);
+    void checkStrategy(IPlayingStrategy *strategy)
+    {
+        DotTable table(WIDTH, HEIGHT, Cell::FIRST_OWNER);
+        
+        table.setPlayingStrategy(std::unique_ptr<IPlayingStrategy>(strategy));
+        table.put(0, 0);
+        
+        BOOST_CHECK(table.cell(0, 0)->owner() == Cell::FIRST_OWNER);
+        table.put(0, 0);
+        BOOST_CHECK(table.cell(0, 0)->owner() == Cell::FIRST_OWNER);
+        table.put(1, 0);
+        BOOST_CHECK(table.cell(1, 0)->owner() == Cell::SECOND_OWNER);
+        table.put(0, 1);
+        BOOST_CHECK(table.cell(0, 1)->owner() == Cell::FIRST_OWNER);
+        
+        table.putFirstPlayer(1, 1);
+        BOOST_CHECK(table.cell(1, 1)->owner() == Cell::NO_OWNER);
+        
+        table.putSecondPlayer(1, 1);
+        BOOST_CHECK(table.cell(1, 1)->owner() == Cell::SECOND_OWNER);
+        
+        table.putSecondPlayer(2, 2);
+        BOOST_CHECK(table.cell(2, 2)->owner() == Cell::NO_OWNER);
+        
+        table.putFirstPlayer(2, 2);
+        BOOST_CHECK(table.cell(2, 2)->owner() == Cell::FIRST_OWNER);
+    }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 BOOST_AUTO_TEST_CASE(PlayingStrategiesTest)
 {
     checkStrategy(new WithoutExtraMovePlayingStrategy);
     checkStrategy(new WithExtraMovePlayingStrategy);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 BOOST_AUTO_TEST_CASE(DotTableOperations)
 {
