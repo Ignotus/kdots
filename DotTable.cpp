@@ -1,4 +1,5 @@
 #include <cassert>
+#include <thread>
 #include "DotTable.h"
 #include "IPlayingStrategy.h"
 #include "IPlayer.h"
@@ -93,11 +94,10 @@ void DotTable::Private::notifyPlayers(std::size_t x, std::size_t y, char owner,
     notifyPlayerImpl(mpFirstPlayer, x, y, owner);
     notifyPlayerImpl(mpSecondPlayer, x, y, owner);
     
-    //TODO: Incorrect architechure. RECURSION DETECTED
-    //if (mpFirstPlayer->player() == nextTurnOwner)
-    //    mpFirstPlayer->onPlayerTurn();
-    //else
-    //    mpSecondPlayer->onPlayerTurn();
+    if (mpFirstPlayer->player() == nextTurnOwner)
+        mpFirstPlayer->onPlayerTurn();
+    else
+        mpSecondPlayer->onPlayerTurn();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -180,7 +180,7 @@ void DotTable::setPlayingStrategy(std::unique_ptr< IPlayingStrategy > strategy)
 
 const Cell* DotTable::cell(std::size_t x, std::size_t y) const
 {
-    if (x < width() && x >= 0 && y < height() && y >= 0)
+    if (x < width() && y < height())
         return &m_p->mData[x][y];
     
     return NULL;

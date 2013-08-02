@@ -12,11 +12,12 @@ namespace
     public:
         Player(char player);
         
-        void onOpponentPointAdded(std::size_t x, std::size_t y);
-        void onPointAdded(std::size_t x, std::size_t y);
-        void onPlayerTurn();
-        
         bool hasTurn() const;
+        
+    protected:
+        void onOpponentPointAddedImpl(std::size_t x, std::size_t y);
+        void onPointAddedImpl(std::size_t x, std::size_t y);
+        void onPlayerTurnImpl();
     };
 
     Player::Player(char player)
@@ -28,20 +29,20 @@ namespace
     ////////////////////////////////////////////////////////////////////////////////
 
     //TODO: Implement this one
-    void Player::onOpponentPointAdded(std::size_t x, std::size_t y)
+    void Player::onOpponentPointAddedImpl(std::size_t x, std::size_t y)
     {
     }
     
     ////////////////////////////////////////////////////////////////////////////////
 
     //TODO: Implement this one
-    void Player::onPointAdded(std::size_t x, std::size_t y)
+    void Player::onPointAddedImpl(std::size_t x, std::size_t y)
     {
     }
     
     ////////////////////////////////////////////////////////////////////////////////
 
-    void Player::onPlayerTurn()
+    void Player::onPlayerTurnImpl()
     {
         mHasTurn = true;
         const DotTable *table = dotTable();
@@ -76,6 +77,8 @@ BOOST_AUTO_TEST_CASE(PlayerInterfaceTests)
     
     Player player1(Cell::FIRST_OWNER);
     Player player2(Cell::SECOND_OWNER);
+    player1.init();
+    player2.init();
     
     table.registerPlayer(&player1);
     table.registerPlayer(&player2);
