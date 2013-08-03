@@ -45,7 +45,7 @@ void Cell::removerBorder(const BorderLine& border)
 
 bool Cell::hasBorder(const BorderLine& border) const
 {
-    return mBorders.count(border) != 0;
+    return mBorders.find(border) != mBorders.end();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -60,4 +60,26 @@ std::unordered_set<BorderLine>::const_iterator Cell::beginBorders() const
 std::unordered_set<BorderLine>::const_iterator Cell::endBorders() const
 {
     return mBorders.end();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+bool Cell::operator==(const Cell& other) const
+{
+    if (other.mOwner != mOwner)
+        return false;
+    
+    const auto oEnd = other.mBorders.end();
+    for (auto itr = mBorders.begin(), max = mBorders.end(); itr != max; ++itr)
+        if (other.mBorders.find(*itr) == oEnd)
+            return false;
+        
+    return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+bool Cell::operator!=(const Cell& other) const
+{
+    return !operator==(other);
 }

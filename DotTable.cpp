@@ -32,6 +32,7 @@ private:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 DotTable::Private::Private(std::size_t width, std::size_t height, char firstOwner)
     : mWidth(width)
@@ -51,7 +52,6 @@ char DotTable::Private::put(std::size_t x, std::size_t y)
     const char owner = mPlayingStrategy->currentPlayer();
     
     mData[x][y].setOwner(owner);
-    
     
     const bool isCaptured = false;
     return mPlayingStrategy->nextTurn(isCaptured);
@@ -211,14 +211,29 @@ void DotTable::registerUndoManager(UndoStack *stack)
 
 bool DotTable::operator==(const DotTable& other) const
 {
-    return false;
+    if (other.height() != height())
+        return false;
+    
+    if (other.width() != width())
+        return false;
+    
+    for (std::size_t x = 0; x != width(); ++x)
+    {
+        for (std::size_t y = 0; y != height(); ++y)
+        {
+            if (*cell(x, y) == *other.cell(x, y))
+                return false;
+        }
+    }
+    
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 bool DotTable::operator!=(const DotTable& other) const
 {
-    return true;
+    return !operator==(other);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

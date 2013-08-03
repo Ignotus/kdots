@@ -173,8 +173,6 @@ char IPlayer::player() const
     return mP->mPlayer;
 }
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
 
 void IPlayer::onOpponentPointAdded(std::size_t x, std::size_t y)

@@ -19,6 +19,8 @@ public:
     std::unordered_set< BorderLine >::const_iterator beginBorders() const;
     std::unordered_set< BorderLine >::const_iterator endBorders() const;
     
+    bool operator==(const Cell& other) const;
+    bool operator!=(const Cell& other) const;
 public:
     enum Owner
     {
