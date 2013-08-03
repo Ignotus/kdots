@@ -104,7 +104,7 @@ void DotTable::Private::notifyPlayers(std::size_t x, std::size_t y, char owner,
 ////////////////////////////////////////////////////////////////////////////////
 
 DotTable::DotTable(std::size_t width, std::size_t height, char firstOwner)
-    : m_p(new Private(width, height, firstOwner))
+    : mP(new Private(width, height, firstOwner))
 {
     setPlayingStrategy(std::unique_ptr< IPlayingStrategy >(new WithExtraMovePlayingStrategy()));
 }
@@ -122,10 +122,10 @@ void DotTable::registerPlayer(IPlayer *player)
     switch (player->player())
     {
     case Cell::FIRST_OWNER:
-        m_p->mpFirstPlayer = player;
+        mP->mpFirstPlayer = player;
         break;
     case Cell::SECOND_OWNER:
-        m_p->mpSecondPlayer = player;
+        mP->mpSecondPlayer = player;
         break;
     default:
         assert(0);
@@ -141,10 +141,10 @@ void DotTable::unregisterPlayer(IPlayer *player)
     switch (player->player())
     {
     case Cell::FIRST_OWNER:
-        m_p->mpFirstPlayer = nullptr;
+        mP->mpFirstPlayer = nullptr;
         break;
     case Cell::SECOND_OWNER:
-        m_p->mpSecondPlayer = nullptr;
+        mP->mpSecondPlayer = nullptr;
         break;
     default:
         assert(0);
@@ -157,23 +157,23 @@ void DotTable::unregisterPlayer(IPlayer *player)
 
 std::size_t DotTable::width() const
 {
-    return m_p->mWidth;
+    return mP->mWidth;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 std::size_t DotTable::height() const
 {
-    return m_p->mHeight;
+    return mP->mHeight;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void DotTable::setPlayingStrategy(std::unique_ptr< IPlayingStrategy > strategy)
 {
-    std::unique_ptr< IPlayingStrategy >& playingStrategy = m_p->mPlayingStrategy;
+    std::unique_ptr< IPlayingStrategy >& playingStrategy = mP->mPlayingStrategy;
     strategy.swap(playingStrategy);
-    playingStrategy->init(m_p->mFirstPlayer);
+    playingStrategy->init(mP->mFirstPlayer);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -181,7 +181,7 @@ void DotTable::setPlayingStrategy(std::unique_ptr< IPlayingStrategy > strategy)
 const Cell* DotTable::cell(std::size_t x, std::size_t y) const
 {
     if (x < width() && y < height())
-        return &m_p->mData[x][y];
+        return &mP->mData[x][y];
     
     return NULL;
 }
@@ -190,21 +190,21 @@ const Cell* DotTable::cell(std::size_t x, std::size_t y) const
 
 bool DotTable::putFirstPlayer(std::size_t x, std::size_t y)
 {
-    return m_p->checkedOwnerPut(x, y, Cell::FIRST_OWNER);
+    return mP->checkedOwnerPut(x, y, Cell::FIRST_OWNER);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 bool DotTable::putSecondPlayer(std::size_t x, std::size_t y)
 {
-    return m_p->checkedOwnerPut(x, y, Cell::SECOND_OWNER);
+    return mP->checkedOwnerPut(x, y, Cell::SECOND_OWNER);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void DotTable::registerUndoManager(UndoStack *stack)
 {
-    m_p->mpUndoStack = stack;
+    mP->mpUndoStack = stack;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

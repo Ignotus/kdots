@@ -39,7 +39,7 @@ public:
 private:
     class Private;
     
-    std::unique_ptr< Private > m_p;
+    std::unique_ptr< Private > mP;
 };
 
 std::ostream& operator<<(std::ostream& out, const DotTable& table);

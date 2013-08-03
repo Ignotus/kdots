@@ -2,8 +2,60 @@
 #include "IPlayer.h"
 #include "DotTable.h"
 
-IPlayer::IPlayer(char player)
-    : mpTable(nullptr)
+class IPlayer::Private
+{
+    friend class IPlayer;
+    
+private:
+    IPlayer& mParent;
+    
+    DotTable *mpTable;
+    const char mPlayer;
+    
+    std::unique_ptr<std::thread> mThread;
+    std::mutex mMutex;
+    std::condition_variable mCondition;
+    volatile bool mExit;
+    
+    struct Command
+    {
+    public:
+        enum Type
+        {
+            NONE = 0,
+            POINT_ADDED,
+            OPPONENT_POINT_ADDED,
+            PLAYER_TURN
+        };
+        
+        std::size_t mX;
+        std::size_t mY;
+        char mType;
+        
+        Command(char type);
+        Command(char type, std::size_t x, std::size_t y);
+    };
+    
+    std::queue<Command> mCommandQueue;
+
+private:
+    Private(char player, IPlayer& parent);
+    
+    void pushCommand(const Command& command);
+    void processCommandQueue();
+    
+    void init();
+
+public:
+    ~Private();
+};
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+IPlayer::Private::Private(char player, IPlayer& parent)
+    : mParent(parent)
+    , mpTable(nullptr)
     , mPlayer(player)
     , mExit(true)
 {
@@ -11,54 +63,17 @@ IPlayer::IPlayer(char player)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void IPlayer::init()
-{
-    mThread.reset(new std::thread(&IPlayer::processCommandQueue, this));
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-IPlayer::~IPlayer()
+IPlayer::Private::~Private()
 {
     mExit = true;
     mCondition.notify_one();
     if (mThread)
         mThread->join();
-    
-    unsetTable();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void IPlayer::put(std::size_t x, std::size_t y)
-{
-    if (mpTable == nullptr)
-    {
-        switch (mPlayer)
-        {
-        case Cell::FIRST_OWNER:
-            mpTable->putFirstPlayer(x, y);
-            break;
-        case Cell::SECOND_OWNER:
-            mpTable->putSecondPlayer(x, y);
-            break;
-        default:
-            assert(0);
-        }
-            
-    }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-char IPlayer::player() const
-{
-    return mPlayer;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-void IPlayer::pushCommand(const Command& command)
+void IPlayer::Private::pushCommand(const Command& command)
 {
     std::unique_lock<std::mutex> lock(mMutex);
     mCommandQueue.push(command);
@@ -68,7 +83,7 @@ void IPlayer::pushCommand(const Command& command)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void IPlayer::processCommandQueue()
+void IPlayer::Private::processCommandQueue()
 {
     mExit = false;
     std::unique_lock<std::mutex> lock(mMutex);
@@ -86,13 +101,13 @@ void IPlayer::processCommandQueue()
         switch (poppedCommand.mType)
         {
         case Command::OPPONENT_POINT_ADDED:
-            onOpponentPointAddedImpl(poppedCommand.mX, poppedCommand.mY);
+            mParent.onOpponentPointAddedImpl(poppedCommand.mX, poppedCommand.mY);
             break;
         case Command::POINT_ADDED:
-            onPointAddedImpl(poppedCommand.mX, poppedCommand.mY);
+            mParent.onPointAddedImpl(poppedCommand.mX, poppedCommand.mY);
             break;
         case Command::PLAYER_TURN:
-            onPlayerTurnImpl();
+            mParent.onPlayerTurnImpl();
             break;
         default:
             assert(0);
@@ -102,50 +117,110 @@ void IPlayer::processCommandQueue()
 
 ////////////////////////////////////////////////////////////////////////////////
 
+void IPlayer::Private::init()
+{
+    mThread.reset(new std::thread(&IPlayer::Private::processCommandQueue, this));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+IPlayer::IPlayer(char player)
+    : mP(new IPlayer::Private(player, *this))
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void IPlayer::init()
+{
+    mP->init();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+IPlayer::~IPlayer()
+{
+    mP.reset();
+    unsetTable();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void IPlayer::put(std::size_t x, std::size_t y)
+{
+    DotTable * const table = mP->mpTable;
+    if (table == nullptr)
+    {
+        switch (mP->mPlayer)
+        {
+        case Cell::FIRST_OWNER:
+            table->putFirstPlayer(x, y);
+            break;
+        case Cell::SECOND_OWNER:
+            table->putSecondPlayer(x, y);
+            break;
+        default:
+            assert(0);
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+char IPlayer::player() const
+{
+    return mP->mPlayer;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+
 void IPlayer::onOpponentPointAdded(std::size_t x, std::size_t y)
 {
-    pushCommand(Command(Command::OPPONENT_POINT_ADDED, x, y));
+    mP->pushCommand(Private::Command(Private::Command::OPPONENT_POINT_ADDED, x, y));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void IPlayer::onPointAdded(std::size_t x, std::size_t y)
 {
-    pushCommand(Command(Command::POINT_ADDED, x, y));
+    mP->pushCommand(Private::Command(Private::Command::POINT_ADDED, x, y));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void IPlayer::onPlayerTurn()
 {
-    pushCommand(Command(Command::PLAYER_TURN));
+    mP->pushCommand(Private::Command(Private::Command::PLAYER_TURN));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 const DotTable* IPlayer::dotTable() const
 {
-    return mpTable;
+    return mP->mpTable;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void IPlayer::setTable(DotTable *table)
 {
-    mpTable = table;
+    mP->mpTable = table;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void IPlayer::unsetTable()
 {
-    mpTable = nullptr;
+    mP->mpTable = nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-IPlayer::Command::Command(char type)
+IPlayer::Private::Command::Command(char type)
     : mX(0)
     , mY(0)
     , mType(type)
@@ -154,7 +229,7 @@ IPlayer::Command::Command(char type)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-IPlayer::Command::Command(char type, std::size_t x, std::size_t y)
+IPlayer::Private::Command::Command(char type, std::size_t x, std::size_t y)
     : mX(x)
     , mY(y)
     , mType(type)

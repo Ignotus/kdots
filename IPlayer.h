@@ -8,6 +8,10 @@
 class DotTable;
 class IPlayer
 {
+private:
+    IPlayer(const IPlayer&);
+    const IPlayer& operator=(const IPlayer&);
+    
 public:
     IPlayer(char player);
     virtual ~IPlayer();
@@ -19,7 +23,6 @@ public:
     
     char player() const;
     
-    //TODO: Command Sequence
     void onOpponentPointAdded(std::size_t x, std::size_t y);
     void onPointAdded(std::size_t x, std::size_t y);
     void onPlayerTurn();
@@ -33,36 +36,9 @@ protected:
     void put(std::size_t x, std::size_t y);
     
 private:
-    DotTable *mpTable;
-    const char mPlayer;
+    class Private;
+    friend class Private;
     
-    std::unique_ptr<std::thread> mThread;
-    std::mutex mMutex;
-    std::condition_variable mCondition;
-    volatile bool mExit;
-    
-    struct Command
-    {
-    public:
-        enum Type
-        {
-            NONE = 0,
-            POINT_ADDED,
-            OPPONENT_POINT_ADDED,
-            PLAYER_TURN
-        };
-        
-        std::size_t mX;
-        std::size_t mY;
-        char mType;
-        
-        Command(char type);
-        Command(char type, std::size_t x, std::size_t y);
-    };
-    
-    std::queue<Command> mCommandQueue;
-
-private:
-    void pushCommand(const Command& command);
-    void processCommandQueue();
+    std::unique_ptr<Private> mP;
+ 
 };
