@@ -19,6 +19,7 @@ set(SRCS
     BorderFinder.cpp
     Board.cpp
     BoardView.cpp
+    MainWindow.cpp
 )
 
 set(HDRS
@@ -26,6 +27,8 @@ set(HDRS
     Board.h
     BoardView.h
     Cell.h
+    MainWindow.h
+    ScoreCounter.h
 )
 
 QT4_WRAP_CPP(HEADERS_MOC ${HDRS})

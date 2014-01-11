@@ -5,10 +5,14 @@
 #include "Board.h"
 #include "BorderFinder.h"
 #include "IPlayerManager.h"
+#include "ScoreCounter.h"
 
-Board::Board(std::size_t width, std::size_t height)
-    : m_cells(width, std::vector<Cell>(height))
+Board::Board(std::size_t width, std::size_t height, QObject *parent)
+    : QObject(parent)
+    , m_cells(width, std::vector<Cell>(height))
     , m_player_manager(NULL)
+    , m_score_counter(NULL)
+    , m_processed_points(0)
 {
 }
 
@@ -24,6 +28,11 @@ QSize Board::size() const
 void Board::setPlayerManager(IPlayerManager *manager)
 {
     m_player_manager = manager;
+}
+
+void Board::setScoreCounter(ScoreCounter *counter)
+{
+    m_score_counter = counter;
 }
 
 const TBoardMatrix& Board::data() const
@@ -48,6 +57,7 @@ bool Board::put(const QPoint& point)
     if (ccell.m_owner != -1)
         return false;
     
+    ++m_processed_points;
     ccell.m_owner = m_player_manager->currentPlayer();
     bool isCaptured = false;
     
@@ -60,7 +70,11 @@ bool Board::put(const QPoint& point)
     {
     BorderFinder finder(m_cells, ccell.m_owner, point);
     if (!finder(&polygon))
+    {
+        if (m_processed_points == width * height)
+            emit gameOver();
         return false;
+    }
     }
     
     std::list<QPoint> empty_points;
@@ -84,7 +98,7 @@ bool Board::put(const QPoint& point)
                     has_captured = true;
                     cell.capture();
                     
-                    // TODO: Increase the score
+                    m_score_counter->increase(ccell.m_owner);
                 }
                 
             }
@@ -100,5 +114,8 @@ bool Board::put(const QPoint& point)
         }
     }
     
+    if (m_processed_points == width * height)
+        emit gameOver();
+
     return true;
 }
