@@ -4,7 +4,6 @@
 #include <complex>
 #include <QPixmap>
 #include <QPainter>
-#include <QDebug>
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include "Board.h"
@@ -32,9 +31,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent *e)
     {
         m_model->put(mp);
         
-        std::cout << "Update" << std::endl;
         update();
-        std::cout << "Updated" << std::endl;
     }
 }
 

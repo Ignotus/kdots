@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <QHash>
-#include <QDebug>
 #include "BorderFinder.h"
 
 BorderFinder::BorderFinder(const TBoardMatrix& board, int current_owner, const QPoint& start_point)
@@ -148,7 +147,6 @@ void BorderFinder::recursiveDFS(const QPoint& current_point,
         
         if (m_point_queue.size() > 3 && new_point == m_start_point)
         {
-            qDebug() << "Found result: " << m_point_queue;
             m_results << m_point_queue;
             continue;
         }

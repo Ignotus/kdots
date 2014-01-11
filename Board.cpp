@@ -2,7 +2,6 @@
 #include <queue>
 #include <memory>
 #include <functional>
-#include <QDebug>
 #include "Board.h"
 #include "BorderFinder.h"
 #include "IPlayerManager.h"
@@ -64,8 +63,6 @@ bool Board::put(const QPoint& point)
         return false;
     }
     
-    qDebug() << "Found: " << polygon;
-
     std::list<QPoint> empty_points;
     bool has_captured = false;
     for (std::size_t i = 0; i < width; ++i)
@@ -85,7 +82,6 @@ bool Board::put(const QPoint& point)
                 else if (!cell.isCaptured())
                 {
                     has_captured = true;
-                    qDebug() << "+1";
                     cell.capture();
                     
                     // TODO: Increase the score
@@ -97,11 +93,9 @@ bool Board::put(const QPoint& point)
     
     if (has_captured)
     {
-        qDebug() << "CAPTURED";
         m_polygons.push_back(std::make_pair(polygon, ccell.m_owner));
         for (const QPoint& point : empty_points)
         {
-            qDebug() << "+2";
             m_cells[point.x()][point.y()].capture();
         }
     }
