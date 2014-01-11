@@ -2,7 +2,9 @@
 #include <queue>
 #include <memory>
 #include <functional>
+#include <QDebug>
 #include "Board.h"
+#include "BorderFinder.h"
 #include "IPlayerManager.h"
 
 Board::Board(std::size_t width, std::size_t height)
@@ -14,177 +16,25 @@ Board::Board(std::size_t width, std::size_t height)
 Board::~Board()
 {
 }
+
+QSize Board::size() const
+{
+    return QSize(m_cells.size(), m_cells.front().size());
+}
     
 void Board::setPlayerManager(IPlayerManager *manager)
 {
     m_player_manager = manager;
 }
 
-namespace
+const TBoardMatrix& Board::data() const
 {
-    std::size_t arrayIndex(const QPoint& point)
-    {
-        if (point.y() == -1 || (point.y() == 0 && point.x() == -1))
-            return (point.x() + 1 + (point.y() + 1) * 3);
-        
-        return (point.x() + (point.y() + 1) * 3);
-    }
-    
-    bool pointCheck(const QPoint side_points[],
-                    const std::vector<std::vector<Cell>>& cells,
-                    int owner,
-                    const QPoint& first, const QPoint& second)
-    {
-        const QPoint check_point = first + side_points[arrayIndex(second - first)];
-        return (cells[check_point.x()][check_point.y()].m_owner != owner);
-    }
+    return m_cells;
 }
 
-bool Board::getMaxPolygon(QPolygon *polygon,
-                          const QPoint& begin_point) const
+const std::list<std::pair<QPolygon, int>>& Board::polygons() const
 {
-    const int owner = m_player_manager->currentPlayer();
-
-    long left_square, right_square;
-    QPolygon left_poly, right_poly;
-    
-    const QPoint left_side_points[] = {
-        {-1, 0},
-        {-1, 1},
-        {0, 1},
-        {1, 1},
-        {1, 0},
-        {1, -1},
-        {0, -1},
-        {-1, -1}
-    };
-    
-    getMaxPolygon(&left_poly, &left_square, begin_point, std::bind(pointCheck,
-                                                                   left_side_points,
-                                                                   m_cells,
-                                                                   owner,
-                                                                   std::placeholders::_1,
-                                                                   std::placeholders::_2));
-    
-    const QPoint right_side_points[] = {
-        {0, 1},
-        {1, 1},
-        {1, 0},
-        {1, -1},
-        {0, -1},
-        {-1, -1},
-        {-1, 0},
-        {-1, 1}
-    };
-    
-    getMaxPolygon(&right_poly, &right_square, begin_point, std::bind(pointCheck,
-                                                                   right_side_points,
-                                                                   m_cells,
-                                                                   owner,
-                                                                   std::placeholders::_1,
-                                                                   std::placeholders::_2));
-    
-    if (left_square == 0 && right_square == 0)
-        return false;
-    
-    if (left_square > right_square)
-        polygon->swap(left_poly);
-    else
-        polygon->swap(right_poly);
-    
-    return true;
-}
-
-namespace
-{
-    long doubleSquare(const QPolygon& polygon)
-    {
-        long square = 0;
-        for (std::size_t i = 0, max = polygon.size(); i < max; ++i)
-        {
-            const QPoint& first = polygon[i];
-            const QPoint& second = polygon[(i + 1) % max];
-            
-            square += (second.y() + first.y()) * (second.x() - first.x());
-        }
-        
-        return square;
-    }
-}
-
-bool Board::getMaxPolygon(QPolygon *polygon,
-                          long *square,
-                          const QPoint& begin_point,
-                          std::function<bool(const QPoint&, const QPoint&)> edge_checker) const
-{
-    const int width = m_cells.size();
-    const int height = m_cells.front().size();
-    const int owner = m_player_manager->currentPlayer();
-    
-    const int dx[] = {-1,  0,  1, 1, 1, 0, -1, -1};
-    const int dy[] = {-1, -1, -1, 0, 1, 1,  1,  0};
-    
-    std::vector<std::vector<bool>> flag_table(width, std::vector<bool>(height, false));
-    
-    std::list<QPoint> point_queue;
-    point_queue.push_back(begin_point);
-    
-    bool status = false;
-    
-    long max_square = 0;
-    QPolygon result;
-    
-    while (!point_queue.empty())
-    {
-        const QPoint& c_point = point_queue.front();
-        flag_table[c_point.x()][c_point.y()] = true;
-        
-        for (std::size_t i = 0; i < 8; ++i)
-        {
-            const QPoint new_point = c_point + QPoint(dx[i], dy[i]);
-            if (new_point.x() < 0 || new_point.y() < 0 || new_point.x() >= width
-                    || new_point.y() >= height)
-                continue;
-            
-            if (m_cells[new_point.x()][new_point.y()].m_owner != owner
-                    || flag_table[new_point.x()][new_point.y()] == true)
-                continue;
-            
-            if (!edge_checker(c_point, new_point))
-                continue;
-            
-            point_queue.push_back(new_point);
-            if (std::abs(new_point.x() - begin_point.x()) < 2
-                    && std::abs(new_point.y() - begin_point.y()) < 2)
-            {
-                status = true;
-                QPolygon poly = QPolygon::fromList(QList<QPoint>::fromStdList(point_queue));
-                
-                const long poly_square = doubleSquare(poly);
-                if (poly_square > max_square)
-                {
-                    max_square = poly_square;
-                    result.swap(poly);
-                }
-            }
-        }
-        
-        flag_table[c_point.x()][c_point.y()] = false;
-        
-        point_queue.pop_back();
-    }
-    
-    if (status)
-    {
-        polygon->swap(result);
-        *square = max_square;
-    }
-    else
-    {
-        *square = 0;
-    }
-    
-    return status;
+    return m_polygons;
 }
 
 bool Board::put(const QPoint& point)
@@ -206,10 +56,15 @@ bool Board::put(const QPoint& point)
         m_player_manager->nextPlayer(isCaptured);
     });
     
-    QPolygon polygon;
-    if (!getMaxPolygon(&polygon, point))
-        return true;
     
+    QPolygon polygon;
+    {
+    BorderFinder finder(m_cells, ccell.m_owner, point);
+    if (!finder(&polygon))
+        return false;
+    }
+    
+    qDebug() << "Found: " << polygon;
 
     std::list<QPoint> empty_points;
     bool has_captured = false;
@@ -227,9 +82,10 @@ bool Board::put(const QPoint& point)
             {
                 if (cell.m_owner == -1)
                     empty_points.push_back(c_point);
-                else
+                else if (!cell.isCaptured())
                 {
                     has_captured = true;
+                    qDebug() << "+1";
                     cell.capture();
                     
                     // TODO: Increase the score
@@ -241,8 +97,13 @@ bool Board::put(const QPoint& point)
     
     if (has_captured)
     {
+        qDebug() << "CAPTURED";
+        m_polygons.push_back(std::make_pair(polygon, ccell.m_owner));
         for (const QPoint& point : empty_points)
+        {
+            qDebug() << "+2";
             m_cells[point.x()][point.y()].capture();
+        }
     }
     
     return true;
