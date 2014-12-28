@@ -27,11 +27,7 @@
 #define KDOTS_MAINWINDOW_HPP
 #include <memory>
 #include <KXmlGuiWindow>
-#ifdef NEW_LIBKDEGAMES
-# include <KgDifficulty>
-#else
-# include <KGameDifficulty>
-#endif
+#include <KgDifficulty>
 #include "constants.hpp"
 
 namespace Ui
@@ -65,11 +61,8 @@ namespace KDots
     void onPreferences();
     void undo();
     void endGame();
-#ifdef NEW_LIBKDEGAMES
     void difficultyHandler(const KgDifficultyLevel *level);
-#else
-    void difficultyHandler(KGameDifficulty::standardLevel level);
-#endif
+
   signals:
     void undoActionEnable(bool);
     void endActionEnable(bool);

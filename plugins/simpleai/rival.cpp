@@ -30,11 +30,7 @@
 #include <stack>
 #include <QStatusBar>
 #include <QLabel>
-#ifdef NEW_LIBKDEGAMES
-# include <KgDifficulty>
-#else
-# include <KGameDifficulty>
-#endif
+#include <KgDifficulty>
 #include <KDebug>
 #include <point.hpp>
 #include <dottable.hpp>
@@ -56,11 +52,7 @@ namespace KDots
       , m_iterations(1)
     {
       PriorityMap::instance();
-#ifdef NEW_LIBKDEGAMES
-        Kg::difficulty()->setEditable(true);
-#else
-        KGameDifficulty::setEnabled(true);
-#endif
+      Kg::difficulty()->setEditable(true);
     }
     
     bool Rival::isAllow() const
