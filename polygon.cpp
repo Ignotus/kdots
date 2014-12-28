@@ -1,6 +1,6 @@
 /*
  * KDots
- * Copyright(c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright(c) 2011-2012, 2014 Minh Ngo <nlminhtl@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -23,33 +23,70 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_POLYGONFINDER_HPP
-#define KDOTS_POLYGONFINDER_HPP
-#include <memory>
-#include <list>
+
 #include "polygon.hpp"
-#include "constants.hpp"
 
-namespace KDots
+KDots::Polygon::Polygon()
+  : m_filled(false)
+  , m_area(-1)
 {
-  struct Graph;
-
-  class KDOTS_EXPORT PolygonFinder
-  {
-    const Graph& m_graph;
-    Owner m_current;
-    std::vector<Point> m_cache;
-    std::vector<std::vector<bool>> m_stepMap;
-    PolyList m_polygons;
-    Point m_first;
-  public:
-    PolygonFinder(const Graph& graph, Owner owner);
-    // O(n)
-    const PolyList& operator()(const Point& point);
-  private:
-    void findPolygons(const Point& point);
-  };
-
 }
 
-#endif
+KDots::Polygon::Polygon(const std::vector<Point>& points)
+  : m_points(points)
+  , m_filled(false)
+  , m_area(-1)
+{
+}
+  
+namespace
+{
+  int doubleArea(const std::vector<KDots::Point>& polygon)
+  {
+    int res = 0;
+    KDots::Point prevPoint = polygon.back();
+    for(auto itr = polygon.begin(), itrEnd = polygon.end();
+        itr != itrEnd; ++itr)
+    {
+      res += (itr->x() - prevPoint.x()) * (itr->y() + prevPoint.y()); 
+      prevPoint = *itr;
+    } 
+    
+    return std::abs(res);
+  }
+}
+  
+int KDots::Polygon::area() const
+{
+  if(m_area < 0)
+  {
+    m_area = doubleArea(m_points);
+  }
+
+  return m_area;
+}
+
+std::vector<KDots::Point>& KDots::Polygon::points()
+{
+  return m_points;
+}
+
+bool KDots::Polygon::isFilled() const
+{
+  return m_filled;
+}
+
+void KDots::Polygon::setFilled(bool filled)
+{
+  m_filled = filled;
+}
+
+KDots::Owner KDots::Polygon::owner() const
+{
+  return m_owner;
+}
+
+void KDots::Polygon::setOwner(Owner own)
+{
+  m_owner = own;
+}

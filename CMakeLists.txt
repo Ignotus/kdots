@@ -50,9 +50,11 @@ SET(KDOTSLIB_SRCS
   graph.cpp
   dottable.cpp
   stepqueue.cpp
+  polygon.cpp
   polygonfinder.cpp
   gameconfig.cpp
   point.cpp
+
 )
 
 SET(KDOTSLIB_HEADERS
@@ -63,8 +65,8 @@ SET(KDOTSLIB_HEADERS
   edgelist.hpp
   point.hpp
   constants.hpp
-  polygonfinder.hpp
   polygon.hpp
+  polygonfinder.hpp
   gameconfig.hpp
 )
 

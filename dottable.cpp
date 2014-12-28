@@ -50,13 +50,13 @@ namespace KDots
   
   namespace
   {
-    Point getPrevPoint(Polygon_ptr& polygon, Polygon::const_iterator current)
+    Point getPrevPoint(Polygon_ptr& polygon, std::vector<KDots::Point>::const_iterator current)
     {
       const int currentY = current->y();
-      for(Polygon::const_iterator prev = current;;)
+      for(auto prev = current;;)
       {
-        if(prev == polygon->begin())
-          prev = --polygon->end();
+        if(prev == polygon->points().begin())
+          prev = --polygon->points().end();
         else
           --prev;
         
@@ -65,15 +65,15 @@ namespace KDots
       }
     }
     
-    Point getNextPoint(Polygon_ptr& polygon, int& shift, Polygon::const_iterator current)
+    Point getNextPoint(Polygon_ptr& polygon, int& shift, std::vector<KDots::Point>::const_iterator current)
     {
       const int currentY = current->y();
       shift = 0;
-      for(Polygon::const_iterator next = current;;)
+      for(auto next = current;;)
       {
         ++shift;
-        if(next == --polygon->end())
-          next = polygon->begin();
+        if(next == --polygon->points().end())
+          next = polygon->points().begin();
         else
           ++next;
         
@@ -89,7 +89,7 @@ namespace KDots
     // i - crosses count
     int i = 0, shift;
 
-    Polygon::const_iterator itr = polygon->begin(), itrEnd = polygon->end();
+    auto itr = polygon->points().begin(), itrEnd = polygon->points().end();
     while(itr != itrEnd)
     {
       if(itr->y() != point.y())
@@ -226,10 +226,10 @@ namespace KDots
   
   namespace
   {
-    Polygon::iterator next(Polygon& polygon, Polygon::iterator current)
+    std::vector<Point>::iterator next(Polygon& polygon, std::vector<Point>::iterator current)
     {
-      if(current == --polygon.end())
-        return polygon.begin();
+      if(current == --polygon.points().end())
+        return polygon.points().end();
       else
         return ++current;
     }
@@ -239,7 +239,7 @@ namespace KDots
   {
     const Owner current = m_steps->getCurrentOwner();
     
-    for(Polygon::iterator itr = polygon->begin(), endItr = polygon->end();
+    for(auto itr = polygon->points().begin(), endItr = polygon->points().end();
          itr != endItr; ++itr)
     {
       for(int i = 0; i < DIRECTION_COUNT; ++i)
@@ -253,7 +253,7 @@ namespace KDots
         if(graphPoint.owner() != current || graphPoint.isCaptured())
           continue;
         
-        Polygon::iterator nextItr = next(*polygon, itr);
+        auto nextItr = next(*polygon, itr);
         
         const int sum = Point::sqrLength(newPoint, *itr) + Point::sqrLength(newPoint, *nextItr);
         
@@ -263,7 +263,7 @@ namespace KDots
         if(isInPolygon(polygon, newPoint))
           continue;
         
-        polygon->insert(nextItr, newPoint);
+        polygon->points().insert(nextItr, newPoint);
       }
     } 
   }
@@ -280,9 +280,9 @@ namespace KDots
       polygon->setOwner(m_steps->getCurrentOwner());
       m_polygons.push_back(polygon);
       
-      Point prevPoint = polygon->back();
+      Point prevPoint = polygon->points().back();
       
-      for(const Point& currPoint : *polygon.get())
+      for(const Point& currPoint : polygon->points())
       {
         m_graph->addEdge(prevPoint, currPoint);
         prevPoint = currPoint;

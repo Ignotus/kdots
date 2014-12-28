@@ -31,7 +31,6 @@
 
 namespace KDots
 {
-  
   PolygonFinder::PolygonFinder(const Graph& graph, Owner owner)
     : m_graph(graph)
     , m_current(owner)
@@ -41,33 +40,11 @@ namespace KDots
   
   namespace
   {
-    int doubleArea(const Polygon& polygon)
-    {
-      int res = 0;
-      Point prevPoint = polygon.back();
-      for(Polygon::const_iterator itr = polygon.begin(), itrEnd = polygon.end();
-           itr != itrEnd; ++itr)
-      {
-        res +=(itr->x() - prevPoint.x()) *(itr->y() + prevPoint.y()); 
-        prevPoint = *itr;
-      } 
-      
-      return std::abs(res);
-    }
-    
     int maxSize(const PolyList& polygonList)
     {
-      int max = 0;
-
-      for(const Polygon_ptr& ptr : polygonList)
-      {
-        const int currArea = doubleArea(*ptr);
-        ptr->setArea(currArea);
-        if(currArea > max)
-          max = currArea;
-      }
-
-      return max;
+      return (*std::max_element(polygonList.begin(), polygonList.end(), [](const PolyList::value_type& p1, const PolyList::value_type& p2) {
+        return p1->area() < p2->area();
+      }))->area();
     }
   }
 
@@ -75,6 +52,9 @@ namespace KDots
   {
     m_first = point;
     findPolygons(point);
+
+    if (m_polygons.empty())
+      return m_polygons;
 
     const int max = maxSize(m_polygons);
     m_polygons.erase(std::remove_if(m_polygons.begin(), m_polygons.end(),

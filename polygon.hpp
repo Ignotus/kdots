@@ -33,54 +33,28 @@
 
 namespace KDots
 {
-  typedef std::vector<Point> PolygonContainer;
-  class KDOTS_EXPORT Polygon : public PolygonContainer
+  class KDOTS_EXPORT Polygon
   {
+    std::vector<Point> m_points;
     bool m_filled;
     Owner m_owner;
-    int m_area;
+    mutable int m_area; // TODO: Remove mutable
   public:
-    Polygon()
-      : PolygonContainer()
-      , m_filled(false)
-    {
-    }
+    Polygon();
 
-    Polygon(const PolygonContainer& a)
-      : PolygonContainer(a)
-      , m_filled(false)
-    {
-    }
+    Polygon(const std::vector<Point>& points);
     
-    void setArea(int area)
-    {
-      m_area = area;
-    }
+    int area() const;
     
-    int area() const
-    {
-      return m_area;
-    }
+    std::vector<Point>& points();
 
-    bool isFilled() const
-    {
-      return m_filled;
-    }
+    bool isFilled() const;
 
-    void setFilled(bool filled)
-    {
-      m_filled = filled;
-    }
+    void setFilled(bool filled);
     
-    Owner owner() const
-    {
-      return m_owner;
-    }
+    Owner owner() const;
     
-    void setOwner(Owner own)
-    {
-      m_owner = own;
-    }
+    void setOwner(Owner own);
   };
   
   typedef std::shared_ptr<Polygon> Polygon_ptr;

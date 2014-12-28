@@ -264,7 +264,7 @@ namespace KDots
     for(Polygon_ptr polygon : polygonVector)
     {
       QPolygon qPoly;
-      for(const Point& point : *polygon)
+      for(const Point& point : polygon->points())
       {
         const Point& newPoint = point + 1;
         qPoly << QPoint(newPoint.x(), newPoint.y()) * cellSize;
