@@ -1,6 +1,6 @@
 /*
  * KDots
- * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright(c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,11 +16,11 @@
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT
  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef KDOTS_PLUGINS_SIMPLEAI_PLUGIN_HPP
@@ -30,40 +30,40 @@
 
 namespace KDots
 {
-	namespace simpleai
-	{
-		class Plugin : public KDots::IPlugin
-		{
-			Q_OBJECT
-			Q_INTERFACES (KDots::IPlugin)
-		public:
-			Plugin (QObject *parent = 0)
-				: IPlugin (parent)
-			{
-			}
+  namespace simpleai
+  {
+    class Plugin : public KDots::IPlugin
+    {
+      Q_OBJECT
+      Q_INTERFACES(KDots::IPlugin)
+    public:
+      Plugin(QObject *parent = 0)
+        : IPlugin(parent)
+      {
+      }
 
-			IRival* createRival ()
-			{
-				return new Rival;
-			}
+      IRival* createRival()
+      {
+        return new Rival;
+      }
 
-			QString name () const
-			{
-				return "simpleai";
-			}
+      QString name() const
+      {
+        return "simpleai";
+      }
 
-			QString description () const
-			{
-				return "Playing with the simple AI";
-			}
-			
-			KIcon icon () const
-			{
-				return KIcon ("games-config-board");
-			}
-		};
+      QString description() const
+      {
+        return "Playing with the simple AI";
+      }
+      
+      KIcon icon() const
+      {
+        return KIcon("games-config-board");
+      }
+    };
 
-	}
+  }
 }
 
 #endif

@@ -1,1 +1,1 @@
-ADD_SUBDIRECTORY (prioritymaptest)
+ADD_SUBDIRECTORY(prioritymaptest)

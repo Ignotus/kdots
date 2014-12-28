@@ -1,6 +1,6 @@
 /*
  * KDots
- * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright(c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,11 +16,11 @@
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT
  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef KDOTS_PLUGINS_IPCONNECT_RIVAL_HPP
@@ -33,44 +33,44 @@
 
 namespace KDots
 {
-	class DotTable;
-	namespace ipconnect
-	{
-		class ConfigurationWidget;
-		class Rival : public KDots::IRival
-		{
-			Q_OBJECT
+  class DotTable;
+  namespace ipconnect
+  {
+    class ConfigurationWidget;
+    class Rival : public KDots::IRival
+    {
+      Q_OBJECT
 
-			DotTable *m_table;
-			QTcpSocket *m_socket;
-			QTcpServer *m_server;
-			
-			Owner m_me;
-			
-			std::unique_ptr<ConfigurationWidget> m_configWidget;
-		public:
-			Rival (QObject *parent = 0);
-			virtual ~Rival ();
-			
-			GameConfig getGameConfig ();
-			
-			IConfigurationWidget* configureWidget ();
+      DotTable *m_table;
+      QTcpSocket *m_socket;
+      QTcpServer *m_server;
+      
+      Owner m_me;
+      
+      std::unique_ptr<ConfigurationWidget> m_configWidget;
+    public:
+      Rival(QObject *parent = 0);
+      virtual ~Rival();
+      
+      GameConfig getGameConfig();
+      
+      IConfigurationWidget* configureWidget();
 
-			void setDotTable (DotTable *table);
+      void setDotTable(DotTable *table);
 
-			bool isAllow () const;
+      bool isAllow() const;
 
-		public slots:
-			void nextStep (const Point& point);
-			
-		private slots:
-			void onNewConnectionHandle ();
-			void onReadyRead ();
-			void onDisconnected ();
-		signals:
-			void createDotTable (const GameConfig& config);
-			void needDestroy ();
-		};
-	}
+    public slots:
+      void nextStep(const Point& point);
+      
+    private slots:
+      void onNewConnectionHandle();
+      void onReadyRead();
+      void onDisconnected();
+    signals:
+      void createDotTable(const GameConfig& config);
+      void needDestroy();
+    };
+  }
 }
 #endif

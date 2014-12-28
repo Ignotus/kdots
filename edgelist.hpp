@@ -1,6 +1,6 @@
 /*
  * KDots
- * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright(c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,11 +16,11 @@
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT
  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef KDOTS_EDGELIST_HPP
@@ -30,71 +30,71 @@
 
 namespace KDots
 {
-	template<int SIZE>
-	class KDOTS_EXPORT EdgeList
-	{
-		int m_count;
-		Point m_pointList[SIZE];
-	public:
-		EdgeList()
-			: m_count (0)
-		{}
+  template<int SIZE>
+  class KDOTS_EXPORT EdgeList
+  {
+    int m_count;
+    Point m_pointList[SIZE];
+  public:
+    EdgeList()
+      : m_count(0)
+    {}
 
-		bool addEdge (const Point& point)
-		{
-			if (m_count == SIZE || hasPoint (point))
-				return false;
+    bool addEdge(const Point& point)
+    {
+      if(m_count == SIZE || hasPoint(point))
+        return false;
 
-			m_pointList[m_count++] = point;
-			return true;
-		}
+      m_pointList[m_count++] = point;
+      return true;
+    }
 
-		int size () const
-		{
-			return m_count;
-		}
+    int size() const
+    {
+      return m_count;
+    }
 
-		bool hasPoint (const Point& point)
-		{
-			for (int i = 0;  i < m_count; ++i)
-			{
-				if (m_pointList[i] == point)
-					return true;
-			}
+    bool hasPoint(const Point& point)
+    {
+      for(int i = 0;  i < m_count; ++i)
+      {
+        if(m_pointList[i] == point)
+          return true;
+      }
 
-			return false;
-		}
+      return false;
+    }
 
-		Point& operator[] (int index)
-		{
-			return const_cast<EdgeList<SIZE>&> (static_cast<const EdgeList<SIZE>&> (*this) [index]);
-		}
+    Point& operator[](int index)
+    {
+      return const_cast<EdgeList<SIZE>&>(static_cast<const EdgeList<SIZE>&>(*this) [index]);
+    }
 
-		const Point& operator[] (int index) const
-		{
-			if (index < 0 || index >= m_count)
-				throw std::runtime_error ("beyond the limit of the array");
-			return m_pointList[index];
-		}
+    const Point& operator[](int index) const
+    {
+      if(index < 0 || index >= m_count)
+        throw std::runtime_error("beyond the limit of the array");
+      return m_pointList[index];
+    }
 
-		bool removeEdge (const Point& toPoint)
-		{
-			for (int i = 0; i < m_count; ++i)
-			{
-				if (m_pointList[i] == toPoint)
-				{
-					m_count--;
+    bool removeEdge(const Point& toPoint)
+    {
+      for(int i = 0; i < m_count; ++i)
+      {
+        if(m_pointList[i] == toPoint)
+        {
+          m_count--;
 
-					if (i != m_count)
-						m_pointList[i] = m_pointList[m_count];
+          if(i != m_count)
+            m_pointList[i] = m_pointList[m_count];
 
-					return true;
-				}
-			}
+          return true;
+        }
+      }
 
-			return false;
-		}
-	};
+      return false;
+    }
+  };
 }
 
 #endif

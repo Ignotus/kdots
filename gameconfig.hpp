@@ -1,6 +1,6 @@
 /*
  * KDots
- * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright(c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,11 +16,11 @@
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT
  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef KDOTS_GAMECONFIG_HPP
@@ -31,30 +31,30 @@
 
 namespace KDots
 {
-	struct KDOTS_EXPORT GameConfig
-	{
-		int m_width, m_height;
-		GameMode m_mode;
-		Owner m_firstOwner;
-		
-		GameConfig ()
-			: m_width (-1)
-		{}
-		
-		bool isInititialized () const
-		{
-			return m_width != -1;
-		}
-		
-		static void registerMeta ();
-	};
+  struct KDOTS_EXPORT GameConfig
+  {
+    int m_width, m_height;
+    GameMode m_mode;
+    Owner m_firstOwner;
+    
+    GameConfig()
+      : m_width(-1)
+    {}
+    
+    bool isInititialized() const
+    {
+      return m_width != -1;
+    }
+    
+    static void registerMeta();
+  };
 
 }
 
-Q_DECLARE_METATYPE (KDots::GameConfig);
+Q_DECLARE_METATYPE(KDots::GameConfig);
 
-QDataStream& operator<< (QDataStream& out, const KDots::GameConfig& obj);
+QDataStream& operator<<(QDataStream& out, const KDots::GameConfig& obj);
 
-QDataStream& operator>> (QDataStream& in, KDots::GameConfig& obj);
+QDataStream& operator>>(QDataStream& in, KDots::GameConfig& obj);
 
 #endif

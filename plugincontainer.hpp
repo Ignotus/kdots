@@ -1,6 +1,6 @@
 /*
  * KDots
- * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright(c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,11 +16,11 @@
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT
  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef KDOTS_PLUGINCONTAINER_HPP
@@ -31,34 +31,34 @@ class QDir;
 
 namespace KDots
 {
-	class IPlugin;
-	class PluginContainer
-	{
-		typedef QMap<QString, IPlugin*> PluginMap;
-		PluginMap m_pluginMap;
-	public:
-		PluginContainer ()
-		{
-			loadPlugins ();
-		}
+  class IPlugin;
+  class PluginContainer
+  {
+    typedef QMap<QString, IPlugin*> PluginMap;
+    PluginMap m_pluginMap;
+  public:
+    PluginContainer()
+    {
+      loadPlugins();
+    }
 
-		static PluginContainer& instance ();
+    static PluginContainer& instance();
 
-		const PluginMap& plugins () const
-		{
-			return m_pluginMap;
-		}
+    const PluginMap& plugins() const
+    {
+      return m_pluginMap;
+    }
 
-		IPlugin* plugin (const QString& name)
-		{
-			PluginMap::const_iterator itr = m_pluginMap.find (name);
-			return itr != m_pluginMap.end () ? *itr : NULL;
-		}
+    IPlugin* plugin(const QString& name)
+    {
+      PluginMap::const_iterator itr = m_pluginMap.find(name);
+      return itr != m_pluginMap.end() ? *itr : NULL;
+    }
 
-	private:
-		void loadPlugins ();
-		bool findPlugin (const QDir& dir);
-	};
+  private:
+    void loadPlugins();
+    bool findPlugin(const QDir& dir);
+  };
 }
 
 #endif

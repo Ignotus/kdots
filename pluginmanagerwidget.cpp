@@ -1,6 +1,6 @@
 /*
  * KDots
- * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright(c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,11 +16,11 @@
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT
  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "pluginmanagerwidget.hpp"
@@ -33,44 +33,44 @@
 
 namespace KDots
 {
-	PluginManagerWidget::PluginManagerWidget (QWidget *parent)
-		: QWidget (parent)
-		, m_ui (new Ui::PluginManagerWidget)
-	{
-		m_ui->setupUi (this);
-		
-		QStandardItemModel *model = new QStandardItemModel (this);
-		for (IPlugin *plugin : PluginContainer::instance ().plugins ().values ())
-			model->appendRow (new QStandardItem (plugin->icon (), plugin->name ()));
-		
-		m_ui->PluginList->setModel (model);
-		m_ui->PluginList->setItemDelegate (new PluginWidgetDelegate (m_ui->PluginList));
-		m_ui->PluginList->setSelectionMode (QAbstractItemView::SingleSelection);
-		m_ui->PluginList->setEditTriggers (QAbstractItemView::NoEditTriggers);
-		connect (m_ui->PluginList,
-				SIGNAL (clicked (const QModelIndex&)),
-				this,
-				SLOT (onIndexChanged (const QModelIndex&)));
-		
-		const QModelIndex& index =model->index (Settings::lastPlugin (), 0);
-		m_ui->PluginList->selectionModel ()->select (index, QItemSelectionModel::Select);
-		onIndexChanged (index);
-	}
-	
-	void PluginManagerWidget::onIndexChanged (const QModelIndex& current)
-	{
-		const QString& pluginName = current.data ().toString ();
-		IPlugin *first = PluginContainer::instance ().plugin (pluginName);
-		m_ui->Description->setText (first->description ());
-		
-		Settings::setLastPlugin (current.row ());
-	}
+  PluginManagerWidget::PluginManagerWidget(QWidget *parent)
+    : QWidget(parent)
+    , m_ui(new Ui::PluginManagerWidget)
+  {
+    m_ui->setupUi(this);
+    
+    QStandardItemModel *model = new QStandardItemModel(this);
+    for(IPlugin *plugin : PluginContainer::instance().plugins().values())
+      model->appendRow(new QStandardItem(plugin->icon(), plugin->name()));
+    
+    m_ui->PluginList->setModel(model);
+    m_ui->PluginList->setItemDelegate(new PluginWidgetDelegate(m_ui->PluginList));
+    m_ui->PluginList->setSelectionMode(QAbstractItemView::SingleSelection);
+    m_ui->PluginList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    connect(m_ui->PluginList,
+        SIGNAL(clicked(const QModelIndex&)),
+        this,
+        SLOT(onIndexChanged(const QModelIndex&)));
+    
+    const QModelIndex& index =model->index(Settings::lastPlugin(), 0);
+    m_ui->PluginList->selectionModel()->select(index, QItemSelectionModel::Select);
+    onIndexChanged(index);
+  }
+  
+  void PluginManagerWidget::onIndexChanged(const QModelIndex& current)
+  {
+    const QString& pluginName = current.data().toString();
+    IPlugin *first = PluginContainer::instance().plugin(pluginName);
+    m_ui->Description->setText(first->description());
+    
+    Settings::setLastPlugin(current.row());
+  }
 
-	QString PluginManagerWidget::pluginName () const
-	{
-		return m_ui->PluginList->selectionModel ()->selectedRows ()
-				.at (0).data ().toString ();
-	}
+  QString PluginManagerWidget::pluginName() const
+  {
+    return m_ui->PluginList->selectionModel()->selectedRows()
+        .at(0).data().toString();
+  }
 }
 
 #include "pluginmanagerwidget.moc"

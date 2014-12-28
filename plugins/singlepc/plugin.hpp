@@ -1,6 +1,6 @@
 /*
  * KDots
- * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright(c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,11 +16,11 @@
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT
  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
@@ -35,75 +35,75 @@
 
 namespace KDots
 {
-	namespace singlepc
-	{
-		class KDE_EXPORT Rival : public KDots::IRival
-		{
-			Q_OBJECT
-			Q_INTERFACES (KDots::IRival)
-		public:
-			Rival (QObject *parent = 0)
-				: IRival (parent)
-			{
+  namespace singlepc
+  {
+    class KDE_EXPORT Rival : public KDots::IRival
+    {
+      Q_OBJECT
+      Q_INTERFACES(KDots::IRival)
+    public:
+      Rival(QObject *parent = 0)
+        : IRival(parent)
+      {
 #ifdef NEW_LIBKDEGAMES
-				Kg::difficulty ()->setEditable (false);
+        Kg::difficulty()->setEditable(false);
 #else
-				KGameDifficulty::setEnabled (false);
+        KGameDifficulty::setEnabled(false);
 #endif
-			}
+      }
 
-			bool isAllow () const
-			{
-				return true;
-			}
-		
-			bool canUndo () const
-			{
-				return true;
-			}
+      bool isAllow() const
+      {
+        return true;
+      }
+    
+      bool canUndo() const
+      {
+        return true;
+      }
 
-		public slots:
-			void nextStep (const Point& point)
-			{
-				Q_UNUSED (point);
-			}
-		signals:
-			void createDotTable (const GameConfig& config);
-			void needDestroy ();
-		};
+    public slots:
+      void nextStep(const Point& point)
+      {
+        Q_UNUSED(point);
+      }
+    signals:
+      void createDotTable(const GameConfig& config);
+      void needDestroy();
+    };
 
-		class KDE_EXPORT Plugin : public KDots::IPlugin
-		{
-			Q_OBJECT
-			Q_INTERFACES (KDots::IPlugin)
-		public:
-			Plugin (QObject *parent = 0)
-				: IPlugin (parent)
-			{
-			}
+    class KDE_EXPORT Plugin : public KDots::IPlugin
+    {
+      Q_OBJECT
+      Q_INTERFACES(KDots::IPlugin)
+    public:
+      Plugin(QObject *parent = 0)
+        : IPlugin(parent)
+      {
+      }
 
-			IRival* createRival ()
-			{
-				return new Rival;
-			}
+      IRival* createRival()
+      {
+        return new Rival;
+      }
 
-			QString name () const
-			{
-				return "singlepc";
-			}
+      QString name() const
+      {
+        return "singlepc";
+      }
 
-			QString description () const
-			{
-				return "Playing in the single PC";
-			}
-			
-			KIcon icon () const
-			{
-				return KIcon ();
-			}
-		};
+      QString description() const
+      {
+        return "Playing in the single PC";
+      }
+      
+      KIcon icon() const
+      {
+        return KIcon();
+      }
+    };
 
-	}
+  }
 }
 
 #endif

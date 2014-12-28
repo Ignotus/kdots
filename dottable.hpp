@@ -1,6 +1,6 @@
 /*
  * KDots
- * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright(c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,11 +16,11 @@
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT
  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef KDOTS_DOTTABLE_HPP
@@ -32,50 +32,50 @@
 
 namespace KDots
 {
-	class Graph;
-	class StepQueue;
-	class KDOTS_EXPORT DotTable : public QObject
-	{
-		Q_OBJECT
+  class Graph;
+  class StepQueue;
+  class KDOTS_EXPORT DotTable : public QObject
+  {
+    Q_OBJECT
 
-		std::unique_ptr<Graph> m_graph;
-		std::shared_ptr<StepQueue> m_steps;
-		GameConfig m_config;
-		std::vector<Polygon_ptr> m_polygons;
-	public:
-		DotTable (const GameConfig& config, QObject *parent = 0);
-		
-		static bool isInPolygon (Polygon_ptr polygon, const Point& point);
-		
-		virtual ~DotTable () {}
-		GameConfig gameConfig () const;
+    std::unique_ptr<Graph> m_graph;
+    std::shared_ptr<StepQueue> m_steps;
+    GameConfig m_config;
+    std::vector<Polygon_ptr> m_polygons;
+  public:
+    DotTable(const GameConfig& config, QObject *parent = 0);
+    
+    static bool isInPolygon(Polygon_ptr polygon, const Point& point);
+    
+    virtual ~DotTable() {}
+    GameConfig gameConfig() const;
 
-		void pushPoint (const Point& point);
-		
-		std::vector<Polygon_ptr> polygons ()
-		{
-			return m_polygons;
-		}
+    void pushPoint(const Point& point);
+    
+    std::vector<Polygon_ptr> polygons()
+    {
+      return m_polygons;
+    }
 
-		Graph& graph () const
-		{
-			return *m_graph;
-		}
+    Graph& graph() const
+    {
+      return *m_graph;
+    }
 
-		std::shared_ptr<StepQueue> stepQueue ()
-		{
-			return m_steps;
-		}
-		
-		void undo ();
-	signals:
-		void nextPlayer (const Point& lastPoint);
-	private:
-		void drawPolygon (PolyList polygons);
-		void resizePolygon (Polygon_ptr polygon);
-		
-		void continueStep ();
-	};
+    std::shared_ptr<StepQueue> stepQueue()
+    {
+      return m_steps;
+    }
+    
+    void undo();
+  signals:
+    void nextPlayer(const Point& lastPoint);
+  private:
+    void drawPolygon(PolyList polygons);
+    void resizePolygon(Polygon_ptr polygon);
+    
+    void continueStep();
+  };
 }
 
 #endif

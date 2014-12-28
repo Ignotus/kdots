@@ -1,6 +1,6 @@
 /*
  * KDots
- * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright(c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,11 +16,11 @@
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT
  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "connectdialog.hpp"
@@ -30,27 +30,27 @@
 
 namespace KDots
 {
-	namespace ipconnect
-	{
-		ConnectDialog::ConnectDialog (QTcpServer* server, int port, QWidget* parent)
-			: QDialog (parent)
-			, m_ui (new Ui::ConnectDialog)
-			, m_server (server)
-		{
-			m_ui->setupUi (this);
-			
-			connect (server,
-					SIGNAL (newConnection ()),
-					this,
-					SLOT (accept ()));
-			
-			if (m_server->listen (QHostAddress::Any, port))
-				kDebug () << Q_FUNC_INFO << "Listening the port" << port;
-			else
-				kWarning () << Q_FUNC_INFO << "Couldn't listen the port " << port;
-		}
+  namespace ipconnect
+  {
+    ConnectDialog::ConnectDialog(QTcpServer* server, int port, QWidget* parent)
+      : QDialog(parent)
+      , m_ui(new Ui::ConnectDialog)
+      , m_server(server)
+    {
+      m_ui->setupUi(this);
+      
+      connect(server,
+          SIGNAL(newConnection()),
+          this,
+          SLOT(accept()));
+      
+      if(m_server->listen(QHostAddress::Any, port))
+        kDebug() << Q_FUNC_INFO << "Listening the port" << port;
+      else
+        kWarning() << Q_FUNC_INFO << "Couldn't listen the port " << port;
+    }
 
-	}
+  }
 }
 
 #include "connectdialog.moc"

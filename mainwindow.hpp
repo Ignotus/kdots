@@ -1,6 +1,6 @@
 /*
  * KDots
- * Copyright (c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
+ * Copyright(c) 2011-2012 Minh Ngo <nlminhtl@gmail.com>
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,11 +16,11 @@
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT
  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef KDOTS_MAINWINDOW_HPP
@@ -36,44 +36,44 @@
 
 namespace Ui
 {
-	class MainWindow;
+  class MainWindow;
 }
 
 class KAction;
 
 namespace KDots
 {
-	class TableWidget;
-	class IRival;
+  class TableWidget;
+  class IRival;
 
-	class MainWindow : public KXmlGuiWindow
-	{
-		Q_OBJECT
-	public:
-		MainWindow (QWidget *parent = 0);
-		~MainWindow ();
-	private:
-		Ui::MainWindow *m_ui;
-		std::shared_ptr<IRival> m_rival;
-		bool m_destroyTable;
-		TableWidget *m_table;
-		void initMenu ();
+  class MainWindow : public KXmlGuiWindow
+  {
+    Q_OBJECT
+  public:
+    MainWindow(QWidget *parent = 0);
+    ~MainWindow();
+  private:
+    Ui::MainWindow *m_ui;
+    std::shared_ptr<IRival> m_rival;
+    bool m_destroyTable;
+    TableWidget *m_table;
+    void initMenu();
 
-	private slots:
-		void onNewGame ();
-		void destroyGame ();
-		void onPreferences ();
-		void undo ();
-		void endGame ();
+  private slots:
+    void onNewGame();
+    void destroyGame();
+    void onPreferences();
+    void undo();
+    void endGame();
 #ifdef NEW_LIBKDEGAMES
-		void difficultyHandler (const KgDifficultyLevel *level);
+    void difficultyHandler(const KgDifficultyLevel *level);
 #else
-		void difficultyHandler (KGameDifficulty::standardLevel level);
+    void difficultyHandler(KGameDifficulty::standardLevel level);
 #endif
-	signals:
-		void undoActionEnable (bool);
-		void endActionEnable (bool);
-	};
+  signals:
+    void undoActionEnable(bool);
+    void endActionEnable(bool);
+  };
 }
 
 #endif
