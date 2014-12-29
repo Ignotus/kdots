@@ -72,7 +72,6 @@ namespace KDots
     void nextPlayer(const Point& lastPoint);
   private:
     void drawPolygon(PolyList polygons);
-    void resizePolygon(Polygon_ptr polygon);
     
     void continueStep();
   };

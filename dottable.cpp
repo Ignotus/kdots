@@ -89,7 +89,7 @@ namespace KDots
     // i - crosses count
     int i = 0, shift;
 
-    auto itr = polygon->points().begin(), itrEnd = polygon->points().end();
+    std::vector<KDots::Point>::const_iterator itr = polygon->points().begin(), itrEnd = polygon->points().end();
     while(itr != itrEnd)
     {
       if(itr->y() != point.y())
@@ -224,58 +224,12 @@ namespace KDots
       pushPoint(point);
   }
   
-  namespace
-  {
-    std::vector<Point>::iterator next(Polygon& polygon, std::vector<Point>::iterator current)
-    {
-      if(current == --polygon.points().end())
-        return polygon.points().end();
-      else
-        return ++current;
-    }
-  }
-  
-  void DotTable::resizePolygon(Polygon_ptr polygon)
-  {
-    const Owner current = m_steps->getCurrentOwner();
-    
-    for(auto itr = polygon->points().begin(), endItr = polygon->points().end();
-         itr != endItr; ++itr)
-    {
-      for(int i = 0; i < DIRECTION_COUNT; ++i)
-      {
-        const Point newPoint(itr->x() + GRAPH_DX[i], itr->y() + GRAPH_DY[i]);
-        if(!m_graph->isValid(newPoint))
-          continue;
-        
-        const GraphPoint& graphPoint = m_graph->operator[](newPoint);
-
-        if(graphPoint.owner() != current || graphPoint.isCaptured())
-          continue;
-        
-        auto nextItr = next(*polygon, itr);
-        
-        const int sum = Point::sqrLength(newPoint, *itr) + Point::sqrLength(newPoint, *nextItr);
-        
-        if(sum != 2 && sum != 3)
-          continue;
-        
-        if(isInPolygon(polygon, newPoint))
-          continue;
-        
-        polygon->points().insert(nextItr, newPoint);
-      }
-    } 
-  }
-
   void DotTable::drawPolygon(PolyList polygons)
   {
     for(Polygon_ptr& polygon : polygons)
     {
       if(!polygon->isFilled())
         continue;
-      
-      //resizePolygon(polygon);
       
       polygon->setOwner(m_steps->getCurrentOwner());
       m_polygons.push_back(polygon);

@@ -38,7 +38,7 @@ KDots::Polygon::Polygon(const std::vector<Point>& points)
   , m_area(-1)
 {
 }
-  
+
 namespace
 {
   int doubleArea(const std::vector<KDots::Point>& polygon)
@@ -66,7 +66,7 @@ int KDots::Polygon::area() const
   return m_area;
 }
 
-std::vector<KDots::Point>& KDots::Polygon::points()
+const std::vector<KDots::Point>& KDots::Polygon::points() const
 {
   return m_points;
 }

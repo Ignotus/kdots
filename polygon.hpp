@@ -38,7 +38,8 @@ namespace KDots
     std::vector<Point> m_points;
     bool m_filled;
     Owner m_owner;
-    mutable int m_area; // TODO: Remove mutable
+    
+    mutable int m_area;
   public:
     Polygon();
 
@@ -46,7 +47,7 @@ namespace KDots
     
     int area() const;
     
-    std::vector<Point>& points();
+    const std::vector<Point>& points() const;
 
     bool isFilled() const;
 
