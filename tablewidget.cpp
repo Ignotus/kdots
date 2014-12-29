@@ -39,44 +39,34 @@
 #include "graph.hpp"
 
 namespace KDots
-{
-  namespace
-  {
-    std::shared_ptr<StepQueue> createStepQueue(const GameConfig& config)
-    {
-      if (config.m_mode == GameMode::DEFAULT_MODE)
-        return std::make_shared<StepQueue>(config.m_firstOwner);
-      
-      return std::make_shared<ExtraStepQueue>(config.m_firstOwner);
-    }
-  }
-  
-  TableWidget::TableWidget(const GameConfig& config,
-      std::shared_ptr<IRival> rival, QWidget *parent)
+{ 
+  TableWidget::TableWidget(const GameConfig& config, QWidget *parent)
     : QWidget(parent)
-    , m_table(new DotTable(config, createStepQueue(config), this))
+    , m_table(nullptr)
     , m_height(config.m_height + 1)
     , m_width(config.m_width + 1)
-    , m_rival(rival)
   {
     setMinimumSize(400, 400);
     setMouseTracking(true);
-
-    rival->setDotTable(m_table);
-
-    connect(m_table,
-             SIGNAL(nextPlayer(const Point&)),
-             rival.get(),
-             SLOT(nextStep(const Point&)));
+  }
+  
+  void TableWidget::setModel(std::shared_ptr<DotTable>& table)
+  {
+    m_table = table;
     
-    connect(m_table,
+    connect(m_table.get(),
         SIGNAL(nextPlayer(const Point&)),
         this,
         SLOT(update()));
-    connect(m_table,
+    connect(m_table.get(),
         SIGNAL(nextPlayer(const Point&)),
         this,
         SLOT(onStatusMessage()));
+  }
+  
+  void TableWidget::setRival(std::shared_ptr<IRival>& rival)
+  {
+    m_rival = rival;
   }
 
   namespace

@@ -40,6 +40,10 @@
 #include "tablewidget.hpp"
 #include "plugincontainer.hpp"
 #include "kdots.h"
+#include "stepqueue.hpp"
+#include "graph.hpp"
+#include "dottable.hpp"
+
 
 namespace KDots
 {
@@ -47,7 +51,7 @@ namespace KDots
     : KXmlGuiWindow(parent)
     , m_ui(new Ui::MainWindow)
     , m_destroyTable(false)
-    , m_table(NULL)
+    , m_table(nullptr)
   {
     m_ui->setupUi(this);
 
@@ -124,8 +128,6 @@ namespace KDots
     undoAction->setEnabled(false);
     undoAction->setShortcut(Qt::CTRL + Qt::Key_Z);
     
-    //actionCollection()->addAction("UndoGame", undoAction);
-    
     connect(this,
         SIGNAL(endActionEnable(bool)),
         endAction,
@@ -175,6 +177,17 @@ namespace KDots
     
     dialog.exec();
   }
+  
+  namespace
+  {
+    std::shared_ptr<StepQueue> createStepQueue(const GameConfig& config)
+    {
+      if (config.m_mode == GameMode::DEFAULT_MODE)
+        return std::make_shared<StepQueue>(config.m_firstOwner);
+      
+      return std::make_shared<ExtraStepQueue>(config.m_firstOwner);
+    }
+  }
 
   void MainWindow::onNewGame()
   {
@@ -197,7 +210,19 @@ namespace KDots
     if(!config.isInititialized())
       return;
 
-    m_table = new TableWidget(config, m_rival, this);
+    m_table = new TableWidget(config, this);
+    
+    auto model = std::make_shared<DotTable>(config, createStepQueue(config));
+    
+    m_rival->setDotTable(model);
+    
+    connect(model.get(),
+        SIGNAL(nextPlayer(const Point&)),
+        m_rival.get(),
+        SLOT(nextStep(const Point&)));
+    
+    m_table->setModel(model);
+    m_table->setRival(m_rival);
     
     if(m_destroyTable)
     {

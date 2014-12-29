@@ -35,15 +35,6 @@ TARGET_LINK_LIBRARIES(kdots_simpleai
   kdotslib
 )
 
-kde4_add_plugin(kdots_simpleai_static STATIC
-  ${SIMPLEAI_SRCS}
-)
-
-TARGET_LINK_LIBRARIES(kdots_simpleai_static
-  ${KDOTS_REQUIRED_LIBS}
-  kdotslib
-)
-
 IF(UNIX)
   INSTALL(TARGETS kdots_simpleai DESTINATION ${PLUGINS_DIR})
 ENDIF(UNIX)
@@ -65,7 +56,3 @@ ELSE(UNIX)
     ${PLUGIN_BUILD_DIR}
   )
 ENDIF(UNIX)
-
-IF(KDE4_BUILD_TESTS)
-  ADD_SUBDIRECTORY(tests)
-ENDIF(KDE4_BUILD_TESTS)

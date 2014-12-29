@@ -277,7 +277,7 @@ namespace KDots
       }
     }
     
-    void Rival::setDotTable(DotTable *table)
+    void Rival::setDotTable(std::shared_ptr<DotTable>& table)
     {
       m_table = table;
       

@@ -25,6 +25,7 @@
  */
 #ifndef KDOTS_IRIVAL_HPP
 #define KDOTS_IRIVAL_HPP
+#include <memory>
 #include <QObject>
 #include <newgamewidget.hpp>
 #include <point.hpp>
@@ -71,7 +72,7 @@ namespace KDots
       Q_UNUSED(point);
     }
     
-    virtual void setDotTable(DotTable *table)
+    virtual void setDotTable(std::shared_ptr<DotTable>& table)
     {
       Q_UNUSED(table);
     }
@@ -98,6 +99,6 @@ namespace KDots
   };
 }
 
-Q_DECLARE_INTERFACE(KDots::IRival, "com.github.ignotus.kdots.IRival/1.0");
+Q_DECLARE_INTERFACE(KDots::IRival, "com.github.ignotus.kdots.IRival/1.0.1")
 
 #endif

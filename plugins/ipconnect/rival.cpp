@@ -144,7 +144,7 @@ namespace KDots
       return GameConfig();
     }
     
-    void Rival::setDotTable(DotTable *table) //Is called after configureWidget
+    void Rival::setDotTable(std::shared_ptr<DotTable>& table) //Is called after configureWidget
     {
       m_table = table;
       

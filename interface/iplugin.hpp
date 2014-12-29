@@ -25,6 +25,7 @@
  */
 #ifndef KDOTS_IPLUGIN_HPP
 #define KDOTS_IPLUGIN_HPP
+#include <memory>
 #include <QString>
 #include <KIcon>
 #include <QtPlugin>
@@ -50,7 +51,7 @@ namespace KDots
     */
     virtual QString description() const = 0;
 
-    virtual IRival* createRival() = 0;
+    virtual std::shared_ptr<IRival> createRival() = 0;
 
     /** @brief Returns a plugin icon.
     */
@@ -62,5 +63,5 @@ namespace KDots
 
 }
 
-Q_DECLARE_INTERFACE(KDots::IPlugin, "com.github.ignotus.kdots.IPlugin/1.0");
+Q_DECLARE_INTERFACE(KDots::IPlugin, "com.github.ignotus.kdots.IPlugin/1.0.1");
 #endif

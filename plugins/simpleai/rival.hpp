@@ -41,7 +41,7 @@ namespace KDots
       Q_OBJECT
       Q_INTERFACES(KDots::IRival)
       
-      DotTable *m_table;
+      std::shared_ptr<DotTable> m_table;
       Owner m_current, m_other;
       int m_iterations;
       std::vector<Point> m_points;
@@ -61,7 +61,7 @@ namespace KDots
       
     public slots:
       void nextStep(const Point& point);
-      void setDotTable(DotTable *table);
+      void setDotTable(std::shared_ptr<DotTable>& table);
       
     private:
       float calcPriority(const Point& point);

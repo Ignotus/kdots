@@ -41,7 +41,7 @@ namespace KDots
     {
       Q_OBJECT
 
-      DotTable *m_table;
+      std::shared_ptr<DotTable> m_table;
       QTcpSocket *m_socket;
       QTcpServer *m_server;
       
@@ -56,7 +56,7 @@ namespace KDots
       
       IConfigurationWidget* configureWidget();
 
-      void setDotTable(DotTable *table);
+      void setDotTable(std::shared_ptr<DotTable>& table);
 
       bool isAllow() const;
 
