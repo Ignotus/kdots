@@ -36,7 +36,7 @@ namespace KDots
   template<class A>
   class graph_iterator;
   
-  class KDOTS_EXPORT Graph
+  class KDOTS_EXPORT Graph final
   {
     std::vector<std::vector<GraphPoint>> m_graph;
   public:
@@ -91,7 +91,7 @@ namespace KDots
   };
   
   template<class A>
-  class graph_iterator : public std::iterator<std::forward_iterator_tag, A>
+  class graph_iterator final : public std::iterator<std::forward_iterator_tag, A>
   {
     Graph *m_graph;
     std::size_t m_x, m_y;

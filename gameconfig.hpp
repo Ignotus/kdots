@@ -31,20 +31,15 @@
 
 namespace KDots
 {
-  struct KDOTS_EXPORT GameConfig
+  struct KDOTS_EXPORT GameConfig final
   {
     int m_width, m_height;
     GameMode m_mode;
     Owner m_firstOwner;
     
-    GameConfig()
-      : m_width(-1)
-    {}
+    GameConfig();
     
-    bool isInititialized() const
-    {
-      return m_width != -1;
-    }
+    bool isInititialized() const;
     
     static void registerMeta();
   };

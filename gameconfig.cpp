@@ -42,6 +42,15 @@ QDataStream& operator>>(QDataStream& in, KDots::GameConfig& obj)
 
 namespace KDots
 {
+  GameConfig::GameConfig()
+    : m_width(-1)
+  {}
+    
+  bool GameConfig::isInititialized() const
+  {
+    return m_width != -1;
+  }
+  
   void GameConfig::registerMeta()
   {
     qRegisterMetaType<KDots::GameConfig>("GameConfig");

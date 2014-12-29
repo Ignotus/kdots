@@ -30,7 +30,7 @@
 
 namespace KDots
 {
-  class KDOTS_EXPORT GraphPoint
+  class KDOTS_EXPORT GraphPoint final
   {
   public:
     typedef EdgeList<DIRECTION_COUNT> GraphEdges;

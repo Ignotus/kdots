@@ -33,7 +33,7 @@
 
 namespace KDots
 {
-  class KDOTS_EXPORT Polygon
+  class KDOTS_EXPORT Polygon final
   {
     std::vector<Point> m_points;
     bool m_filled;

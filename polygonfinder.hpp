@@ -34,7 +34,7 @@ namespace KDots
 {
   struct Graph;
 
-  class KDOTS_EXPORT PolygonFinder
+  class KDOTS_EXPORT PolygonFinder final
   {
     const Graph& m_graph;
     Owner m_current;

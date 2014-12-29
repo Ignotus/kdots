@@ -32,7 +32,7 @@ class QDir;
 namespace KDots
 {
   class IPlugin;
-  class PluginContainer
+  class PluginContainer final
   {
     typedef QMap<QString, IPlugin*> PluginMap;
     PluginMap m_pluginMap;

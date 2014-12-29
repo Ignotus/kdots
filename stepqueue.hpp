@@ -110,7 +110,7 @@ namespace KDots
     }
   };
 
-  class KDOTS_EXPORT ExtraStepQueue : public StepQueue
+  class KDOTS_EXPORT ExtraStepQueue final : public StepQueue
   {
   public:
     ExtraStepQueue(Owner firstPlayer);
