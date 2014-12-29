@@ -82,32 +82,32 @@ namespace KDots
           const GraphPoint& graphPoint = graph[newPoint];
           const Owner own = graphPoint.owner();
           
-          if(graphPoint.isCaptured() && el != NM)
+          if(graphPoint.isCaptured() && el != MapElement::NM)
             return false;
           
           switch(el)
           {
-          case EM: //Empty
+          case MapElement::EM: //Empty
             if(own != Owner::NONE)
               return false;
             break;
-          case FI: //First
+          case MapElement::FI: //First
             if(own != other)
               return false;
             break;
-          case SE: //Second
+          case MapElement::SE: //Second
             if(own != current)
               return false;
             break;
-          case PF: // Possibly first
+          case MapElement::PF: // Possibly first
             if(own == current)
               return false;
             break;
-          case PS: // Possibly second
+          case MapElement::PS: // Possibly second
             if(own == other)
               return false;
             break;
-          case NM: case CU: default:
+          case MapElement::NM: case MapElement::CU: default:
             break;
           }
         }

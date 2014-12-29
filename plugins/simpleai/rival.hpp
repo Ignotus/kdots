@@ -36,7 +36,7 @@ namespace KDots
   {
     struct MapData;
     
-    class KDOTS_EXPORT Rival : public KDots::IRival
+    class Rival : public KDots::IRival
     {
       Q_OBJECT
       Q_INTERFACES(KDots::IRival)

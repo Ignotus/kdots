@@ -33,10 +33,10 @@ using namespace KDots::simpleai;
 
 const MapData TEST_DATA {
   {
-    {NM, CU, SE},
-    {PF, EM, PF},
-    {PS, NM, PS},
-    {EM, EM, EM}
+    {MapElement::NM, MapElement::CU, MapElement::SE},
+    {MapElement::PF, MapElement::EM, MapElement::PF},
+    {MapElement::PS, MapElement::NM, MapElement::PS},
+    {MapElement::EM, MapElement::EM, MapElement::EM}
   },
   {1, 0},
   0.1
@@ -44,10 +44,10 @@ const MapData TEST_DATA {
 
 const MapData TEST_DATA_1 {
   {
-    {NM, SE},
-    {PF, EM},
-    {PS, CU},
-    {EM, EM}
+    {MapElement::NM, MapElement::SE},
+    {MapElement::PF, MapElement::EM},
+    {MapElement::PS, MapElement::CU},
+    {MapElement::EM, MapElement::EM}
   },
   {1, 2},
   0.1
@@ -68,9 +68,9 @@ private slots:
     
     const MapData data {
       {
-        {NM, FI, NM},
-        {FI, SE, FI},
-        {EM, CU, PF}
+        {MapElement::NM, MapElement::FI, MapElement::NM},
+        {MapElement::FI, MapElement::SE, MapElement::FI},
+        {MapElement::EM, MapElement::CU, MapElement::PF}
       },
       {1, 2},
       0.9
@@ -80,9 +80,9 @@ private slots:
     
     const MapData checkData1 {
       {
-        {EM, FI, NM},
-        {CU, SE, FI},
-        {PF, FI, NM}
+        {MapElement::EM, MapElement::FI, MapElement::NM},
+        {MapElement::CU, MapElement::SE, MapElement::FI},
+        {MapElement::PF, MapElement::FI, MapElement::NM}
       },
       {0, 1},
       0.9
@@ -93,9 +93,9 @@ private slots:
     
     const MapData checkData2 {
       {
-        {PF, CU, EM},
-        {FI, SE, FI},
-        {NM, FI, NM}
+        {MapElement::PF, MapElement::CU, MapElement::EM},
+        {MapElement::FI, MapElement::SE, MapElement::FI},
+        {MapElement::NM, MapElement::FI, MapElement::NM}
       },
       {1, 0},
       0.9
@@ -107,9 +107,9 @@ private slots:
     
     const MapData checkData3 {
       {
-        {NM, FI, PF},
-        {FI, SE, CU},
-        {NM, FI, EM}
+        {MapElement::NM, MapElement::FI, MapElement::PF},
+        {MapElement::FI, MapElement::SE, MapElement::CU},
+        {MapElement::NM, MapElement::FI, MapElement::EM}
       },
       {2, 1},
       0.9
@@ -143,10 +143,10 @@ private slots:
     const MapData& inverted = PriorityMap::inverse(TEST_DATA);
     const MapData answer {
       {
-        {SE, CU, NM},
-        {PF,EM, PF},
-        {PS, NM, PS},
-        {EM, EM,EM}
+        {MapElement::SE, MapElement::CU, MapElement::NM},
+        {MapElement::PF,MapElement::EM, MapElement::PF},
+        {MapElement::PS, MapElement::NM, MapElement::PS},
+        {MapElement::EM, MapElement::EM,MapElement::EM}
       },
       {1, 0},
       0.1
@@ -157,10 +157,10 @@ private slots:
     const MapData& inverted_1 = PriorityMap::inverse(TEST_DATA_1);
     const MapData answer_1 {
       {
-        {SE, NM},
-        {EM, PF},
-        {CU, PS},
-        {EM, EM}
+        {MapElement::SE, MapElement::NM},
+        {MapElement::EM, MapElement::PF},
+        {MapElement::CU, MapElement::PS},
+        {MapElement::EM, MapElement::EM}
       },
       {0, 2},
       0.1
@@ -174,9 +174,9 @@ private slots:
     const MapData& rotated = PriorityMap::rotate(TEST_DATA);
     const MapData answer {
       {
-        {EM, PS, PF, NM},
-        {EM, NM, EM, CU},
-        {EM, PS, PF, SE}
+        {MapElement::EM, MapElement::PS, MapElement::PF, MapElement::NM},
+        {MapElement::EM, MapElement::NM, MapElement::EM, MapElement::CU},
+        {MapElement::EM, MapElement::PS, MapElement::PF, MapElement::SE}
       },
       {3, 1},
       0.1
@@ -189,8 +189,8 @@ private slots:
     const MapData& rotated_1 = PriorityMap::rotate(TEST_DATA_1);
     const MapData answer_1 {
       {
-        {EM, PS, PF, NM},
-        {EM, CU, EM, SE}
+        {MapElement::EM, MapElement::PS, MapElement::PF, MapElement::NM},
+        {MapElement::EM, MapElement::CU, MapElement::EM, MapElement::SE}
       },
       {1, 1},
       0.1

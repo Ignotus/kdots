@@ -36,7 +36,7 @@ namespace KDots
 {
   namespace simpleai
   {
-    enum MapElement
+    enum class MapElement
     {
       EM, //Empty
       NM, // Does not matter
@@ -50,7 +50,7 @@ namespace KDots
     typedef std::vector<MapElement> MapLine;
     typedef std::vector<MapLine> MapType;
     
-    struct KDOTS_EXPORT MapData
+    struct MapData
     {
       MapType m_map;
       Point m_current;
@@ -77,25 +77,25 @@ namespace KDots
           {
             switch(m_map[j][i])
             {
-              case EM: //Empty
+              case MapElement::EM: //Empty
                 res += "EM ";
                 break;
-              case NM: // Does not matter
+              case MapElement::NM: // Does not matter
                 res += "NM ";
                 break;
-              case FI: //First
+              case MapElement::FI: //First
                 res += "FI ";
                 break;
-              case SE: //Second
+              case MapElement::SE: //Second
                 res += "SE ";
                 break;
-              case PF: // Possibly first
+              case MapElement::PF: // Possibly first
                 res += "PF ";
                 break;
-              case PS: // Possibly second
+              case MapElement::PS: // Possibly second
                 res += "PS ";
                 break;
-              case CU: // Current
+              case MapElement::CU: // Current
                 res += "CU ";
                 break;
               default:

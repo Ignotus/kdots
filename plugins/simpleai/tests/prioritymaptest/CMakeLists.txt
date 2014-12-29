@@ -12,7 +12,7 @@ TARGET_LINK_LIBRARIES(priority_map_test
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KDEUI_LIBS}
   ${QT_LIBRARIES}
-  kdots_simpleai
+  kdots_simpleai_static
   kdotslib
 )
 

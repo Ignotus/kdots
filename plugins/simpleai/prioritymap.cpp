@@ -32,346 +32,346 @@ namespace KDots
     const std::list<MapData> PRIORITY_MAP {
       {
         {//1
-          {NM, SE, NM},
-          {FI, CU, FI},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::SE, MapElement::NM},
+          {MapElement::FI, MapElement::CU, MapElement::FI},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {1, 1},
         0.95
       },
       {
         {//2
-          {SE, PF, NM},
-          {FI, CU, PF},
-          {NM, SE, NM}
+          {MapElement::SE, MapElement::PF, MapElement::NM},
+          {MapElement::FI, MapElement::CU, MapElement::PF},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {1, 1},
         0.9
       },
       {
         {//3
-          {NM, SE, PF},
-          {FI, FI, CU},
-          {NM, SE, PF}
+          {MapElement::NM, MapElement::SE, MapElement::PF},
+          {MapElement::FI, MapElement::FI, MapElement::CU},
+          {MapElement::NM, MapElement::SE, MapElement::PF}
         },
         {2, 1},
         0.9
       },
       {
         {//4
-          {SE, NM, PF},
-          {NM, CU, NM},
-          {PF, NM, SE}
+          {MapElement::SE, MapElement::NM, MapElement::PF},
+          {MapElement::NM, MapElement::CU, MapElement::NM},
+          {MapElement::PF, MapElement::NM, MapElement::SE}
         },
         {1, 1},
         0.05
       },
       {
         {//5
-          {NM, FI, NM, NM},
-          {EM, EM, SE, NM},
-          {NM, CU, EM, FI},
-          {NM, NM, EM, NM}
+          {MapElement::NM, MapElement::FI, MapElement::NM, MapElement::NM},
+          {MapElement::EM, MapElement::EM, MapElement::SE, MapElement::NM},
+          {MapElement::NM, MapElement::CU, MapElement::EM, MapElement::FI},
+          {MapElement::NM, MapElement::NM, MapElement::EM, MapElement::NM}
         },
         {1, 2},
         0.8
       },
       {
         {//6
-          {NM, FI, NM},
-          {FI, SE, EM},
-          {PF, CU, PF},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::FI, MapElement::NM},
+          {MapElement::FI, MapElement::SE, MapElement::EM},
+          {MapElement::PF, MapElement::CU, MapElement::PF},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {1, 2},
         0.7
       },
       {
         {//7
-          {NM, FI, NM},
-          {FI, SE, EM},
-          {NM, CU, NM}
+          {MapElement::NM, MapElement::FI, MapElement::NM},
+          {MapElement::FI, MapElement::SE, MapElement::EM},
+          {MapElement::NM, MapElement::CU, MapElement::NM}
         },
         {1, 2},
         0.2
       },
       {
         {//8
-          {NM, EM, NM, NM},
-          {FI, SE, CU, NM},
-          {NM, FI, SE, EM},
-          {NM, NM, FI, NM}
+          {MapElement::NM, MapElement::EM, MapElement::NM, MapElement::NM},
+          {MapElement::FI, MapElement::SE, MapElement::CU, MapElement::NM},
+          {MapElement::NM, MapElement::FI, MapElement::SE, MapElement::EM},
+          {MapElement::NM, MapElement::NM, MapElement::FI, MapElement::NM}
         },
         {2, 1},
         0.95
       },
       {
         {//9
-          {NM, FI, NM},
-          {PF, SE, CU},
-          {NM, FI, NM}
+          {MapElement::NM, MapElement::FI, MapElement::NM},
+          {MapElement::PF, MapElement::SE, MapElement::CU},
+          {MapElement::NM, MapElement::FI, MapElement::NM}
         },
         {2, 1},
         0.2
       },
       {
         {//10
-          {NM, SE, NM},
-          {PF, CU, PF},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::SE, MapElement::NM},
+          {MapElement::PF, MapElement::CU, MapElement::PF},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {1, 1},
         0.05
       },
       {
         {//11
-          {PF, PF, CU},
-          {EM, EM, EM},
-          {PF, SE, PF},
-          {NM, SE, NM}
+          {MapElement::PF, MapElement::PF, MapElement::CU},
+          {MapElement::EM, MapElement::EM, MapElement::EM},
+          {MapElement::PF, MapElement::SE, MapElement::PF},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {2, 0},
         0.01
       },
       {
         {//12
-          {NM, PF, NM},
-          {FI, EM, CU},
-          {PF, SE, EM},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::PF, MapElement::NM},
+          {MapElement::FI, MapElement::EM, MapElement::CU},
+          {MapElement::PF, MapElement::SE, MapElement::EM},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {2, 1},
         0.05
       },
       {
         {//13
-          {NM, FI, NM},
-          {FI, CU, FI}
+          {MapElement::NM, MapElement::FI, MapElement::NM},
+          {MapElement::FI, MapElement::CU, MapElement::FI}
         },
         {1, 1},
         -0.5
       },
       {
         {//14
-          {NM, SE, NM},
-          {NM, EM, NM},
-          {PF, CU, PF},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::SE, MapElement::NM},
+          {MapElement::NM, MapElement::EM, MapElement::NM},
+          {MapElement::PF, MapElement::CU, MapElement::PF},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {1, 2},
         0.05
       },
       {
         {//15
-          {NM, SE, NM},
-          {NM, EM, NM},
-          {PF, CU, PF},
-          {NM, EM, NM},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::SE, MapElement::NM},
+          {MapElement::NM, MapElement::EM, MapElement::NM},
+          {MapElement::PF, MapElement::CU, MapElement::PF},
+          {MapElement::NM, MapElement::EM, MapElement::NM},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {1, 2},
         0.05
       },
       {
         {//16
-          {NM, SE, NM},
-          {NM, EM, NM},
-          {PF, CU, PF},
-          {NM, EM, NM},
-          {NM, EM, NM},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::SE, MapElement::NM},
+          {MapElement::NM, MapElement::EM, MapElement::NM},
+          {MapElement::PF, MapElement::CU, MapElement::PF},
+          {MapElement::NM, MapElement::EM, MapElement::NM},
+          {MapElement::NM, MapElement::EM, MapElement::NM},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {1, 2},
         0.05
       },
       {
         {//17
-          {NM, SE, NM},
-          {NM, EM, NM},
-          {NM, EM, NM},
-          {PF, CU, PF},
-          {NM, EM, NM},
-          {NM, EM, NM},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::SE, MapElement::NM},
+          {MapElement::NM, MapElement::EM, MapElement::NM},
+          {MapElement::NM, MapElement::EM, MapElement::NM},
+          {MapElement::PF, MapElement::CU, MapElement::PF},
+          {MapElement::NM, MapElement::EM, MapElement::NM},
+          {MapElement::NM, MapElement::EM, MapElement::NM},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {1, 3},
         0.05
       },
       {
         {//18
-          {NM, NM, SE},
-          {PF, CU, PF},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::NM, MapElement::SE},
+          {MapElement::PF, MapElement::CU, MapElement::PF},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {1, 1},
         0.05
       },
       {
         {//19
-          {NM, SE, NM},
-          {PF, CU, PF},
-          {PS, EM, NM},
-          {SE, NM, NM}          
+          {MapElement::NM, MapElement::SE, MapElement::NM},
+          {MapElement::PF, MapElement::CU, MapElement::PF},
+          {MapElement::PS, MapElement::EM, MapElement::NM},
+          {MapElement::SE, MapElement::NM, MapElement::NM}          
         },
         {1, 1},
         0.05
       },
       {
         {//20
-          {NM, SE, NM},
-          {NM, EM, NM},
-          {PF, CU, PF},
-          {PS, EM, NM},
-          {SE, NM, NM}
+          {MapElement::NM, MapElement::SE, MapElement::NM},
+          {MapElement::NM, MapElement::EM, MapElement::NM},
+          {MapElement::PF, MapElement::CU, MapElement::PF},
+          {MapElement::PS, MapElement::EM, MapElement::NM},
+          {MapElement::SE, MapElement::NM, MapElement::NM}
         },
         {1, 2},
         0.05
       },
       {
         {//21
-          {NM, SE},
-          {NM, EM},
-          {PF, EM},
-          {PF, CU},
-          {SE, NM}
+          {MapElement::NM, MapElement::SE},
+          {MapElement::NM, MapElement::EM},
+          {MapElement::PF, MapElement::EM},
+          {MapElement::PF, MapElement::CU},
+          {MapElement::SE, MapElement::NM}
         },
         {1, 3},
         0.05
       },
       {
         {//22
-          {NM, SE, NM},
-          {PF, FI, CU},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::SE, MapElement::NM},
+          {MapElement::PF, MapElement::FI, MapElement::CU},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {2, 1},
         0.1
       },
       {
         {//23
-          {NM, SE, NM},
-          {PF, FI, CU},
-          {NM, EM, EM},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::SE, MapElement::NM},
+          {MapElement::PF, MapElement::FI, MapElement::CU},
+          {MapElement::NM, MapElement::EM, MapElement::EM},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {2, 1},
         0.1
       },
       {
         {//24
-          {NM, SE, NM},
-          {NM, EM, EM},
-          {PF, FI, CU},
-          {NM, EM, EM},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::SE, MapElement::NM},
+          {MapElement::NM, MapElement::EM, MapElement::EM},
+          {MapElement::PF, MapElement::FI, MapElement::CU},
+          {MapElement::NM, MapElement::EM, MapElement::EM},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {2, 2},
         0.1
       },
       {
         {//25
-          {NM, SE},
-          {PF, EM},
-          {PF, CU},
-          {SE, NM}
+          {MapElement::NM, MapElement::SE},
+          {MapElement::PF, MapElement::EM},
+          {MapElement::PF, MapElement::CU},
+          {MapElement::SE, MapElement::NM}
         },
         {1, 2},
         0.05
       },
       {
         {//26
-          {SE, CU},
-          {SE, SE}
+          {MapElement::SE, MapElement::CU},
+          {MapElement::SE, MapElement::SE}
         },
         {1, 0},
         -0.5
       },
       {
         {//27
-          {NM, NM, EM, EM, NM},
-          {NM, CU, EM, EM, SE},
-          {EM, EM, FI, NM, NM},
-          {NM, SE, NM, NM, NM}
+          {MapElement::NM, MapElement::NM, MapElement::EM, MapElement::EM, MapElement::NM},
+          {MapElement::NM, MapElement::CU, MapElement::EM, MapElement::EM, MapElement::SE},
+          {MapElement::EM, MapElement::EM, MapElement::FI, MapElement::NM, MapElement::NM},
+          {MapElement::NM, MapElement::SE, MapElement::NM, MapElement::NM, MapElement::NM}
         },
         {1, 1},
         0.8
       },
       {
         {//28
-          {NM, NM, EM, EM, NM},
-          {NM, CU, EM, EM, SE},
-          {EM, EM, PF, FI, NM},
-          {NM, SE, NM, NM, NM}
+          {MapElement::NM, MapElement::NM, MapElement::EM, MapElement::EM, MapElement::NM},
+          {MapElement::NM, MapElement::CU, MapElement::EM, MapElement::EM, MapElement::SE},
+          {MapElement::EM, MapElement::EM, MapElement::PF, MapElement::FI, MapElement::NM},
+          {MapElement::NM, MapElement::SE, MapElement::NM, MapElement::NM, MapElement::NM}
         },
         {1, 1},
         0.8
       },
       {
         {//29
-          {FI, SE},
-          {CU, FI},
-          {SE, NM}
+          {MapElement::FI, MapElement::SE},
+          {MapElement::CU, MapElement::FI},
+          {MapElement::SE, MapElement::NM}
         },
         {0, 1},
         0.9
       },
       {
         {//30
-          {NM, SE, NM},
-          {NM, EM, EM},
-          {NM, EM, EM},
-          {PF, FI, CU},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::SE, MapElement::NM},
+          {MapElement::NM, MapElement::EM, MapElement::EM},
+          {MapElement::NM, MapElement::EM, MapElement::EM},
+          {MapElement::PF, MapElement::FI, MapElement::CU},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {2, 3},
         0.1
       },
       {
         {//31
-          {NM, SE, NM},
-          {NM, EM, EM},
-          {NM, EM, EM},
-          {PF, FI, CU},
-          {NM, EM, EM},
-          {NM, SE, NM}
+          {MapElement::NM, MapElement::SE, MapElement::NM},
+          {MapElement::NM, MapElement::EM, MapElement::EM},
+          {MapElement::NM, MapElement::EM, MapElement::EM},
+          {MapElement::PF, MapElement::FI, MapElement::CU},
+          {MapElement::NM, MapElement::EM, MapElement::EM},
+          {MapElement::NM, MapElement::SE, MapElement::NM}
         },
         {2, 3},
         0.1
       },
       {
         {//32
-          {NM, SE},
-          {NM, EM},
-          {FI, CU},
-          {SE, NM}
+          {MapElement::NM, MapElement::SE},
+          {MapElement::NM, MapElement::EM},
+          {MapElement::FI, MapElement::CU},
+          {MapElement::SE, MapElement::NM}
         },
         {1, 2},
         0.1
       },
       {
         {//33
-          {SE, FI, NM},
-          {FI, CU, NM},
-          {NM, NM, SE}
+          {MapElement::SE, MapElement::FI, MapElement::NM},
+          {MapElement::FI, MapElement::CU, MapElement::NM},
+          {MapElement::NM, MapElement::NM, MapElement::SE}
         },
         {1, 1},
         0.1
       },
       {
         {
-          {PS, PS, NM},
-          {PS, CU, FI},
-          {FI, SE, PS}
+          {MapElement::PS, MapElement::PS, MapElement::NM},
+          {MapElement::PS, MapElement::CU, MapElement::FI},
+          {MapElement::FI, MapElement::SE, MapElement::PS}
         },
         {1, 1},
         0.4
       },
       {
         {
-          {NM, EM, NM, NM},
-          {SE, FI, CU, NM},
-          {NM, SE, FI, EM},
-          {NM, PS, SE, PS}
+          {MapElement::NM, MapElement::EM, MapElement::NM, MapElement::NM},
+          {MapElement::SE, MapElement::FI, MapElement::CU, MapElement::NM},
+          {MapElement::NM, MapElement::SE, MapElement::FI, MapElement::EM},
+          {MapElement::NM, MapElement::PS, MapElement::SE, MapElement::PS}
         },
         {2, 1},
         1.0
