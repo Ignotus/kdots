@@ -47,14 +47,13 @@ IF(UNIX)
 ENDIF(UNIX)
 
 SET(KDOTSLIB_SRCS
+  point.cpp
   graph.cpp
   dottable.cpp
   stepqueue.cpp
   polygon.cpp
   polygonfinder.cpp
   gameconfig.cpp
-  point.cpp
-
 )
 
 SET(KDOTSLIB_HEADERS

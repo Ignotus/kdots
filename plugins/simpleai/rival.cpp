@@ -131,7 +131,7 @@ namespace KDots
         {
           for(int i = 0; i < DIRECTION_COUNT; ++i)
           {
-            const Point newPoint(point.x() + GRAPH_DX[i], point.y() + GRAPH_DY[i]);
+            const Point newPoint(point.m_x + GRAPH_DX[i], point.m_y + GRAPH_DY[i]);
             if(!graph.isValid(newPoint))
               continue;
             
@@ -168,7 +168,7 @@ namespace KDots
       {
         for(int i = 0; i < DIRECTION_COUNT; ++i)
         {
-          const Point newPoint(point.x() + GRAPH_DX[i], point.y() + GRAPH_DY[i]);
+          const Point newPoint(point.m_x + GRAPH_DX[i], point.m_y + GRAPH_DY[i]);
           if(!graph.isValid(newPoint))
             continue;
           
@@ -240,8 +240,8 @@ namespace KDots
       if(isAllow())
         return;
       
-      int min_x = point.x() - 1, min_y = point.y() - 1;
-      int max_x = point.x() + 1, max_y = point.y() + 1;
+      int min_x = point.m_x - 1, min_y = point.m_y - 1;
+      int max_x = point.m_x + 1, max_y = point.m_y + 1;
       calcRange(min_x, min_y, max_x, max_y);
       const Point minPoint(min_x, min_y), maxPoint(max_x, max_y); 
       

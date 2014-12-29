@@ -427,8 +427,8 @@ namespace KDots
       }
       
       newData.m_priority = data.m_priority;
-      newData.m_current = {static_cast<int>(map.front().size() - 1 - data.m_current.x()),
-          data.m_current.y()};
+      newData.m_current = {static_cast<int>(map.front().size() - 1 - data.m_current.m_x),
+          data.m_current.m_y};
       
       return newData;
     }
@@ -451,8 +451,8 @@ namespace KDots
       }
       
       newData.m_priority = data.m_priority;
-      newData.m_current = {static_cast<int>(map.size() - 1 - data.m_current.y()),
-          data.m_current.x()};
+      newData.m_current = {static_cast<int>(map.size() - 1 - data.m_current.m_y),
+          data.m_current.m_x};
       
       return newData;
     }

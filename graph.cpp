@@ -56,13 +56,13 @@ namespace KDots
 
   void Graph::addEdge(const Point& first, const Point& second)
   {
-    m_graph[first.x()][first.y()].edges().addEdge(second);
-    m_graph[second.x()][second.y()].edges().addEdge(first);
+    m_graph[first.m_x][first.m_y].edges().addEdge(second);
+    m_graph[second.m_x][second.m_y].edges().addEdge(first);
   }
 
   void Graph::removeEdge(const Point& first, const Point& second)
   {
-    m_graph[first.x()][first.y()].edges().removeEdge(second);
-    m_graph[second.x()][second.y()].edges().removeEdge(first);
+    m_graph[first.m_x][first.m_y].edges().removeEdge(second);
+    m_graph[second.m_x][second.m_y].edges().removeEdge(first);
   }
 }

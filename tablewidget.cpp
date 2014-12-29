@@ -129,8 +129,8 @@ namespace KDots
         || y < 0 || y >= m_height - 1)
       return;
     
-    point.setX(x);
-    point.setY(y);
+    point.m_x = x;
+    point.m_y = y;
   }
   
   void TableWidget::mouseMoveEvent(QMouseEvent *event)
@@ -157,7 +157,7 @@ namespace KDots
     Point point;
     calculatePoint(point, event);
     
-    if(point.isInitialized())
+    if(!point.empty())
       m_table->pushPoint(point);
   }
   
@@ -194,7 +194,7 @@ namespace KDots
       
       const Point& currPoint = itr.point() + 1;
 
-      painter.drawEllipse(QPointF(currPoint.x(), currPoint.y()) * cellSize, 3, 3);
+      painter.drawEllipse(QPointF(currPoint) * cellSize, 3, 3);
         
       const GraphPoint::GraphEdges& edges = itr->edges();
 
@@ -202,8 +202,7 @@ namespace KDots
       {
         const Point& lastPoint = edges[j] + 1;
 
-        painter.drawLine(QPointF(currPoint.x(), currPoint.y()) * cellSize,
-            QPointF(lastPoint.x(), lastPoint.y()) * cellSize);
+        painter.drawLine(QPointF(currPoint) * cellSize, QPointF(lastPoint) * cellSize);
       }
     }
   }
@@ -225,7 +224,7 @@ namespace KDots
             
       painter.setBrush(Qt::NoBrush);
       const Point& newPoint = lastPoint + 1;
-      painter.drawEllipse(QPointF(newPoint.x(), newPoint.y()) * cellSize, 6, 6);
+      painter.drawEllipse(QPointF(newPoint) * cellSize, 6, 6);
     }
     
     const std::vector<Point>& possiblePoints = m_rival->possibleMoves();
@@ -235,13 +234,13 @@ namespace KDots
             
       painter.setBrush(Qt::NoBrush);
       const Point& newPoint = point + 1;
-      painter.drawEllipse(QPointF(newPoint.x(), newPoint.y()) * cellSize, 10, 10);
+      painter.drawEllipse(QPointF(newPoint) * cellSize, 10, 10);
     }
   }
   
   void TableWidget::drawUnderMousePoint(QPainter& painter, float cellSize)
   {
-    if(!m_underMousePoint.isInitialized())
+    if(m_underMousePoint.empty())
       return;
     
     const Graph& graph = m_table->graph();
@@ -257,7 +256,7 @@ namespace KDots
             
     painter.setBrush(Qt::NoBrush);
     const Point& newPoint = m_underMousePoint + 1;
-    painter.drawEllipse(QPointF(newPoint.x(), newPoint.y()) * cellSize, 6, 6);
+    painter.drawEllipse(QPointF(newPoint) * cellSize, 6, 6);
   }
   
   void TableWidget::fillPolygon(QPainter& painter, float cellSize)
@@ -278,7 +277,7 @@ namespace KDots
       for(const Point& point : polygon->points())
       {
         const Point& newPoint = point + 1;
-        qPoly << QPoint(newPoint.x(), newPoint.y()) * cellSize;
+        qPoly << QPoint(newPoint) * cellSize;
       }
       QPainterPath path;
       path.addPolygon(qPoly);

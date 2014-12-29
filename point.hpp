@@ -28,105 +28,44 @@
 #include <QMetaType>
 #include "constants.hpp"
 
+class QPointF;
+class QPoint;
+
 namespace KDots
 {
-  class Point
+  class KDOTS_EXPORT Point final
   {
-    int m_x, m_y;
   public:
-    Point()
-      : m_x(-1)
-      , m_y(-1)
-    {}
-    
-    bool isInitialized() const
-    {
-      return m_x >= 0 && m_y >= 0;
-    }
-    
-    Point(int x, int y)
-      : m_x(x)
-      , m_y(y)
-    {
-    }
+    int m_x, m_y;
 
-    int x() const
-    {
-      return m_x;
-    }
+  public:
+    Point();
+    Point(int x, int y);
+    
+    Point operator*(int val) const;
+    
+    Point operator+(int val) const;
+    
+    Point operator-(const Point& point) const;
+    
+    Point operator+(const Point& point) const;
+    
+    bool operator<(const Point& other) const;
+    bool operator<=(const Point& other) const;
+    
+    bool operator>(const Point& other) const;
+    bool operator>=(const Point& other) const;
 
-    int y() const
-    {
-      return m_y;
-    }
+    bool operator==(const Point& a) const;
+    bool operator!=(const Point& a) const;
 
-    void setX(int x)
-    {
-      m_x = x;
-    }
-
-    void setY(int y)
-    {
-      m_y = y;
-    }
-    
-    Point operator*(int val) const
-    {
-      return Point(m_x * val, m_y * val);
-    }
-    
-    Point operator+(int val) const
-    {
-      return Point(m_x + val, m_y + val);
-    }
-    
-    Point operator-(const Point& point) const
-    {
-      return Point(m_x - point.m_x, m_y - point.m_y);
-    }
-    
-    Point operator+(const Point& point) const
-    {
-      return Point(m_x + point.m_x, m_y + point.m_y);
-    }
-    
-    bool operator<(const Point& other) const
-    {
-      return m_x < other.m_x && m_y < other.m_y;
-    }
-    
-    bool operator<=(const Point& other) const
-    {
-      return m_x <= other.m_x && m_y <= other.m_y;
-    }
-    
-    bool operator>(const Point& other) const
-    {
-      return m_y > other.m_y && m_x > other.m_x;
-    }
-    
-    bool operator>=(const Point& other) const
-    {
-      return m_y >= other.m_y && m_x >= other.m_x;
-    }
-
-    bool operator==(const Point& a) const
-    {
-      return m_x == a.m_x && m_y == a.m_y;
-    }
-
-    bool operator!=(const Point& a) const
-    {
-      return !(*this == a);
-    }
-
-    bool empty() const
-    {
-      return m_x == -1 || m_y == -1;
-    }
+    bool empty() const;
     
     friend QDataStream& operator<<(QDataStream& out, const Point& obj);
     friend QDataStream& operator>>(QDataStream& in, Point& obj);
+    
+    explicit operator QPointF() const;
+    explicit operator QPoint() const;
   };
   
   QDataStream& operator<<(QDataStream& out, const Point& obj);

@@ -27,7 +27,6 @@
 #define KDOTS_CONSTANTS_HPP
 #include <QString>
 #include <kdemacros.h>
-#include "point.hpp"
 #ifndef KDOTS_EXPORT
 # if defined(MAKE_KDOTS_LIB)
    // We are building this library

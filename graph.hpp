@@ -68,12 +68,12 @@ namespace KDots
 
     GraphPoint& operator[](const Point& index)
     {
-      return m_graph[index.x()][index.y()];
+      return m_graph[index.m_x][index.m_y];
     }
 
     const GraphPoint& operator[](const Point& index) const
     {
-      return m_graph[index.x()][index.y()];
+      return m_graph[index.m_x][index.m_y];
     }
 
     std::vector<GraphPoint>& operator[](int index)

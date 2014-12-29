@@ -75,15 +75,15 @@ namespace KDots
       return;
     }
 
-    if(m_stepMap[point.x()][point.y()])
+    if(m_stepMap[point.m_x][point.m_y])
       return;
 
     m_cache.push_back(point);
-    m_stepMap[point.x()][point.y()] = true;
+    m_stepMap[point.m_x][point.m_y] = true;
 
     for(int i = 0; i < DIRECTION_COUNT; ++i)
     {
-      const Point newPoint(point.x() + GRAPH_DX[i], point.y() + GRAPH_DY[i]);
+      const Point newPoint(point.m_x + GRAPH_DX[i], point.m_y + GRAPH_DY[i]);
       
       if(!m_graph.isValid(newPoint))
         continue;

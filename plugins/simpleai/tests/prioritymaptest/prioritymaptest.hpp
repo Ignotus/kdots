@@ -133,7 +133,7 @@ private slots:
     for(const MapData& data : dataList)
     {
       ++k;
-      QVERIFY(data.m_map[data.m_current.y()][ data.m_current.x()] == MapElement::CU);
+      QVERIFY(data.m_map[data.m_current.m_y][ data.m_current.m_x] == MapElement::CU);
       
     }
   }

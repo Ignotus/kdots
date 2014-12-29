@@ -48,7 +48,7 @@ namespace
     for(auto itr = polygon.begin(), itrEnd = polygon.end();
         itr != itrEnd; ++itr)
     {
-      res += (itr->x() - prevPoint.x()) * (itr->y() + prevPoint.y()); 
+      res += (itr->m_x - prevPoint.m_x) * (itr->m_y + prevPoint.m_y); 
       prevPoint = *itr;
     } 
     
@@ -93,7 +93,7 @@ void KDots::Polygon::setOwner(Owner own)
 
 KDots::Point KDots::Polygon::getPrevPoint(std::vector<KDots::Point>::const_iterator current) const
 {
-  const int currentY = current->y();
+  const int currentY = current->m_y;
   for(auto prev = current;;)
   {
     if(prev == m_points.begin())
@@ -101,14 +101,14 @@ KDots::Point KDots::Polygon::getPrevPoint(std::vector<KDots::Point>::const_itera
     else
       --prev;
     
-    if(prev->y() != currentY)
+    if(prev->m_y != currentY)
       return *prev;
   }
 }
 
 KDots::Point KDots::Polygon::getNextPoint(int& shift, std::vector<KDots::Point>::const_iterator current) const
 {
-  const int currentY = current->y();
+  const int currentY = current->m_y;
   shift = 0;
   for(auto next = current;;)
   {
@@ -118,7 +118,7 @@ KDots::Point KDots::Polygon::getNextPoint(int& shift, std::vector<KDots::Point>:
     else
       ++next;
     
-    if(next->y() != currentY)
+    if(next->m_y != currentY)
       return *next;
   }
 }
@@ -132,19 +132,21 @@ bool KDots::Polygon::contains(const Point& point) const
     std::vector<KDots::Point>::const_iterator itr = m_points.begin(), itrEnd = m_points.end();
     while(itr != itrEnd)
     {
-      if(itr->y() != point.y())
+      if(itr->m_y != point.m_y)
       {
         ++itr;
         continue;
       }
       
-      if(itr->x() == point.x())
+      if(itr->m_x == point.m_x
+        
+      )
         return true;  
 
       const Point& prevPoint = getPrevPoint(itr);
       const Point& nextPoint = getNextPoint(shift, itr);
 
-      if(itr->x() < point.x() && prevPoint.y() != nextPoint.y() && shift == 1)
+      if(itr->m_x < point.m_x && prevPoint.m_y != nextPoint.m_y && shift == 1)
         ++i;
       
       ++itr;

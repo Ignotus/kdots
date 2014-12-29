@@ -24,9 +24,87 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "point.hpp"
+#include <QPoint>
+#include <QPointF>
 
 namespace KDots
 {
+  Point::Point()
+    : m_x(-1)
+    , m_y(-1)
+  {}
+  
+  Point::Point(int x, int y)
+    : m_x(x)
+    , m_y(y)
+  {
+  }
+  
+  Point Point::operator*(int val) const
+  {
+    return Point(m_x * val, m_y * val);
+  }
+  
+  Point Point::operator+(int val) const
+  {
+    return Point(m_x + val, m_y + val);
+  }
+  
+  Point Point::operator-(const Point& point) const
+  {
+    return Point(m_x - point.m_x, m_y - point.m_y);
+  }
+  
+  Point Point::operator+(const Point& point) const
+  {
+    return Point(m_x + point.m_x, m_y + point.m_y);
+  }
+  
+  bool Point::operator<(const Point& other) const
+  {
+    return m_x < other.m_x && m_y < other.m_y;
+  }
+  
+  bool Point::operator<=(const Point& other) const
+  {
+    return m_x <= other.m_x && m_y <= other.m_y;
+  }
+  
+  bool Point::operator>(const Point& other) const
+  {
+    return m_y > other.m_y && m_x > other.m_x;
+  }
+  
+  bool Point::operator>=(const Point& other) const
+  {
+    return m_y >= other.m_y && m_x >= other.m_x;
+  }
+
+  bool Point::operator==(const Point& a) const
+  {
+    return m_x == a.m_x && m_y == a.m_y;
+  }
+
+  bool Point::operator!=(const Point& a) const
+  {
+    return !(*this == a);
+  }
+
+  bool Point::empty() const
+  {
+    return m_x == -1 || m_y == -1;
+  }
+  
+  Point::operator QPointF() const
+  {
+    return QPointF(m_x, m_y);
+  }
+  
+  Point::operator QPoint() const
+  {
+    return QPoint(m_x, m_y);
+  }
+  
   QDataStream& operator<<(QDataStream& out, const KDots::Point& obj)
   {
     out <<(quint32) obj.m_x <<(quint32) obj.m_y;
