@@ -125,13 +125,6 @@ namespace KDots
       return m_x == -1 || m_y == -1;
     }
     
-    static int sqrLength(const Point& first, const Point& second)
-    {
-      const int dx = second.x() - first.x();
-      const int dy = second.y() - first.y();
-      return dx * dx + dy * dy;
-    }
-    
     friend QDataStream& operator<<(QDataStream& out, const Point& obj);
     friend QDataStream& operator>>(QDataStream& in, Point& obj);
   };
