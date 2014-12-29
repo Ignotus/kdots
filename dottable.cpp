@@ -33,84 +33,17 @@
 
 namespace KDots
 {
-  DotTable::DotTable(const GameConfig& config, QObject *parent)
+  DotTable::DotTable(const GameConfig& config, std::shared_ptr<StepQueue> step_queue, QObject *parent)
     : QObject(parent)
     , m_graph(new Graph(config.m_width, config.m_height))
-    , m_steps(config.m_mode == GameMode::DEFAULT_MODE
-        ? new StepQueue(config.m_firstOwner)
-        : new ExtraStepQueue(config.m_firstOwner))
+    , m_steps(step_queue)
     , m_config(config)
   {
   }
   
-  GameConfig DotTable::gameConfig() const
+  const GameConfig& DotTable::gameConfig() const
   {
     return m_config;
-  }
-  
-  namespace
-  {
-    Point getPrevPoint(Polygon_ptr& polygon, std::vector<KDots::Point>::const_iterator current)
-    {
-      const int currentY = current->y();
-      for(auto prev = current;;)
-      {
-        if(prev == polygon->points().begin())
-          prev = --polygon->points().end();
-        else
-          --prev;
-        
-        if(prev->y() != currentY)
-          return *prev;
-      }
-    }
-    
-    Point getNextPoint(Polygon_ptr& polygon, int& shift, std::vector<KDots::Point>::const_iterator current)
-    {
-      const int currentY = current->y();
-      shift = 0;
-      for(auto next = current;;)
-      {
-        ++shift;
-        if(next == --polygon->points().end())
-          next = polygon->points().begin();
-        else
-          ++next;
-        
-        if(next->y() != currentY)
-          return *next;
-      }
-    }
-  }
-  
-  bool DotTable::isInPolygon(Polygon_ptr polygon, const Point& point)
-  {
-    // k - a count of points in the same line with "point" object
-    // i - crosses count
-    int i = 0, shift;
-
-    std::vector<KDots::Point>::const_iterator itr = polygon->points().begin(), itrEnd = polygon->points().end();
-    while(itr != itrEnd)
-    {
-      if(itr->y() != point.y())
-      {
-        ++itr;
-        continue;
-      }
-      
-      if(itr->x() == point.x())
-        return true;  
-
-      const Point& prevPoint = getPrevPoint(polygon, itr);
-      const Point& nextPoint = getNextPoint(polygon, shift, itr);
-
-      if(itr->x() < point.x() && prevPoint.y() != nextPoint.y() && shift == 1)
-        ++i;
-      
-      ++itr;
-    }
-
-    return i % 2;
   }
 
   void DotTable::pushPoint(const Point& point)
@@ -151,7 +84,7 @@ namespace KDots
       
       for(const Polygon_ptr& polygon : polyList)
       {
-        if(isInPolygon(polygon, p))
+        if(polygon->contains(p))
         {
           if(gpoint.owner() == otherOwner)
           {
@@ -175,7 +108,7 @@ namespace KDots
       {
         const Point& newPoint = itr.point();
 
-        if(isInPolygon(polygon, newPoint) && polygon->isFilled())
+        if(polygon->contains(newPoint) && polygon->isFilled())
         {
           itr->capture();
           m_steps->addEmptyCaptured();
@@ -242,6 +175,21 @@ namespace KDots
         prevPoint = currPoint;
       }
     }
+  }
+
+  const std::vector<Polygon_ptr>& DotTable::polygons() const
+  {
+    return m_polygons;
+  }
+
+  const Graph& DotTable::graph() const
+  {
+    return *m_graph;
+  }
+
+  const StepQueue& DotTable::stepQueue() const
+  {
+    return *m_steps;
   }
 }
 

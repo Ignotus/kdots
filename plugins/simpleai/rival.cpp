@@ -60,7 +60,7 @@ namespace KDots
       if(!m_table)
         return false;
       
-      return m_table->stepQueue()->getCurrentOwner() == m_table->stepQueue()->firstOwner();
+      return m_table->stepQueue().getCurrentOwner() == m_table->stepQueue().firstOwner();
     }
     
     bool Rival::hasMask(const Graph& graph, const Point& point, const MapData& mask, const Owner current)
@@ -213,7 +213,7 @@ namespace KDots
       //O(n)
       const PolyList& polyList = findPolygon(point);
 
-      const auto& otherOwnerPoints = steps->getPoints(m_other);
+      const auto& otherOwnerPoints = steps.getPoints(m_other);
       for(const Point& p : otherOwnerPoints)
       {
         const GraphPoint& gpoint = graph[p];
@@ -222,7 +222,7 @@ namespace KDots
         
         for(const Polygon_ptr& polygon : polyList)
         {
-          if(DotTable::isInPolygon(polygon, p) && gpoint.owner() == m_other)
+          if(polygon->contains(p) && gpoint.owner() == m_other)
             return true;
         }
       }
@@ -281,7 +281,7 @@ namespace KDots
     {
       m_table = table;
       
-      m_other = m_table->stepQueue()->getCurrentOwner();
+      m_other = m_table->stepQueue().getCurrentOwner();
       m_current = StepQueue::other(m_other);
     }
   }

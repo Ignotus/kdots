@@ -184,7 +184,7 @@ namespace KDots
 
     bool Rival::isAllow() const
     {
-      return m_table->stepQueue()->getCurrentOwner() == m_me;
+      return m_table->stepQueue().getCurrentOwner() == m_me;
     }
 
     void Rival::nextStep(const Point& point)

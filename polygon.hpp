@@ -56,6 +56,12 @@ namespace KDots
     Owner owner() const;
     
     void setOwner(Owner own);
+    
+    bool contains(const Point& point) const;
+    
+  private:
+    KDots::Point getPrevPoint(std::vector<KDots::Point>::const_iterator current) const;
+    KDots::Point getNextPoint(int& shift, std::vector<KDots::Point>::const_iterator current) const;
   };
   
   typedef std::shared_ptr<Polygon> Polygon_ptr;

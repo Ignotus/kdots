@@ -110,13 +110,12 @@ namespace KDots
     }
   };
 
-  class ExtraStepQueue : public StepQueue
+  class KDOTS_EXPORT ExtraStepQueue : public StepQueue
   {
   public:
     ExtraStepQueue(Owner firstPlayer);
 
-    Owner
-    nextStep()
+    Owner nextStep()
     {
       if(m_captured)
         return m_owner;

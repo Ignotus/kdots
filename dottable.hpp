@@ -43,29 +43,17 @@ namespace KDots
     GameConfig m_config;
     std::vector<Polygon_ptr> m_polygons;
   public:
-    DotTable(const GameConfig& config, QObject *parent = 0);
+    DotTable(const GameConfig& config, std::shared_ptr<StepQueue> step_queue, QObject *parent = 0);
     
-    static bool isInPolygon(Polygon_ptr polygon, const Point& point);
-    
-    virtual ~DotTable() {}
-    GameConfig gameConfig() const;
+    const GameConfig& gameConfig() const;
 
     void pushPoint(const Point& point);
     
-    std::vector<Polygon_ptr> polygons()
-    {
-      return m_polygons;
-    }
+    const std::vector<Polygon_ptr>& polygons() const;
 
-    Graph& graph() const
-    {
-      return *m_graph;
-    }
+    const Graph& graph() const;
 
-    std::shared_ptr<StepQueue> stepQueue()
-    {
-      return m_steps;
-    }
+    const StepQueue& stepQueue() const;
     
     void undo();
   signals:

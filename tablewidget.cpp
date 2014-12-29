@@ -40,10 +40,21 @@
 
 namespace KDots
 {
+  namespace
+  {
+    std::shared_ptr<StepQueue> createStepQueue(const GameConfig& config)
+    {
+      if (config.m_mode == GameMode::DEFAULT_MODE)
+        return std::make_shared<StepQueue>(config.m_firstOwner);
+      
+      return std::make_shared<ExtraStepQueue>(config.m_firstOwner);
+    }
+  }
+  
   TableWidget::TableWidget(const GameConfig& config,
       std::shared_ptr<IRival> rival, QWidget *parent)
     : QWidget(parent)
-    , m_table(new DotTable(config , this))
+    , m_table(new DotTable(config, createStepQueue(config), this))
     , m_height(config.m_height + 1)
     , m_width(config.m_width + 1)
     , m_rival(rival)
@@ -136,9 +147,9 @@ namespace KDots
   void TableWidget::onStatusMessage()
   {
     emit updateStatusBar(QString("First:\t")
-        + QString::number(m_table->stepQueue()->getMarks(Owner::FIRST))
+        + QString::number(m_table->stepQueue().getMarks(Owner::FIRST))
         + "\tSecond:\t"
-        + QString::number(m_table->stepQueue()->getMarks(Owner::SECOND)));
+        + QString::number(m_table->stepQueue().getMarks(Owner::SECOND)));
   }
 
   void TableWidget::mousePressEvent(QMouseEvent *event)
@@ -200,7 +211,7 @@ namespace KDots
   void TableWidget::drawLastPoint(QPainter& painter, float cellSize)
   {
     const Graph& graph = m_table->graph();
-    const Point& lastPoint = m_table->stepQueue()->lastPoint();
+    const Point& lastPoint = m_table->stepQueue().lastPoint();
     const QColor firstColor(Settings::firstPointColor());
     const QColor secondColor(Settings::secondPointColor());
     

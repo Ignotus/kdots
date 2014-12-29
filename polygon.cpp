@@ -90,3 +90,65 @@ void KDots::Polygon::setOwner(Owner own)
 {
   m_owner = own;
 }
+
+KDots::Point KDots::Polygon::getPrevPoint(std::vector<KDots::Point>::const_iterator current) const
+{
+  const int currentY = current->y();
+  for(auto prev = current;;)
+  {
+    if(prev == m_points.begin())
+      prev = --m_points.end();
+    else
+      --prev;
+    
+    if(prev->y() != currentY)
+      return *prev;
+  }
+}
+
+KDots::Point KDots::Polygon::getNextPoint(int& shift, std::vector<KDots::Point>::const_iterator current) const
+{
+  const int currentY = current->y();
+  shift = 0;
+  for(auto next = current;;)
+  {
+    ++shift;
+    if(next == --m_points.end())
+      next = m_points.begin();
+    else
+      ++next;
+    
+    if(next->y() != currentY)
+      return *next;
+  }
+}
+  
+bool KDots::Polygon::contains(const Point& point) const
+{
+    // k - a count of points in the same line with "point" object
+    // i - crosses count
+    int i = 0, shift;
+
+    std::vector<KDots::Point>::const_iterator itr = m_points.begin(), itrEnd = m_points.end();
+    while(itr != itrEnd)
+    {
+      if(itr->y() != point.y())
+      {
+        ++itr;
+        continue;
+      }
+      
+      if(itr->x() == point.x())
+        return true;  
+
+      const Point& prevPoint = getPrevPoint(itr);
+      const Point& nextPoint = getNextPoint(shift, itr);
+
+      if(itr->x() < point.x() && prevPoint.y() != nextPoint.y() && shift == 1)
+        ++i;
+      
+      ++itr;
+    }
+
+    return i % 2;
+}
