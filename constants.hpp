@@ -44,13 +44,13 @@
 
 namespace KDots
 {
-  enum GameMode
+  enum class GameMode
   {
     EXTRA_TURN_MODE,
     DEFAULT_MODE
   };
 
-  enum Owner
+  enum class Owner
   {
     NONE,
     FIRST,

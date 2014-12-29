@@ -47,8 +47,8 @@ namespace KDots
     Rival::Rival(QObject *parent)
       : IRival(parent)
       , m_table(NULL)
-      , m_current(FIRST)
-      , m_other(SECOND)
+      , m_current(Owner::FIRST)
+      , m_other(Owner::SECOND)
       , m_iterations(1)
     {
       PriorityMap::instance();
@@ -88,7 +88,7 @@ namespace KDots
           switch(el)
           {
           case EM: //Empty
-            if(own != NONE)
+            if(own != Owner::NONE)
               return false;
             break;
           case FI: //First
@@ -135,7 +135,7 @@ namespace KDots
             if(!graph.isValid(newPoint))
               continue;
             
-            if(graph[newPoint].owner() != NONE)
+            if(graph[newPoint].owner() != Owner::NONE)
               continue;
             
             if(hasCaptured(newPoint, m_other))
@@ -172,7 +172,7 @@ namespace KDots
           if(!graph.isValid(newPoint))
             continue;
           
-          if(graph[newPoint].owner() != NONE)
+          if(graph[newPoint].owner() != Owner::NONE)
             return false;
         }
         
@@ -252,7 +252,7 @@ namespace KDots
       float maxPrio = -2;
       for(Graph::const_iterator itr = graph.begin(), end = graph.end(); itr != end; ++itr)
       {
-        if(itr->isCaptured() || itr->owner() != NONE)
+        if(itr->isCaptured() || itr->owner() != Owner::NONE)
           continue;
         
         const Point& curr = itr.point();

@@ -60,11 +60,11 @@ private slots:
   void maskCheckingTest()
   {
     KDots::Graph graph(3, 3);
-    graph[KDots::Point(0, 1)].setOwner(KDots::FIRST);
-    graph[KDots::Point(1, 0)].setOwner(KDots::FIRST);
-    graph[KDots::Point(2, 1)].setOwner(KDots::FIRST);
-    graph[KDots::Point(2, 2)].setOwner(KDots::FIRST);
-    graph[KDots::Point(1, 1)].setOwner(KDots::SECOND);
+    graph[KDots::Point(0, 1)].setOwner(KDots::Owner::FIRST);
+    graph[KDots::Point(1, 0)].setOwner(KDots::Owner::FIRST);
+    graph[KDots::Point(2, 1)].setOwner(KDots::Owner::FIRST);
+    graph[KDots::Point(2, 2)].setOwner(KDots::Owner::FIRST);
+    graph[KDots::Point(1, 1)].setOwner(KDots::Owner::SECOND);
     
     const MapData data {
       {
@@ -117,7 +117,7 @@ private slots:
     
     QVERIFY(newData3 == checkData3);
     
-    QVERIFY(KDots::simpleai::Rival::hasMask(graph, KDots::Point(1, 2), data, KDots::SECOND));
+    QVERIFY(KDots::simpleai::Rival::hasMask(graph, KDots::Point(1, 2), data, KDots::Owner::SECOND));
   }
   
   void sizeTest()

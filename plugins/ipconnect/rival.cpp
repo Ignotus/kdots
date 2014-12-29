@@ -42,7 +42,7 @@ namespace KDots
       : IRival(parent)
       , m_socket(NULL)
       , m_server(NULL)
-      , m_me(NONE)
+      , m_me(Owner::NONE)
     {
       Kg::difficulty()->setEditable(false);
     }

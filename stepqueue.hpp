@@ -83,24 +83,24 @@ namespace KDots
 
     std::size_t getMarks(Owner owner) const
     {
-      return owner == FIRST ? m_first : m_second;
+      return owner == Owner::FIRST ? m_first : m_second;
     }
 
-    std::vector<Point> getPoints(Owner owner) const
+    const std::vector<Point>& getPoints(Owner owner) const
     {
-      return owner == SECOND ? m_secondPoints : m_firstPoints;
+      return owner == Owner::SECOND ? m_secondPoints : m_firstPoints;
     }
     
-    std::vector<Point> getAllPoints() const
+    const std::vector<Point>& getAllPoints() const
     {
       return m_points;
     }
 
     static Owner other(Owner player)
     {
-      if(player == NONE)
+      if(player == Owner::NONE)
         kWarning() << "player == NONE";
-      return player == FIRST ? SECOND : FIRST;
+      return player == Owner::FIRST ? Owner::SECOND : Owner::FIRST;
     }
 
     Owner nextStep()

@@ -36,7 +36,7 @@ namespace KDots
   DotTable::DotTable(const GameConfig& config, QObject *parent)
     : QObject(parent)
     , m_graph(new Graph(config.m_width, config.m_height))
-    , m_steps(config.m_mode == DEFAULT_MODE
+    , m_steps(config.m_mode == GameMode::DEFAULT_MODE
         ? new StepQueue(config.m_firstOwner)
         : new ExtraStepQueue(config.m_firstOwner))
     , m_config(config)
@@ -118,7 +118,7 @@ namespace KDots
     Graph& graph = *m_graph;
     GraphPoint& currentPoint = graph[point];
 
-    if(currentPoint.owner() != NONE || currentPoint.isCaptured())
+    if(currentPoint.owner() != Owner::NONE || currentPoint.isCaptured())
       return;
     
     const Owner current = m_steps->getCurrentOwner();
@@ -168,7 +168,7 @@ namespace KDots
     for(Graph::iterator itr = graph.begin(), itrEnd = graph.end();
         itr != itrEnd; ++itr)
     {
-      if(itr->isCaptured() || itr->owner() != NONE)
+      if(itr->isCaptured() || itr->owner() != Owner::NONE)
         continue;
       
       for(const Polygon_ptr& polygon : polyList)
@@ -195,8 +195,8 @@ namespace KDots
     const auto& allPoints = m_steps->getAllPoints();
     if(allPoints.size() + m_steps->emtyCapturedCount() == m_graph->width() * m_graph->height())
     {
-      const int first = m_steps->getMarks(FIRST);
-      const int second = m_steps->getMarks(SECOND);
+      const int first = m_steps->getMarks(Owner::FIRST);
+      const int second = m_steps->getMarks(Owner::SECOND);
       
       if(first > second)
         KMessageBox::information(0, i18n("The first player win!"), i18n("The first player win!"));

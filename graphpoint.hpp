@@ -41,7 +41,7 @@ namespace KDots
     GraphEdges m_edges;
 
   public:
-    GraphPoint(Owner owner = NONE)
+    GraphPoint(Owner owner = Owner::NONE)
       : m_captured(false)
       , m_owner(owner)
     {

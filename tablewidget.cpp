@@ -136,9 +136,9 @@ namespace KDots
   void TableWidget::onStatusMessage()
   {
     emit updateStatusBar(QString("First:\t")
-        + QString::number(m_table->stepQueue()->getMarks(FIRST))
+        + QString::number(m_table->stepQueue()->getMarks(Owner::FIRST))
         + "\tSecond:\t"
-        + QString::number(m_table->stepQueue()->getMarks(SECOND)));
+        + QString::number(m_table->stepQueue()->getMarks(Owner::SECOND)));
   }
 
   void TableWidget::mousePressEvent(QMouseEvent *event)
@@ -170,14 +170,14 @@ namespace KDots
     for(Graph::const_iterator itr = graph.begin(), itrEnd = graph.end();
         itr != itrEnd; ++itr)
     {
-      if(itr->owner() == NONE)
+      if(itr->owner() == Owner::NONE)
           continue;
 
-      painter.setPen(itr->owner() == FIRST
+      painter.setPen(itr->owner() == Owner::FIRST
           ? firstPen
           : secondPen);
 
-      painter.setBrush(itr->owner() == FIRST
+      painter.setBrush(itr->owner() == Owner::FIRST
           ? firstBrush
           : secondBrush);
       
@@ -208,7 +208,7 @@ namespace KDots
     
     if(!lastPoint.empty())
     {
-      painter.setPen(graph[lastPoint].owner() == FIRST
+      painter.setPen(graph[lastPoint].owner() == Owner::FIRST
           ? firtBorder
           : secondBorder);
             
@@ -240,7 +240,7 @@ namespace KDots
     const QPen firtBorder(firstColor, 0.5), secondBorder(secondColor, 0.5);
     
     
-    painter.setPen(graph[m_underMousePoint].owner() == FIRST
+    painter.setPen(graph[m_underMousePoint].owner() == Owner::FIRST
         ? firtBorder
         : secondBorder);
             
@@ -271,7 +271,7 @@ namespace KDots
       }
       QPainterPath path;
       path.addPolygon(qPoly);
-      painter.fillPath(path, polygon->owner() == FIRST
+      painter.fillPath(path, polygon->owner() == Owner::FIRST
           ? firstPolyBrush
           : secondPolyBrush);
     }

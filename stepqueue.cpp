@@ -40,7 +40,7 @@ namespace KDots
   void StepQueue::addPoint(const Point& point)
   {
     m_points.push_back(point);
-    if(getCurrentOwner() == FIRST)
+    if(getCurrentOwner() == Owner::FIRST)
       m_firstPoints.push_back(point);
     else
       m_secondPoints.push_back(point);
@@ -50,7 +50,7 @@ namespace KDots
   {
     m_captured = true;
 
-    if(getCurrentOwner() == FIRST)
+    if(getCurrentOwner() == Owner::FIRST)
       ++m_first;
     else
       ++m_second;
