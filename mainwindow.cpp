@@ -37,7 +37,7 @@
 #include "ui_mainwindow.h"
 #include "ui_boardconfigwidget.h"
 #include "newgamedialog.hpp"
-#include "tablewidget.hpp"
+#include "boardview.hpp"
 #include "pluginloader.hpp"
 #include "kdots.h"
 #include "stepqueue.hpp"
@@ -186,7 +186,7 @@ namespace KDots
     
     connect(m_rival.get(), SIGNAL(needDestroy()), this, SLOT(destroyGame()));
 
-    m_table = new TableWidget(config, this);
+    m_table = new BoardView(config, this);
     
     auto model = std::make_shared<BoardModel>(config, createStepQueue(config));
     

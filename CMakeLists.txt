@@ -75,7 +75,7 @@ SET(SRCS
   newgamewidget.cpp
   newgamedialog.cpp
   mainwindow.cpp
-  tablewidget.cpp
+  boardview.cpp
   pluginwidgetdelegate.cpp
   brushcombo.cpp
   brushcombodelegate.cpp
@@ -89,7 +89,7 @@ SET(HEADERS
   newgamedialog.hpp
   newgamewidget.hpp
   mainwindow.hpp
-  tablewidget.hpp
+  boardview.hpp
   pluginwidgetdelegate.hpp
   brushcombo.hpp
   brushcombodelegate.hpp

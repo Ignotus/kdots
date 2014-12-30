@@ -38,7 +38,7 @@ class KAction;
 
 namespace KDots
 {
-  class TableWidget;
+  class BoardView;
   class IRival;
 
   class MainWindow : public KXmlGuiWindow
@@ -66,6 +66,6 @@ namespace KDots
     Ui::MainWindow *m_ui;
     std::shared_ptr<IRival> m_rival;
     bool m_destroyTable;
-    TableWidget *m_table;
+    BoardView *m_table;
   };
 }

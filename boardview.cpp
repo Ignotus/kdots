@@ -23,7 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#include "tablewidget.hpp"
+#include "boardview.hpp"
 #include <cmath>
 #include <vector>
 #include <QPainter>
@@ -40,7 +40,7 @@
 
 namespace KDots
 { 
-  TableWidget::TableWidget(const GameConfig& config, QWidget *parent)
+  BoardView::BoardView(const GameConfig& config, QWidget *parent)
     : QWidget(parent)
     , m_table(nullptr)
     , m_height(config.m_height + 1)
@@ -50,7 +50,7 @@ namespace KDots
     setMouseTracking(true);
   }
   
-  void TableWidget::setModel(std::shared_ptr<BoardModel>& table)
+  void BoardView::setModel(std::shared_ptr<BoardModel>& table)
   {
     m_table = table;
     
@@ -64,7 +64,7 @@ namespace KDots
         SLOT(onStatusMessage()));
   }
   
-  void TableWidget::setRival(std::shared_ptr<IRival>& rival)
+  void BoardView::setRival(std::shared_ptr<IRival>& rival)
   {
     m_rival = rival;
   }
@@ -80,7 +80,7 @@ namespace KDots
     }
   }
   
-  void TableWidget::calculatePoint(Point& point, QMouseEvent *event)
+  void BoardView::calculatePoint(Point& point, QMouseEvent *event)
   {
     if(!m_rival->isAllow())
       return;
@@ -123,7 +123,7 @@ namespace KDots
     point.m_y = y;
   }
   
-  void TableWidget::mouseMoveEvent(QMouseEvent *event)
+  void BoardView::mouseMoveEvent(QMouseEvent *event)
   {
     Point point;
     calculatePoint(point, event);
@@ -134,7 +134,7 @@ namespace KDots
       update();
   }
   
-  void TableWidget::onStatusMessage()
+  void BoardView::onStatusMessage()
   {
     emit updateStatusBar(QString("First:\t")
         + QString::number(m_table->stepQueue().getMarks(Owner::FIRST))
@@ -142,7 +142,7 @@ namespace KDots
         + QString::number(m_table->stepQueue().getMarks(Owner::SECOND)));
   }
 
-  void TableWidget::mousePressEvent(QMouseEvent *event)
+  void BoardView::mousePressEvent(QMouseEvent *event)
   {
     Point point;
     calculatePoint(point, event);
@@ -151,14 +151,14 @@ namespace KDots
       m_table->pushPoint(point);
   }
   
-  void TableWidget::undo()
+  void BoardView::undo()
   {
     setUpdatesEnabled(false);
     m_table->undo();
     setUpdatesEnabled(true);
   }
   
-  void TableWidget::drawPolygons(QPainter& painter, float cellSize)
+  void BoardView::drawPolygons(QPainter& painter, float cellSize)
   {
     const QColor& firstColor = Settings::firstPointColor();
     const QColor& secondColor = Settings::secondPointColor();
@@ -197,7 +197,7 @@ namespace KDots
     }
   }
   
-  void TableWidget::drawLastPoint(QPainter& painter, float cellSize)
+  void BoardView::drawLastPoint(QPainter& painter, float cellSize)
   {
     const Graph& graph = m_table->graph();
     const Point& lastPoint = m_table->stepQueue().lastPoint();
@@ -228,7 +228,7 @@ namespace KDots
     }
   }
   
-  void TableWidget::drawUnderMousePoint(QPainter& painter, float cellSize)
+  void BoardView::drawUnderMousePoint(QPainter& painter, float cellSize)
   {
     if(m_underMousePoint.empty())
       return;
@@ -249,7 +249,7 @@ namespace KDots
     painter.drawEllipse(QPointF(newPoint) * cellSize, 6, 6);
   }
   
-  void TableWidget::fillPolygon(QPainter& painter, float cellSize)
+  void BoardView::fillPolygon(QPainter& painter, float cellSize)
   {
     const QColor firstColor(Settings::firstPointColor());
     const QColor secondColor(Settings::secondPointColor());
@@ -277,7 +277,7 @@ namespace KDots
     }
   }
 
-  void TableWidget::paintEvent(QPaintEvent *event)
+  void BoardView::paintEvent(QPaintEvent *event)
   {
     const QRect& rectange = event->rect();
     const float cellSize = cell_size(rectange, m_height, m_width);
@@ -313,4 +313,4 @@ namespace KDots
   }
 }
 
-#include "tablewidget.moc"
+#include "boardview.moc"

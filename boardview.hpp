@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_TABLEWIDGET_HPP
-#define KDOTS_TABLEWIDGET_HPP
+#pragma once
 #include <memory>
 #include <QWidget>
 #include "constants.hpp"
@@ -38,11 +37,11 @@ namespace KDots
   class BoardModel;
   struct GameConfig;
 
-  class TableWidget : public QWidget
+  class BoardView : public QWidget
   {
     Q_OBJECT
   public:
-    TableWidget(const GameConfig& config, QWidget *parent = 0);
+    BoardView(const GameConfig& config, QWidget *parent = 0);
     void undo();
     void setModel(std::shared_ptr<BoardModel>& table);
     void setRival(std::shared_ptr<IRival>& rival);
@@ -75,5 +74,3 @@ namespace KDots
     Point m_underMousePoint;
   };
 }
-
-#endif
