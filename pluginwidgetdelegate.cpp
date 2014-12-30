@@ -27,7 +27,7 @@
 #include <QPainter>
 #include <KApplication>
 #include <KDebug>
-#include "plugincontainer.hpp"
+#include "pluginloader.hpp"
 #include "interface/iplugin.hpp"
 
 namespace KDots
@@ -55,7 +55,7 @@ namespace KDots
         option.rect.width(), option.rect.height() - 30);
     
     painter->drawText(textRect, Qt::AlignCenter, pluginName);
-    IPlugin *plug = PluginContainer::instance().plugin(pluginName);
+    IPlugin *plug = PluginLoader::instance().plugin(pluginName);
     if(plug)
     {
       const KIcon& plugIcon = plug->icon();

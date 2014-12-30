@@ -27,7 +27,7 @@
 #include <QStandardItemModel>
 #include <interface/iplugin.hpp>
 #include "kdots.h"
-#include "plugincontainer.hpp"
+#include "pluginloader.hpp"
 #include "pluginwidgetdelegate.hpp"
 #include "ui_pluginmanagerwidget.h"
 
@@ -40,8 +40,11 @@ namespace KDots
     m_ui->setupUi(this);
     
     QStandardItemModel *model = new QStandardItemModel(this);
-    for(IPlugin *plugin : PluginContainer::instance().plugins().values())
-      model->appendRow(new QStandardItem(plugin->icon(), plugin->name()));
+    for (const QString& name : PluginLoader::instance().availablePlugins())
+    {
+      model->appendRow(new QStandardItem(PluginLoader::instance().plugin(name)->icon(),
+                                         name));
+    }
     
     m_ui->PluginList->setModel(model);
     m_ui->PluginList->setItemDelegate(new PluginWidgetDelegate(m_ui->PluginList));
@@ -60,7 +63,7 @@ namespace KDots
   void PluginManagerWidget::onIndexChanged(const QModelIndex& current)
   {
     const QString& pluginName = current.data().toString();
-    IPlugin *first = PluginContainer::instance().plugin(pluginName);
+    IPlugin *first = PluginLoader::instance().plugin(pluginName);
     m_ui->Description->setText(first->description());
     
     Settings::setLastPlugin(current.row());

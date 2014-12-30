@@ -23,42 +23,32 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_PLUGINCONTAINER_HPP
-#define KDOTS_PLUGINCONTAINER_HPP
+#pragma once
 #include <QMap>
+#include <QSet>
 
 class QDir;
 
 namespace KDots
 {
   class IPlugin;
-  class PluginContainer final
+  class PluginLoader final
   {
-    typedef QMap<QString, IPlugin*> PluginMap;
-    PluginMap m_pluginMap;
   public:
-    PluginContainer()
-    {
-      loadPlugins();
-    }
+    PluginLoader();
 
-    static PluginContainer& instance();
+    static PluginLoader& instance();
 
-    const PluginMap& plugins() const
-    {
-      return m_pluginMap;
-    }
+    const QSet<QString>& availablePlugins() const;
 
-    IPlugin* plugin(const QString& name)
-    {
-      PluginMap::const_iterator itr = m_pluginMap.find(name);
-      return itr != m_pluginMap.end() ? *itr : NULL;
-    }
+    IPlugin* plugin(const QString& name);
 
   private:
     void loadPlugins();
     bool findPlugin(const QDir& dir);
+    
+  private:
+    QSet<QString> m_availablePlugins;
+    QMap<QString, IPlugin*> m_pluginMap;
   };
 }
-
-#endif

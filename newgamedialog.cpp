@@ -31,7 +31,7 @@
 #include "ui_newgamedialog.h"
 #include "pluginmanagerwidget.hpp"
 #include "newgamewidget.hpp"
-#include "plugincontainer.hpp"
+#include "pluginloader.hpp"
 
 
 namespace KDots
@@ -84,7 +84,7 @@ namespace KDots
     
     const QString& pluginName = m_pluginManager->pluginName();
     
-    IPlugin *pluginInstance = PluginContainer::instance().plugin(pluginName);
+    IPlugin *pluginInstance = PluginLoader::instance().plugin(pluginName);
     if(!pluginInstance)
     {
       kDebug() << "Plugin instance not exists";

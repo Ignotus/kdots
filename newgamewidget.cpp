@@ -28,7 +28,7 @@
 #include <QMetaType>
 #include "kdots.h"
 #include "constants.hpp"
-#include "plugincontainer.hpp"
+#include "pluginloader.hpp"
 
 namespace KDots
 {

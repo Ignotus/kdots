@@ -70,7 +70,7 @@ SET(KDOTSLIB_HEADERS
 )
 
 SET(SRCS
-  plugincontainer.cpp
+  pluginloader.cpp
   pluginmanagerwidget.cpp
   newgamewidget.cpp
   newgamedialog.cpp
@@ -84,7 +84,7 @@ SET(SRCS
 )
 
 SET(HEADERS
-  plugincontainer.hpp
+  pluginloader.hpp
   pluginmanagerwidget.hpp
   newgamedialog.hpp
   newgamewidget.hpp

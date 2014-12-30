@@ -38,7 +38,7 @@
 #include "ui_boardconfigwidget.h"
 #include "newgamedialog.hpp"
 #include "tablewidget.hpp"
-#include "plugincontainer.hpp"
+#include "pluginloader.hpp"
 #include "kdots.h"
 
 namespace KDots

@@ -23,61 +23,75 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#include "plugincontainer.hpp"
-#include <KDebug>
+#include "pluginloader.hpp"
 #include <QDir>
 #include <QApplication>
 #include <QPluginLoader>
-#include "interface/iplugin.hpp"
+#include <KDebug>
+#include <interface/iplugin.hpp>
 #include "constants.hpp"
 #include "config.hpp"
 
 namespace KDots
 {
-  PluginContainer& PluginContainer::instance()
+  PluginLoader::PluginLoader()
   {
-    static PluginContainer obj;
+    loadPlugins();
+  }
+  
+  PluginLoader& PluginLoader::instance()
+  {
+    static PluginLoader obj;
     return obj;
   }
   
-  bool PluginContainer::findPlugin(const QDir& pluginsDir)
+  const QSet<QString>& PluginLoader::availablePlugins() const
+  {
+    return m_availablePlugins;
+  }
+
+  IPlugin* PluginLoader::plugin(const QString& name)
+  {
+    auto itr = m_pluginMap.find(name);
+    if (itr == m_pluginMap.end())
+      return nullptr;
+    
+    return *itr;
+  }
+  
+  bool PluginLoader::findPlugin(const QDir& pluginsDir)
   {
     bool foundFlag = false;
-    for(const QString& fileName : pluginsDir.entryList({PLUGIN_SUFFIX + "*"}, QDir::Files))
+    for (const QString& fileName : pluginsDir.entryList({PLUGIN_SUFFIX + "*"}, QDir::Files))
     {
       QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
       IPlugin *iplugin = qobject_cast<IPlugin *>(pluginLoader.instance());
 
-      if(iplugin)
+      if (iplugin)
       {
         foundFlag = true;
         kDebug() << "Loading the plugin:" << iplugin->name();
         m_pluginMap.insert(iplugin->name(), iplugin);
+        m_availablePlugins.insert(iplugin->name());
       }
       else
       {
         kDebug() << pluginLoader.errorString();
-        kDebug() << "Cannot load the plugin " << fileName;
+        kWarning() << "Cannot load the plugin " << fileName;
       }
     }
     
     return foundFlag;
   }
 
-  void PluginContainer::loadPlugins()
+  void PluginLoader::loadPlugins()
   {
     QDir currentDir(qApp->applicationDirPath());
-    if(!currentDir.cd("plugins") || !findPlugin(currentDir))
+    if (!currentDir.cd("plugins") || !findPlugin(currentDir))
     {
-#ifdef Q_OS_UNIX
       QDir libdir(PLUGINS_DIR);
       if(!libdir.exists() || !findPlugin(libdir))
-        kDebug() << "Plugins not found in " << libdir.absolutePath();
-#else
-      kDebug() << "Plugins not found";
-#endif  
+        kWarning() << "Plugins not found in " << libdir.absolutePath();
     }
-
-    
   }
 }
