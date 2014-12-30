@@ -68,15 +68,8 @@ namespace KDots
     
     Kg::difficulty()->setEditable(false);
 
-    statusBar()->show();
-    setCentralWidget(new QWidget(this));
     initMenu();
     setupGUI(Default, "kdotsui.rc");
-  }
-  
-  MainWindow::~MainWindow()
-  {
-    m_rival.reset();
   }
   
   void MainWindow::difficultyHandler(const KgDifficultyLevel *level)
@@ -104,11 +97,8 @@ namespace KDots
     KAction *newAction = new KAction(KIcon("file_new"), i18n("&New game"), this);
     newAction->setShortcut(Qt::CTRL + Qt::Key_N);
     
-    connect(newAction,
-        SIGNAL(triggered(bool)),
-        this,
-        SLOT(onNewGame()));
-    
+    connect(newAction, SIGNAL(triggered(bool)), this, SLOT(onNewGame())); 
+
     actionCollection()->addAction("NewGame", newAction);
     
     KAction *endAction = actionCollection()->addAction("EndGame", this, SLOT(endGame()));
@@ -128,21 +118,15 @@ namespace KDots
     undoAction->setEnabled(false);
     undoAction->setShortcut(Qt::CTRL + Qt::Key_Z);
     
-    connect(this,
-        SIGNAL(endActionEnable(bool)),
-        endAction,
-        SLOT(setEnabled(bool)));
+    connect(this, SIGNAL(endActionEnable(bool)), endAction, SLOT(setEnabled(bool)));
     
-    connect(this,
-        SIGNAL(undoActionEnable(bool)),
-        undoAction,
-        SLOT(setEnabled(bool)));
+    connect(this, SIGNAL(undoActionEnable(bool)), undoAction, SLOT(setEnabled(bool)));
   }
   
   void MainWindow::endGame()
   {
     m_table->deleteLater();
-    m_table = NULL;
+    m_table = nullptr;
     m_rival.reset();
     
     emit endActionEnable(false);
@@ -160,20 +144,15 @@ namespace KDots
   {
     KConfigDialog dialog(this, i18n("Preferences"), Settings::self());
     
-    QWidget *board = new QWidget;
+    QWidget *board = new QWidget(&dialog);
     
     Ui::BoardConfigWidget *boardUi = new Ui::BoardConfigWidget;
     boardUi->setupUi(board);
       
     dialog.addPage(board, i18n("Board"), QLatin1String("games-config-options"));
     
-    if(m_table)
-    {
-      connect(&dialog,
-          SIGNAL(accepted()),
-          m_table,
-          SLOT(update()));
-    }
+    if (m_table)
+      connect(&dialog, SIGNAL(accepted()), m_table, SLOT(update()));
     
     dialog.exec();
   }
@@ -192,7 +171,12 @@ namespace KDots
   void MainWindow::onNewGame()
   {
     NewGameDialog dialog;
-    if(dialog.exec() != QDialog::Accepted)
+    if (dialog.exec() != QDialog::Accepted)
+      return;
+    
+    const GameConfig& config = dialog.gameConfig();
+    
+    if (!config.isInititialized())
       return;
     
     m_rival = dialog.rival();
@@ -200,15 +184,7 @@ namespace KDots
     difficultyHandler(Kg::difficulty()->currentLevel());
     emit undoActionEnable(m_rival->canUndo());
     
-    connect(m_rival.get(),
-        SIGNAL(needDestroy()),
-        this,
-        SLOT(destroyGame()));
-
-    const GameConfig& config = dialog.gameConfig();
-    
-    if(!config.isInititialized())
-      return;
+    connect(m_rival.get(), SIGNAL(needDestroy()), this, SLOT(destroyGame()));
 
     m_table = new TableWidget(config, this);
     
@@ -216,10 +192,7 @@ namespace KDots
     
     m_rival->setDotTable(model);
     
-    connect(model.get(),
-        SIGNAL(nextPlayer(const Point&)),
-        m_rival.get(),
-        SLOT(nextStep(const Point&)));
+    connect(model.get(), SIGNAL(nextPlayer(const Point&)), m_rival.get(), SLOT(nextStep(const Point&)));
     
     m_table->setModel(model);
     m_table->setRival(m_rival);
@@ -230,10 +203,7 @@ namespace KDots
       return;
     }
 
-    connect(m_table,
-        SIGNAL(updateStatusBar(const QString&)),
-        statusBar(),
-        SLOT(showMessage(const QString&)));
+    connect(m_table, SIGNAL(updateStatusBar(const QString&)), statusBar(), SLOT(showMessage(const QString&)));
 
     setCentralWidget(m_table);
     m_table->show();

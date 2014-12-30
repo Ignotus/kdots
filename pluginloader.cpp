@@ -76,7 +76,7 @@ namespace KDots
       }
       else
       {
-        kDebug() << pluginLoader.errorString();
+        kWarning() << pluginLoader.errorString();
         kWarning() << "Cannot load the plugin " << fileName;
       }
     }

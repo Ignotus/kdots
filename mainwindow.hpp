@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_MAINWINDOW_HPP
-#define KDOTS_MAINWINDOW_HPP
+#pragma once
 #include <memory>
 #include <KXmlGuiWindow>
 #include <KgDifficulty>
@@ -47,7 +46,6 @@ namespace KDots
     Q_OBJECT
   public:
     MainWindow(QWidget *parent = 0);
-    ~MainWindow();
 
   private:
     void initMenu();
@@ -71,5 +69,3 @@ namespace KDots
     TableWidget *m_table;
   };
 }
-
-#endif
