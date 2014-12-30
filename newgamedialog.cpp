@@ -39,9 +39,9 @@ namespace KDots
   NewGameDialog::NewGameDialog(QWidget *parent)
     : QDialog(parent)
     , m_ui(new Ui::NewGameDialog)
-    , m_game(NULL)
+    , m_game(nullptr)
     , m_pluginManager(new PluginManagerWidget(this))
-    , m_configWidget(NULL)
+    , m_configWidget(nullptr)
   {
     m_ui->setupUi(this);
       
@@ -91,7 +91,7 @@ namespace KDots
       return;
     }
     
-    m_rival.reset(pluginInstance->createRival());
+    m_rival = pluginInstance->createRival();
     
     m_pluginManager->hide();
     

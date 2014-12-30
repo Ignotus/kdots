@@ -41,30 +41,38 @@ namespace KDots
   class TableWidget : public QWidget
   {
     Q_OBJECT
-
-    DotTable *m_table;
-    int m_height, m_width;
-
-    std::shared_ptr<KDots::IRival> m_rival;
-    Point m_underMousePoint;
   public:
-    TableWidget(const GameConfig& config, std::shared_ptr<IRival> rival,
-        QWidget *parent = 0);
+    TableWidget(const GameConfig& config, QWidget *parent = 0);
     void undo();
+    void setModel(std::shared_ptr<DotTable>& table);
+    void setRival(std::shared_ptr<IRival>& rival);
+
   protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void paintEvent(QPaintEvent *event);
+
   private:
     void calculatePoint(Point& point, QMouseEvent *event);
     void drawPolygons(QPainter& painter, float cellSize);
     void fillPolygon(QPainter& painter, float cellSize);
     void drawLastPoint(QPainter& painter, float cellSize);
     void drawUnderMousePoint(QPainter& painter, float cellSize);
+
   private slots:
     void onStatusMessage();
+
   signals:
     void updateStatusBar(const QString& msg);
+    
+  private:
+    std::shared_ptr<DotTable> m_table;
+    std::shared_ptr<IRival> m_rival;
+    
+    int m_height;
+    int m_width;
+    
+    Point m_underMousePoint;
   };
 }
 

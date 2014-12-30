@@ -48,11 +48,8 @@ namespace KDots
   public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
   private:
-    Ui::MainWindow *m_ui;
-    std::shared_ptr<IRival> m_rival;
-    bool m_destroyTable;
-    TableWidget *m_table;
     void initMenu();
 
   private slots:
@@ -66,6 +63,12 @@ namespace KDots
   signals:
     void undoActionEnable(bool);
     void endActionEnable(bool);
+    
+  private:
+    Ui::MainWindow *m_ui;
+    std::shared_ptr<IRival> m_rival;
+    bool m_destroyTable;
+    TableWidget *m_table;
   };
 }
 
