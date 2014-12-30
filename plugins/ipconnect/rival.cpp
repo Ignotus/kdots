@@ -28,7 +28,7 @@
 #include <KDebug>
 #include <KLocalizedString>
 #include <KgDifficulty>
-#include <dottable.hpp>
+#include <boardmodel.hpp>
 #include <stepqueue.hpp>
 #include <graph.hpp>
 #include "connectdialog.hpp"
@@ -144,7 +144,7 @@ namespace KDots
       return GameConfig();
     }
     
-    void Rival::setDotTable(std::shared_ptr<DotTable>& table) //Is called after configureWidget
+    void Rival::setBoardModel(std::shared_ptr<BoardModel>& table) //Is called after configureWidget
     {
       m_table = table;
       

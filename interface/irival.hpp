@@ -34,7 +34,7 @@ class QStatusBar;
 
 namespace KDots
 {
-  class DotTable;
+  class BoardModel;
   class IConfigurationWidget;
   
   class IRival : public QObject
@@ -72,7 +72,7 @@ namespace KDots
       Q_UNUSED(point);
     }
     
-    virtual void setDotTable(std::shared_ptr<DotTable>& table)
+    virtual void setBoardModel(std::shared_ptr<BoardModel>& table)
     {
       Q_UNUSED(table);
     }
@@ -93,7 +93,7 @@ namespace KDots
     }
     
   protected: //signals
-    virtual void createDotTable(const GameConfig& config) = 0;
+    virtual void createBoardModel(const GameConfig& config) = 0;
     
     virtual void needDestroy() = 0;
   };

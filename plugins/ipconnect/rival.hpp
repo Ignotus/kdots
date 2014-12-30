@@ -33,7 +33,7 @@
 
 namespace KDots
 {
-  class DotTable;
+  class BoardModel;
   namespace ipconnect
   {
     class ConfigurationWidget;
@@ -41,7 +41,7 @@ namespace KDots
     {
       Q_OBJECT
 
-      std::shared_ptr<DotTable> m_table;
+      std::shared_ptr<BoardModel> m_table;
       QTcpSocket *m_socket;
       QTcpServer *m_server;
       
@@ -56,7 +56,7 @@ namespace KDots
       
       IConfigurationWidget* configureWidget();
 
-      void setDotTable(std::shared_ptr<DotTable>& table);
+      void setBoardModel(std::shared_ptr<BoardModel>& table);
 
       bool isAllow() const;
 
@@ -68,7 +68,7 @@ namespace KDots
       void onReadyRead();
       void onDisconnected();
     signals:
-      void createDotTable(const GameConfig& config);
+      void createBoardModel(const GameConfig& config);
       void needDestroy();
     };
   }

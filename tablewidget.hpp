@@ -35,7 +35,7 @@ class QPainter;
 namespace KDots
 {
   class IRival;
-  class DotTable;
+  class BoardModel;
   struct GameConfig;
 
   class TableWidget : public QWidget
@@ -44,7 +44,7 @@ namespace KDots
   public:
     TableWidget(const GameConfig& config, QWidget *parent = 0);
     void undo();
-    void setModel(std::shared_ptr<DotTable>& table);
+    void setModel(std::shared_ptr<BoardModel>& table);
     void setRival(std::shared_ptr<IRival>& rival);
 
   protected:
@@ -66,7 +66,7 @@ namespace KDots
     void updateStatusBar(const QString& msg);
     
   private:
-    std::shared_ptr<DotTable> m_table;
+    std::shared_ptr<BoardModel> m_table;
     std::shared_ptr<IRival> m_rival;
     
     int m_height;

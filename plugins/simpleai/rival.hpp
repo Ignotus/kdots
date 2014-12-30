@@ -41,7 +41,7 @@ namespace KDots
       Q_OBJECT
       Q_INTERFACES(KDots::IRival)
       
-      std::shared_ptr<DotTable> m_table;
+      std::shared_ptr<BoardModel> m_table;
       Owner m_current, m_other;
       int m_iterations;
       std::vector<Point> m_points;
@@ -61,7 +61,7 @@ namespace KDots
       
     public slots:
       void nextStep(const Point& point);
-      void setDotTable(std::shared_ptr<DotTable>& table);
+      void setBoardModel(std::shared_ptr<BoardModel>& table);
       
     private:
       float calcPriority(const Point& point);
@@ -69,7 +69,7 @@ namespace KDots
       bool hasCaptured(const Point& point, Owner current) const;
       
     signals:
-      void createDotTable(const GameConfig& config);
+      void createBoardModel(const GameConfig& config);
       void needDestroy();
     };
   }

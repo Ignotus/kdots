@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_DOTTABLE_HPP
-#define KDOTS_DOTTABLE_HPP
+#pragma once
 #include <memory>
 #include <QObject>
 #include "gameconfig.hpp"
@@ -34,16 +33,11 @@ namespace KDots
 {
   class Graph;
   class StepQueue;
-  class KDOTS_EXPORT DotTable : public QObject
+  class KDOTS_EXPORT BoardModel : public QObject
   {
     Q_OBJECT
-
-    std::unique_ptr<Graph> m_graph;
-    std::shared_ptr<StepQueue> m_steps;
-    GameConfig m_config;
-    std::vector<Polygon_ptr> m_polygons;
   public:
-    DotTable(const GameConfig& config, std::shared_ptr<StepQueue> step_queue, QObject *parent = 0);
+    BoardModel(const GameConfig& config, std::shared_ptr<StepQueue> step_queue, QObject *parent = 0);
     
     const GameConfig& gameConfig() const;
 
@@ -56,13 +50,19 @@ namespace KDots
     const StepQueue& stepQueue() const;
     
     void undo();
+
   signals:
     void nextPlayer(const Point& lastPoint);
+
   private:
     void drawPolygon(PolyList polygons);
     
     void continueStep();
+    
+  private:
+    std::unique_ptr<Graph> m_graph;
+    std::shared_ptr<StepQueue> m_steps;
+    GameConfig m_config;
+    std::vector<Polygon_ptr> m_polygons;
   };
 }
-
-#endif

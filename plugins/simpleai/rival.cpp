@@ -33,7 +33,7 @@
 #include <KgDifficulty>
 #include <KDebug>
 #include <point.hpp>
-#include <dottable.hpp>
+#include <boardmodel.hpp>
 #include <stepqueue.hpp>
 #include <constants.hpp>
 #include <polygonfinder.hpp>
@@ -277,7 +277,7 @@ namespace KDots
       }
     }
     
-    void Rival::setDotTable(std::shared_ptr<DotTable>& table)
+    void Rival::setBoardModel(std::shared_ptr<BoardModel>& table)
     {
       m_table = table;
       

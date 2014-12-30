@@ -60,7 +60,7 @@ namespace KDots
         Q_UNUSED(point);
       }
     signals:
-      void createDotTable(const GameConfig& config);
+      void createBoardModel(const GameConfig& config);
       void needDestroy();
     };
 

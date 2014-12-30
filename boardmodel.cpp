@@ -23,7 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#include "dottable.hpp"
+#include "boardmodel.hpp"
 #include <KMessageBox>
 #include <KLocalizedString>
 #include <KDebug>
@@ -33,7 +33,7 @@
 
 namespace KDots
 {
-  DotTable::DotTable(const GameConfig& config, std::shared_ptr<StepQueue> step_queue, QObject *parent)
+  BoardModel::BoardModel(const GameConfig& config, std::shared_ptr<StepQueue> step_queue, QObject *parent)
     : QObject(parent)
     , m_graph(new Graph(config.m_width, config.m_height))
     , m_steps(step_queue)
@@ -41,17 +41,17 @@ namespace KDots
   {
   }
   
-  const GameConfig& DotTable::gameConfig() const
+  const GameConfig& BoardModel::gameConfig() const
   {
     return m_config;
   }
 
-  void DotTable::pushPoint(const Point& point)
+  void BoardModel::pushPoint(const Point& point)
   {
     Graph& graph = *m_graph;
     GraphPoint& currentPoint = graph[point];
 
-    if(currentPoint.owner() != Owner::NONE || currentPoint.isCaptured())
+    if (currentPoint.owner() != Owner::NONE || currentPoint.isCaptured())
       return;
     
     const Owner current = m_steps->getCurrentOwner();
@@ -66,7 +66,7 @@ namespace KDots
     const PolyList& polyList = findPolygon(point);
 
     const auto& points = m_steps->getPoints(StepQueue::other(current));
-    if(points.empty() || polyList.empty())
+    if (points.empty() || polyList.empty())
     {
       continueStep();
       emit nextPlayer(point);
@@ -76,17 +76,17 @@ namespace KDots
     const Owner otherOwner = StepQueue::other(current);
     
     const auto& otherOwnerPoints = m_steps->getPoints(otherOwner);
-    for(const Point& p : otherOwnerPoints)
+    for (const Point& p : otherOwnerPoints)
     {
       GraphPoint& gpoint = graph[p];
-      if(gpoint.isCaptured())
+      if (gpoint.isCaptured())
         continue;
       
-      for(const Polygon_ptr& polygon : polyList)
+      for (const Polygon_ptr& polygon : polyList)
       {
-        if(polygon->contains(p))
+        if (polygon->contains(p))
         {
-          if(gpoint.owner() == otherOwner)
+          if (gpoint.owner() == otherOwner)
           {
             polygon->setFilled(true);
             m_steps->addCaptured();
@@ -98,17 +98,17 @@ namespace KDots
       }
     }
     
-    for(Graph::iterator itr = graph.begin(), itrEnd = graph.end();
+    for (Graph::iterator itr = graph.begin(), itrEnd = graph.end();
         itr != itrEnd; ++itr)
     {
-      if(itr->isCaptured() || itr->owner() != Owner::NONE)
+      if (itr->isCaptured() || itr->owner() != Owner::NONE)
         continue;
       
-      for(const Polygon_ptr& polygon : polyList)
+      for (const Polygon_ptr& polygon : polyList)
       {
         const Point& newPoint = itr.point();
 
-        if(polygon->contains(newPoint) && polygon->isFilled())
+        if (polygon->contains(newPoint) && polygon->isFilled())
         {
           itr->capture();
           m_steps->addEmptyCaptured();
@@ -123,45 +123,55 @@ namespace KDots
     emit nextPlayer(point);
   }
   
-  void DotTable::continueStep()
+  namespace
+  {
+    QString getResult(int firstPoints, int secondPoints)
+    {
+      if (firstPoints > secondPoints)
+        return i18n("The first player win!");
+      
+      if (firstPoints < secondPoints)
+        return i18n("The second player win!");
+      
+      return i18n("Dead heat!");
+    }
+  }
+  
+  void BoardModel::continueStep()
   {
     const auto& allPoints = m_steps->getAllPoints();
-    if(allPoints.size() + m_steps->emtyCapturedCount() == m_graph->width() * m_graph->height())
+    if (allPoints.size() + m_steps->emtyCapturedCount() == m_graph->width() * m_graph->height())
     {
       const int first = m_steps->getMarks(Owner::FIRST);
       const int second = m_steps->getMarks(Owner::SECOND);
       
-      if(first > second)
-        KMessageBox::information(0, i18n("The first player win!"), i18n("The first player win!"));
-      else if(first < second)
-        KMessageBox::information(0, i18n("The second player win!"), i18n("The second player win!"));
-      else
-        KMessageBox::information(0, i18n("Dead heat!"), i18n("Dead heat!"));
+      const QString& message = getResult(first, second);
+      KMessageBox::information(0, message, message);
     }
     
     m_steps->nextStep();
   }
 
   //Hardcore undo process
-  void DotTable::undo()
+  void BoardModel::undo()
   {
     m_graph.reset(new Graph(m_config.m_width, m_config.m_height));
     m_polygons.clear();
     auto points(m_steps->getAllPoints());
     
-    if(!points.empty())
+    if (!points.empty())
       points.pop_back();
     m_steps->clear();
 
-    for(const Point& point : points)
+    for (const Point& point : points)
       pushPoint(point);
   }
   
-  void DotTable::drawPolygon(PolyList polygons)
+  void BoardModel::drawPolygon(PolyList polygons)
   {
-    for(Polygon_ptr& polygon : polygons)
+    for (Polygon_ptr& polygon : polygons)
     {
-      if(!polygon->isFilled())
+      if (!polygon->isFilled())
         continue;
       
       polygon->setOwner(m_steps->getCurrentOwner());
@@ -169,7 +179,7 @@ namespace KDots
       
       Point prevPoint = polygon->points().back();
       
-      for(const Point& currPoint : polygon->points())
+      for (const Point& currPoint : polygon->points())
       {
         m_graph->addEdge(prevPoint, currPoint);
         prevPoint = currPoint;
@@ -177,20 +187,20 @@ namespace KDots
     }
   }
 
-  const std::vector<Polygon_ptr>& DotTable::polygons() const
+  const std::vector<Polygon_ptr>& BoardModel::polygons() const
   {
     return m_polygons;
   }
 
-  const Graph& DotTable::graph() const
+  const Graph& BoardModel::graph() const
   {
     return *m_graph;
   }
 
-  const StepQueue& DotTable::stepQueue() const
+  const StepQueue& BoardModel::stepQueue() const
   {
     return *m_steps;
   }
 }
 
-#include "dottable.moc"
+#include "boardmodel.moc"

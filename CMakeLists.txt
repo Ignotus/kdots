@@ -49,7 +49,7 @@ ENDIF(UNIX)
 SET(KDOTSLIB_SRCS
   point.cpp
   graph.cpp
-  dottable.cpp
+  boardmodel.cpp
   stepqueue.cpp
   polygon.cpp
   polygonfinder.cpp
@@ -59,7 +59,7 @@ SET(KDOTSLIB_SRCS
 SET(KDOTSLIB_HEADERS
   graphpoint.hpp
   graph.hpp
-  dottable.hpp
+  boardmodel.hpp
   stepqueue.hpp
   edgelist.hpp
   point.hpp

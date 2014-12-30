@@ -32,7 +32,7 @@
 #include <QPainter>
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
-#include "dottable.hpp"
+#include "boardmodel.hpp"
 #include "stepqueue.hpp"
 #include "brushcombodelegate.hpp"
 #include "kdots.h"
@@ -50,7 +50,7 @@ namespace KDots
     setMouseTracking(true);
   }
   
-  void TableWidget::setModel(std::shared_ptr<DotTable>& table)
+  void TableWidget::setModel(std::shared_ptr<BoardModel>& table)
   {
     m_table = table;
     

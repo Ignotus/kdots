@@ -42,7 +42,7 @@
 #include "kdots.h"
 #include "stepqueue.hpp"
 #include "graph.hpp"
-#include "dottable.hpp"
+#include "boardmodel.hpp"
 
 
 namespace KDots
@@ -188,9 +188,9 @@ namespace KDots
 
     m_table = new TableWidget(config, this);
     
-    auto model = std::make_shared<DotTable>(config, createStepQueue(config));
+    auto model = std::make_shared<BoardModel>(config, createStepQueue(config));
     
-    m_rival->setDotTable(model);
+    m_rival->setBoardModel(model);
     
     connect(model.get(), SIGNAL(nextPlayer(const Point&)), m_rival.get(), SLOT(nextStep(const Point&)));
     
