@@ -380,22 +380,20 @@ namespace KDots
     
     bool MapData::operator==(const MapData& other) const
     {
-      if(m_current != other.m_current)
+      if (m_current != other.m_current)
         return false;
       
-      if(m_priority != other.m_priority)
+      if (m_priority != other.m_priority)
         return false;
       
-      if(other.m_map.size() != m_map.size()
-          || !other.m_map.size()
-          || !m_map.size())
+      if (other.m_map.size() != m_map.size() || !other.m_map.size() || !m_map.size())
         return false;
       
-      for(MapType::const_iterator other_itr = other.m_map.begin(),
-          itr = m_map.begin(), other_e = other.m_map.end();
-          other_itr != other_e ; ++other_itr, ++itr)
+      for (MapType::const_iterator other_itr = other.m_map.begin(),
+           itr = m_map.begin(), other_e = other.m_map.end();
+           other_itr != other_e ; ++other_itr, ++itr)
       {
-        if(!std::equal(other_itr->begin(), other_itr->end(), itr->begin()))
+        if (!std::equal(other_itr->begin(), other_itr->end(), itr->begin()))
           return false;
       }
       
@@ -418,7 +416,7 @@ namespace KDots
       newMap.resize(map.size());
       
       MapType::const_iterator map_i = map.begin();
-      for(MapType::iterator new_i = newMap.begin(),
+      for (MapType::iterator new_i = newMap.begin(),
           new_e = newMap.end();
           new_i != new_e; ++new_i, ++map_i)
       {
@@ -444,9 +442,9 @@ namespace KDots
         line.resize(map.size());
       });
       
-      for(int i = 0, max_i = newMap.size(), j, max_j = map.size(); i != max_i; ++i) //y
+      for (int i = 0, max_i = newMap.size(), j, max_j = map.size(); i != max_i; ++i) //y
       {
-        for(j = 0; j != max_j; ++j) //x
+        for (j = 0; j != max_j; ++j) //x
           newMap[i][j] = map[max_j - 1 - j][i]; 
       }
       
@@ -460,13 +458,13 @@ namespace KDots
     PriorityMap::PriorityMap()
       : m_priorityMap(PRIORITY_MAP)
     {
-      for(const MapData& data : PRIORITY_MAP)
+      for (const MapData& data : PRIORITY_MAP)
       {
         const MapData& invertedData = inverse(data);
         m_priorityMap.push_back(invertedData);
         
         MapData newData = data;
-        for(int i = 0; i < 3; ++i)
+        for (int i = 0; i < 3; ++i)
         {
           newData = rotate(newData);
           m_priorityMap.push_back(newData);
