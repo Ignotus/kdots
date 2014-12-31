@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_PLUGINS_SIMPLEAI_PRIORITY_HPP
-#define KDOTS_PLUGINS_SIMPLEAI_PRIORITY_HPP
+#pragma once
 #include <list>
 #include <vector>
 #include <KDebug>
@@ -132,5 +131,3 @@ namespace KDots
     };
   }
 }
-
-#endif

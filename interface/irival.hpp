@@ -24,10 +24,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#include <memory>
 #include <QObject>
-#include <newgamewidget.hpp>
-#include <point.hpp>
+#include <constants.hpp>
 
 class QStatusBar;
 class KgDifficultyLevel;
@@ -35,6 +33,8 @@ class KgDifficultyLevel;
 namespace KDots
 {
   class BoardModel;
+  class Point;
+  class GameConfig;
   class IConfigurationWidget;
   
   class IRival : public QObject
@@ -49,27 +49,9 @@ namespace KDots
     {
     }
     
-    virtual std::vector<Point> possibleMoves() const
-    {
-      return std::vector<Point>();
-    }
-
     virtual IConfigurationWidget* configureWidget()
     {
-      return NULL;
-    }
-    
-    virtual bool isAllow() const = 0;
-    
-    virtual GameConfig getGameConfig()
-    {
-      return GameConfig();
-    }
-  
-    //slots
-    virtual void nextStep(const Point& point)
-    {
-      Q_UNUSED(point);
+      return nullptr;
     }
     
     virtual void setBoardModel(BoardModel *board)
@@ -77,20 +59,24 @@ namespace KDots
       Q_UNUSED(board);
     }
     
-    virtual void setDifficulty(const KgDifficultyLevel *difficulty)
+    virtual Owner owner() const
     {
-      Q_UNUSED(difficulty);
+      return Owner::NONE;
     }
-        
+    
     virtual bool canUndo() const
     {
       return false;
     }
     
-  protected: //signals
-    virtual void createBoardModel(const GameConfig& config) = 0;
+  public: //slots
+    virtual void onPointAdded(const Point& point) = 0;
+    virtual void onDifficultyChanged(const KgDifficultyLevel *difficulty) = 0;
     
+  protected: //signals
+    virtual void needCreateBoard(const GameConfig& config) = 0;
     virtual void needDestroy() = 0;
+    virtual void needAddPoint(const Point&) = 0;
   };
 }
 

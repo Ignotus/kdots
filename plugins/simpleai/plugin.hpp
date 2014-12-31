@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_PLUGINS_SIMPLEAI_PLUGIN_HPP
-#define KDOTS_PLUGINS_SIMPLEAI_PLUGIN_HPP
+#pragma once
 #include <interface/iplugin.hpp>
 #include "rival.hpp"
 
@@ -37,33 +36,13 @@ namespace KDots
       Q_OBJECT
       Q_INTERFACES(KDots::IPlugin)
     public:
-      Plugin(QObject *parent = 0)
-        : IPlugin(parent)
-      {
-      }
-
-      std::unique_ptr<IRival> createRival()
-      {
-        return std::unique_ptr<IRival>(new Rival);
-      }
-
-      QString name() const
-      {
-        return "simpleai";
-      }
-
-      QString description() const
-      {
-        return "Playing with the simple AI";
-      }
+      Plugin(QObject *parent = 0);
       
-      KIcon icon() const
-      {
-        return KIcon("games-config-board");
-      }
+      std::unique_ptr<IRival> createRival();
+      QString name() const;
+      QString description() const;
+      KIcon icon() const;
     };
 
   }
 }
-
-#endif

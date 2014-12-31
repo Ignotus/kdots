@@ -57,7 +57,9 @@ namespace KDots
   private slots:
     void pluginWidget();
     void gameWidget();
-    void onNeedCreateTable(bool);
+    void onNeedCreateBoard(bool);
+    
+    void onBoardConfigReceived(const GameConfig& config);
     
   private:
     Ui::NewGameDialog *m_ui;

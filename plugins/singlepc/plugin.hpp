@@ -23,9 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
-#define KDOTS_PLUGINS_SINGLEPC_PLUGIN_HPP
-#include <KgDifficulty>
+#pragma once
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 
@@ -38,30 +36,18 @@ namespace KDots
       Q_OBJECT
       Q_INTERFACES(KDots::IRival)
     public:
-      Rival(QObject *parent = 0)
-        : IRival(parent)
-      {
-        Kg::difficulty()->setEditable(false);
-      }
-
-      bool isAllow() const
-      {
-        return true;
-      }
-    
-      bool canUndo() const
-      {
-        return true;
-      }
+      Rival(QObject *parent = 0);
+      
+      bool canUndo() const;
 
     public slots:
-      void nextStep(const Point& point)
-      {
-        Q_UNUSED(point);
-      }
+      void onPointAdded(const Point& point);
+      void onDifficultyChanged(const KgDifficultyLevel *difficulty);
+
     signals:
-      void createBoardModel(const GameConfig& config);
+      void needCreateBoard(const GameConfig& config);
       void needDestroy();
+      void needAddPoint(const Point&);
     };
 
     class KDE_EXPORT Plugin : public KDots::IPlugin
@@ -69,33 +55,12 @@ namespace KDots
       Q_OBJECT
       Q_INTERFACES(KDots::IPlugin)
     public:
-      Plugin(QObject *parent = 0)
-        : IPlugin(parent)
-      {
-      }
-
-      std::unique_ptr<IRival> createRival()
-      {
-        return std::unique_ptr<IRival>(new Rival);
-      }
-
-      QString name() const
-      {
-        return "singlepc";
-      }
-
-      QString description() const
-      {
-        return "Playing in the single PC";
-      }
-      
-      KIcon icon() const
-      {
-        return KIcon();
-      }
+      Plugin(QObject *parent = 0);
+      std::unique_ptr<IRival> createRival();
+      QString name() const;
+      QString description() const;
+      KIcon icon() const;
     };
 
   }
 }
-
-#endif

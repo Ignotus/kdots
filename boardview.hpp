@@ -46,7 +46,7 @@ namespace KDots
     void setModel(BoardModel *table);
     
   public slots:
-    void undo();
+    void onFreezeView(bool freeze);
 
   protected:
     void mousePressEvent(QMouseEvent *event);
@@ -59,13 +59,10 @@ namespace KDots
     void fillPolygon(QPainter& painter, float cellSize);
     void drawLastPoint(QPainter& painter, float cellSize);
     void drawUnderMousePoint(QPainter& painter, float cellSize);
-
-  private slots:
-    void onStatusMessage();
-
+  
   signals:
-    void statusUpdated(const QString& msg);
-    
+    void pointClicked(const Point& point);
+
   private:
     BoardModel *m_model;
     

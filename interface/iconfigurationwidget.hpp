@@ -38,7 +38,7 @@ namespace KDots
     }
   
   protected:
-    virtual void needCreateTable(bool) = 0;
+    virtual void needCreateBoard(bool) = 0;
   };
 }
 

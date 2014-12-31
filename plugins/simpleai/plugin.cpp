@@ -24,5 +24,38 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "plugin.hpp"
+#include <KLocalizedString>
+#include <KgDifficulty>
+
+namespace KDots
+{
+namespace simpleai
+{
+  Plugin::Plugin(QObject *parent)
+    : IPlugin(parent)
+  {
+  }
+
+  std::unique_ptr<IRival> Plugin::createRival()
+  {
+    return std::unique_ptr<IRival>(new Rival);
+  }
+
+  QString Plugin::name() const
+  {
+    return "simpleai";
+  }
+
+  QString Plugin::description() const
+  {
+    return i18n("Playing with the simple AI");
+  }
+  
+  KIcon Plugin::icon() const
+  {
+    return KIcon("games-config-board");
+  }
+}
+}
 
 Q_EXPORT_PLUGIN2(kdots_simpleai, KDots::simpleai::Plugin)

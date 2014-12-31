@@ -66,8 +66,6 @@ namespace KDots
   {
     if (m_game)
       m_config = m_game->getGameConfig();
-    else
-      m_config = m_rival->getGameConfig();
     
     QDialog::accept();
   }
@@ -75,6 +73,11 @@ namespace KDots
   const GameConfig& NewGameDialog::gameConfig() const
   {
     return m_config;
+  }
+  
+  void NewGameDialog::onBoardConfigReceived(const GameConfig& config)
+  {
+    m_config = config;
   }
   
   void NewGameDialog::pluginWidget()
@@ -98,6 +101,11 @@ namespace KDots
     
     m_rival = std::move(pluginInstance->createRival());
     
+    connect(m_rival.get(),
+            SIGNAL(needCreateBoard(const GameConfig&)),
+            this,
+            SLOT(onBoardConfigReceived(const GameConfig&)));
+    
     m_pluginManager->hide();
     
     m_configWidget = m_rival->configureWidget();
@@ -110,12 +118,12 @@ namespace KDots
     
     m_ui->Grid->addWidget(m_configWidget , 0, 0);
     
-    connect(m_configWidget, SIGNAL(needCreateTable(bool)), this, SLOT(onNeedCreateTable(bool)));
+    connect(m_configWidget, SIGNAL(needCreateBoard(bool)), this, SLOT(onNeedCreateBoard(bool)));
     
     connect(m_ui->NextButton, SIGNAL(clicked(bool)), this, SLOT(gameWidget()));
   }
   
-  void NewGameDialog::onNeedCreateTable(bool val)
+  void NewGameDialog::onNeedCreateBoard(bool val)
   {
     if (val)
     {

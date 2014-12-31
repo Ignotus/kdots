@@ -39,14 +39,12 @@ namespace KDots
   {
     Q_OBJECT
   public:
-    BoardModel(const GameConfig& config, std::shared_ptr<StepQueue> step_queue, QObject *parent = 0);
+    BoardModel(const GameConfig& config, std::unique_ptr<StepQueue>&& step_queue, QObject *parent = 0);
     
     void setView(std::unique_ptr<IBoardView>&& view);
     void setRival(std::unique_ptr<IRival>&& rival);
     
     const GameConfig& gameConfig() const;
-
-    void pushPoint(const Point& point);
     
     const std::vector<Polygon_ptr>& polygons() const;
 
@@ -54,17 +52,21 @@ namespace KDots
 
     const StepQueue& stepQueue() const;
     
-    IRival& rival() const;
-    
+  public slots:
     void undo();
-
-  signals:
-    void nextPlayer(const Point& lastPoint);
 
   private:
     void drawPolygon(PolyList polygons);
-    
     void continueStep();
+    void emitStatus();
+    
+  private slots:
+    void addPoint(const Point& point);
+    
+  signals:
+    void pointAdded(const Point& lastPoint);
+    void freezeView(bool);
+    void statusUpdated(const QString& message);
     
   private:
     std::unique_ptr<IBoardView> m_view;
@@ -74,5 +76,6 @@ namespace KDots
     std::shared_ptr<StepQueue> m_steps;
     GameConfig m_config;
     std::vector<Polygon_ptr> m_polygons;
+    bool m_block;
   };
 }

@@ -23,10 +23,10 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_PLUGINS_SIMPLEAI_RIVAL_HPP
-#define KDOTS_PLUGINS_SIMPLEAI_RIVAL_HPP
+#pragma once
 #include <memory>
 #include <QLabel>
+#include <point.hpp>
 #include <interface/irival.hpp>
 
 namespace KDots
@@ -47,18 +47,16 @@ namespace KDots
       std::vector<Point> m_points;
     public:
       Rival(QObject *parent = 0);
-      ~Rival() {}
       
-      bool isAllow() const;
+      Owner owner() const;
+      
       static bool hasMask(const Graph& graph, const Point& point, const MapData& mask, const Owner current);
-      
-      std::vector<Point> possibleMoves() const;
       
       void setBoardModel(BoardModel *board);
       
     public slots:
-      void nextStep(const Point& point);
-      void setDifficulty(const KgDifficultyLevel *level);
+      void onPointAdded(const Point& point);
+      void onDifficultyChanged(const KgDifficultyLevel *level);
       
     private:
       float calcPriority(const Point& point);
@@ -66,10 +64,9 @@ namespace KDots
       bool hasCaptured(const Point& point, Owner current) const;
       
     signals:
-      void createBoardModel(const GameConfig& config);
+      void needCreateBoard(const GameConfig& config);
       void needDestroy();
+      void needAddPoint(const Point&);
     };
   }
 }
-
-#endif

@@ -118,12 +118,12 @@ namespace KDots
   
   namespace
   {
-    std::shared_ptr<StepQueue> createStepQueue(const GameConfig& config)
+    std::unique_ptr<StepQueue> createStepQueue(const GameConfig& config)
     {
       if (config.m_mode == GameMode::DEFAULT_MODE)
-        return std::make_shared<StepQueue>(config.m_firstOwner);
+        return std::unique_ptr<StepQueue>(new StepQueue(config.m_firstOwner));
       
-      return std::make_shared<ExtraStepQueue>(config.m_firstOwner);
+      return std::unique_ptr<StepQueue>(new ExtraStepQueue(config.m_firstOwner));
     }
   }
 
@@ -143,21 +143,20 @@ namespace KDots
     connect(Kg::difficulty(),
         SIGNAL(currentLevelChanged(const KgDifficultyLevel*)),
         rival.get(),
-        SLOT(setDifficulty(const KgDifficultyLevel*)));
+        SLOT(onDifficultyChanged(const KgDifficultyLevel*)));
     
     m_menu.m_undoAction->setEnabled(rival->canUndo());
     
     connect(rival.get(), SIGNAL(needDestroy()), this, SLOT(endGame()));
     
     m_model = std::unique_ptr<BoardModel>(new BoardModel(config, createStepQueue(config)));
+    connect(m_menu.m_undoAction, SIGNAL(triggered(bool)), m_model.get(), SLOT(undo()));
+    connect(m_model.get(), SIGNAL(statusUpdated(const QString&)), statusBar(), SLOT(showMessage(const QString&)));
     
     {
     std::unique_ptr<IBoardView> view(new BoardView(this));
     
-    connect(view.get(), SIGNAL(statusUpdated(const QString&)), statusBar(), SLOT(showMessage(const QString&)));
     connect(this, SIGNAL(preferencesUpdated()), view.get(), SLOT(update()));
-
-    connect(m_menu.m_undoAction, SIGNAL(triggered(bool)), view.get(), SLOT(undo()));
     
     setCentralWidget(view.get());
     

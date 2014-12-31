@@ -55,12 +55,9 @@ namespace KDots
       Kg::difficulty()->setEditable(true);
     }
     
-    bool Rival::isAllow() const
+    Owner Rival::owner() const
     {
-      if(!m_board)
-        return false;
-      
-      return m_board->stepQueue().getCurrentOwner() == m_board->stepQueue().firstOwner();
+      return m_current;
     }
     
     bool Rival::hasMask(const Graph& graph, const Point& point, const MapData& mask, const Owner current)
@@ -186,7 +183,7 @@ namespace KDots
       }
     }
     
-    void Rival::setDifficulty(const KgDifficultyLevel *level)
+    void Rival::onDifficultyChanged(const KgDifficultyLevel *level)
     {
       switch (level->standardLevel())
       {
@@ -201,7 +198,6 @@ namespace KDots
         break;
       }
     }
-
     
     bool Rival::hasCaptured(const KDots::Point& point, KDots::Owner current) const
     {
@@ -229,14 +225,9 @@ namespace KDots
       return false;
     }
     
-    std::vector<Point> Rival::possibleMoves() const
+    void Rival::onPointAdded(const Point& point)
     {
-      return m_points;
-    }
-    
-    void Rival::nextStep(const Point& point)
-    {
-      if(isAllow())
+      if (m_board->stepQueue().getCurrentOwner() == m_board->stepQueue().firstOwner())
         return;
       
       int min_x = point.m_x - 1, min_y = point.m_y - 1;
@@ -272,7 +263,7 @@ namespace KDots
       if(!m_points.empty())
       {
         std::srand(std::time(NULL));
-        m_board->pushPoint(m_points[std::rand() % m_points.size()]);
+        emit needAddPoint(m_points[std::rand() % m_points.size()]);
       }
     }
     

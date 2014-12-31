@@ -54,11 +54,16 @@ namespace KDots
   {
     m_model = model;
     
-    connect(m_model, SIGNAL(nextPlayer(const Point&)), this, SLOT(update()));
-    connect(m_model, SIGNAL(nextPlayer(const Point&)), this, SLOT(onStatusMessage()));
+    connect(m_model, SIGNAL(pointAdded(const Point&)), this, SLOT(update()));
+    connect(m_model, SIGNAL(freezeView(bool)), this, SLOT(onFreezeView(bool)));
     
     m_height = m_model->gameConfig().m_height + 1;
     m_width = m_model->gameConfig().m_width + 1;
+  }
+  
+  void BoardView::onFreezeView(bool freeze)
+  {
+    setUpdatesEnabled(!freeze);
   }
   
   namespace
@@ -74,9 +79,6 @@ namespace KDots
   
   void BoardView::calculatePoint(Point& point, QMouseEvent *event)
   {
-    if (!m_model->rival().isAllow())
-      return;
-    
     const QRect& rectange = rect();
 
     const float cellSize = calculateCellSize(rectange, m_height, m_width);
@@ -125,28 +127,13 @@ namespace KDots
       update();
   }
   
-  void BoardView::onStatusMessage()
-  {
-    emit statusUpdated(QString("First:\t")
-        + QString::number(m_model->stepQueue().getMarks(Owner::FIRST))
-        + "\tSecond:\t"
-        + QString::number(m_model->stepQueue().getMarks(Owner::SECOND)));
-  }
-
   void BoardView::mousePressEvent(QMouseEvent *event)
   {
     Point point;
     calculatePoint(point, event);
     
     if (!point.empty())
-      m_model->pushPoint(point);
-  }
-  
-  void BoardView::undo()
-  {
-    setUpdatesEnabled(false);
-    m_model->undo();
-    setUpdatesEnabled(true);
+      emit pointClicked(point);
   }
   
   void BoardView::drawPolygons(QPainter& painter, float cellSize)
@@ -206,16 +193,6 @@ namespace KDots
       painter.setBrush(Qt::NoBrush);
       const Point& newPoint = lastPoint + 1;
       painter.drawEllipse(QPointF(newPoint) * cellSize, 6, 6);
-    }
-    
-    const std::vector<Point>& possiblePoints = m_model->rival().possibleMoves();
-    for (const Point& point : possiblePoints)
-    {
-      painter.setPen(Qt::gray);
-            
-      painter.setBrush(Qt::NoBrush);
-      const Point& newPoint = point + 1;
-      painter.drawEllipse(QPointF(newPoint) * cellSize, 10, 10);
     }
   }
   

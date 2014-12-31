@@ -24,6 +24,59 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "plugin.hpp"
+#include <KLocalizedString>
+#include <KgDifficulty>
+
+namespace KDots
+{
+namespace singlepc
+{
+  Rival::Rival(QObject *parent)
+    : IRival(parent)
+  {
+    Kg::difficulty()->setEditable(false);
+  }
+
+  bool Rival::canUndo() const
+  {
+    return true;
+  }
+      
+  void Rival::onPointAdded(const Point&)
+  {
+  }
+  
+  void Rival::onDifficultyChanged(const KgDifficultyLevel*)
+  {
+  }
+  
+  
+  Plugin::Plugin(QObject *parent)
+    : IPlugin(parent)
+  {
+  }
+
+  std::unique_ptr<IRival> Plugin::createRival()
+  {
+    return std::unique_ptr<IRival>(new Rival);
+  }
+
+  QString Plugin::name() const
+  {
+    return "singlepc";
+  }
+
+  QString Plugin::description() const
+  {
+    return i18n("Playing in the single PC");
+  }
+  
+  KIcon Plugin::icon() const
+  {
+    return KIcon();
+  }
+}
+}
 
 Q_EXPORT_PLUGIN2(kdots_singlepc, KDots::singlepc::Plugin)
 

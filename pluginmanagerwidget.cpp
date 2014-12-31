@@ -55,7 +55,7 @@ namespace KDots
         this,
         SLOT(onIndexChanged(const QModelIndex&)));
     
-    const QModelIndex& index =model->index(Settings::lastPlugin(), 0);
+    const QModelIndex& index =model->index(0, 0);
     m_ui->PluginList->selectionModel()->select(index, QItemSelectionModel::Select);
     onIndexChanged(index);
   }

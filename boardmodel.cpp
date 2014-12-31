@@ -35,10 +35,10 @@
 
 namespace KDots
 {
-  BoardModel::BoardModel(const GameConfig& config, std::shared_ptr<StepQueue> step_queue, QObject *parent)
+  BoardModel::BoardModel(const GameConfig& config, std::unique_ptr<StepQueue>&& step_queue, QObject *parent)
     : QObject(parent)
     , m_graph(new Graph(config.m_width, config.m_height))
-    , m_steps(step_queue)
+    , m_steps(std::move(step_queue))
     , m_config(config)
   {
   }
@@ -47,27 +47,36 @@ namespace KDots
   {
     m_view = std::move(view);
     m_view->setModel(this);
+    
+    connect(m_view.get(), SIGNAL(pointClicked(const Point&)), this, SLOT(addPoint(const Point&)));
   }
   
   void BoardModel::setRival(std::unique_ptr<IRival>&& rival)
   {
     m_rival = std::move(rival);
     
-    connect(this, SIGNAL(nextPlayer(const Point&)), m_rival.get(), SLOT(nextStep(const Point&)));
-  }
-  
-  IRival& BoardModel::rival() const
-  {
-    return *m_rival;
+    connect(this, SIGNAL(pointAdded(const Point&)), m_rival.get(), SLOT(onPointAdded(const Point&)));
+    connect(m_rival.get(), SIGNAL(needAddPoint(const Point&)), this, SLOT(addPoint(const Point&)));
   }
   
   const GameConfig& BoardModel::gameConfig() const
   {
     return m_config;
   }
-
-  void BoardModel::pushPoint(const Point& point)
+  
+  void BoardModel::addPoint(const Point& point)
   {
+    if (sender() == m_rival.get())
+    {
+      if (m_rival->owner() != m_steps->getCurrentOwner())
+        return;
+    }
+    else
+    {
+      if (m_rival->owner() == m_steps->getCurrentOwner())
+        return;
+    }
+    
     Graph& graph = *m_graph;
     GraphPoint& currentPoint = graph[point];
 
@@ -89,7 +98,8 @@ namespace KDots
     if (points.empty() || polyList.empty())
     {
       continueStep();
-      emit nextPlayer(point);
+      emitStatus();
+      emit pointAdded(point);
       return;
     }
     
@@ -140,7 +150,8 @@ namespace KDots
     drawPolygon(polyList);
     
     continueStep();
-    emit nextPlayer(point);
+    emitStatus();
+    emit pointAdded(point);
   }
   
   namespace
@@ -175,6 +186,7 @@ namespace KDots
   //Hardcore undo process
   void BoardModel::undo()
   {
+    emit freezeView(true);
     m_graph.reset(new Graph(m_config.m_width, m_config.m_height));
     m_polygons.clear();
     auto points(m_steps->getAllPoints());
@@ -184,7 +196,16 @@ namespace KDots
     m_steps->clear();
 
     for (const Point& point : points)
-      pushPoint(point);
+      addPoint(point);
+    
+    emit freezeView(false);
+  }
+  
+  void BoardModel::emitStatus()
+  {
+    const QString& firstMark = QString::number(m_steps->getMarks(Owner::FIRST));
+    const QString& secondMark = QString::number(m_steps->getMarks(Owner::SECOND));
+    emit statusUpdated(QString("First:\t%1\tSecond:\t%2").arg(firstMark, secondMark));
   }
   
   void BoardModel::drawPolygon(PolyList polygons)
