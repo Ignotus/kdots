@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_PLUGINS_IPCONNECT_RIVAL_HPP
-#define KDOTS_PLUGINS_IPCONNECT_RIVAL_HPP
+#pragma once
 #include <memory>
 #include <QObject>
 #include <QTcpSocket>
@@ -40,7 +39,32 @@ namespace KDots
     class Rival : public KDots::IRival
     {
       Q_OBJECT
+    public:
+      Rival(QObject *parent = 0);
+      virtual ~Rival();
+      
+      IConfigurationWidget* configureWidget();
 
+      void setBoardModel(BoardModel *board);
+      void requestGameConfig();
+
+      Owner owner() const;
+
+    public slots:
+      void onPointAdded(const Point& point);
+      void onDifficultyChanged(const KgDifficultyLevel*);
+      
+    private slots:
+      void onNewConnectionHandle();
+      void onReadyRead();
+      void onDisconnected();
+      
+    signals:
+      void needCreateBoard(const GameConfig& config);
+      void needDestroy();
+      void needAddPoint(const Point&);
+      
+    private:
       BoardModel *m_board;
       QTcpSocket *m_socket;
       QTcpServer *m_server;
@@ -48,29 +72,6 @@ namespace KDots
       Owner m_me;
       
       std::unique_ptr<ConfigurationWidget> m_configWidget;
-    public:
-      Rival(QObject *parent = 0);
-      virtual ~Rival();
-      
-      GameConfig getGameConfig();
-      
-      IConfigurationWidget* configureWidget();
-
-      void setBoardModel(BoardModel *board);
-
-      bool isAllow() const;
-
-    public slots:
-      void nextStep(const Point& point);
-      
-    private slots:
-      void onNewConnectionHandle();
-      void onReadyRead();
-      void onDisconnected();
-    signals:
-      void createBoardModel(const GameConfig& config);
-      void needDestroy();
     };
   }
 }
-#endif

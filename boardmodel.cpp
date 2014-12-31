@@ -55,6 +55,8 @@ namespace KDots
   {
     m_rival = std::move(rival);
     
+    m_rival->setBoardModel(this);
+    
     connect(this, SIGNAL(pointAdded(const Point&)), m_rival.get(), SLOT(onPointAdded(const Point&)));
     connect(m_rival.get(), SIGNAL(needAddPoint(const Point&)), this, SLOT(addPoint(const Point&)));
   }

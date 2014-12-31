@@ -69,5 +69,6 @@ namespace KDots
   
     std::unique_ptr<IRival> m_rival;
     GameConfig m_config;
+    bool m_needCreateBoard;
   };
 }

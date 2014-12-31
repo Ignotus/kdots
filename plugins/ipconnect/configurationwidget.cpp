@@ -45,20 +45,22 @@ namespace KDots
     {
       m_ui->setupUi(this);
       
-      connect(m_ui->tabWidget,
-          SIGNAL(currentChanged(int)),
-          this,
-          SLOT(onTabChanged(int)));
+      connect(m_ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onTabChanged(int)));
+    }
+    
+    void ConfigurationWidget::requestState()
+    {
+      onTabChanged(m_ui->tabWidget->currentIndex());
     }
     
     void ConfigurationWidget::onTabChanged(int index)
     {
-      emit needCreateTable(index == CreateGameTab);
+      emit needCreateBoard(index == CreateGameTab);
     }
     
     bool ConfigurationWidget::clientConfig(ClientConfig& config)
     {
-      if(m_ui->tabWidget->currentIndex() == CreateGameTab)
+      if (m_ui->tabWidget->currentIndex() == CreateGameTab)
         return false;
       else
       {
@@ -70,7 +72,7 @@ namespace KDots
     
     bool ConfigurationWidget::serverConfig(ServerConfig& config)
     {
-      if(m_ui->tabWidget->currentIndex() == JoinGameTab)
+      if (m_ui->tabWidget->currentIndex() == JoinGameTab)
         return false;
       else
       {

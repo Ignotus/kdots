@@ -59,6 +59,10 @@ namespace KDots
       Q_UNUSED(board);
     }
     
+    virtual void requestGameConfig()
+    {
+    }
+    
     virtual Owner owner() const
     {
       return Owner::NONE;

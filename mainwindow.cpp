@@ -50,6 +50,8 @@ namespace KDots
   MainWindow::MainWindow(QWidget *parent)
     : KXmlGuiWindow(parent)
     , m_ui(new Ui::MainWindow)
+    , m_needDestroy(false)
+    , m_gameConfiguring(false)
   {
     m_ui->setupUi(this);
 
@@ -101,6 +103,13 @@ namespace KDots
     statusBar()->clearMessage();
   }
   
+  void MainWindow::onNeedDestroy()
+  {
+    m_needDestroy = true;
+    if (!m_gameConfiguring)
+      endGame();
+  }
+  
   void MainWindow::onPreferences()
   {
     KConfigDialog dialog(this, i18n("Preferences"), Settings::self());
@@ -129,6 +138,9 @@ namespace KDots
 
   void MainWindow::onNewGame()
   {
+    m_needDestroy = false;
+    m_gameConfiguring = true;
+    std::shared_ptr<void> finalizer(nullptr, [&](void*) { m_gameConfiguring = false; });
     NewGameDialog dialog;
     if (dialog.exec() != QDialog::Accepted)
       return;
@@ -147,7 +159,7 @@ namespace KDots
     
     m_menu.m_undoAction->setEnabled(rival->canUndo());
     
-    connect(rival.get(), SIGNAL(needDestroy()), this, SLOT(endGame()));
+    connect(rival.get(), SIGNAL(needDestroy()), this, SLOT(onNeedDestroy()));
     
     m_model = std::unique_ptr<BoardModel>(new BoardModel(config, createStepQueue(config)));
     connect(m_menu.m_undoAction, SIGNAL(triggered(bool)), m_model.get(), SLOT(undo()));
@@ -163,10 +175,12 @@ namespace KDots
     m_model->setView(std::move(view));
     }
     
-    rival->setBoardModel(m_model.get());
     m_model->setRival(std::move(rival));
     
     m_menu.m_endAction->setEnabled(true);
+    
+    if (m_needDestroy)
+      endGame();
   }
 }
 

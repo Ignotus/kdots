@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_PLUGINS_IPCONNECT_CONFIGURATIONWIDGET_HPP
-#define KDOTS_PLUGINS_IPCONNECT_CONFIGURATIONWIDGET_HPP
+#pragma once
 #include <interface/iconfigurationwidget.hpp>
 namespace Ui
 {
@@ -56,15 +55,15 @@ namespace KDots
     public:
       ConfigurationWidget(QWidget *parent = 0);
       
+      void requestState();
+      
       bool clientConfig(ClientConfig& config);
       bool serverConfig(ServerConfig& config);
       
     private slots:
       void onTabChanged(int index);
     signals:
-      void needCreateTable(bool);
+      void needCreateBoard(bool);
     };
   }
 }
-
-#endif

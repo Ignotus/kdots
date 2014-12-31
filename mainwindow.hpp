@@ -54,6 +54,7 @@ namespace KDots
     void onNewGame();
     void onPreferences();
     void endGame();
+    void onNeedDestroy();
   
   signals:
     void preferencesUpdated();
@@ -61,6 +62,8 @@ namespace KDots
   private:
     Ui::MainWindow *m_ui;
     std::unique_ptr<BoardModel> m_model;
+    bool m_needDestroy;
+    bool m_gameConfiguring;
     
     struct
     {

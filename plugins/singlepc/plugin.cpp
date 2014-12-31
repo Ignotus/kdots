@@ -36,7 +36,7 @@ namespace singlepc
   {
     Kg::difficulty()->setEditable(false);
   }
-
+  
   bool Rival::canUndo() const
   {
     return true;

@@ -36,6 +36,8 @@ namespace KDots
       : QWidget(parent)
     {
     }
+    
+    virtual void requestState() = 0;
   
   protected:
     virtual void needCreateBoard(bool) = 0;

@@ -42,6 +42,7 @@ namespace KDots
     , m_game(nullptr)
     , m_pluginManager(new PluginManagerWidget(this))
     , m_configWidget(nullptr)
+    , m_needCreateBoard(false)
   {
     m_ui->setupUi(this);
       
@@ -53,8 +54,6 @@ namespace KDots
   
   NewGameDialog::~NewGameDialog()
   {
-    if (m_configWidget)
-      m_configWidget->setParent(0);
   }
   
   std::unique_ptr<IRival> NewGameDialog::rival()
@@ -66,6 +65,13 @@ namespace KDots
   {
     if (m_game)
       m_config = m_game->getGameConfig();
+    else if (m_needCreateBoard)
+    {
+      m_rival->requestGameConfig();
+    }
+    
+    if (m_configWidget)
+      m_configWidget->setParent(0);
     
     QDialog::accept();
   }
@@ -95,7 +101,7 @@ namespace KDots
     IPlugin *pluginInstance = PluginLoader::instance().plugin(pluginName);
     if (!pluginInstance)
     {
-      kDebug() << "Plugin instance not exists";
+      kDebug() << "Plugin instance doesn't exists";
       return;
     }
     
@@ -110,7 +116,7 @@ namespace KDots
     
     m_configWidget = m_rival->configureWidget();
     
-    if (!m_configWidget)
+    if (m_configWidget == nullptr)
     {
       gameWidget();
       return;
@@ -121,22 +127,19 @@ namespace KDots
     connect(m_configWidget, SIGNAL(needCreateBoard(bool)), this, SLOT(onNeedCreateBoard(bool)));
     
     connect(m_ui->NextButton, SIGNAL(clicked(bool)), this, SLOT(gameWidget()));
+    
+    m_configWidget->requestState();
   }
   
   void NewGameDialog::onNeedCreateBoard(bool val)
   {
+    m_needCreateBoard = !val;
+    m_ui->NextButton->setEnabled(val);
+    m_ui->OKButton->setEnabled(m_needCreateBoard);
     if (val)
-    {
-      m_ui->NextButton->setEnabled(true);
-      m_ui->OKButton->setEnabled(false);
       connect(m_ui->NextButton, SIGNAL(clicked(bool)), this, SLOT(gameWidget()));
-    }
     else
-    {
-      m_ui->NextButton->setEnabled(false);
-      m_ui->OKButton->setEnabled(true);
       m_ui->NextButton->disconnect(this, SLOT(gameWidget()));
-    }
   }
   
   void NewGameDialog::gameWidget()

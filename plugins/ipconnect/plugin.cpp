@@ -24,5 +24,39 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "plugin.hpp"
+#include <KLocalizedString>
+#include <KgDifficulty>
+
+namespace KDots
+{
+namespace ipconnect
+{
+  Plugin::Plugin(QObject *parent)
+    : IPlugin(parent)
+  {
+    Kg::difficulty()->setEditable(false);
+  }
+
+  std::unique_ptr<IRival> Plugin::createRival()
+  {
+    return std::unique_ptr<IRival>(new Rival);
+  }
+
+  QString Plugin::name() const
+  {
+    return "ipconnect";
+  }
+
+  QString Plugin::description() const
+  {
+    return i18n("Playing by internet connection");
+  }
+  
+  KIcon Plugin::icon() const
+  {
+    return KIcon("network-connect");
+  }
+}
+}
 
 Q_EXPORT_PLUGIN2(kdots_ipconnection, KDots::ipconnect::Plugin)

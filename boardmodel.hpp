@@ -69,13 +69,11 @@ namespace KDots
     void statusUpdated(const QString& message);
     
   private:
-    std::unique_ptr<IBoardView> m_view;
-    std::unique_ptr<IRival> m_rival;
-    
     std::unique_ptr<Graph> m_graph;
     std::shared_ptr<StepQueue> m_steps;
     GameConfig m_config;
     std::vector<Polygon_ptr> m_polygons;
-    bool m_block;
+    std::unique_ptr<IRival> m_rival;
+    std::unique_ptr<IBoardView> m_view;
   };
 }
