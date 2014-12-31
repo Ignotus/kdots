@@ -69,29 +69,28 @@ namespace KDots
 
   void PolygonFinder::findPolygons(const Point& point)
   {
-    if(m_cache.size() > 3 && point == m_cache.front())
+    if (m_cache.size() > 3 && point == m_cache.front())
     {
       m_polygons.push_back(Polygon_ptr(new Polygon(m_cache)));
       return;
     }
 
-    if(m_stepMap[point.m_x][point.m_y])
+    if (m_stepMap[point.m_x][point.m_y])
       return;
 
     m_cache.push_back(point);
     m_stepMap[point.m_x][point.m_y] = true;
 
-    for(int i = 0; i < DIRECTION_COUNT; ++i)
-    {
+    for (int i = 0; i < DIRECTION_COUNT; ++i)
+    { 
       const Point newPoint(point.m_x + GRAPH_DX[i], point.m_y + GRAPH_DY[i]);
       
-      if(!m_graph.isValid(newPoint))
+      if (!m_graph.isValid(newPoint))
         continue;
 
       const GraphPoint& graphPoint = m_graph[newPoint];
 
-      if(newPoint != m_first
-          &&(graphPoint.isCaptured() || graphPoint.owner() != m_current))
+      if (newPoint != m_first &&(graphPoint.isCaptured() || graphPoint.owner() != m_current))
         continue;
       
       findPolygons(newPoint);

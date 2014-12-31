@@ -25,7 +25,7 @@
  */
 #pragma once
 #include <memory>
-#include <QWidget>
+#include "iboardview.hpp"
 #include "constants.hpp"
 #include "point.hpp"
 
@@ -37,14 +37,16 @@ namespace KDots
   class BoardModel;
   struct GameConfig;
 
-  class BoardView : public QWidget
+  class BoardView : public IBoardView
   {
     Q_OBJECT
   public:
-    BoardView(const GameConfig& config, QWidget *parent = 0);
+    BoardView(QWidget *parent = 0);
+    
+    void setModel(BoardModel *table);
+    
+  public slots:
     void undo();
-    void setModel(std::shared_ptr<BoardModel>& table);
-    void setRival(std::shared_ptr<IRival>& rival);
 
   protected:
     void mousePressEvent(QMouseEvent *event);
@@ -62,11 +64,10 @@ namespace KDots
     void onStatusMessage();
 
   signals:
-    void updateStatusBar(const QString& msg);
+    void statusUpdated(const QString& msg);
     
   private:
-    std::shared_ptr<BoardModel> m_table;
-    std::shared_ptr<IRival> m_rival;
+    BoardModel *m_model;
     
     int m_height;
     int m_width;

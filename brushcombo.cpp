@@ -33,7 +33,7 @@ namespace KDots
   BrushCombo::BrushCombo(QWidget* parent)
     : KComboBox(parent)
   {
-    for(int i = 0; i < 15; ++i)
+    for (int i = 0; i < 15; ++i)
       addItem(QString::number(i));
     
     setItemDelegate(new BrushComboDelegate(this));

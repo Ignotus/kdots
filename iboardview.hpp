@@ -23,53 +23,16 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_PLUGINS_SIMPLEAI_RIVAL_HPP
-#define KDOTS_PLUGINS_SIMPLEAI_RIVAL_HPP
-#include <memory>
-#include <QLabel>
-#include <interface/irival.hpp>
+#pragma once
+#include <QWidget>
 
 namespace KDots
 {
-  class Graph;
-  namespace simpleai
+  class BoardModel;
+  class IBoardView : public QWidget
   {
-    struct MapData;
-    
-    class Rival : public KDots::IRival
-    {
-      Q_OBJECT
-      Q_INTERFACES(KDots::IRival)
-      
-      BoardModel *m_board;
-      Owner m_current, m_other;
-      int m_iterations;
-      std::vector<Point> m_points;
-    public:
-      Rival(QObject *parent = 0);
-      ~Rival() {}
-      
-      bool isAllow() const;
-      static bool hasMask(const Graph& graph, const Point& point, const MapData& mask, const Owner current);
-      
-      std::vector<Point> possibleMoves() const;
-      
-      void setBoardModel(BoardModel *board);
-      
-    public slots:
-      void nextStep(const Point& point);
-      void setDifficulty(const KgDifficultyLevel *level);
-      
-    private:
-      float calcPriority(const Point& point);
-      void calcRange(int& min_x, int& min_y, int& max_x, int& max_y);
-      bool hasCaptured(const Point& point, Owner current) const;
-      
-    signals:
-      void createBoardModel(const GameConfig& config);
-      void needDestroy();
-    };
-  }
+  public:
+    IBoardView(QWidget *parent = 0) : QWidget(parent) {}
+    virtual void setModel(BoardModel *table) = 0;
+  };
 }
-
-#endif

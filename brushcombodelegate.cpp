@@ -57,7 +57,7 @@ namespace KDots
       const QStyleOptionViewItem&, const QModelIndex&) const
   {
     QComboBox* editor = new QComboBox(parent);
-    for(int i = 0, size = brushes().size(); i < size; ++i)
+    for (int i = 0, size = brushes().size(); i < size; ++i)
       editor->addItem(QString::number(i));
     
     return editor;

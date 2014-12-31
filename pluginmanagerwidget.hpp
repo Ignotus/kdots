@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_PLUGINMANAGERWIDGET_HPP
-#define KDOTS_PLUGINMANAGERWIDGET_HPP
+#pragma once
 #include <QWidget>
 
 class QComboBox;
@@ -40,15 +39,15 @@ namespace KDots
   class PluginManagerWidget : public QWidget
   {
     Q_OBJECT
-    
-    Ui::PluginManagerWidget *m_ui;
   public:
     PluginManagerWidget(QWidget *parent = 0);
     
     QString pluginName() const;
+    
   private slots:
     void onIndexChanged(const QModelIndex& current);
+    
+  private:
+    Ui::PluginManagerWidget *m_ui;
   };
 }
-
-#endif

@@ -38,7 +38,7 @@ class KAction;
 
 namespace KDots
 {
-  class BoardView;
+  class BoardModel;
   class IRival;
 
   class MainWindow : public KXmlGuiWindow
@@ -52,20 +52,22 @@ namespace KDots
 
   private slots:
     void onNewGame();
-    void destroyGame();
     void onPreferences();
-    void undo();
     void endGame();
-    void difficultyHandler(const KgDifficultyLevel *level);
-
+  
   signals:
-    void undoActionEnable(bool);
-    void endActionEnable(bool);
-    
+    void preferencesUpdated();
+
   private:
     Ui::MainWindow *m_ui;
-    std::shared_ptr<IRival> m_rival;
-    bool m_destroyTable;
-    BoardView *m_table;
+    std::unique_ptr<BoardModel> m_model;
+    
+    struct
+    {
+      KAction *m_newAction;
+      KAction *m_endAction;
+      KAction *m_quitAction;
+      KAction *m_undoAction;
+    } m_menu;
   };
 }

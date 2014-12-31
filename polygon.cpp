@@ -45,7 +45,7 @@ namespace
   {
     int res = 0;
     KDots::Point prevPoint = polygon.back();
-    for(auto itr = polygon.begin(), itrEnd = polygon.end();
+    for (auto itr = polygon.begin(), itrEnd = polygon.end();
         itr != itrEnd; ++itr)
     {
       res += (itr->m_x - prevPoint.m_x) * (itr->m_y + prevPoint.m_y); 
@@ -58,7 +58,7 @@ namespace
   
 int KDots::Polygon::area() const
 {
-  if(m_area < 0)
+  if (m_area < 0)
   {
     m_area = doubleArea(m_points);
   }
@@ -94,9 +94,9 @@ void KDots::Polygon::setOwner(Owner own)
 KDots::Point KDots::Polygon::getPrevPoint(std::vector<KDots::Point>::const_iterator current) const
 {
   const int currentY = current->m_y;
-  for(auto prev = current;;)
+  for (auto prev = current;;)
   {
-    if(prev == m_points.begin())
+    if (prev == m_points.begin())
       prev = --m_points.end();
     else
       --prev;
@@ -110,15 +110,15 @@ KDots::Point KDots::Polygon::getNextPoint(int& shift, std::vector<KDots::Point>:
 {
   const int currentY = current->m_y;
   shift = 0;
-  for(auto next = current;;)
+  for (auto next = current;;)
   {
     ++shift;
-    if(next == --m_points.end())
+    if (next == --m_points.end())
       next = m_points.begin();
     else
       ++next;
     
-    if(next->m_y != currentY)
+    if (next->m_y != currentY)
       return *next;
   }
 }
@@ -130,23 +130,21 @@ bool KDots::Polygon::contains(const Point& point) const
     int i = 0, shift;
 
     std::vector<KDots::Point>::const_iterator itr = m_points.begin(), itrEnd = m_points.end();
-    while(itr != itrEnd)
+    while (itr != itrEnd)
     {
-      if(itr->m_y != point.m_y)
+      if (itr->m_y != point.m_y)
       {
         ++itr;
         continue;
       }
       
-      if(itr->m_x == point.m_x
-        
-      )
+      if (itr->m_x == point.m_x)
         return true;  
 
       const Point& prevPoint = getPrevPoint(itr);
       const Point& nextPoint = getNextPoint(shift, itr);
 
-      if(itr->m_x < point.m_x && prevPoint.m_y != nextPoint.m_y && shift == 1)
+      if (itr->m_x < point.m_x && prevPoint.m_y != nextPoint.m_y && shift == 1)
         ++i;
       
       ++itr;

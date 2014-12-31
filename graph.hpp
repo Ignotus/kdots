@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_GRAPH_HPP
-#define KDOTS_GRAPH_HPP
+#pragma once
 #include <vector>
 #include <iterator>
 #include "graphpoint.hpp"
@@ -38,7 +37,6 @@ namespace KDots
   
   class KDOTS_EXPORT Graph final
   {
-    std::vector<std::vector<GraphPoint>> m_graph;
   public:
     typedef graph_iterator<GraphPoint> iterator;
     typedef graph_iterator<const GraphPoint> const_iterator;
@@ -88,15 +86,15 @@ namespace KDots
 
     void addEdge(const KDots::Point& first, const KDots::Point& second);
     void removeEdge(const Point& first, const Point& second);
+  
+  private:
+    std::vector<std::vector<GraphPoint>> m_graph;
   };
   
   template<class A>
   class graph_iterator final : public std::iterator<std::forward_iterator_tag, A>
   {
-    Graph *m_graph;
-    std::size_t m_x, m_y;
-  public:
-    
+  public: 
     Point point() const
     {
       return Point(m_x, m_y);
@@ -177,7 +175,9 @@ namespace KDots
       ++(*this);
       return res;
     }
+  
+  private:
+    Graph *m_graph;
+    std::size_t m_x, m_y;
   };
 }
-
-#endif

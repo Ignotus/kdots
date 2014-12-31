@@ -41,7 +41,7 @@ namespace KDots
     {
       Q_OBJECT
 
-      std::shared_ptr<BoardModel> m_table;
+      BoardModel *m_board;
       QTcpSocket *m_socket;
       QTcpServer *m_server;
       
@@ -56,7 +56,7 @@ namespace KDots
       
       IConfigurationWidget* configureWidget();
 
-      void setBoardModel(std::shared_ptr<BoardModel>& table);
+      void setBoardModel(BoardModel *board);
 
       bool isAllow() const;
 

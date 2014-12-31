@@ -50,19 +50,12 @@ namespace KDots
   MainWindow::MainWindow(QWidget *parent)
     : KXmlGuiWindow(parent)
     , m_ui(new Ui::MainWindow)
-    , m_destroyTable(false)
-    , m_table(nullptr)
   {
     m_ui->setupUi(this);
 
     Kg::difficulty()->addStandardLevel(KgDifficultyLevel::Easy);
     Kg::difficulty()->addStandardLevel(KgDifficultyLevel::Medium);
     Kg::difficulty()->addStandardLevel(KgDifficultyLevel::Hard);
-    
-    connect(Kg::difficulty(),
-        SIGNAL(currentLevelChanged(const KgDifficultyLevel*)),
-        this,
-        SLOT(difficultyHandler(const KgDifficultyLevel*)));
     
     KgDifficultyGUI::init(this);
     
@@ -72,72 +65,40 @@ namespace KDots
     setupGUI(Default, "kdotsui.rc");
   }
   
-  void MainWindow::difficultyHandler(const KgDifficultyLevel *level)
-  {
-    int diff;
-
-    switch(level->standardLevel())
-    {
-    case KgDifficultyLevel::Easy:
-      diff = 1;
-    case KgDifficultyLevel::Medium:
-      diff = 2;
-    default:
-      diff = 3;
-    }
-    
-    if(m_rival)
-      m_rival->setDifficulty(diff);
-  }
-  
   void MainWindow::initMenu()
   {
     KStandardAction::preferences(this, SLOT(onPreferences()), actionCollection());
     
-    KAction *newAction = new KAction(KIcon("file_new"), i18n("&New game"), this);
-    newAction->setShortcut(Qt::CTRL + Qt::Key_N);
+    m_menu.m_newAction = new KAction(KIcon("file_new"), i18n("&New game"), this);
+    m_menu.m_newAction->setShortcut(Qt::CTRL + Qt::Key_N);
     
-    connect(newAction, SIGNAL(triggered(bool)), this, SLOT(onNewGame())); 
+    connect(m_menu.m_newAction, SIGNAL(triggered(bool)), this, SLOT(onNewGame())); 
 
-    actionCollection()->addAction("NewGame", newAction);
+    actionCollection()->addAction("NewGame", m_menu.m_newAction);
     
-    KAction *endAction = actionCollection()->addAction("EndGame", this, SLOT(endGame()));
-    endAction->setIcon(KIcon("window-close"));
-    endAction->setText(i18n("&End game"));
-    endAction->setShortcut(Qt::CTRL + Qt::Key_E);
-    endAction->setEnabled(false);
+    m_menu.m_endAction = actionCollection()->addAction("EndGame", this, SLOT(endGame()));
+    m_menu.m_endAction->setIcon(KIcon("window-close"));
+    m_menu.m_endAction->setText(i18n("&End game"));
+    m_menu.m_endAction->setShortcut(Qt::CTRL + Qt::Key_E);
+    m_menu.m_endAction->setEnabled(false);
     
-    KAction *quitAction = actionCollection()->addAction("Quit", this, SLOT(close()));
-    quitAction->setIcon(KIcon("exit"));
-    quitAction->setText(i18n("&Quit"));
-    quitAction->setShortcut(Qt::CTRL + Qt::Key_Q);
+    m_menu.m_quitAction = actionCollection()->addAction("Quit", this, SLOT(close()));
+    m_menu.m_quitAction->setIcon(KIcon("exit"));
+    m_menu.m_quitAction->setText(i18n("&Quit"));
+    m_menu.m_quitAction->setShortcut(Qt::CTRL + Qt::Key_Q);
     
-    KAction *undoAction = actionCollection()->addAction("UndoGame", this, SLOT(undo()));
-    undoAction->setIcon(KIcon("undo"));
-    undoAction->setText(i18n("&Undo"));
-    undoAction->setEnabled(false);
-    undoAction->setShortcut(Qt::CTRL + Qt::Key_Z);
-    
-    connect(this, SIGNAL(endActionEnable(bool)), endAction, SLOT(setEnabled(bool)));
-    
-    connect(this, SIGNAL(undoActionEnable(bool)), undoAction, SLOT(setEnabled(bool)));
+    m_menu.m_undoAction = actionCollection()->addAction("UndoGame", this);
+    m_menu.m_undoAction->setIcon(KIcon("undo"));
+    m_menu.m_undoAction->setText(i18n("&Undo"));
+    m_menu.m_undoAction->setEnabled(false);
+    m_menu.m_undoAction->setShortcut(Qt::CTRL + Qt::Key_Z);
   }
   
   void MainWindow::endGame()
   {
-    m_table->deleteLater();
-    m_table = nullptr;
-    m_rival.reset();
-    
-    emit endActionEnable(false);
-    
+    m_menu.m_endAction->setEnabled(false);
+    m_model.reset();
     statusBar()->clearMessage();
-  }
-  
-  void MainWindow::undo()
-  {
-    if(m_table && m_rival && m_rival->canUndo())
-      m_table->undo();
   }
   
   void MainWindow::onPreferences()
@@ -151,10 +112,8 @@ namespace KDots
       
     dialog.addPage(board, i18n("Board"), QLatin1String("games-config-options"));
     
-    if (m_table)
-      connect(&dialog, SIGNAL(accepted()), m_table, SLOT(update()));
-    
-    dialog.exec();
+    if (dialog.exec() == QDialog::Accepted)
+      emit preferencesUpdated();
   }
   
   namespace
@@ -179,42 +138,36 @@ namespace KDots
     if (!config.isInititialized())
       return;
     
-    m_rival = dialog.rival();
-    m_rival->setStatusBar(statusBar());
-    difficultyHandler(Kg::difficulty()->currentLevel());
-    emit undoActionEnable(m_rival->canUndo());
+    auto rival = std::move(dialog.rival());
     
-    connect(m_rival.get(), SIGNAL(needDestroy()), this, SLOT(destroyGame()));
-
-    m_table = new BoardView(config, this);
+    connect(Kg::difficulty(),
+        SIGNAL(currentLevelChanged(const KgDifficultyLevel*)),
+        rival.get(),
+        SLOT(setDifficulty(const KgDifficultyLevel*)));
     
-    auto model = std::make_shared<BoardModel>(config, createStepQueue(config));
+    m_menu.m_undoAction->setEnabled(rival->canUndo());
     
-    m_rival->setBoardModel(model);
+    connect(rival.get(), SIGNAL(needDestroy()), this, SLOT(endGame()));
     
-    connect(model.get(), SIGNAL(nextPlayer(const Point&)), m_rival.get(), SLOT(nextStep(const Point&)));
+    m_model = std::unique_ptr<BoardModel>(new BoardModel(config, createStepQueue(config)));
     
-    m_table->setModel(model);
-    m_table->setRival(m_rival);
-    
-    if(m_destroyTable)
     {
-      endGame();
-      return;
-    }
-
-    connect(m_table, SIGNAL(updateStatusBar(const QString&)), statusBar(), SLOT(showMessage(const QString&)));
-
-    setCentralWidget(m_table);
-    m_table->show();
+    std::unique_ptr<IBoardView> view(new BoardView(this));
     
-    emit endActionEnable(true);
-  }
-  
-  void MainWindow::destroyGame()
-  {
-    m_destroyTable = true;
-    emit undoActionEnable(false);
+    connect(view.get(), SIGNAL(statusUpdated(const QString&)), statusBar(), SLOT(showMessage(const QString&)));
+    connect(this, SIGNAL(preferencesUpdated()), view.get(), SLOT(update()));
+
+    connect(m_menu.m_undoAction, SIGNAL(triggered(bool)), view.get(), SLOT(undo()));
+    
+    setCentralWidget(view.get());
+    
+    m_model->setView(std::move(view));
+    }
+    
+    rival->setBoardModel(m_model.get());
+    m_model->setRival(std::move(rival));
+    
+    m_menu.m_endAction->setEnabled(true);
   }
 }
 

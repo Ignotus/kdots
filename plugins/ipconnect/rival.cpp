@@ -144,9 +144,9 @@ namespace KDots
       return GameConfig();
     }
     
-    void Rival::setBoardModel(std::shared_ptr<BoardModel>& table) //Is called after configureWidget
+    void Rival::setBoardModel(BoardModel *board) //Is called after configureWidget
     {
-      m_table = table;
+      m_board = board;
       
       ServerConfig config;
       if(!m_configWidget->serverConfig(config))
@@ -184,7 +184,7 @@ namespace KDots
 
     bool Rival::isAllow() const
     {
-      return m_table->stepQueue().getCurrentOwner() == m_me;
+      return m_board->stepQueue().getCurrentOwner() == m_me;
     }
 
     void Rival::nextStep(const Point& point)
@@ -208,7 +208,7 @@ namespace KDots
       
       QByteArray gameData;
       QDataStream out(&gameData, QIODevice::WriteOnly);
-      out << QVariant::fromValue<GameConfig>(m_table->gameConfig())
+      out << QVariant::fromValue<GameConfig>(m_board->gameConfig())
           << static_cast<quint32>(StepQueue::other(m_me));
       m_socket->write(gameData);
       kDebug() << "Game config sent";
@@ -225,7 +225,7 @@ namespace KDots
       QVariant var;
       in >> var;
       const Point& point  = var.value<Point>();
-      m_table->pushPoint(point);
+      m_board->pushPoint(point);
     }
   }
 }

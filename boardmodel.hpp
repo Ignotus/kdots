@@ -33,11 +33,16 @@ namespace KDots
 {
   class Graph;
   class StepQueue;
+  class IBoardView;
+  class IRival;
   class KDOTS_EXPORT BoardModel : public QObject
   {
     Q_OBJECT
   public:
     BoardModel(const GameConfig& config, std::shared_ptr<StepQueue> step_queue, QObject *parent = 0);
+    
+    void setView(std::unique_ptr<IBoardView>&& view);
+    void setRival(std::unique_ptr<IRival>&& rival);
     
     const GameConfig& gameConfig() const;
 
@@ -48,6 +53,8 @@ namespace KDots
     const Graph& graph() const;
 
     const StepQueue& stepQueue() const;
+    
+    IRival& rival() const;
     
     void undo();
 
@@ -60,6 +67,9 @@ namespace KDots
     void continueStep();
     
   private:
+    std::unique_ptr<IBoardView> m_view;
+    std::unique_ptr<IRival> m_rival;
+    
     std::unique_ptr<Graph> m_graph;
     std::shared_ptr<StepQueue> m_steps;
     GameConfig m_config;

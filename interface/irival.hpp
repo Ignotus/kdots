@@ -23,14 +23,14 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_IRIVAL_HPP
-#define KDOTS_IRIVAL_HPP
+#pragma once
 #include <memory>
 #include <QObject>
 #include <newgamewidget.hpp>
 #include <point.hpp>
 
 class QStatusBar;
+class KgDifficultyLevel;
 
 namespace KDots
 {
@@ -72,19 +72,14 @@ namespace KDots
       Q_UNUSED(point);
     }
     
-    virtual void setBoardModel(std::shared_ptr<BoardModel>& table)
+    virtual void setBoardModel(BoardModel *board)
     {
-      Q_UNUSED(table);
+      Q_UNUSED(board);
     }
     
-    virtual void setStatusBar(QStatusBar *bar)
+    virtual void setDifficulty(const KgDifficultyLevel *difficulty)
     {
-      Q_UNUSED(bar);
-    }
-    
-    virtual void setDifficulty(int diff)
-    {
-      Q_UNUSED(diff);
+      Q_UNUSED(difficulty);
     }
         
     virtual bool canUndo() const
@@ -100,5 +95,3 @@ namespace KDots
 }
 
 Q_DECLARE_INTERFACE(KDots::IRival, "com.github.ignotus.kdots.IRival/1.0.1")
-
-#endif

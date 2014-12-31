@@ -27,9 +27,11 @@
 #include <KMessageBox>
 #include <KLocalizedString>
 #include <KDebug>
+#include <interface/irival.hpp>
 #include "graph.hpp"
 #include "polygonfinder.hpp"
 #include "stepqueue.hpp"
+#include "boardview.hpp"
 
 namespace KDots
 {
@@ -39,6 +41,24 @@ namespace KDots
     , m_steps(step_queue)
     , m_config(config)
   {
+  }
+  
+  void BoardModel::setView(std::unique_ptr<IBoardView>&& view)
+  {
+    m_view = std::move(view);
+    m_view->setModel(this);
+  }
+  
+  void BoardModel::setRival(std::unique_ptr<IRival>&& rival)
+  {
+    m_rival = std::move(rival);
+    
+    connect(this, SIGNAL(nextPlayer(const Point&)), m_rival.get(), SLOT(nextStep(const Point&)));
+  }
+  
+  IRival& BoardModel::rival() const
+  {
+    return *m_rival;
   }
   
   const GameConfig& BoardModel::gameConfig() const

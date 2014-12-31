@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_BRUSHCOMBODELEGATE_HPP
-#define KDOTS_BRUSHCOMBODELEGATE_HPP
+#pragma once
 #include <QStyledItemDelegate>
 #include <QVector>
 
@@ -50,5 +49,3 @@ namespace KDots
     QSize sizeHint( const QStyleOptionViewItem& option, const QModelIndex& index ) const;
   };
 }
-
-#endif

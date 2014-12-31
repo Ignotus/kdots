@@ -38,6 +38,12 @@ namespace KDots
     
   }
   
+  QSize PluginWidgetDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
+  {
+    Q_UNUSED(index);
+    return QSize(option.rect.width(), 50);
+  }
+  
   void PluginWidgetDelegate::updateEditorGeometry(QWidget *editor,
       const QStyleOptionViewItem& option, const QModelIndex&) const
   {
@@ -56,10 +62,10 @@ namespace KDots
     
     painter->drawText(textRect, Qt::AlignCenter, pluginName);
     IPlugin *plug = PluginLoader::instance().plugin(pluginName);
-    if(plug)
+    if (plug)
     {
       const KIcon& plugIcon = plug->icon();
-      if(plugIcon.isNull())
+      if (plugIcon.isNull())
       {
         const KIcon newIcon("applications-boardgames");
         drawIcon(painter, option, newIcon);
@@ -72,7 +78,7 @@ namespace KDots
   void PluginWidgetDelegate::drawIcon(QPainter *painter,
       const QStyleOptionViewItem& option, const KIcon& icon) const
   {
-    const int delta =(option.rect.width() - 32) / 2;
+    const int delta = (option.rect.width() - 32) / 2;
     const QRect iconRect(option.rect.x() + delta, option.rect.y() + 2, 28, 28);
     const QPixmap& pixMap = icon.pixmap(iconRect.size());
     painter->drawPixmap(iconRect, pixMap, pixMap.rect());

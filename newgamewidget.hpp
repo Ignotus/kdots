@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_NEWGAMEWIDGET_HPP
-#define KDOTS_NEWGAMEWIDGET_HPP
+#pragma once
 #include <QWidget>
 #include "constants.hpp"
 #include "gameconfig.hpp"
@@ -47,11 +46,8 @@ namespace KDots
     Owner getFirstMoving() const;
 
     GameConfig getGameConfig() const;
+    
   private:
     Ui::NewGameWidget *m_ui;
   };
 }
-
-
-
-#endif

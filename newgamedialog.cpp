@@ -47,36 +47,41 @@ namespace KDots
       
     m_ui->Grid->addWidget(m_pluginManager, 0, 0);
     
-    connect(m_ui->NextButton,
-        SIGNAL(clicked(bool)),
-        this,
-        SLOT(pluginWidget()));
+    connect(m_ui->NextButton, SIGNAL(clicked(bool)), this, SLOT(pluginWidget()));
+    m_ui->NextButton->setFocus();
   }
   
   NewGameDialog::~NewGameDialog()
   {
-    if(m_configWidget)
+    if (m_configWidget)
       m_configWidget->setParent(0);
   }
   
-  std::shared_ptr<IRival> NewGameDialog::rival() const
+  std::unique_ptr<IRival> NewGameDialog::rival()
   {
-    return m_rival;
+    return std::move(m_rival);
   }
   
-  GameConfig NewGameDialog::gameConfig() const
+  void NewGameDialog::accept()
   {
-    if(m_game)
-      return m_game->getGameConfig();
+    if (m_game)
+      m_config = m_game->getGameConfig();
+    else
+      m_config = m_rival->getGameConfig();
     
-    return m_rival->getGameConfig();
+    QDialog::accept();
+  }
+  
+  const GameConfig& NewGameDialog::gameConfig() const
+  {
+    return m_config;
   }
   
   void NewGameDialog::pluginWidget()
   {
     m_ui->NextButton->disconnect(this, SLOT(pluginWidget()));
     
-    if(!m_pluginManager)
+    if (!m_pluginManager)
     {
       kWarning() << "Cannot cast to PluginManagerWidget";
       return;
@@ -85,19 +90,19 @@ namespace KDots
     const QString& pluginName = m_pluginManager->pluginName();
     
     IPlugin *pluginInstance = PluginLoader::instance().plugin(pluginName);
-    if(!pluginInstance)
+    if (!pluginInstance)
     {
       kDebug() << "Plugin instance not exists";
       return;
     }
     
-    m_rival = pluginInstance->createRival();
+    m_rival = std::move(pluginInstance->createRival());
     
     m_pluginManager->hide();
     
     m_configWidget = m_rival->configureWidget();
     
-    if(!m_configWidget)
+    if (!m_configWidget)
     {
       gameWidget();
       return;
@@ -105,27 +110,18 @@ namespace KDots
     
     m_ui->Grid->addWidget(m_configWidget , 0, 0);
     
-    connect(m_configWidget,
-        SIGNAL(needCreateTable(bool)),
-        this,
-        SLOT(onNeedCreateTable(bool)));
+    connect(m_configWidget, SIGNAL(needCreateTable(bool)), this, SLOT(onNeedCreateTable(bool)));
     
-    connect(m_ui->NextButton,
-        SIGNAL(clicked(bool)),
-        this,
-         SLOT(gameWidget()));
+    connect(m_ui->NextButton, SIGNAL(clicked(bool)), this, SLOT(gameWidget()));
   }
   
   void NewGameDialog::onNeedCreateTable(bool val)
   {
-    if(val)
+    if (val)
     {
       m_ui->NextButton->setEnabled(true);
       m_ui->OKButton->setEnabled(false);
-      connect(m_ui->NextButton,
-          SIGNAL(clicked(bool)),
-          this,
-          SLOT(gameWidget()));
+      connect(m_ui->NextButton, SIGNAL(clicked(bool)), this, SLOT(gameWidget()));
     }
     else
     {
@@ -137,11 +133,12 @@ namespace KDots
   
   void NewGameDialog::gameWidget()
   {
-    if(m_configWidget)
+    if (m_configWidget)
       m_configWidget->hide();
     
     m_ui->NextButton->setEnabled(false);
     m_ui->OKButton->setEnabled(true);
+    m_ui->OKButton->setFocus();
     m_game = new NewGameWidget(this);
     m_ui->Grid->addWidget(m_game, 0, 0);
   }

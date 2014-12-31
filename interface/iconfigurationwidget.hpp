@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_ICONFIGURATIONWIDGET_HPP
-#define KDOTS_ICONFIGURATIONWIDGET_HPP
+#pragma once
 #include <QWidget>
 
 namespace KDots
@@ -44,5 +43,3 @@ namespace KDots
 }
 
 Q_DECLARE_INTERFACE(KDots::IConfigurationWidget, "com.github.ignotus.kdots.IConfigurationWidget/1.0.1");
-
-#endif

@@ -28,19 +28,39 @@
 namespace KDots
 {
   StepQueue::StepQueue(Owner firstPlayer)
-    : m_firstOwner(firstPlayer)
+    : m_owner(firstPlayer)
+    , m_captured(false)
+    , m_firstOwner(firstPlayer)
     , m_first(0)
     , m_second(0)
     , m_emptyCaptured(0)
-    , m_owner(firstPlayer)
-    , m_captured(false)
   {
+  }
+  
+  Owner StepQueue::firstOwner() const
+  {
+    return m_firstOwner;
+  }
+  
+  Point StepQueue::lastPoint() const
+  {
+    return m_points.empty() ? Point() : m_points.back();
+  }
+  
+  void  StepQueue::clear()
+  {
+    m_first = m_second = m_emptyCaptured = 0;
+    m_owner  = m_firstOwner;
+    m_captured  = false;
+    m_firstPoints.clear();
+    m_secondPoints.clear();
+    m_points.clear();
   }
 
   void StepQueue::addPoint(const Point& point)
   {
     m_points.push_back(point);
-    if(getCurrentOwner() == Owner::FIRST)
+    if (getCurrentOwner() == Owner::FIRST)
       m_firstPoints.push_back(point);
     else
       m_secondPoints.push_back(point);
@@ -50,15 +70,68 @@ namespace KDots
   {
     m_captured = true;
 
-    if(getCurrentOwner() == Owner::FIRST)
+    if (getCurrentOwner() == Owner::FIRST)
       ++m_first;
     else
       ++m_second;
   }
+  
+  void StepQueue::addEmptyCaptured()
+  {
+    ++m_emptyCaptured;
+  }
+  
+  std::size_t StepQueue::emtyCapturedCount() const
+  {
+    return m_emptyCaptured;
+  }
+
+  Owner StepQueue::getCurrentOwner() const
+  {
+    return m_owner;
+  }
+
+  std::size_t StepQueue::getMarks(Owner owner) const
+  {
+    return owner == Owner::FIRST ? m_first : m_second;
+  }
+
+  const std::vector<Point>& StepQueue::getPoints(Owner owner) const
+  {
+    return owner == Owner::SECOND ? m_secondPoints : m_firstPoints;
+  }
+  
+  const std::vector<Point>& StepQueue::getAllPoints() const
+  {
+    return m_points;
+  }
+
+  Owner StepQueue::other(Owner player)
+  {
+    if (player == Owner::NONE)
+      kWarning() << "player == NONE";
+    return player == Owner::FIRST ? Owner::SECOND : Owner::FIRST;
+  }
+
+  Owner StepQueue::nextStep()
+  {
+    m_captured = false;
+    return (m_owner = other(m_owner));
+  }
+
 
   ExtraStepQueue::ExtraStepQueue(Owner firstPlayer)
     : StepQueue(firstPlayer)
   {
   }
+  
+  Owner ExtraStepQueue::nextStep()
+  {
+    if (m_captured)
+      return m_owner;
 
+    m_captured = false;
+
+    return (m_owner = other(m_owner));
+  }
 }

@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_POLYGONFINDER_HPP
-#define KDOTS_POLYGONFINDER_HPP
+#pragma once
 #include <memory>
 #include <list>
 #include "polygon.hpp"
@@ -36,20 +35,20 @@ namespace KDots
 
   class KDOTS_EXPORT PolygonFinder final
   {
+  public:
+    PolygonFinder(const Graph& graph, Owner owner);
+    // O(n)
+    const PolyList& operator()(const Point& point);
+
+  private:
+    void findPolygons(const Point& point);
+  
+  private:
     const Graph& m_graph;
     Owner m_current;
     std::vector<Point> m_cache;
     std::vector<std::vector<bool>> m_stepMap;
     PolyList m_polygons;
     Point m_first;
-  public:
-    PolygonFinder(const Graph& graph, Owner owner);
-    // O(n)
-    const PolyList& operator()(const Point& point);
-  private:
-    void findPolygons(const Point& point);
   };
-
 }
-
-#endif

@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_GRAPHPOINT_HPP
-#define KDOTS_GRAPHPOINT_HPP
+#pragma once
 #include "edgelist.hpp"
 #include "constants.hpp"
 
@@ -35,48 +34,24 @@ namespace KDots
   public:
     typedef EdgeList<DIRECTION_COUNT> GraphEdges;
 
+  public:
+    GraphPoint(Owner owner = Owner::NONE);
+
+    bool isCaptured() const;
+
+    void capture();
+
+    void setOwner(Owner owner);
+
+    Owner owner() const;
+
+    GraphEdges& edges();
+
+    const GraphEdges& edges() const;
+    
   private:
     bool m_captured;
     Owner m_owner;
     GraphEdges m_edges;
-
-  public:
-    GraphPoint(Owner owner = Owner::NONE)
-      : m_captured(false)
-      , m_owner(owner)
-    {
-    }
-
-    bool isCaptured() const
-    {
-      return m_captured;
-    }
-
-    void capture()
-    {
-      m_captured = true;
-    }
-
-    void setOwner(Owner owner)
-    {
-      m_owner = owner;
-    }
-
-    Owner owner() const
-    {
-      return m_owner;
-    }
-
-    GraphEdges& edges()
-    {
-      return m_edges;
-    }
-
-    const GraphEdges& edges() const
-    {
-      return m_edges;
-    }
   };
 }
-
-#endif

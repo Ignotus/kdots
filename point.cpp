@@ -107,13 +107,13 @@ namespace KDots
   
   QDataStream& operator<<(QDataStream& out, const KDots::Point& obj)
   {
-    out <<(quint32) obj.m_x <<(quint32) obj.m_y;
+    out << (quint32) obj.m_x << (quint32) obj.m_y;
     return out;
   }
 
   QDataStream& operator>>(QDataStream& in, KDots::Point& obj)
   {
-    in >>(quint32&) obj.m_x >>(quint32&) obj.m_y;
+    in >> (quint32&) obj.m_x >> (quint32&) obj.m_y;
     return in;
   }
 }

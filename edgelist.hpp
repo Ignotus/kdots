@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_EDGELIST_HPP
-#define KDOTS_EDGELIST_HPP
+#pragma once
 #include <stdexcept>
 #include "point.hpp"
 
@@ -33,8 +32,6 @@ namespace KDots
   template<int SIZE>
   class KDOTS_EXPORT EdgeList final
   {
-    int m_count;
-    Point m_pointList[SIZE];
   public:
     EdgeList()
       : m_count(0)
@@ -94,7 +91,9 @@ namespace KDots
 
       return false;
     }
+  
+  private:
+    int m_count;
+    Point m_pointList[SIZE];
   };
 }
-
-#endif

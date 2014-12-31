@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_POINT_HPP
-#define KDOTS_POINT_HPP
+#pragma once
 #include <QMetaType>
 #include "constants.hpp"
 
@@ -35,9 +34,6 @@ namespace KDots
 {
   class KDOTS_EXPORT Point final
   {
-  public:
-    int m_x, m_y;
-
   public:
     Point();
     Point(int x, int y);
@@ -66,6 +62,9 @@ namespace KDots
     
     explicit operator QPointF() const;
     explicit operator QPoint() const;
+    
+  public:
+    int m_x, m_y;
   };
   
   QDataStream& operator<<(QDataStream& out, const Point& obj);
@@ -74,7 +73,3 @@ namespace KDots
 }
 
 Q_DECLARE_METATYPE(KDots::Point);
-
-
-
-#endif

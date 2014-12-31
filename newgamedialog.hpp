@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_NEWGAMEDIALOG_HPP
-#define KDOTS_NEWGAMEDIALOG_HPP
+#pragma once
 #include <memory>
 #include <QDialog>
 #include "gameconfig.hpp"
@@ -44,25 +43,29 @@ namespace KDots
   class NewGameDialog : public QDialog
   {
     Q_OBJECT
+  public:
+    NewGameDialog(QWidget *parent = 0);
+    ~NewGameDialog();
     
+    std::unique_ptr<IRival> rival();
+    
+    const GameConfig& gameConfig() const;
+    
+  public:
+    void accept();
+    
+  private slots:
+    void pluginWidget();
+    void gameWidget();
+    void onNeedCreateTable(bool);
+    
+  private:
     Ui::NewGameDialog *m_ui;
     NewGameWidget *m_game;
     PluginManagerWidget *m_pluginManager;
     IConfigurationWidget *m_configWidget;
   
-    mutable std::shared_ptr<IRival> m_rival;
-  public:
-    NewGameDialog(QWidget *parent = 0);
-    ~NewGameDialog();
-    
-    std::shared_ptr<IRival> rival() const;
-    
-    GameConfig gameConfig() const;
-  private slots:
-    void pluginWidget();
-    void gameWidget();
-    void onNeedCreateTable(bool);
+    std::unique_ptr<IRival> m_rival;
+    GameConfig m_config;
   };
 }
-
-#endif

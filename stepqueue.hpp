@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_STEPQUEUE_HPP
-#define KDOTS_STEPQUEUE_HPP
+#pragma once
 #include <KDebug>
 #include "point.hpp"
 #include "constants.hpp"
@@ -33,81 +32,38 @@ namespace KDots
 {
   class KDOTS_EXPORT StepQueue
   {
-    Owner m_firstOwner;
-    std::vector<Point> m_firstPoints, m_secondPoints, m_points;
-    std::size_t m_first, m_second, m_emptyCaptured;
-  protected:
-    Owner m_owner;
-    bool m_captured;
   public:
     StepQueue(Owner firstPlayer);
     virtual ~StepQueue() {}
     
-    Owner firstOwner() const
-    {
-      return m_firstOwner;
-    }
+    Owner firstOwner() const;
+    Point lastPoint() const;
     
-    Point lastPoint() const
-    {
-      return m_points.empty() ? Point() : m_points.back();
-    }
-    
-    void clear()
-    {
-      m_first = m_second = m_emptyCaptured = 0;
-      m_owner  = m_firstOwner;
-      m_captured  = false;
-      m_firstPoints.clear();
-      m_secondPoints.clear();
-      m_points.clear();
-    }
+    void clear();
 
     void addPoint(const Point& point);
     void addCaptured();
+    void addEmptyCaptured();
     
-    void addEmptyCaptured()
-    {
-      ++m_emptyCaptured;
-    }
+    std::size_t emtyCapturedCount() const;
+
+    Owner getCurrentOwner() const;
+    std::size_t getMarks(Owner owner) const;
+    const std::vector<Point>& getPoints(Owner owner) const;
+    const std::vector<Point>& getAllPoints() const;
+
+    static Owner other(Owner player);
+
+    Owner nextStep();
+  
+  protected:
+    Owner m_owner;
+    bool m_captured; 
     
-    std::size_t emtyCapturedCount() const
-    {
-      return m_emptyCaptured;
-    }
-
-    Owner getCurrentOwner() const
-    {
-      return m_owner;
-    }
-
-    std::size_t getMarks(Owner owner) const
-    {
-      return owner == Owner::FIRST ? m_first : m_second;
-    }
-
-    const std::vector<Point>& getPoints(Owner owner) const
-    {
-      return owner == Owner::SECOND ? m_secondPoints : m_firstPoints;
-    }
-    
-    const std::vector<Point>& getAllPoints() const
-    {
-      return m_points;
-    }
-
-    static Owner other(Owner player)
-    {
-      if(player == Owner::NONE)
-        kWarning() << "player == NONE";
-      return player == Owner::FIRST ? Owner::SECOND : Owner::FIRST;
-    }
-
-    Owner nextStep()
-    {
-      m_captured = false;
-      return(m_owner = other(m_owner));
-    }
+  private:
+    Owner m_firstOwner;
+    std::vector<Point> m_firstPoints, m_secondPoints, m_points;
+    std::size_t m_first, m_second, m_emptyCaptured;
   };
 
   class KDOTS_EXPORT ExtraStepQueue final : public StepQueue
@@ -115,18 +71,8 @@ namespace KDots
   public:
     ExtraStepQueue(Owner firstPlayer);
 
-    Owner nextStep()
-    {
-      if(m_captured)
-        return m_owner;
-
-      m_captured = false;
-
-      return(m_owner = other(m_owner));
-    }
+    Owner nextStep();
   };
 
 
 }
-
-#endif

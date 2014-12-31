@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_CONSTANTS_HPP
-#define KDOTS_CONSTANTS_HPP
+#pragma once
 #include <QString>
 #include <kdemacros.h>
 #ifndef KDOTS_EXPORT
@@ -63,5 +62,3 @@ namespace KDots
   
   const QString PLUGIN_SUFFIX = "kdots_";
 }
-
-#endif

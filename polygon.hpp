@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_POLYGON_HPP
-#define KDOTS_POLYGON_HPP
+#pragma once
 #include <list>
 #include <vector>
 #include <memory>
@@ -35,11 +34,6 @@ namespace KDots
 {
   class KDOTS_EXPORT Polygon final
   {
-    std::vector<Point> m_points;
-    bool m_filled;
-    Owner m_owner;
-    
-    mutable int m_area;
   public:
     Polygon();
 
@@ -62,10 +56,15 @@ namespace KDots
   private:
     KDots::Point getPrevPoint(std::vector<KDots::Point>::const_iterator current) const;
     KDots::Point getNextPoint(int& shift, std::vector<KDots::Point>::const_iterator current) const;
+  
+  private:
+    std::vector<Point> m_points;
+    bool m_filled;
+    Owner m_owner;
+    
+    mutable int m_area;
   };
   
   typedef std::shared_ptr<Polygon> Polygon_ptr;
   typedef std::vector<Polygon_ptr> PolyList;
 }
-
-#endif

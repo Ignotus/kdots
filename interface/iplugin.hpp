@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_IPLUGIN_HPP
-#define KDOTS_IPLUGIN_HPP
+#pragma once
 #include <memory>
 #include <QString>
 #include <KIcon>
@@ -51,7 +50,7 @@ namespace KDots
     */
     virtual QString description() const = 0;
 
-    virtual std::shared_ptr<IRival> createRival() = 0;
+    virtual std::unique_ptr<IRival> createRival() = 0;
 
     /** @brief Returns a plugin icon.
     */
@@ -64,4 +63,3 @@ namespace KDots
 }
 
 Q_DECLARE_INTERFACE(KDots::IPlugin, "com.github.ignotus.kdots.IPlugin/1.0.1");
-#endif

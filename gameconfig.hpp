@@ -23,25 +23,26 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_GAMECONFIG_HPP
-#define KDOTS_GAMECONFIG_HPP
+#pragma once
 #include <QMetaType>
 #include "constants.hpp"
 #include "point.hpp"
 
 namespace KDots
 {
-  struct KDOTS_EXPORT GameConfig final
+  class KDOTS_EXPORT GameConfig final
   {
-    int m_width, m_height;
-    GameMode m_mode;
-    Owner m_firstOwner;
-    
+  public:
     GameConfig();
     
     bool isInititialized() const;
     
     static void registerMeta();
+    
+  public:
+    int m_width, m_height;
+    GameMode m_mode;
+    Owner m_firstOwner;
   };
 
 }
@@ -51,5 +52,3 @@ Q_DECLARE_METATYPE(KDots::GameConfig);
 QDataStream& operator<<(QDataStream& out, const KDots::GameConfig& obj);
 
 QDataStream& operator>>(QDataStream& in, KDots::GameConfig& obj);
-
-#endif

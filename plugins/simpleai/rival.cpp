@@ -46,7 +46,7 @@ namespace KDots
   {
     Rival::Rival(QObject *parent)
       : IRival(parent)
-      , m_table(NULL)
+      , m_board(NULL)
       , m_current(Owner::FIRST)
       , m_other(Owner::SECOND)
       , m_iterations(1)
@@ -57,10 +57,10 @@ namespace KDots
     
     bool Rival::isAllow() const
     {
-      if(!m_table)
+      if(!m_board)
         return false;
       
-      return m_table->stepQueue().getCurrentOwner() == m_table->stepQueue().firstOwner();
+      return m_board->stepQueue().getCurrentOwner() == m_board->stepQueue().firstOwner();
     }
     
     bool Rival::hasMask(const Graph& graph, const Point& point, const MapData& mask, const Owner current)
@@ -119,7 +119,7 @@ namespace KDots
     float Rival::calcPriority(const Point& point)
     {
       float priority = 2;
-      const Graph& graph = m_table->graph();
+      const Graph& graph = m_board->graph();
       
       if(m_iterations > 1 && hasCaptured(point, m_current))
         return 1.0;
@@ -162,27 +162,9 @@ namespace KDots
       return priority > 1.5 ? 0 : priority;
     }
   
-    namespace
-    {
-      bool isEmptyAround(const Graph& graph, const Point& point)
-      {
-        for(int i = 0; i < DIRECTION_COUNT; ++i)
-        {
-          const Point newPoint(point.m_x + GRAPH_DX[i], point.m_y + GRAPH_DY[i]);
-          if(!graph.isValid(newPoint))
-            continue;
-          
-          if(graph[newPoint].owner() != Owner::NONE)
-            return false;
-        }
-        
-        return true;
-      }
-    }
-    
     void Rival::calcRange(int& min_x, int& min_y, int& max_x, int& max_y)
     {
-      const Graph& graph = m_table->graph();
+      const Graph& graph = m_board->graph();
       for(int j = 0, max_j = graph.height(), max_i = graph.width(), i; j < max_j; ++j)
       {
         for(i = 0; i < max_i; ++i)
@@ -204,10 +186,27 @@ namespace KDots
       }
     }
     
+    void Rival::setDifficulty(const KgDifficultyLevel *level)
+    {
+      switch (level->standardLevel())
+      {
+      case KgDifficultyLevel::Easy:
+        m_iterations = 1;
+        break;
+      case KgDifficultyLevel::Medium:
+        m_iterations = 2;
+        break;
+      default:
+        m_iterations = 3;
+        break;
+      }
+    }
+
+    
     bool Rival::hasCaptured(const KDots::Point& point, KDots::Owner current) const
     {
-      const Graph& graph = m_table->graph();
-      auto steps = m_table->stepQueue();
+      const Graph& graph = m_board->graph();
+      auto steps = m_board->stepQueue();
       PolygonFinder findPolygon(graph, current);
 
       //O(n)
@@ -245,7 +244,7 @@ namespace KDots
       calcRange(min_x, min_y, max_x, max_y);
       const Point minPoint(min_x, min_y), maxPoint(max_x, max_y); 
       
-      const Graph& graph = m_table->graph();
+      const Graph& graph = m_board->graph();
       
       m_points.clear();
       
@@ -273,15 +272,15 @@ namespace KDots
       if(!m_points.empty())
       {
         std::srand(std::time(NULL));
-        m_table->pushPoint(m_points[std::rand() % m_points.size()]);
+        m_board->pushPoint(m_points[std::rand() % m_points.size()]);
       }
     }
     
-    void Rival::setBoardModel(std::shared_ptr<BoardModel>& table)
+    void Rival::setBoardModel(BoardModel *board)
     {
-      m_table = table;
+      m_board = board;
       
-      m_other = m_table->stepQueue().getCurrentOwner();
+      m_other = m_board->stepQueue().getCurrentOwner();
       m_current = StepQueue::other(m_other);
     }
   }

@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_PLUGINWIDGETDELEGATE_HPP
-#define KDOTS_PLUGINWIDGETDELEGATE_HPP
+#pragma once
 #include <QItemDelegate>
 
 class KIcon;
@@ -36,20 +35,15 @@ namespace KDots
   public:
     PluginWidgetDelegate(QObject *parent = 0);
     
-    QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
-    {
-      Q_UNUSED(index);
-      return QSize(option.rect.width(), 50);
-    }
+    QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const;
     
     void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem& option,
         const QModelIndex& index) const;
     
     void paint(QPainter *painter, const QStyleOptionViewItem& option,
         const QModelIndex& index) const;
+
   private:
     void drawIcon(QPainter *painter, const QStyleOptionViewItem& option, const KIcon& icon) const;
   };
 }
-
-#endif 

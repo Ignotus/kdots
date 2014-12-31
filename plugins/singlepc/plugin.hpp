@@ -74,9 +74,9 @@ namespace KDots
       {
       }
 
-      std::shared_ptr<IRival> createRival()
+      std::unique_ptr<IRival> createRival()
       {
-        return std::shared_ptr<IRival>(new Rival);
+        return std::unique_ptr<IRival>(new Rival);
       }
 
       QString name() const

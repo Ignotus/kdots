@@ -23,8 +23,7 @@
  *(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef KDOTS_BRUSHCOMBO_HPP
-#define KDOTS_BRUSHCOMBO_HPP
+#pragma once
 #include <KComboBox>
 #include "constants.hpp"
 
@@ -37,5 +36,3 @@ namespace KDots
     void paintEvent(QPaintEvent *e);
   };
 }
-
-#endif

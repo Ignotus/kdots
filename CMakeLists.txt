@@ -48,6 +48,7 @@ ENDIF(UNIX)
 
 SET(KDOTSLIB_SRCS
   point.cpp
+  graphpoint.cpp
   graph.cpp
   boardmodel.cpp
   stepqueue.cpp
@@ -67,6 +68,7 @@ SET(KDOTSLIB_HEADERS
   polygon.hpp
   polygonfinder.hpp
   gameconfig.hpp
+  iboardview.hpp
 )
 
 SET(SRCS
