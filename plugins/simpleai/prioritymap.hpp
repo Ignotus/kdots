@@ -24,11 +24,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#include <list>
-#include <vector>
-#include <KDebug>
+
 #include <constants.hpp>
 #include <point.hpp>
+
+#include <QVector>
+
+#include <boost/noncopyable.hpp>
 
 struct stat;
 namespace KDots
@@ -46,88 +48,42 @@ namespace KDots
       CU // Current
     };
     
-    typedef std::vector<MapElement> MapLine;
-    typedef std::vector<MapLine> MapType;
+    typedef QVector<MapElement> MapLine;
+    typedef QVector<MapLine> MapType;
     
-    struct MapData
+    class MapData
     {
+    public:
+      MapData();
+      MapData(const MapType& map, const Point& current, float priority);
+
+      QString toString() const;
+
+      bool operator==(const MapData& other) const;
+      bool operator!=(const MapData& other) const;
+
+    public:
       MapType m_map;
       Point m_current;
       float m_priority;
-
-      MapData()
-      {
-      }
-      
-      MapData(const MapType& map, const Point& current, float priority)
-        : m_map(map)
-        , m_current(current)
-        , m_priority(priority)
-      {
-      }
-      
-      QString toString() const
-      {
-        QString res;
-        for(std::size_t j = 0; j < m_map.size(); ++j)
-        {
-          res += "\n{ ";
-          for(std::size_t i = 0; i < m_map.front().size(); ++i)
-          {
-            switch(m_map[j][i])
-            {
-              case MapElement::EM: //Empty
-                res += "EM ";
-                break;
-              case MapElement::NM: // Does not matter
-                res += "NM ";
-                break;
-              case MapElement::FI: //First
-                res += "FI ";
-                break;
-              case MapElement::SE: //Second
-                res += "SE ";
-                break;
-              case MapElement::PF: // Possibly first
-                res += "PF ";
-                break;
-              case MapElement::PS: // Possibly second
-                res += "PS ";
-                break;
-              case MapElement::CU: // Current
-                res += "CU ";
-                break;
-              default:
-                kDebug() << "WTF?";
-            }
-          }
-          res += "}";
-          
-        }
-        
-        res += "\n";
-        
-        return res;
-      }
-      
-      bool operator==(const MapData& other) const;
-      bool operator!=(const MapData& other) const;
     };
     
-    class KDOTS_EXPORT PriorityMap
+    class PriorityMap : boost::noncopyable
     {
-      std::list<MapData> m_priorityMap;
-      
-      PriorityMap();
-      PriorityMap(const PriorityMap&);
-      PriorityMap& operator=(const PriorityMap&);
     public:
       static PriorityMap& instance();
-      
+
+      const QVector<MapData>& priorityMap();
+
+    private:
+      PriorityMap();
+
       static MapData inverse(const MapData& data);
       static MapData rotate(const MapData& data);
-      
-      const std::list<MapData>& priorityMap();
+      QVector<MapData> loadMap() const;
+
+    private:
+      QVector<MapData> m_priorityMap;
     };
   }
 }
