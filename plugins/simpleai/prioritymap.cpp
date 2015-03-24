@@ -71,7 +71,7 @@ namespace KDots
       for (const auto& row : m_map)
       {
         res += "\n{ ";
-        for(const auto& cell : row)
+        for (const auto& cell : row)
         {
           res += MAP_ELEMENT_TO_STR.left.at(cell) + " ";
         }
@@ -117,12 +117,12 @@ namespace KDots
       MapType& newMap = newData.m_map;
 
       newMap.resize(map.size());
-      
+
       for (const boost::tuple<const MapLine&, MapLine&>& tup : boost::combine(map, newMap))
       {
         MapLine& newLine = tup.get<1>();
         const MapLine& oldLine = tup.get<0>();
-        
+
         newLine.resize(oldLine.size());
         std::reverse_copy(oldLine.begin(), oldLine.end(), newLine.begin());
       }
