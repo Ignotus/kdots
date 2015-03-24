@@ -253,7 +253,7 @@ namespace KDots
     const float tableWidth = cellSize * m_width;
     const float tableHeight = cellSize * m_height;
 
-    QPixmap pixmap(QSize(tableWidth, tableHeight));
+    QPixmap pixmap(QSize(tableWidth + 1, tableHeight + 1));
     pixmap.fill(Qt::white);
 
     QPainter pixPainter(&pixmap);
