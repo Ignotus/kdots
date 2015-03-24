@@ -56,9 +56,6 @@ namespace KDots
   };
   
   const int DIRECTION_COUNT = 8;
-
-  const int GRAPH_DX[DIRECTION_COUNT] = {0, 1, 1, 1, 0, -1, -1, -1};
-  const int GRAPH_DY[DIRECTION_COUNT] = {1, 1, 0, -1, -1, -1, 0, 1};
   
   const QString PLUGIN_SUFFIX = "kdots_";
 }

@@ -117,3 +117,11 @@ namespace KDots
     return in;
   }
 }
+
+namespace std
+{
+  std::size_t hash<KDots::Point>::operator()(const KDots::Point& s) const
+  {
+    return std::hash<int>()(s.m_x) ^ (std::hash<int>()(s.m_y) << 1);
+  }
+}

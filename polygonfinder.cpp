@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011, 2012, 2014, 2015 Minh Ngo <minh@fedoraproject.org>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -31,20 +31,25 @@
 
 namespace KDots
 {
-  PolygonFinder::PolygonFinder(const Graph& graph, Owner owner)
+  PolygonFinder::PolygonFinder(const Graph& graph, Owner owner,
+                               const std::unordered_set<Point>& additionalPoints)
     : m_graph(graph)
     , m_current(owner)
     , m_stepMap(graph.width(), std::vector<bool>(graph.height(), false))
+    , m_additionalPoints(additionalPoints)
   {
   }
-  
+
   namespace
   {
+    bool areaComp(const PolyList::value_type& p1, const PolyList::value_type& p2)
+    {
+      return p1->area() < p2->area();
+    }
+
     int maxSize(const PolyList& polygonList)
     {
-      return (*std::max_element(polygonList.begin(), polygonList.end(), [](const PolyList::value_type& p1, const PolyList::value_type& p2) {
-        return p1->area() < p2->area();
-      }))->area();
+      return (*std::max_element(polygonList.begin(), polygonList.end(), areaComp))->area();
     }
   }
 
@@ -57,21 +62,36 @@ namespace KDots
       return m_polygons;
 
     const int max = maxSize(m_polygons);
-    m_polygons.erase(std::remove_if(m_polygons.begin(), m_polygons.end(),
-            [&max](const Polygon_ptr& ptr)
-            {
-              return ptr->area() < max;
-            }),
-        m_polygons.end());
-    
+
+    auto removePred = [&max](const Polygon_ptr& ptr) {
+      return ptr->area() < max;
+    };
+
+    m_polygons.erase(std::remove_if(m_polygons.begin(), m_polygons.end(), removePred),
+                     m_polygons.end());
+
     return m_polygons;
+  }
+
+  namespace
+  {
+    const Point GRAPH_OFFSET[DIRECTION_COUNT] = {
+      { 0,  1},
+      { 1,  1},
+      { 1,  0},
+      { 1, -1},
+      { 0, -1},
+      {-1, -1},
+      {-1,  0},
+      {-1,  1}
+    };
   }
 
   void PolygonFinder::findPolygons(const Point& point)
   {
     if (m_cache.size() > 3 && point == m_cache.front())
     {
-      m_polygons.push_back(Polygon_ptr(new Polygon(m_cache)));
+      m_polygons.push_back(std::make_shared<Polygon>(m_cache));
       return;
     }
 
@@ -82,17 +102,18 @@ namespace KDots
     m_stepMap[point.m_x][point.m_y] = true;
 
     for (int i = 0; i < DIRECTION_COUNT; ++i)
-    { 
-      const Point newPoint(point.m_x + GRAPH_DX[i], point.m_y + GRAPH_DY[i]);
-      
+    {
+      const Point newPoint(point + GRAPH_OFFSET[i]);
+
       if (!m_graph.isValid(newPoint))
         continue;
 
       const GraphPoint& graphPoint = m_graph[newPoint];
 
-      if (newPoint != m_first &&(graphPoint.isCaptured() || graphPoint.owner() != m_current))
+      if (!m_additionalPoints.count(newPoint) && newPoint != m_first
+          && (graphPoint.isCaptured() || graphPoint.owner() != m_current))
         continue;
-      
+
       findPolygons(newPoint);
     }
 

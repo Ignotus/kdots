@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011, 2012, 2014, 2015 Minh Ngo <minh@fedoraproject.org>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -26,6 +26,7 @@
 #pragma once
 #include <memory>
 #include <list>
+#include <unordered_set>
 #include "polygon.hpp"
 #include "constants.hpp"
 
@@ -36,18 +37,22 @@ namespace KDots
   class KDOTS_EXPORT PolygonFinder final
   {
   public:
-    PolygonFinder(const Graph& graph, Owner owner);
+    PolygonFinder(const Graph& graph, Owner owner,
+                  const std::unordered_set<Point>& additionalPoints = std::unordered_set<Point>());
+
     // O(n)
     const PolyList& operator()(const Point& point);
 
   private:
     void findPolygons(const Point& point);
-  
+
   private:
     const Graph& m_graph;
     Owner m_current;
-    std::vector<Point> m_cache;
     std::vector<std::vector<bool>> m_stepMap;
+    const std::unordered_set<Point> m_additionalPoints;
+
+    std::vector<Point> m_cache;
     PolyList m_polygons;
     Point m_first;
   };

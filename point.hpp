@@ -72,4 +72,14 @@ namespace KDots
   QDataStream& operator>>(QDataStream& in, Point& obj);
 }
 
+namespace std
+{
+  template<>
+  class hash<KDots::Point>
+  {
+  public:
+    std::size_t operator()(const KDots::Point& s) const;
+  };
+}
+
 Q_DECLARE_METATYPE(KDots::Point);
