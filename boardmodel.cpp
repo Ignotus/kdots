@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011, 2012, 2014, 2015 Minh Ngo <minh@fedoraproject.org>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -42,30 +42,30 @@ namespace KDots
     , m_config(config)
   {
   }
-  
+
   void BoardModel::setView(std::unique_ptr<IBoardView>&& view)
   {
     m_view = std::move(view);
     m_view->setModel(this);
-    
+
     connect(m_view.get(), SIGNAL(pointClicked(const Point&)), this, SLOT(addPoint(const Point&)));
   }
-  
+
   void BoardModel::setRival(std::unique_ptr<IRival>&& rival)
   {
     m_rival = std::move(rival);
-    
+
     connect(this, SIGNAL(pointAdded(const Point&)), m_rival.get(), SLOT(onPointAdded(const Point&)));
     connect(m_rival.get(), SIGNAL(needAddPoint(const Point&)), this, SLOT(addPoint(const Point&)));
-    
+
     m_rival->setBoardModel(this);
   }
-  
+
   const GameConfig& BoardModel::gameConfig() const
   {
     return m_config;
   }
-  
+
   void BoardModel::addPoint(const Point& point)
   {
     if (sender() == m_rival.get())
@@ -78,13 +78,13 @@ namespace KDots
       if (m_rival->owner() == m_steps->getCurrentOwner())
         return;
     }
-    
+
     Graph& graph = *m_graph;
     GraphPoint& currentPoint = graph[point];
 
     if (currentPoint.owner() != Owner::NONE || currentPoint.isCaptured())
       return;
-    
+
     const Owner current = m_steps->getCurrentOwner();
 
     currentPoint.setOwner(current);
@@ -104,16 +104,16 @@ namespace KDots
       emit pointAdded(point);
       return;
     }
-    
+
     const Owner otherOwner = StepQueue::other(current);
-    
+
     const auto& otherOwnerPoints = m_steps->getPoints(otherOwner);
     for (const Point& p : otherOwnerPoints)
     {
       GraphPoint& gpoint = graph[p];
       if (gpoint.isCaptured())
         continue;
-      
+
       for (const Polygon_ptr& polygon : polyList)
       {
         if (polygon->contains(p))
@@ -123,19 +123,19 @@ namespace KDots
             polygon->setFilled(true);
             m_steps->addCaptured();
           }
-            
+
           gpoint.capture();
           break;
         }
       }
     }
-    
+
     for (Graph::iterator itr = graph.begin(), itrEnd = graph.end();
         itr != itrEnd; ++itr)
     {
       if (itr->isCaptured() || itr->owner() != Owner::NONE)
         continue;
-      
+
       for (const Polygon_ptr& polygon : polyList)
       {
         const Point& newPoint = itr.point();
@@ -146,30 +146,30 @@ namespace KDots
           m_steps->addEmptyCaptured();
           break;
         }
-      }  
+      }
     }
-    
+
     drawPolygon(polyList);
-    
+
     continueStep();
     emitStatus();
     emit pointAdded(point);
   }
-  
+
   namespace
   {
     QString getResult(int firstPoints, int secondPoints)
     {
       if (firstPoints > secondPoints)
         return i18n("The first player win!");
-      
+
       if (firstPoints < secondPoints)
         return i18n("The second player win!");
-      
+
       return i18n("Dead heat!");
     }
   }
-  
+
   void BoardModel::continueStep()
   {
     const auto& allPoints = m_steps->getAllPoints();
@@ -177,11 +177,11 @@ namespace KDots
     {
       const int first = m_steps->getMarks(Owner::FIRST);
       const int second = m_steps->getMarks(Owner::SECOND);
-      
+
       const QString& message = getResult(first, second);
       KMessageBox::information(0, message, message);
     }
-    
+
     m_steps->nextStep();
   }
 
@@ -192,36 +192,36 @@ namespace KDots
     m_graph.reset(new Graph(m_config.m_width, m_config.m_height));
     m_polygons.clear();
     auto points(m_steps->getAllPoints());
-    
+
     if (!points.empty())
       points.pop_back();
     m_steps->clear();
 
     for (const Point& point : points)
       addPoint(point);
-    
+
     emit freezeView(false);
   }
-  
+
   void BoardModel::emitStatus()
   {
     const QString& firstMark = QString::number(m_steps->getMarks(Owner::FIRST));
     const QString& secondMark = QString::number(m_steps->getMarks(Owner::SECOND));
     emit statusUpdated(QString("First:\t%1\tSecond:\t%2").arg(firstMark, secondMark));
   }
-  
+
   void BoardModel::drawPolygon(PolyList polygons)
   {
     for (Polygon_ptr& polygon : polygons)
     {
       if (!polygon->isFilled())
         continue;
-      
+
       polygon->setOwner(m_steps->getCurrentOwner());
       m_polygons.push_back(polygon);
-      
+
       Point prevPoint = polygon->points().back();
-      
+
       for (const Point& currPoint : polygon->points())
       {
         m_graph->addEdge(prevPoint, currPoint);

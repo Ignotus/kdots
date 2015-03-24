@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011, 2012, 2014, 2015 Minh Ngo <minh@fedoraproject.org>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -26,6 +26,8 @@
 #pragma once
 #include <interface/irival.hpp>
 
+#include <QRect>
+
 namespace KDots
 {
   class Point;
@@ -37,23 +39,26 @@ namespace KDots
       Q_INTERFACES(KDots::IRival)
     public:
       Rival(QObject *parent = 0);
-      
+
       Owner owner() const;
-      
+
       void setBoardModel(BoardModel *board);
-      
+
     public slots:
       void onPointAdded(const Point& point);
       void onDifficultyChanged(const KgDifficultyLevel *level);
-      
+
     private:
-      void addPoint();
+      void addPoint(bool random = false);
+      bool addRandomPoint();
+      
+      QRect boundingBox() const;
       
     signals:
       void needCreateBoard(const GameConfig& config);
       void needDestroy();
       void needAddPoint(const Point&);
-    
+
     private:
       BoardModel *m_board;
       Owner m_human, m_ai;
