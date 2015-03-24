@@ -24,33 +24,21 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#include <memory>
-#include <QLabel>
-#include <point.hpp>
 #include <interface/irival.hpp>
 
 namespace KDots
 {
-  class Graph;
+  class Point;
   namespace simpleai
   {
-    struct MapData;
-    
     class Rival : public KDots::IRival
     {
       Q_OBJECT
       Q_INTERFACES(KDots::IRival)
-      
-      BoardModel *m_board;
-      Owner m_current, m_other;
-      int m_iterations;
-      std::vector<Point> m_points;
     public:
       Rival(QObject *parent = 0);
       
       Owner owner() const;
-      
-      static bool hasMask(const Graph& graph, const Point& point, const MapData& mask, const Owner current);
       
       void setBoardModel(BoardModel *board);
       
@@ -59,14 +47,17 @@ namespace KDots
       void onDifficultyChanged(const KgDifficultyLevel *level);
       
     private:
-      float calcPriority(const Point& point);
-      void calcRange(int& min_x, int& min_y, int& max_x, int& max_y);
-      bool hasCaptured(const Point& point, Owner current) const;
+      void addPoint();
       
     signals:
       void needCreateBoard(const GameConfig& config);
       void needDestroy();
       void needAddPoint(const Point&);
+    
+    private:
+      BoardModel *m_board;
+      Owner m_human, m_ai;
+      int m_depth;
     };
   }
 }
