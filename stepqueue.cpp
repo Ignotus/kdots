@@ -81,8 +81,7 @@ namespace KDots
     ++m_emptyCaptured;
   }
   
-  // TODO: Rename
-  std::size_t StepQueue::emtyCapturedCount() const
+  std::size_t StepQueue::emptyCapturedCount() const
   {
     return m_emptyCaptured;
   }

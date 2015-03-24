@@ -173,7 +173,7 @@ namespace KDots
   void BoardModel::continueStep()
   {
     const auto& allPoints = m_steps->getAllPoints();
-    if (allPoints.size() + m_steps->emtyCapturedCount() == m_graph->width() * m_graph->height())
+    if (allPoints.size() + m_steps->emptyCapturedCount() == m_graph->width() * m_graph->height())
     {
       const int first = m_steps->getMarks(Owner::FIRST);
       const int second = m_steps->getMarks(Owner::SECOND);

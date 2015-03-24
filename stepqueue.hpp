@@ -45,7 +45,7 @@ namespace KDots
     void addCaptured();
     void addEmptyCaptured();
     
-    std::size_t emtyCapturedCount() const;
+    std::size_t emptyCapturedCount() const;
 
     Owner getCurrentOwner() const;
     std::size_t getMarks(Owner owner) const;
