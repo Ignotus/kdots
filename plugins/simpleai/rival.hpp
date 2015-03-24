@@ -51,9 +51,12 @@ namespace KDots
     private:
       void addPoint(bool random = false);
       bool addRandomPoint();
+
+      QRect getBoundingBox() const;
       
-      QRect boundingBox() const;
-      
+      typedef std::vector<float> VectorF;
+      std::vector<VectorF> getImportanceMatrix(const QRect& bb) const;
+
     signals:
       void needCreateBoard(const GameConfig& config);
       void needDestroy();

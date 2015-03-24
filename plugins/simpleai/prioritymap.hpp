@@ -59,9 +59,6 @@ namespace KDots
 
       QString toString() const;
 
-      bool operator==(const MapData& other) const;
-      bool operator!=(const MapData& other) const;
-
     public:
       MapType m_map;
       Point m_current;
@@ -80,6 +77,7 @@ namespace KDots
 
       static MapData inverse(const MapData& data);
       static MapData rotate(const MapData& data);
+      static MapData opposite(const MapData& data);
       QVector<MapData> loadMap() const;
 
     private:

@@ -75,30 +75,110 @@ namespace KDots
 
       addPoint();
     }
-    
+
     bool Rival::addRandomPoint()
     {
       const Graph& graph = m_board->graph();
-      const std::size_t x = rand() % graph.width();
-      const std::size_t y = rand() % graph.height();
-      if (graph[x][y].owner() == Owner::NONE)
+      const Point newPoint(rand() % graph.width(), rand() % graph.height());
+      if (graph[newPoint].owner() == Owner::NONE)
       {
-        emit needAddPoint({x, y});
+        emit needAddPoint(newPoint);
         return true;
       }
-      
+
       return false;
     }
     
-    QRect Rival::boundingBox() const
+    std::vector<Rival::VectorF> Rival::getImportanceMatrix(const QRect& bb) const
+    { 
+      const Graph& graph = m_board->graph();
+      
+      auto match = [&](const Point& current, const MapData& data) -> bool {
+        auto checkPoint = [&](const Point& offset, MapElement value) -> bool {
+          const Point newPoint(current + offset);
+          
+          if (!graph.isValid(newPoint))
+            return false;
+          
+          const GraphPoint& graphPoint = graph[newPoint];
+          switch (value)
+          {
+          case MapElement::EM:
+            return graphPoint.owner() == Owner::NONE;
+          case MapElement::FI:
+            return graphPoint.owner() == Owner::FIRST;
+          case MapElement::PF:
+            return graphPoint.owner() & (Owner::NONE | Owner::FIRST);
+          case MapElement::PS:
+            return graphPoint.owner() & (Owner::NONE | Owner::SECOND);
+          case MapElement::SE:
+            return graphPoint.owner() == Owner::SECOND;
+          default:
+            return true;
+          }
+        };
+        
+        const Point& currentMarker = data.m_current;
+        for (int row = 0; row < data.m_map.size(); ++row)
+        {
+          const MapLine& line = data.m_map[row];
+          for (int column = 0; column < line.size(); ++column)
+          {
+            if (!checkPoint({column - currentMarker.m_x, row - currentMarker.m_y}, line[column]))
+              return false;
+          }
+        }
+        return true;
+      };
+      
+      auto cellPriority = [&](const Point& current) -> float {
+        float maxPriority = -std::numeric_limits<float>::infinity();
+        
+        for (const MapData& data : PriorityMap::instance().priorityMap())
+        {
+          if (match(current, data))
+              maxPriority = std::max(maxPriority, data.m_priority);
+        }
+        
+        if (maxPriority == -std::numeric_limits<float>::infinity())
+          maxPriority = 0;
+        
+        return maxPriority;
+      };
+     
+      kDebug() << "BB size:" << bb.width() << bb.height();
+      std::vector<VectorF> importanceMatrix(bb.width(), VectorF(bb.height()));
+      
+      const QPoint& offsetPoint = bb.topLeft();
+      kDebug() << "Offset:" << offsetPoint;
+      for (int x = 0; x < bb.width(); ++x)
+      {
+        for (int y = 0; y < bb.height(); ++y)
+        {
+          if (graph[x + offsetPoint.x()][y + offsetPoint.y()].owner() != Owner::NONE)
+            importanceMatrix[x][y] = -std::numeric_limits<float>::infinity();
+          else
+          {
+            importanceMatrix[x][y] = cellPriority({offsetPoint.x() + x, offsetPoint.y() + y});
+            kDebug() << "(" << (offsetPoint.x() + x)
+                     << "," << (offsetPoint.y() + y)
+                     << ")" << importanceMatrix[x][y];
+          }
+        }
+      }
+      
+      return importanceMatrix;
+    }
+
+    QRect Rival::getBoundingBox() const
     {
       const Graph& graph = m_board->graph();
       std::size_t min_x = graph.width() - 1;
       std::size_t max_x = 0;
-      
+
       std::size_t min_y = graph.height() - 1;
       std::size_t max_y = 0;
-      
+
       for (std::size_t x = 0; x < graph.width(); ++x)
       {
         for (std::size_t y = 0; y < graph.height(); ++y)
@@ -106,27 +186,27 @@ namespace KDots
           const GraphPoint& p = graph[x][y];
           if (p.owner() == Owner::NONE)
             continue;
-          
+
           min_x = std::min(min_x, x);
           max_x = std::max(max_x, x);
           min_y = std::min(min_y, y);
           max_y = std::max(max_y, y);
         }
       }
-      
-      if (min_x != 0)
+
+      if (min_x > 0)
         --min_x;
-      
-      if (max_x != graph.width() - 1)
+
+      if (max_x < graph.width() - 1)
         ++max_x;
       
-      if (max_y != graph.height() - 1)
+      if (min_y > 0)
+        --min_y;
+
+      if (max_y < graph.height() - 1)
         ++max_y;
       
-      if (min_y != 0)
-        --min_y;
-      
-      return QRect({min_x, max_y}, {max_x, min_y});
+      return QRect(QPoint(min_x, min_y), QPoint(max_x, max_y));
     }
 
     void Rival::addPoint(bool random)
@@ -136,9 +216,12 @@ namespace KDots
         while (!addRandomPoint());
         return;
       }
+
+      const QRect bbox(getBoundingBox());
       
-      const Graph& graph = m_board->graph();
-      const QRect bbox(boundingBox());
+      const auto importanceMatrix(getImportanceMatrix(bbox));
+      
+      while(!addRandomPoint());
     }
 
     void Rival::setBoardModel(BoardModel *board)

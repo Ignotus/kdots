@@ -48,11 +48,11 @@ namespace KDots
     DEFAULT_MODE
   };
 
-  enum class Owner
+  enum Owner
   {
-    NONE,
-    FIRST,
-    SECOND
+    NONE = 1,
+    FIRST = 2,
+    SECOND = 4
   };
   
   const int DIRECTION_COUNT = 8;

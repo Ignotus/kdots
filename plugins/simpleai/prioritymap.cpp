@@ -29,8 +29,6 @@
 #include <boost/bimap.hpp>
 #include <boost/range/combine.hpp>
 
-#include <KDebug>
-
 #include <QFile>
 #include <QTextStream>
 #include <QStringList>
@@ -78,36 +76,43 @@ namespace KDots
         res += "}";
       }
 
-      res += "\n";
+      res += "\n" + QString::number(m_current.m_x) + " " + QString::number(m_current.m_y) + "\n";
 
       return res;
     }
-
-    bool MapData::operator==(const MapData& other) const
+    
+    const std::map<MapElement, MapElement> OPPOSITE_ELEMENT = {
+        {MapElement::CU, MapElement::CU},
+        {MapElement::EM, MapElement::EM},
+        {MapElement::FI, MapElement::SE},
+        {MapElement::SE, MapElement::FI},
+        {MapElement::PF, MapElement::PS},
+        {MapElement::PS, MapElement::PF},
+        {MapElement::NM, MapElement::NM}
+      };
+    
+    MapData PriorityMap::opposite(const MapData& data)
     {
-      if (m_current != other.m_current)
-        return false;
+      const MapType& map = data.m_map;
+      MapData newData;
+      MapType& newMap = newData.m_map;
 
-      if (m_priority != other.m_priority)
-        return false;
-
-      if (other.m_map.size() != m_map.size() || !other.m_map.size() || !m_map.size())
-        return false;
-
-      for (MapType::const_iterator other_itr = other.m_map.begin(),
-           itr = m_map.begin(), other_e = other.m_map.end();
-           other_itr != other_e ; ++other_itr, ++itr)
+      newMap.resize(map.size());
+      
+      for (const boost::tuple<const MapLine&, MapLine&>& tup : boost::combine(map, newMap))
       {
-        if (!std::equal(other_itr->begin(), other_itr->end(), itr->begin()))
-          return false;
+        const MapLine& oldLine = tup.get<0>();
+        MapLine& newLine = tup.get<1>();
+        newLine.resize(oldLine.size());
+
+        for (const boost::tuple<const MapElement&, MapElement&>& cell : boost::combine(oldLine, newLine))
+          cell.get<1>() = OPPOSITE_ELEMENT.at(cell.get<0>());
       }
+      
+      newData.m_priority = data.m_priority;
+      newData.m_current =  data.m_current;
 
-      return true;
-    }
-
-    bool MapData::operator!=(const MapData& other) const
-    {
-      return !(other == *this);
+      return newData;
     }
 
     MapData PriorityMap::inverse(const MapData& data)
@@ -211,23 +216,31 @@ namespace KDots
         priorityMap.push_back(MapData(std::move(map), current, priority));
       }
 
-      priorityMap.reserve(priorityMap.size() * 4);
+      priorityMap.reserve(priorityMap.size() * 16);
       for (int i = 0, max = priorityMap.size(); i < max; ++i)
       {
         const MapData& data = priorityMap[i];
+        
+        priorityMap.push_back(opposite(data));
+        
         const MapData& invertedData = inverse(data);
         priorityMap.push_back(invertedData);
+        priorityMap.push_back(opposite(invertedData));
 
         MapData newData = data;
         for (int j = 0; j < 3; ++j)
         {
           newData = rotate(newData);
+          
           priorityMap.push_back(newData);
+          
+          priorityMap.push_back(opposite(newData));
           const MapData& invertedMap = inverse(newData);
           priorityMap.push_back(invertedMap);
+          priorityMap.push_back(opposite(invertedMap));
         }
       }
-
+      
       return priorityMap;
     }
   }
