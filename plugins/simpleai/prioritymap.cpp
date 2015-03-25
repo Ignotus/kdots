@@ -37,19 +37,22 @@ namespace KDots
 {
   namespace simpleai
   {
-    typedef boost::bimap<MapElement, QString> MapElementToStrType;
-    const std::vector<MapElementToStrType::value_type> MAP_ELEMENT_TO_STR_VALUES = {
-      {MapElement::EM, "EM"},
-      {MapElement::NM, "NM"},
-      {MapElement::FI, "FI"},
-      {MapElement::SE, "SE"},
-      {MapElement::PF, "PF"},
-      {MapElement::PS, "PS"},
-      {MapElement::CU, "CU"}
-    };
+    namespace
+    {
+      typedef boost::bimap<MapElement, QString> MapElementToStrType;
+      const std::vector<MapElementToStrType::value_type> MAP_ELEMENT_TO_STR_VALUES = {
+        {MapElement::EM, "EM"},
+        {MapElement::NM, "NM"},
+        {MapElement::FI, "FI"},
+        {MapElement::SE, "SE"},
+        {MapElement::PF, "PF"},
+        {MapElement::PS, "PS"},
+        {MapElement::CU, "CU"}
+      };
 
-    const MapElementToStrType MAP_ELEMENT_TO_STR(MAP_ELEMENT_TO_STR_VALUES.begin(),
-                                                 MAP_ELEMENT_TO_STR_VALUES.end());
+      const MapElementToStrType MAP_ELEMENT_TO_STR(MAP_ELEMENT_TO_STR_VALUES.begin(),
+                                                  MAP_ELEMENT_TO_STR_VALUES.end());
+    }
 
     MapData::MapData()
     {
@@ -81,7 +84,9 @@ namespace KDots
       return res;
     }
     
-    const std::map<MapElement, MapElement> OPPOSITE_ELEMENT = {
+    namespace
+    {
+      const std::map<MapElement, MapElement> OPPOSITE_ELEMENT = {
         {MapElement::CU, MapElement::CU},
         {MapElement::EM, MapElement::EM},
         {MapElement::FI, MapElement::SE},
@@ -90,6 +95,7 @@ namespace KDots
         {MapElement::PS, MapElement::PF},
         {MapElement::NM, MapElement::NM}
       };
+    }
     
     MapData PriorityMap::opposite(const MapData& data)
     {

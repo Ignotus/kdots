@@ -26,6 +26,9 @@
 #pragma once
 #include <interface/irival.hpp>
 
+#include <polygon.hpp>
+
+#include <unordered_set>
 #include <QRect>
 
 namespace KDots
@@ -33,6 +36,7 @@ namespace KDots
   class Point;
   namespace simpleai
   {
+    class NodeInfo;
     class Rival : public KDots::IRival
     {
       Q_OBJECT
@@ -52,10 +56,29 @@ namespace KDots
       void addPoint(bool random = false);
       bool addRandomPoint();
 
+      // Complexity O(n)
       QRect getBoundingBox() const;
-      
+
       typedef std::vector<float> VectorF;
+      typedef std::vector<bool> VectorB;
+      // Complexity O(n)
       std::vector<VectorF> getImportanceMatrix(const QRect& bb) const;
+
+      void buildAllowedPointsMap(const QRect& bbox,
+                                 const std::unordered_set<Point>& previousPoints,
+                                 std::vector<VectorB>& allowedPoints) const;
+
+      // Complexity O(n)
+      void findCapturedPoints(const QRect& bbox,
+                              const std::vector<VectorB>& allowerdPoints,
+                              const PolyList& polygons,
+                              std::unordered_set<Point>& capturedPoints) const;
+
+      // Complexity O(1)
+      void findPreviousPoints(const std::vector<NodeInfo>& decisionTree,
+                              int lastPointID,
+                              std::unordered_set<Point>& previousPoints,
+                              std::unordered_set<Point>& capturedPoints) const;
 
     signals:
       void needCreateBoard(const GameConfig& config);
@@ -66,6 +89,8 @@ namespace KDots
       BoardModel *m_board;
       Owner m_human, m_ai;
       int m_depth;
+      float m_k1;
+      float m_k2;
     };
   }
 }

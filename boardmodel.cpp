@@ -180,6 +180,7 @@ namespace KDots
 
       const QString& message = getResult(first, second);
       KMessageBox::information(0, message, message);
+      return;
     }
 
     m_steps->nextStep();
