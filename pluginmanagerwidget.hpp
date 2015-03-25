@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011, 2012, 2014, 2015 Minh Ngo <minh@fedoraproject.org>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -41,12 +41,12 @@ namespace KDots
     Q_OBJECT
   public:
     PluginManagerWidget(QWidget *parent = 0);
-    
+
     QString pluginName() const;
-    
+
   private slots:
     void onIndexChanged(const QModelIndex& current);
-  
+
   private:
     Ui::PluginManagerWidget *m_ui;
   };

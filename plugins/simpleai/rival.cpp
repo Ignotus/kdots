@@ -42,11 +42,14 @@ namespace KDots
 {
   namespace simpleai
   {
-    const std::map<KgDifficultyLevel::StandardLevel, int> DIFFICULTY_TO_DEPTH = {
-      {KgDifficultyLevel::Easy, 1},
-      {KgDifficultyLevel::Medium, 2},
-      {KgDifficultyLevel::Hard, 3}
-    };
+    namespace
+    {
+      const std::map<KgDifficultyLevel::StandardLevel, int> DIFFICULTY_TO_DEPTH = {
+        {KgDifficultyLevel::Easy, 2},
+        {KgDifficultyLevel::Medium, 4},
+        {KgDifficultyLevel::Hard, 6}
+      };
+    }
 
     Rival::Rival(QObject *parent)
       : IRival(parent)
@@ -58,7 +61,7 @@ namespace KDots
       , m_k2(1)
     {
       PriorityMap::instance();
-      Kg::difficulty()->setEditable(false);
+      Kg::difficulty()->setEditable(true);
     }
 
     Owner Rival::owner() const
@@ -68,7 +71,7 @@ namespace KDots
 
     void Rival::onDifficultyChanged(const KgDifficultyLevel *level)
     {
-      m_depth = DIFFICULTY_TO_DEPTH.at(level->standardLevel()) * 2;
+      m_depth = DIFFICULTY_TO_DEPTH.at(level->standardLevel());
     }
 
     void Rival::onPointAdded(const Point& point)
@@ -241,16 +244,19 @@ namespace KDots
       }
     }
 
-    struct NodeInfo
+    namespace
     {
-      int m_parent; // Index from the vector
-      int m_layer;
-      int m_bestChildGrade;
-      int m_capturedPointsCount;
+      struct NodeInfo
+      {
+        int m_parent; // Index from the vector
+        int m_layer;
+        int m_bestChildGrade;
+        int m_capturedPointsCount;
 
-      Point m_point;
-      std::unordered_set<Point> m_capturedPoints;
-    };
+        Point m_point;
+        std::unordered_set<Point> m_capturedPoints;
+      };
+    }
 
     void Rival::findPreviousPoints(const std::vector<NodeInfo>& decisionTree,
                                    int lastPointID,
