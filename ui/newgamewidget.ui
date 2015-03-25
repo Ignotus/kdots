@@ -175,6 +175,12 @@
    <header>kcombobox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>HeightSpinBox</tabstop>
+  <tabstop>WidthSpinBox</tabstop>
+  <tabstop>GameMode</tabstop>
+  <tabstop>FirstMoving</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

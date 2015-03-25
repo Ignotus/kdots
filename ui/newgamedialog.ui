@@ -65,6 +65,11 @@
    <header>kpushbutton.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>CancelButton</tabstop>
+  <tabstop>NextButton</tabstop>
+  <tabstop>OKButton</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

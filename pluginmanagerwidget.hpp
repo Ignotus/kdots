@@ -46,7 +46,7 @@ namespace KDots
     
   private slots:
     void onIndexChanged(const QModelIndex& current);
-    
+  
   private:
     Ui::PluginManagerWidget *m_ui;
   };
