@@ -56,7 +56,7 @@ namespace KDots
       , m_board(nullptr)
       , m_human(Owner::FIRST)
       , m_ai(Owner::SECOND)
-      , m_depth(6)
+      , m_depth(DIFFICULTY_TO_DEPTH.at(KgDifficultyLevel::Medium))
       , m_k1(1)
       , m_k2(1)
     {
@@ -244,19 +244,16 @@ namespace KDots
       }
     }
 
-    namespace
+    struct NodeInfo
     {
-      struct NodeInfo
-      {
-        int m_parent; // Index from the vector
-        int m_layer;
-        int m_bestChildGrade;
-        int m_capturedPointsCount;
+      int m_parent; // Index from the vector
+      int m_layer;
+      int m_bestChildGrade;
+      int m_capturedPointsCount;
 
-        Point m_point;
-        std::unordered_set<Point> m_capturedPoints;
-      };
-    }
+      Point m_point;
+      std::unordered_set<Point> m_capturedPoints;
+    };
 
     void Rival::findPreviousPoints(const std::vector<NodeInfo>& decisionTree,
                                    int lastPointID,
