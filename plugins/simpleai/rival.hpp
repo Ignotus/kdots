@@ -28,7 +28,6 @@
 
 #include <polygon.hpp>
 
-#include <unordered_set>
 #include <QRect>
 
 namespace KDots
@@ -60,25 +59,8 @@ namespace KDots
       QRect getBoundingBox() const;
 
       typedef std::vector<float> VectorF;
-      typedef std::vector<bool> VectorB;
       // Complexity O(n)
       std::vector<VectorF> getImportanceMatrix(const QRect& bb) const;
-
-      void buildAllowedPointsMap(const QRect& bbox,
-                                 const std::unordered_set<Point>& previousPoints,
-                                 std::vector<VectorB>& allowedPoints) const;
-
-      // Complexity O(n)
-      void findCapturedPoints(const QRect& bbox,
-                              const std::vector<VectorB>& allowerdPoints,
-                              const PolyList& polygons,
-                              std::unordered_set<Point>& capturedPoints) const;
-
-      // Complexity O(1)
-      void findPreviousPoints(const std::vector<NodeInfo>& decisionTree,
-                              int lastPointID,
-                              std::unordered_set<Point>& previousPoints,
-                              std::unordered_set<Point>& capturedPoints) const;
 
     signals:
       void needCreateBoard(const GameConfig& config);

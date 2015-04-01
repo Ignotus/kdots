@@ -24,36 +24,68 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#include <memory>
-#include <list>
-#include <unordered_set>
-#include "polygon.hpp"
-#include "constants.hpp"
+#include <point.hpp>
+#include <polygon.hpp>
+#include <constants.hpp>
+
+class QRect;
 
 namespace KDots
 {
-  struct Graph;
-  class KDOTS_EXPORT PolygonFinder final
+class Graph;
+namespace simpleai
+{
+  struct NodeInfo
+  {
+    NodeInfo();
+    
+    int m_parent; // Index from the vector
+    int m_layer;
+    int m_bestChildGrade;
+    int m_capturedPointsCount;
+
+    Point m_point;
+  };
+  
+  struct TPreviousPoints
+  {
+    std::vector<Point> m_ai;
+    std::vector<Point> m_human;
+  };
+  
+  typedef std::vector<float> VectorF;
+  
+  class DecisionTree
   {
   public:
-    PolygonFinder(const Graph& graph, Owner owner,
-                  const std::vector<Point>& additionalPoints = {});
-
-    // O(n)
-    const PolyList& operator()(const Point& point);
-
+    DecisionTree(const Graph& graph, const QRect& bbox,
+                 int numPointsOnBoard, int depth, Owner ai);
+    
+    void calculateDecisions(std::vector<Point>& points, VectorF& grades);
+  
   private:
-    void findPolygons(const Point& point);
-    bool isAdditionalPoint(const Point& point) const;
-
+    void findPreviousPoints(int lastPointID,
+                            TPreviousPoints& previousPoints) const;
+    
+    int findCapturedPoints(const TPreviousPoints& previousPoints,
+                           Owner current,
+                           const PolyList& polygons) const;
+    
+    typedef std::vector<bool> VectorB;
+    // Returns allowed points to place (not to capture)
+    void buildAllowedPointsMap(const TPreviousPoints& previousPoints,
+                               std::vector<VectorB>& allowedPoints) const;
+    
   private:
     const Graph& m_graph;
-    Owner m_current;
-    std::vector<std::vector<bool>> m_stepMap;
-    const std::vector<Point>& m_additionalPoints;
-
-    std::vector<Point> m_cache;
-    PolyList m_polygons;
-    Point m_first;
+    const QRect& m_bbox;
+    const int m_numPointsOnBoard;
+    const int m_maxNumPoints;
+    const int m_depth;
+    Owner m_ai;
+    
+    std::vector<NodeInfo> m_nodes;
+    std::vector<int> m_leafs;
   };
+}
 }

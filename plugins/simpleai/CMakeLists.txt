@@ -18,12 +18,14 @@ SET(SIMPLEAI_HEADERS
   prioritymap.hpp
   rival.hpp
   plugin.hpp
+  decisiontree.hpp
 )
 
 SET(SIMPLEAI_SRCS
   prioritymap.cpp
   rival.cpp
   plugin.cpp
+  decisiontree.cpp
 )
 
 kde4_add_plugin(kdots_simpleai SHARED

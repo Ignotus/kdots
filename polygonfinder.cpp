@@ -32,7 +32,7 @@
 namespace KDots
 {
   PolygonFinder::PolygonFinder(const Graph& graph, Owner owner,
-                               const std::unordered_set<Point>& additionalPoints)
+                               const std::vector<Point>& additionalPoints)
     : m_graph(graph)
     , m_current(owner)
     , m_stepMap(graph.width(), std::vector<bool>(graph.height(), false))
@@ -72,6 +72,15 @@ namespace KDots
 
     return m_polygons;
   }
+  
+  bool PolygonFinder::isAdditionalPoint(const Point& point) const
+  {
+    for (const Point& pi : m_additionalPoints)
+      if (pi == point)
+        return true;
+    
+    return false;
+  }
 
   namespace
   {
@@ -110,7 +119,7 @@ namespace KDots
 
       const GraphPoint& graphPoint = m_graph[newPoint];
 
-      if (!m_additionalPoints.count(newPoint) && newPoint != m_first
+      if (!isAdditionalPoint(newPoint) && newPoint != m_first
           && (graphPoint.isCaptured() || graphPoint.owner() != m_current))
         continue;
 
