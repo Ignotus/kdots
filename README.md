@@ -5,17 +5,22 @@ KDots
 
 About
 =====
-KDots is the simple implementation of the game of dots written with Qt Toolkit.
+KDots is a simple implementation of the game of dots written with Qt Toolkit
+and KDELibs.
 
-The purpose of Dots game is to catch your opponent's dots by placing your dots
-on the game board where the lines cross.
+The purpose of the Dots game is to catch your opponent's dots by placing your
+dots on the game board where the lines cross.
+
+Game mode can be extended via plugins. Currently, 3 plugins are available for
+supporting AI, online and offline games between two players.
 
 License
 =======
-Look the [COPYING](https://github.com/Ignotus/kdots/blob/master/COPYING) file for more information.
+All source code is under the BSD license. Look the [COPYING](https://github.com/Ignotus/kdots/blob/master/COPYING)
+file for more information.
 
-Dependencies for building
-=========================
+Dependencies
+============
 * Qt5::Core, Qt5::Widgets, Qt5::Network
 * cmake 2.8.12 or later
 * extra-cmake-modules
@@ -28,7 +33,6 @@ Building
 ========
 To build current version of source code, execute following commands:
 
-    $ cd kdots
     $ mkdir build && cd build
     $ cmake ../ -DCMAKE_INSTALL_PREFIX=/usr
     $ make
@@ -36,14 +40,6 @@ To build current version of source code, execute following commands:
 Installing
 ==========
     # make install
-
-Uninstalling
-============
-    # make uninstall
-
-Contributing
-============
-You are welcome! ;)
 
 Other
 =====
