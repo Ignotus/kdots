@@ -280,5 +280,3 @@ namespace KDots
     painter.drawPixmap(dx, dy, pixmap);
   }
 }
-
-#include "boardview.moc"

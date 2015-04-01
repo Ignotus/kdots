@@ -109,7 +109,7 @@ namespace KDots
   Owner StepQueue::other(Owner player)
   {
     if (player == Owner::NONE)
-      kWarning() << "player == NONE";
+      qWarning() << "player == NONE";
     return player == Owner::FIRST ? Owner::SECOND : Owner::FIRST;
   }
 

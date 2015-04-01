@@ -28,7 +28,7 @@
 
 namespace KDots
 {
-  struct GameConfig;
+  class GameConfig;
   class IConfigurationWidget : public QWidget
   {
   public:

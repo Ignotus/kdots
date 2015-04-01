@@ -21,7 +21,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="4" column="3">
-       <widget class="KComboBox" name="GameMode">
+       <widget class="QComboBox" name="GameMode">
         <property name="autoCompletion">
          <bool>false</bool>
         </property>
@@ -117,7 +117,7 @@
        </widget>
       </item>
       <item row="5" column="3">
-       <widget class="KComboBox" name="FirstMoving">
+       <widget class="QComboBox" name="FirstMoving">
         <item>
          <property name="text">
           <string>First Player</string>
@@ -168,13 +168,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>KComboBox</class>
-   <extends>QComboBox</extends>
-   <header>kcombobox.h</header>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>HeightSpinBox</tabstop>
   <tabstop>WidthSpinBox</tabstop>

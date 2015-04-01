@@ -25,6 +25,8 @@
  */
 #include "gameconfig.hpp"
 
+#include <QDataStream>
+
 QDataStream& operator<<(QDataStream& out, const KDots::GameConfig& obj)
 {
   out << (quint32) obj.m_firstOwner << (quint32) obj.m_height << (quint32) obj.m_width << (quint32) obj.m_mode;

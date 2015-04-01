@@ -12,7 +12,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="1" column="1">
-    <widget class="KTextEdit" name="Description">
+    <widget class="QTextEdit" name="Description">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -39,13 +39,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>KTextEdit</class>
-   <extends>QTextEdit</extends>
-   <header>ktextedit.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

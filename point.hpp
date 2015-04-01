@@ -75,9 +75,8 @@ namespace KDots
 namespace std
 {
   template<>
-  class hash<KDots::Point>
+  struct hash<KDots::Point>
   {
-  public:
     std::size_t operator()(const KDots::Point& s) const;
   };
 }

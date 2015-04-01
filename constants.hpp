@@ -25,7 +25,10 @@
  */
 #pragma once
 #include <QString>
-#include <kdemacros.h>
+
+#define KDE_EXPORT __attribute__ ((visibility("default")))
+#define KDE_IMPORT __attribute__ ((visibility("default")))
+
 #ifndef KDOTS_EXPORT
 # if defined(MAKE_KDOTS_LIB)
    // We are building this library
@@ -57,5 +60,5 @@ namespace KDots
   
   const int DIRECTION_COUNT = 8;
   
-  const QString PLUGIN_SUFFIX = "kdots_";
+  const QString PLUGIN_SUFFIX = QLatin1String("kdots_");
 }

@@ -84,5 +84,3 @@ namespace KDots
 
   }
 }
-
-#include "configurationwidget.moc"

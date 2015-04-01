@@ -16,7 +16,7 @@ INCLUDE_DIRECTORIES(
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexceptions")
 
-KDE4_ADD_EXECUTABLE(RulesViewer
+ADD_EXECUTABLE(RulesViewer
   main.cpp
   RulesModel.cpp
   RulesModel.hpp

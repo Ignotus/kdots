@@ -25,8 +25,8 @@
  */
 #pragma once
 #include <memory>
+#include <QIcon>
 #include <QString>
-#include <KIcon>
 #include <QtPlugin>
 
 namespace KDots
@@ -54,9 +54,9 @@ namespace KDots
 
     /** @brief Returns a plugin icon.
     */
-    virtual KIcon icon() const
+    virtual QIcon icon() const
     {
-      return KIcon();
+      return QIcon();
     }
   };
 

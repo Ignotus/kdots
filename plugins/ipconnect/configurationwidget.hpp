@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011, 2012, 2014, 2015 Minh Ngo <minh@fedoraproject.org>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -40,13 +40,13 @@ namespace KDots
       int m_port;
       int user;
     };
-    
+
     struct ClientConfig
     {
       QString m_host;
       int m_port;
     };
-    
+
     class ConfigurationWidget : public IConfigurationWidget
     {
       Q_OBJECT
@@ -54,15 +54,16 @@ namespace KDots
       Ui::ConfigurationWidget *m_ui;
     public:
       ConfigurationWidget(QWidget *parent = 0);
-      
+
       void requestState();
-      
+
       bool clientConfig(ClientConfig& config);
       bool serverConfig(ServerConfig& config);
-      
-    private slots:
+
+    private Q_SLOTS:
       void onTabChanged(int index);
-    signals:
+
+    Q_SIGNALS:
       void needCreateBoard(bool);
     };
   }

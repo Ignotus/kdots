@@ -40,11 +40,11 @@ namespace KDots
       
       bool canUndo() const;
 
-    public slots:
+    public Q_SLOTS:
       void onPointAdded(const Point& point);
       void onDifficultyChanged(const KgDifficultyLevel *difficulty);
 
-    signals:
+    Q_SIGNALS:
       void needCreateBoard(const GameConfig& config);
       void needDestroy();
       void needAddPoint(const Point&);
@@ -54,12 +54,13 @@ namespace KDots
     {
       Q_OBJECT
       Q_INTERFACES(KDots::IPlugin)
+      Q_PLUGIN_METADATA(IID "com.github.ignotus.kdots.IPlugin" FILE "")
     public:
       Plugin(QObject *parent = 0);
       std::unique_ptr<IRival> createRival();
       QString name() const;
       QString description() const;
-      KIcon icon() const;
+      QIcon icon() const;
     };
 
   }

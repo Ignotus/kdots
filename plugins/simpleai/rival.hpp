@@ -47,7 +47,7 @@ namespace KDots
 
       void setBoardModel(BoardModel *board);
 
-    public slots:
+    public Q_SLOTS:
       void onPointAdded(const Point& point);
       void onDifficultyChanged(const KgDifficultyLevel *level);
 
@@ -62,7 +62,7 @@ namespace KDots
       // Complexity O(n)
       std::vector<VectorF> getImportanceMatrix(const QRect& bb) const;
 
-    signals:
+    Q_SIGNALS:
       void needCreateBoard(const GameConfig& config);
       void needDestroy();
       void needAddPoint(const Point&);

@@ -27,7 +27,7 @@
 #include <QDir>
 #include <QApplication>
 #include <QPluginLoader>
-#include <KDebug>
+#include <QDebug>
 #include <interface/iplugin.hpp>
 #include "constants.hpp"
 #include "config.hpp"
@@ -62,7 +62,7 @@ namespace KDots
   bool PluginLoader::findPlugin(const QDir& pluginsDir)
   {
     bool foundFlag = false;
-    for (const QString& fileName : pluginsDir.entryList({PLUGIN_SUFFIX + "*"}, QDir::Files))
+    for (const QString& fileName : pluginsDir.entryList({PLUGIN_SUFFIX + QLatin1String("*")}, QDir::Files))
     {
       QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
       IPlugin *iplugin = qobject_cast<IPlugin *>(pluginLoader.instance());
@@ -70,14 +70,14 @@ namespace KDots
       if (iplugin)
       {
         foundFlag = true;
-        kDebug() << "Loading the plugin:" << iplugin->name();
+        qDebug() << "Loading the plugin:" << iplugin->name();
         m_pluginMap.insert(iplugin->name(), iplugin);
         m_availablePlugins.insert(iplugin->name());
       }
       else
       {
-        kWarning() << pluginLoader.errorString();
-        kWarning() << "Cannot load the plugin " << fileName;
+        qWarning() << pluginLoader.errorString();
+        qWarning() << "Cannot load the plugin " << fileName;
       }
     }
     
@@ -86,12 +86,8 @@ namespace KDots
 
   void PluginLoader::loadPlugins()
   {
-    QDir currentDir(qApp->applicationDirPath());
-    if (!currentDir.cd("plugins") || !findPlugin(currentDir))
-    {
-      QDir libdir(PLUGINS_DIR);
-      if(!libdir.exists() || !findPlugin(libdir))
-        kWarning() << "Plugins not found in " << libdir.absolutePath();
-    }
+    QDir libdir(QLatin1String(PLUGINS_DIR));
+    if (!libdir.exists() || !findPlugin(libdir))
+      qWarning() << "Plugins not found in " << libdir.absolutePath();
   }
 }

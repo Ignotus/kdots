@@ -44,7 +44,7 @@ namespace KDots
 
     QString pluginName() const;
 
-  private slots:
+  private Q_SLOTS:
     void onIndexChanged(const QModelIndex& current);
 
   private:

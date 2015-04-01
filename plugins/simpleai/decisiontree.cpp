@@ -55,7 +55,7 @@ namespace simpleai
     , m_depth(depth)
     , m_ai(ai)
   {
-    kDebug() << "Bounding box:" << bbox.width() << bbox.height();
+    qDebug() << "Bounding box:" << bbox.width() << bbox.height();
   }
   
   void DecisionTree::calculateDecisions(std::vector<Point>& points, VectorF& grades)
@@ -181,7 +181,7 @@ namespace simpleai
       }
     }
 
-    kDebug() << "Decision Tree Final Size:" << m_nodes.size();
+    qDebug() << "Decision Tree Final Size:" << m_nodes.size();
 
     // Decisions are positioned in the first layer
     // TODO: reserve

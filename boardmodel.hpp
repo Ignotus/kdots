@@ -26,15 +26,16 @@
 #pragma once
 #include <memory>
 #include <QObject>
+#include <interface/irival.hpp>
+
+#include "graph.hpp"
 #include "gameconfig.hpp"
 #include "polygon.hpp"
+#include "iboardview.hpp"
 
 namespace KDots
 {
-  class Graph;
   class StepQueue;
-  class IBoardView;
-  class IRival;
   class KDOTS_EXPORT BoardModel : public QObject
   {
     Q_OBJECT
@@ -52,7 +53,7 @@ namespace KDots
 
     const StepQueue& stepQueue() const;
     
-  public slots:
+  public Q_SLOTS:
     void undo();
 
   private:
@@ -60,10 +61,10 @@ namespace KDots
     void continueStep();
     void emitStatus();
     
-  private slots:
+  private Q_SLOTS:
     void addPoint(const Point& point);
     
-  signals:
+  Q_SIGNALS:
     void pointAdded(const Point& lastPoint);
     void freezeView(bool);
     void statusUpdated(const QString& message);

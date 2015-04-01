@@ -71,13 +71,9 @@ namespace singlepc
     return i18n("Playing in the single PC");
   }
   
-  KIcon Plugin::icon() const
+  QIcon Plugin::icon() const
   {
-    return KIcon();
+    return QIcon();
   }
 }
 }
-
-Q_EXPORT_PLUGIN2(kdots_singlepc, KDots::singlepc::Plugin)
-
-#include "plugin.moc"

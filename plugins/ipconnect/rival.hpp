@@ -50,16 +50,16 @@ namespace KDots
 
       Owner owner() const;
 
-    public slots:
+    public Q_SLOTS:
       void onPointAdded(const Point& point);
       void onDifficultyChanged(const KgDifficultyLevel*);
       
-    private slots:
+    private Q_SLOTS:
       void onNewConnectionHandle();
       void onReadyRead();
       void onDisconnected();
       
-    signals:
+    Q_SIGNALS:
       void needCreateBoard(const GameConfig& config);
       void needDestroy();
       void needAddPoint(const Point&);

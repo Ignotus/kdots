@@ -61,5 +61,3 @@ namespace KDots
     genPainter.drawPixmap(rect.x() + 2, rect.y() + 2, pixmap);
   }
 }
-
-#include "brushcombo.moc"

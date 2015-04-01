@@ -35,7 +35,7 @@ namespace KDots
 {
   class IRival;
   class BoardModel;
-  struct GameConfig;
+  class GameConfig;
 
   class BoardView : public IBoardView
   {
@@ -45,7 +45,7 @@ namespace KDots
     
     void setModel(BoardModel *table);
     
-  public slots:
+  public Q_SLOTS:
     void onFreezeView(bool freeze);
 
   protected:
@@ -60,7 +60,7 @@ namespace KDots
     void drawLastPoint(QPainter& painter, float cellSize);
     void drawUnderMousePoint(QPainter& painter, float cellSize);
   
-  signals:
+  Q_SIGNALS:
     void pointClicked(const Point& point);
 
   private:

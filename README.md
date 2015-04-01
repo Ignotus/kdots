@@ -16,10 +16,12 @@ Look the [COPYING](https://github.com/Ignotus/kdots/blob/master/COPYING) file fo
 
 Dependencies for building
 =========================
-* Qt Framework (QtGui, QtCore, QtNetwork) 4.8 or later.
-* cmake 2.6 or later.
-* KDELibs 4.8 or later
-* LibKDEGames
+* Qt5::Core, Qt5::Widgets, Qt5::Network
+* cmake 2.8.12 or later
+* extra-cmake-modules
+* Boost (tested on 1.55)
+* KF5::TextWidgets, KF5::XmlGui, KF5::KDELibs4Support
+* KF5KDEGames 4.9.0
 * A C++ compiler with C++11 support.
 
 Building

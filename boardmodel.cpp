@@ -24,9 +24,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "boardmodel.hpp"
+#include <QDebug>
 #include <KMessageBox>
 #include <KLocalizedString>
-#include <KDebug>
 #include <interface/irival.hpp>
 #include "graph.hpp"
 #include "polygonfinder.hpp"
@@ -208,7 +208,7 @@ namespace KDots
   {
     const QString& firstMark = QString::number(m_steps->getMarks(Owner::FIRST));
     const QString& secondMark = QString::number(m_steps->getMarks(Owner::SECOND));
-    emit statusUpdated(QString("First:\t%1\tSecond:\t%2").arg(firstMark, secondMark));
+    emit statusUpdated(QString::fromAscii("First:\t%1\tSecond:\t%2").arg(firstMark, secondMark));
   }
 
   void BoardModel::drawPolygon(PolyList polygons)
@@ -246,5 +246,3 @@ namespace KDots
     return *m_steps;
   }
 }
-
-#include "boardmodel.moc"

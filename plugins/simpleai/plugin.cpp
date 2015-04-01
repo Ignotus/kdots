@@ -51,11 +51,9 @@ namespace simpleai
     return i18n("Playing with the simple AI");
   }
   
-  KIcon Plugin::icon() const
+  QIcon Plugin::icon() const
   {
-    return KIcon("games-config-board");
+    return QIcon::fromTheme("games-config-board");
   }
 }
 }
-
-Q_EXPORT_PLUGIN2(kdots_simpleai, KDots::simpleai::Plugin)

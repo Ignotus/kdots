@@ -75,5 +75,3 @@ namespace KDots
         .at(0).data().toString();
   }
 }
-
-#include "pluginmanagerwidget.moc"

@@ -1,63 +1,37 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.12)
 
-PROJECT(simpleai)
+project(simpleai)
 
-INCLUDE_DIRECTORIES(
+include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}
   ${KDOTS_SOURCE_DIR}
 )
 
-SET(SIMPLEAI_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(SIMPLEAI_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-IF(TESTS)
-  ENABLE_TESTING()
-ENDIF(TESTS)
-
-SET(SIMPLEAI_HEADERS
+set(SIMPLEAI_HEADERS
   prioritymap.hpp
   rival.hpp
   plugin.hpp
   decisiontree.hpp
 )
 
-SET(SIMPLEAI_SRCS
+set(SIMPLEAI_SRCS
   prioritymap.cpp
   rival.cpp
   plugin.cpp
   decisiontree.cpp
 )
 
-kde4_add_plugin(kdots_simpleai SHARED
+add_library(kdots_simpleai MODULE
   ${SIMPLEAI_SRCS}
 )
 
-TARGET_LINK_LIBRARIES(kdots_simpleai
+target_link_libraries(kdots_simpleai
   ${KDOTS_REQUIRED_LIBS}
   kdotslib
 )
 
-IF(UNIX)
-  INSTALL(TARGETS kdots_simpleai DESTINATION ${PLUGINS_DIR})
-  INSTALL(FILES rules DESTINATION ${PLUGINS_DIR})
-ENDIF(UNIX)
-
-GET_PROPERTY(kdots_simpleai_location TARGET kdots_simpleai PROPERTY LOCATION)
-
-IF(UNIX)
-  ADD_CUSTOM_COMMAND(
-    TARGET kdots_simpleai
-    POST_BUILD
-    COMMAND cp ARGS ${kdots_simpleai_location}
-    ${PLUGIN_BUILD_DIR}
-  )
-ELSE(UNIX)
-  ADD_CUSTOM_COMMAND(
-    TARGET kdots_simpleai
-    POST_BUILD
-    COMMAND copy ARGS ${kdots_simpleai_location}
-    ${PLUGIN_BUILD_DIR}
-  )
-ENDIF(UNIX)
-
-ADD_SUBDIRECTORY(RulesViewer)
+install(TARGETS kdots_simpleai DESTINATION ${KDE_INSTALL_PLUGINDIR}/kdots)
+install(FILES rules DESTINATION ${KDE_INSTALL_PLUGINDIR}/kdots)

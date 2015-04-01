@@ -25,11 +25,9 @@
  */
 #include "mainwindow.hpp"
 #include <QDir>
-#include <KMenuBar>
 #include <KStatusBar>
 #include <KConfigDialog>
 #include <KToolBar>
-#include <KAction>
 #include <KStandardAction>
 #include <KActionCollection>
 #include <interface/iplugin.hpp>
@@ -71,29 +69,29 @@ namespace KDots
   {
     KStandardAction::preferences(this, SLOT(onPreferences()), actionCollection());
     
-    m_menu.m_newAction = new KAction(KIcon("file_new"), i18n("&New game"), this);
-    m_menu.m_newAction->setShortcut(Qt::CTRL + Qt::Key_N);
+    m_menu.m_newAction = new QAction(QIcon::fromTheme("file_new"), i18n("&New game"), this);
+    actionCollection()->setDefaultShortcut(m_menu.m_newAction, Qt::CTRL + Qt::Key_N);
     
     connect(m_menu.m_newAction, SIGNAL(triggered(bool)), this, SLOT(onNewGame())); 
 
     actionCollection()->addAction("NewGame", m_menu.m_newAction);
     
     m_menu.m_endAction = actionCollection()->addAction("EndGame", this, SLOT(endGame()));
-    m_menu.m_endAction->setIcon(KIcon("window-close"));
+    m_menu.m_endAction->setIcon(QIcon::fromTheme("window-close"));
     m_menu.m_endAction->setText(i18n("&End game"));
-    m_menu.m_endAction->setShortcut(Qt::CTRL + Qt::Key_E);
+    actionCollection()->setDefaultShortcut(m_menu.m_endAction, Qt::CTRL + Qt::Key_E);
     m_menu.m_endAction->setEnabled(false);
     
     m_menu.m_quitAction = actionCollection()->addAction("Quit", this, SLOT(close()));
-    m_menu.m_quitAction->setIcon(KIcon("exit"));
+    m_menu.m_quitAction->setIcon(QIcon::fromTheme("exit"));
     m_menu.m_quitAction->setText(i18n("&Quit"));
-    m_menu.m_quitAction->setShortcut(Qt::CTRL + Qt::Key_Q);
+    actionCollection()->setDefaultShortcut(m_menu.m_quitAction, Qt::CTRL + Qt::Key_Q);
     
     m_menu.m_undoAction = actionCollection()->addAction("UndoGame", this);
-    m_menu.m_undoAction->setIcon(KIcon("undo"));
+    m_menu.m_undoAction->setIcon(QIcon::fromTheme("undo"));
     m_menu.m_undoAction->setText(i18n("&Undo"));
     m_menu.m_undoAction->setEnabled(false);
-    m_menu.m_undoAction->setShortcut(Qt::CTRL + Qt::Key_Z);
+    actionCollection()->setDefaultShortcut(m_menu.m_undoAction, Qt::CTRL + Qt::Key_Z);
   }
   
   void MainWindow::endGame()
@@ -183,5 +181,3 @@ namespace KDots
       endGame();
   }
 }
-
-#include "mainwindow.moc"

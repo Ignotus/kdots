@@ -28,17 +28,15 @@
 #include <KXmlGuiWindow>
 #include <KgDifficulty>
 #include "constants.hpp"
+#include "boardmodel.hpp"
 
 namespace Ui
 {
   class MainWindow;
 }
 
-class KAction;
-
 namespace KDots
 {
-  class BoardModel;
   class IRival;
 
   class MainWindow : public KXmlGuiWindow
@@ -50,13 +48,13 @@ namespace KDots
   private:
     void initMenu();
 
-  private slots:
+  private Q_SLOTS:
     void onNewGame();
     void onPreferences();
     void endGame();
     void onNeedDestroy();
   
-  signals:
+  Q_SIGNALS:
     void preferencesUpdated();
 
   private:
@@ -67,10 +65,10 @@ namespace KDots
     
     struct
     {
-      KAction *m_newAction;
-      KAction *m_endAction;
-      KAction *m_quitAction;
-      KAction *m_undoAction;
+      QAction *m_newAction;
+      QAction *m_endAction;
+      QAction *m_quitAction;
+      QAction *m_undoAction;
     } m_menu;
   };
 }

@@ -37,7 +37,7 @@
 #include <stack>
 #include <ctime>
 
-#include <KDebug>
+#include <QDebug>
 #include <KgDifficulty>
 
 namespace KDots
@@ -233,10 +233,10 @@ namespace KDots
       {
       const int begin = std::time(0);
       tree.calculateDecisions(decisions, decisionGrades);
-      kDebug() << "Decision making time:" << (std::time(0) - begin);
+      qDebug() << "Decision making time:" << (std::time(0) - begin);
       }
       
-      kDebug() << "Number of decisions founded:" << decisions.size();
+      qDebug() << "Number of decisions founded:" << decisions.size();
 
       if (!decisions.empty())
       {

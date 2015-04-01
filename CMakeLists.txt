@@ -1,54 +1,49 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-PROJECT(kdots)
+cmake_minimum_required(VERSION 2.8.12)
+project(kdots)
 
-SET(CMAKE_MODULE_PATH
-  ${CMAKE_MODULE_PATH}
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake
+find_package(ECM REQUIRED NO_MODULE)
+
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
+
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDECompilerSettings)
+
+find_package(Qt5 REQUIRED
+  Core
+  Widgets
 )
 
-FIND_PACKAGE(Qt4 REQUIRED)
-FIND_PACKAGE(Boost 1.55 REQUIRED)
-FIND_PACKAGE(KDE4 REQUIRED)
-FIND_PACKAGE(KDEGames REQUIRED)
+find_package(Boost 1.55 REQUIRED)
+find_package(KF5 REQUIRED COMPONENTS
+  TextWidgets
+  XmlGui
+  KDELibs4Support
+)
 
-INCLUDE(KDE4Defaults)
+find_package(KF5KDEGames 4.9.0 REQUIRED)
 
-OPTION(KDE4_BUILD_TESTS "Enable test units" OFF)
-
-IF(KDE4_BUILD_TESTS)
-  ENABLE_TESTING()
-  SET(QT_USE_QTTEST TRUE)
-ENDIF(KDE4_BUILD_TESTS)
-
-SET(QT_USE_QTGUI TRUE)
-SET(QT_USE_QTCORE TRUE)
-
-INCLUDE(${QT_USE_FILE})
-
-MESSAGE(STATUS "${KDEGAMES_INCLUDE_DIRS}")
-
-INCLUDE_DIRECTORIES(
+include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/include
-  ${KDE4_INCLUDES}
   ${KDEGAMES_INCLUDE_DIRS}
   ${QT_INCLUDES}
   ${Boost_INCLUDE_DIR}
 )
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexceptions")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexceptions")
 
-SET(PLUGIN_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/plugins)
-SET(KDOTS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(PLUGIN_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/plugins)
+set(KDOTS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-SET(INSTALL_PREFIX "/usr")
+set(INSTALL_PREFIX "/usr")
 
-IF(UNIX)
-  SET(PLUGINS_DIR ${PLUGIN_INSTALL_DIR}/kdots/plugins)
-ENDIF(UNIX)
+set(PLUGINS_DIR ${CMAKE_INSTALL_PREFIX}/${KDE_INSTALL_PLUGINDIR}/kdots)
 
-SET(KDOTSLIB_SRCS
+message(STATUS "Setting plugin directory as ${PLUGINS_DIR}")
+
+set(KDOTSLIB_SRCS
   point.cpp
   graphpoint.cpp
   graph.cpp
@@ -59,7 +54,7 @@ SET(KDOTSLIB_SRCS
   gameconfig.cpp
 )
 
-SET(KDOTSLIB_HEADERS
+set(KDOTSLIB_HEADERS
   graphpoint.hpp
   graph.hpp
   boardmodel.hpp
@@ -73,7 +68,7 @@ SET(KDOTSLIB_HEADERS
   iboardview.hpp
 )
 
-SET(SRCS
+set(SRCS
   pluginloader.cpp
   pluginmanagerwidget.cpp
   newgamewidget.cpp
@@ -87,7 +82,7 @@ SET(SRCS
   kdots.kcfgc
 )
 
-SET(HEADERS
+set(HEADERS
   pluginloader.hpp
   pluginmanagerwidget.hpp
   newgamedialog.hpp
@@ -99,13 +94,13 @@ SET(HEADERS
   brushcombodelegate.hpp
 )
 
-SET(INTERFACE_HEAD
+set(INTERFACE_HEAD
   interface/iplugin.hpp
   interface/irival.hpp
   interface/iconfigurationwidget.hpp
 )
 
-SET(FORMS
+set(FORMS
   ui/mainwindow.ui
   ui/newgamewidget.ui
   ui/newgamedialog.ui
@@ -114,62 +109,49 @@ SET(FORMS
 )
 
 
-KDE4_ADD_UI_FILES(SRCS ${FORMS})
-KDE4_ADD_KCFG_FILES(SRCS kdots.kcfgc)
-INSTALL(FILES kdots.kcfg DESTINATION ${KCFG_INSTALL_DIR})
+ki18n_wrap_ui(SRCS ${FORMS})
+kconfig_add_kcfg_files(SRCS kdots.kcfgc)
+install(FILES kdots.kcfg DESTINATION ${KCFG_INSTALL_DIR})
 
-SET(KDOTS_VERSION "0.5.3")
-SET(KDOTS_SOVERSION "1")
+set(KDOTS_VERSION "0.5.3")
+set(KDOTS_SOVERSION "1")
 
-CONFIGURE_FILE(config.hpp.in config.hpp)
+configure_file(config.hpp.in config.hpp)
 
-SET(KDOTS_REQUIRED_LIBS
-  ${KDE4_KDECORE_LIBS}
-  ${KDE4_KDEUI_LIBS}
+set(KDOTS_REQUIRED_LIBS
   ${KDEGAMES_LIBRARY}
   ${QT_LIBRARIES}
   ${Boost_LIBRARIES}
+  KF5::TextWidgets
+  KF5::XmlGui
+  KF5::KDELibs4Support
 )
 
-KDE4_ADD_LIBRARY(kdotslib SHARED
+add_library(kdotslib SHARED
   ${KDOTSLIB_SRCS}
 )
 
-KDE4_ADD_EXECUTABLE(kdots
+add_executable(kdots
   ${SRCS}
   ${INTERFACE_HEAD}
 )
 
-TARGET_LINK_LIBRARIES(kdotslib
+target_link_libraries(kdotslib
   ${KDOTS_REQUIRED_LIBS}
 )
 
-SET_TARGET_PROPERTIES(kdotslib
+set_target_properties(kdotslib
   PROPERTIES VERSION ${KDOTS_VERSION} SOVERSION ${KDOTS_SOVERSION}
 )
 
-TARGET_LINK_LIBRARIES(kdots
+target_link_libraries(kdots
   ${KDOTS_REQUIRED_LIBS}
   kdotslib
 )
-  
-IF(UNIX)
-  INSTALL(TARGETS kdots DESTINATION ${BIN_INSTALL_DIR})
-  INSTALL(TARGETS kdotslib DESTINATION ${INSTALL_TARGETS_DEFAULT_ARGS})
-  INSTALL(FILES kdotsui.rc DESTINATION ${DATA_INSTALL_DIR}/kdots)
-  INSTALL(PROGRAMS kdots.desktop  DESTINATION ${XDG_APPS_INSTALL_DIR})
-ENDIF(UNIX)
 
-# uninstall target
-CONFIGURE_FILE(
-  "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-  IMMEDIATE @ONLY)
+install(TARGETS kdots DESTINATION ${BIN_INSTALL_DIR})
+install(TARGETS kdotslib DESTINATION ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(FILES kdotsui.rc DESTINATION ${KXMLGUI_INSTALL_DIR}/kdots)
+install(PROGRAMS kdots.desktop  DESTINATION ${XDG_APPS_INSTALL_DIR})
 
-ADD_CUSTOM_TARGET(uninstall
-  COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
-
-ADD_SUBDIRECTORY(plugins)
-
-#INCLUDE(MacroOptionalAddSubdirectory)
-#MACRO_OPTIONAL_ADD_SUBDIRECTORY(po)
+add_subdirectory(plugins)

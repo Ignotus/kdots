@@ -26,8 +26,6 @@
 #pragma once
 #include <QItemDelegate>
 
-class KIcon;
-
 namespace KDots
 {
   class PluginWidgetDelegate : public QItemDelegate
@@ -44,6 +42,6 @@ namespace KDots
         const QModelIndex& index) const;
 
   private:
-    void drawIcon(QPainter *painter, const QStyleOptionViewItem& option, const KIcon& icon) const;
+    void drawIcon(QPainter *painter, const QStyleOptionViewItem& option, const QIcon& icon) const;
   };
 }

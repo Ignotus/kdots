@@ -32,7 +32,7 @@
 
 namespace KDots
 {
-  struct Graph;
+  class Graph;
   class KDOTS_EXPORT PolygonFinder final
   {
   public:

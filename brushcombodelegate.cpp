@@ -108,5 +108,3 @@ namespace KDots
     return QSize(60, 36);
   }
 }
-
-#include "brushcombodelegate.moc"

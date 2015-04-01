@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="1" column="2">
-    <widget class="KPushButton" name="OKButton">
+    <widget class="QPushButton" name="OKButton">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -30,7 +30,7 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="KPushButton" name="NextButton">
+    <widget class="QPushButton" name="NextButton">
      <property name="text">
       <string>Next</string>
      </property>
@@ -42,7 +42,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="KPushButton" name="CancelButton">
+    <widget class="QPushButton" name="CancelButton">
      <property name="text">
       <string>Cancel</string>
      </property>
@@ -58,13 +58,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>KPushButton</class>
-   <extends>QPushButton</extends>
-   <header>kpushbutton.h</header>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>CancelButton</tabstop>
   <tabstop>NextButton</tabstop>

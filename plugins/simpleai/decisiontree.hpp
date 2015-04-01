@@ -35,10 +35,12 @@ namespace KDots
 class Graph;
 namespace simpleai
 {
-  struct NodeInfo
+  class NodeInfo
   {
+  public:
     NodeInfo();
     
+  public:
     int m_parent; // Index from the vector
     int m_layer;
     int m_bestChildGrade;

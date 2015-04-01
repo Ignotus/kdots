@@ -52,11 +52,9 @@ namespace ipconnect
     return i18n("Playing by internet connection");
   }
   
-  KIcon Plugin::icon() const
+  QIcon Plugin::icon() const
   {
-    return KIcon("network-connect");
+    return QIcon::fromTheme("network-connect");
   }
 }
 }
-
-Q_EXPORT_PLUGIN2(kdots_ipconnection, KDots::ipconnect::Plugin)

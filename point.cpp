@@ -26,6 +26,7 @@
 #include "point.hpp"
 #include <QPoint>
 #include <QPointF>
+#include <QDataStream>
 
 namespace KDots
 {

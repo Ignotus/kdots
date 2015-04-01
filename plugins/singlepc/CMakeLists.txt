@@ -1,48 +1,28 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.12)
 
-PROJECT(singlepc)
+project(singlepc)
 
-INCLUDE_DIRECTORIES(
+include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}
   ${KDOTS_SOURCE_DIR}
 )
 
-SET(SINGLEPC_HEADERS
+set(SINGLEPC_HEADERS
   plugin.hpp
 )
 
-SET(SINGLEPC_SRCS
+set(SINGLEPC_SRCS
   plugin.cpp
 )
 
-kde4_add_plugin(kdots_singlepc SHARED
+add_library(kdots_singlepc MODULE
   ${SINGLEPC_SRCS}
 )
 
-TARGET_LINK_LIBRARIES(kdots_singlepc
+target_link_libraries(kdots_singlepc
   ${KDOTS_REQUIRED_LIBS}
   kdotslib
 )
 
-IF(UNIX)
-  INSTALL(TARGETS kdots_singlepc DESTINATION ${PLUGINS_DIR})
-ENDIF(UNIX)
-
-GET_PROPERTY(kdots_singlepc_location TARGET kdots_singlepc PROPERTY LOCATION)
-
-IF(UNIX)
-  ADD_CUSTOM_COMMAND(
-    TARGET kdots_singlepc
-    POST_BUILD
-    COMMAND cp ARGS ${kdots_singlepc_location}
-    ${PLUGIN_BUILD_DIR}
-  )
-ELSE(UNIX)
-  ADD_CUSTOM_COMMAND(
-    TARGET kdots_singlepc
-    POST_BUILD
-    COMMAND copy ARGS ${kdots_singlepc_location}
-    ${PLUGIN_BUILD_DIR}
-  )
-ENDIF(UNIX)
+install(TARGETS kdots_singlepc DESTINATION ${KDE_INSTALL_PLUGINDIR}/kdots)

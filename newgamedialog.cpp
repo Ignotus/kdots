@@ -24,7 +24,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "newgamedialog.hpp"
-#include <KDebug>
+#include <QDebug>
 #include <interface/irival.hpp>
 #include <interface/iplugin.hpp>
 #include <interface/iconfigurationwidget.hpp>
@@ -92,7 +92,7 @@ namespace KDots
     
     if (!m_pluginManager)
     {
-      kWarning() << "Cannot cast to PluginManagerWidget";
+      qWarning() << "Cannot cast to PluginManagerWidget";
       return;
     }
     
@@ -101,7 +101,7 @@ namespace KDots
     IPlugin *pluginInstance = PluginLoader::instance().plugin(pluginName);
     if (!pluginInstance)
     {
-      kDebug() << "Plugin instance doesn't exists";
+      qDebug() << "Plugin instance doesn't exists";
       return;
     }
     
@@ -155,5 +155,3 @@ namespace KDots
   }
   
 }
-
-#include "newgamedialog.moc"

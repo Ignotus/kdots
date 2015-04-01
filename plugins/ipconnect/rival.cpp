@@ -25,7 +25,7 @@
  */
 #include "rival.hpp"
 #include <KMessageBox>
-#include <KDebug>
+#include <QDebug>
 #include <KLocalizedString>
 #include <KgDifficulty>
 #include <boardmodel.hpp>
@@ -85,16 +85,16 @@ namespace KDots
       
       m_socket->connectToHost(config.m_host, config.m_port);
 
-      kWarning() << "Connecting to the server...";
+      qWarning() << "Connecting to the server...";
       if (m_socket->waitForConnected(5000))
       {
-        kWarning() << "Connected";
+        qWarning() << "Connected";
         
         if (m_socket->waitForReadyRead())
         {
-          kWarning() << "Reading Table config";
+          qWarning() << "Reading Table config";
           const QByteArray& data = m_socket->readAll();
-          kWarning() << "Data size" << data.size();
+          qWarning() << "Data size" << data.size();
           QDataStream in(&const_cast<QByteArray&>(data), QIODevice::ReadOnly);
           QVariant variantData;
           
@@ -104,14 +104,14 @@ namespace KDots
           
           if (!variantData.canConvert<GameConfig>())
           {
-            kWarning() << "Cannot convert to GameConfig: "
+            qWarning() << "Cannot convert to GameConfig: "
                 << variantData.typeName();
           }
           
           const GameConfig& config = variantData.value<GameConfig>();
           if (!config.isInititialized())
           {
-            kWarning() << "Table config is invalid";
+            qWarning() << "Table config is invalid";
             return;
           }
           else
@@ -178,12 +178,12 @@ namespace KDots
     {
       if (!m_socket)
         return;
-      kWarning() << "Sending point";
+      qWarning() << "Sending point";
       QByteArray array;
       QDataStream out(&array, QIODevice::WriteOnly);
       
       out << QVariant::fromValue<Point>(point);
-      kWarning() << m_socket->write(array);
+      qWarning() << m_socket->write(array);
     }
 
     void Rival::onNewConnectionHandle()
@@ -198,7 +198,7 @@ namespace KDots
       out << QVariant::fromValue<GameConfig>(m_board->gameConfig())
           << static_cast<quint32>(StepQueue::other(m_me));
       m_socket->write(gameData);
-      kWarning() << "Game config sent";
+      qWarning() << "Game config sent";
       connect(m_socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
       connect(m_socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()));
     }
@@ -219,5 +219,3 @@ namespace KDots
     }
   }
 }
-
-#include "rival.moc"

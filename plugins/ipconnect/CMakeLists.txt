@@ -1,16 +1,17 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.12)
 
-PROJECT(ipconnect)
+project(ipconnect)
 
-INCLUDE_DIRECTORIES(
+include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}
   ${KDOTS_SOURCE_DIR}
 )
 
-SET(QT_USE_QTNETWORK TRUE)
+find_package(Qt5 REQUIRED
+  Network
+)
 
-INCLUDE(${QT_USE_FILE})
 
 SET(IPCONNECT_HEADERS
   connectdialog.hpp
@@ -31,36 +32,16 @@ SET(FORMS
   connectdialog.ui
 )
 
-kde4_add_ui_files(IPCONNECT_SRCS ${FORMS})
+ki18n_wrap_ui(IPCONNECT_SRCS ${FORMS})
 
-kde4_add_plugin(kdots_ipconnect SHARED
+add_library(kdots_ipconnect MODULE
   ${IPCONNECT_SRCS}
 )
 
-TARGET_LINK_LIBRARIES(kdots_ipconnect
+target_link_libraries(kdots_ipconnect
   ${KDOTS_REQUIRED_LIBS}
   ${QT_LIBRARIES}
   kdotslib
 )
 
-IF(UNIX)
-  INSTALL(TARGETS kdots_ipconnect DESTINATION ${PLUGINS_DIR})
-ENDIF(UNIX)
-
-GET_PROPERTY(kdots_ipconnect_location TARGET kdots_ipconnect PROPERTY LOCATION)
-
-IF(UNIX)
-  ADD_CUSTOM_COMMAND(
-    TARGET kdots_ipconnect
-    POST_BUILD
-    COMMAND cp ARGS ${kdots_ipconnect_location}
-    ${PLUGIN_BUILD_DIR}
-  )
-ELSE(UNIX)
-  ADD_CUSTOM_COMMAND(
-    TARGET kdots_ipconnect
-    POST_BUILD
-    COMMAND copy ARGS ${kdots_ipconnect_location}
-    ${PLUGIN_BUILD_DIR}
-  )
-ENDIF(UNIX)
+install(TARGETS kdots_ipconnect DESTINATION ${KDE_INSTALL_PLUGINDIR}/kdots)

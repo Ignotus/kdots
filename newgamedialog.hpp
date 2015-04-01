@@ -54,7 +54,7 @@ namespace KDots
   public:
     void accept();
     
-  private slots:
+  private Q_SLOTS:
     void pluginWidget();
     void gameWidget();
     void onNeedCreateBoard(bool);

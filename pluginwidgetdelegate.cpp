@@ -26,7 +26,7 @@
 #include "pluginwidgetdelegate.hpp"
 #include <QPainter>
 #include <KApplication>
-#include <KDebug>
+#include <QDebug>
 #include "pluginloader.hpp"
 #include "interface/iplugin.hpp"
 
@@ -64,10 +64,10 @@ namespace KDots
     IPlugin *plug = PluginLoader::instance().plugin(pluginName);
     if (plug)
     {
-      const KIcon& plugIcon = plug->icon();
+      const QIcon& plugIcon = plug->icon();
       if (plugIcon.isNull())
       {
-        const KIcon newIcon("applications-boardgames");
+        const QIcon newIcon(QIcon::fromTheme("applications-boardgames"));
         drawIcon(painter, option, newIcon);
       }
       else
@@ -76,7 +76,7 @@ namespace KDots
   }
   
   void PluginWidgetDelegate::drawIcon(QPainter *painter,
-      const QStyleOptionViewItem& option, const KIcon& icon) const
+      const QStyleOptionViewItem& option, const QIcon& icon) const
   {
     const int delta = (option.rect.width() - 32) / 2;
     const QRect iconRect(option.rect.x() + delta, option.rect.y() + 2, 28, 28);
