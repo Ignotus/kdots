@@ -128,7 +128,10 @@ namespace KDots
   Owner ExtraStepQueue::nextStep()
   {
     if (m_captured)
+    {
+      m_captured = false;
       return m_owner;
+    }
 
     m_captured = false;
 

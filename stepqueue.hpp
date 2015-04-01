@@ -54,7 +54,7 @@ namespace KDots
 
     static Owner other(Owner player);
 
-    Owner nextStep();
+    virtual Owner nextStep();
   
   protected:
     Owner m_owner;
