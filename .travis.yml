@@ -1,6 +1,7 @@
 language: cpp
 
 before_install:
+  - sudo do-release-upgrade
   - sudo apt-get update -qq
   - sudo apt-get install -y libkdegames-dev
 
