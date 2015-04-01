@@ -1,7 +1,7 @@
 KDots
 =====
 
-[![KDots](http://i.imgur.com/koAZ5.png)](http://i.imgur.com/koAZ5.png)
+[![KDots](http://i.imgur.com/Izm74a6.png)](http://i.imgur.com/Izm74a6.png)
 
 About
 =====
