@@ -1,0 +1,16 @@
+language: cpp
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y libkdegames-dev kdelibs4-dev
+
+compiler:
+  - gcc
+
+before_script:
+  - mkdir build
+  - cd build
+  - cmake ..
+
+script: make
+
