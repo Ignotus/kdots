@@ -250,3 +250,5 @@ namespace KDots
     return *m_steps;
   }
 }
+
+#include "moc_boardmodel.cpp"

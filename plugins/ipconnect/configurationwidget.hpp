@@ -63,7 +63,7 @@ namespace ipconnect
 
   Q_SIGNALS:
     void needCreateBoard(bool);
-  
+
   private:
     Ui::ConfigurationWidget *m_ui;
   };

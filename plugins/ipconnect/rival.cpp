@@ -36,6 +36,7 @@
 #include <boardmodel.hpp>
 #include <stepqueue.hpp>
 #include <graph.hpp>
+#include <iboardview.hpp>
 
 #include "configurationwidget.hpp"
 #include "connectdialog.hpp"
@@ -225,3 +226,5 @@ namespace ipconnect
   }
 }
 }
+
+#include "moc_rival.cpp"

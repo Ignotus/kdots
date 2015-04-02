@@ -30,7 +30,6 @@
 #include <KgDifficulty>
 
 #include "constants.hpp"
-#include "boardmodel.hpp"
 
 namespace Ui
 {
@@ -40,6 +39,7 @@ namespace Ui
 namespace KDots
 {
   class IRival;
+  class BoardModel;
 
   class MainWindow : public KXmlGuiWindow
   {

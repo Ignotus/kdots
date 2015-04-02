@@ -28,16 +28,16 @@
 
 #include <QObject>
 
-#include <interface/irival.hpp>
-
 #include "gameconfig.hpp"
-#include "graph.hpp"
-#include "iboardview.hpp"
 #include "polygon.hpp"
 
 namespace KDots
 {
+  class Graph;
   class StepQueue;
+  class IBoardView;
+  class IRival;
+  
   class KDOTS_EXPORT BoardModel : public QObject
   {
     Q_OBJECT

@@ -24,14 +24,18 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "mainwindow.hpp"
+
 #include <QDir>
+
 #include <KStatusBar>
 #include <KConfigDialog>
 #include <KToolBar>
 #include <KStandardAction>
 #include <KActionCollection>
+
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
+
 #include "ui_mainwindow.h"
 #include "ui_boardconfigwidget.h"
 #include "newgamedialog.hpp"
@@ -41,7 +45,6 @@
 #include "stepqueue.hpp"
 #include "graph.hpp"
 #include "boardmodel.hpp"
-
 
 namespace KDots
 {
@@ -181,3 +184,5 @@ namespace KDots
       endGame();
   }
 }
+
+#include "moc_mainwindow.cpp"

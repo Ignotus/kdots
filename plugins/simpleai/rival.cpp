@@ -33,6 +33,7 @@
 #include <point.hpp>
 #include <polygonfinder.hpp>
 #include <stepqueue.hpp>
+#include <iboardview.hpp>
 
 #include <stack>
 #include <ctime>
@@ -267,3 +268,5 @@ namespace simpleai
   }
 }
 }
+
+#include "moc_rival.cpp"

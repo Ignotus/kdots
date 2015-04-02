@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011, 2012, 2014, 2015 Minh Ngo <minh@fedoraproject.org>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -31,23 +31,23 @@ namespace KDots
     : m_graph(width, std::vector<GraphPoint>(height))
   {
   }
-  
+
   Graph::iterator Graph::begin()
   {
     return iterator(this);
   }
-    
+
   Graph::const_iterator Graph::begin() const
   {
     return const_iterator(this);
   }
-    
+
   Graph::iterator Graph::end()
   {
     iterator itr(this, 0, height());
     return itr;
   }
-    
+
   Graph::const_iterator Graph::end() const
   {
     const_iterator itr(this, 0, height());
@@ -65,7 +65,7 @@ namespace KDots
     m_graph[first.m_x][first.m_y].edges().removeEdge(second);
     m_graph[second.m_x][second.m_y].edges().removeEdge(first);
   }
-  
+
   bool Graph::isValid(const Point& point) const
   {
     return point > Point() && point < Point(width(), height());
