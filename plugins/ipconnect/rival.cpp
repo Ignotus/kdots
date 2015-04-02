@@ -36,186 +36,186 @@
 
 namespace KDots
 {
-  namespace ipconnect
+namespace ipconnect
+{
+  Rival::Rival(QObject *parent)
+    : IRival(parent)
+    , m_socket(nullptr)
+    , m_server(nullptr)
+    , m_me(Owner::NONE)
   {
-    Rival::Rival(QObject *parent)
-      : IRival(parent)
-      , m_socket(nullptr)
-      , m_server(nullptr)
-      , m_me(Owner::NONE)
+    Kg::difficulty()->setEditable(false);
+  }
+  
+  Rival::~Rival()
+  {
+    m_configWidget->setParent(0);
+  }
+  
+  namespace
+  {
+    Owner itemToOwner(int index)
     {
-      Kg::difficulty()->setEditable(false);
-    }
-    
-    Rival::~Rival()
-    {
-      m_configWidget->setParent(0);
-    }
-    
-    namespace
-    {
-      Owner itemToOwner(int index)
-      {
-        if (index == 0)
-          return Owner::FIRST;
-        
-        return Owner::SECOND;
-      }
-    }
-    
-    void Rival::onDisconnected()
-    {
-      KMessageBox::information(0,
-                i18n("Client has been disconnected. Please recreate a game"),
-                i18n("Client has been disconnected"));
-    }
-    
-    void Rival::requestGameConfig()
-    {
-      ClientConfig config;
+      if (index == 0)
+        return Owner::FIRST;
       
-      if (!m_configWidget->clientConfig(config))
-      {
-        return;
-      }
-      
-      //Joining Game
-      m_socket = new QTcpSocket(this);
-      connect(m_socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()));
-      
-      m_socket->connectToHost(config.m_host, config.m_port);
-
-      qWarning() << "Connecting to the server...";
-      if (m_socket->waitForConnected(5000))
-      {
-        qWarning() << "Connected";
-        
-        if (m_socket->waitForReadyRead())
-        {
-          qWarning() << "Reading Table config";
-          const QByteArray& data = m_socket->readAll();
-          qWarning() << "Data size" << data.size();
-          QDataStream in(&const_cast<QByteArray&>(data), QIODevice::ReadOnly);
-          QVariant variantData;
-          
-          quint32 me;
-          in >> variantData >> me;
-          m_me = static_cast<Owner>(me);
-          
-          if (!variantData.canConvert<GameConfig>())
-          {
-            qWarning() << "Cannot convert to GameConfig: "
-                << variantData.typeName();
-          }
-          
-          const GameConfig& config = variantData.value<GameConfig>();
-          if (!config.isInititialized())
-          {
-            qWarning() << "Table config is invalid";
-            return;
-          }
-          else
-          {
-            connect(m_socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
-            
-            KMessageBox::information(0,
-                i18n("Connected"),
-                i18n("Good luck have fun"));
-            emit needCreateBoard(config);
-          }
-        }
-      }
-      else
-      {
-        QMessageBox::warning(0,
-            i18n("Warning!"),
-            i18n("Cannot connect to the server: %1", m_socket->errorString()));
-        
-        emit needDestroy();
-      }
-    }
-    
-    void Rival::setBoardModel(BoardModel *board) //Is called after configureWidget
-    {
-      m_board = board;
-      
-      ServerConfig config;
-      if (!m_configWidget->serverConfig(config))
-      {
-        // Client
-        return;
-      }
-      
-      m_me = itemToOwner(config.user);
-      
-      //Create server
-      
-      m_server = new QTcpServer(this);
-      m_server->setMaxPendingConnections(1);
-
-      connect(m_server, SIGNAL(newConnection()), this, SLOT(onNewConnectionHandle()));
-      
-      ConnectDialog dialog(m_server, config.m_port);
-      if (dialog.exec() != QDialog::Accepted)
-      {
-        m_server->close();
-        emit needDestroy();
-      }
-    }
-    
-    IConfigurationWidget* Rival::configureWidget()
-    {
-      m_configWidget.reset(new ConfigurationWidget);
-      return m_configWidget.get();
-    }
-
-    Owner Rival::owner() const
-    {
-      return m_me;
-    }
-
-    void Rival::onPointAdded(const Point& point)
-    {
-      if (!m_socket)
-        return;
-      qWarning() << "Sending point";
-      QByteArray array;
-      QDataStream out(&array, QIODevice::WriteOnly);
-      
-      out << QVariant::fromValue<Point>(point);
-      qWarning() << m_socket->write(array);
-    }
-
-    void Rival::onNewConnectionHandle()
-    {
-      m_socket = m_server->nextPendingConnection();
-      
-      if (!m_socket)
-        return;
-      
-      QByteArray gameData;
-      QDataStream out(&gameData, QIODevice::WriteOnly);
-      out << QVariant::fromValue<GameConfig>(m_board->gameConfig())
-          << static_cast<quint32>(StepQueue::other(m_me));
-      m_socket->write(gameData);
-      qWarning() << "Game config sent";
-      connect(m_socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
-      connect(m_socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()));
-    }
-
-    void Rival::onReadyRead()
-    {
-      const QByteArray& array = m_socket->readAll();
-      QDataStream in(&const_cast<QByteArray&>(array), QIODevice::ReadOnly);
-      QVariant var;
-      in >> var;
-      const Point& point  = var.value<Point>();
-      
-      emit needAddPoint(point);
-    }
-    
-    void Rival::onDifficultyChanged(const KgDifficultyLevel*)
-    {
+      return Owner::SECOND;
     }
   }
+  
+  void Rival::onDisconnected()
+  {
+    KMessageBox::information(0,
+              i18n("Client has been disconnected. Please recreate a game"),
+              i18n("Client has been disconnected"));
+  }
+  
+  void Rival::requestGameConfig()
+  {
+    ClientConfig config;
+    
+    if (!m_configWidget->clientConfig(config))
+    {
+      return;
+    }
+    
+    //Joining Game
+    m_socket = new QTcpSocket(this);
+    connect(m_socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()));
+    
+    m_socket->connectToHost(config.m_host, config.m_port);
+
+    qWarning() << "Connecting to the server...";
+    if (m_socket->waitForConnected(5000))
+    {
+      qWarning() << "Connected";
+      
+      if (m_socket->waitForReadyRead())
+      {
+        qWarning() << "Reading Table config";
+        const QByteArray& data = m_socket->readAll();
+        qWarning() << "Data size" << data.size();
+        QDataStream in(&const_cast<QByteArray&>(data), QIODevice::ReadOnly);
+        QVariant variantData;
+        
+        quint32 me;
+        in >> variantData >> me;
+        m_me = static_cast<Owner>(me);
+        
+        if (!variantData.canConvert<GameConfig>())
+        {
+          qWarning() << "Cannot convert to GameConfig: "
+              << variantData.typeName();
+        }
+        
+        const GameConfig& config = variantData.value<GameConfig>();
+        if (!config.isInititialized())
+        {
+          qWarning() << "Table config is invalid";
+          return;
+        }
+        else
+        {
+          connect(m_socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+          
+          KMessageBox::information(0,
+              i18n("Connected"),
+              i18n("Good luck have fun"));
+          emit needCreateBoard(config);
+        }
+      }
+    }
+    else
+    {
+      QMessageBox::warning(0,
+          i18n("Warning!"),
+          i18n("Cannot connect to the server: %1", m_socket->errorString()));
+      
+      emit needDestroy();
+    }
+  }
+  
+  void Rival::setBoardModel(BoardModel *board) //Is called after configureWidget
+  {
+    m_board = board;
+    
+    ServerConfig config;
+    if (!m_configWidget->serverConfig(config))
+    {
+      // Client
+      return;
+    }
+    
+    m_me = itemToOwner(config.user);
+    
+    //Create server
+    
+    m_server = new QTcpServer(this);
+    m_server->setMaxPendingConnections(1);
+
+    connect(m_server, SIGNAL(newConnection()), this, SLOT(onNewConnectionHandle()));
+    
+    ConnectDialog dialog(m_server, config.m_port);
+    if (dialog.exec() != QDialog::Accepted)
+    {
+      m_server->close();
+      emit needDestroy();
+    }
+  }
+  
+  IConfigurationWidget* Rival::configureWidget()
+  {
+    m_configWidget.reset(new ConfigurationWidget);
+    return m_configWidget.get();
+  }
+
+  Owner Rival::owner() const
+  {
+    return m_me;
+  }
+
+  void Rival::onPointAdded(const Point& point)
+  {
+    if (!m_socket)
+      return;
+    qWarning() << "Sending point";
+    QByteArray array;
+    QDataStream out(&array, QIODevice::WriteOnly);
+    
+    out << QVariant::fromValue<Point>(point);
+    qWarning() << m_socket->write(array);
+  }
+
+  void Rival::onNewConnectionHandle()
+  {
+    m_socket = m_server->nextPendingConnection();
+    
+    if (!m_socket)
+      return;
+    
+    QByteArray gameData;
+    QDataStream out(&gameData, QIODevice::WriteOnly);
+    out << QVariant::fromValue<GameConfig>(m_board->gameConfig())
+        << static_cast<quint32>(StepQueue::other(m_me));
+    m_socket->write(gameData);
+    qWarning() << "Game config sent";
+    connect(m_socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+    connect(m_socket, SIGNAL(disconnected()), this, SLOT(onDisconnected()));
+  }
+
+  void Rival::onReadyRead()
+  {
+    const QByteArray& array = m_socket->readAll();
+    QDataStream in(&const_cast<QByteArray&>(array), QIODevice::ReadOnly);
+    QVariant var;
+    in >> var;
+    const Point& point  = var.value<Point>();
+    
+    emit needAddPoint(point);
+  }
+  
+  void Rival::onDifficultyChanged(const KgDifficultyLevel*)
+  {
+  }
+}
 }

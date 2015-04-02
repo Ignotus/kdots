@@ -30,41 +30,40 @@ namespace Ui
   class ConfigurationWidget;
 }
 
-
 namespace KDots
 {
-  namespace ipconnect
+namespace ipconnect
+{
+  struct ServerConfig
   {
-    struct ServerConfig
-    {
-      int m_port;
-      int user;
-    };
+    int m_port;
+    int user;
+  };
 
-    struct ClientConfig
-    {
-      QString m_host;
-      int m_port;
-    };
+  struct ClientConfig
+  {
+    QString m_host;
+    int m_port;
+  };
 
-    class ConfigurationWidget : public IConfigurationWidget
-    {
-      Q_OBJECT
+  class ConfigurationWidget : public IConfigurationWidget
+  {
+    Q_OBJECT
 
-      Ui::ConfigurationWidget *m_ui;
-    public:
-      ConfigurationWidget(QWidget *parent = 0);
+    Ui::ConfigurationWidget *m_ui;
+  public:
+    ConfigurationWidget(QWidget *parent = 0);
 
-      void requestState();
+    void requestState();
 
-      bool clientConfig(ClientConfig& config);
-      bool serverConfig(ServerConfig& config);
+    bool clientConfig(ClientConfig& config);
+    bool serverConfig(ServerConfig& config);
 
-    private Q_SLOTS:
-      void onTabChanged(int index);
+  private Q_SLOTS:
+    void onTabChanged(int index);
 
-    Q_SIGNALS:
-      void needCreateBoard(bool);
-    };
-  }
+  Q_SIGNALS:
+    void needCreateBoard(bool);
+  };
+}
 }

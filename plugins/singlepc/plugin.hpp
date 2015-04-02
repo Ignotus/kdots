@@ -29,39 +29,39 @@
 
 namespace KDots
 {
-  namespace singlepc
+namespace singlepc
+{
+  class KDE_EXPORT Rival : public KDots::IRival
   {
-    class KDE_EXPORT Rival : public KDots::IRival
-    {
-      Q_OBJECT
-      Q_INTERFACES(KDots::IRival)
-    public:
-      Rival(QObject *parent = 0);
-      
-      bool canUndo() const;
+    Q_OBJECT
+    Q_INTERFACES(KDots::IRival)
+  public:
+    Rival(QObject *parent = 0);
+    
+    bool canUndo() const;
 
-    public Q_SLOTS:
-      void onPointAdded(const Point& point);
-      void onDifficultyChanged(const KgDifficultyLevel *difficulty);
+  public Q_SLOTS:
+    void onPointAdded(const Point& point);
+    void onDifficultyChanged(const KgDifficultyLevel *difficulty);
 
-    Q_SIGNALS:
-      void needCreateBoard(const GameConfig& config);
-      void needDestroy();
-      void needAddPoint(const Point&);
-    };
+  Q_SIGNALS:
+    void needCreateBoard(const GameConfig& config);
+    void needDestroy();
+    void needAddPoint(const Point&);
+  };
 
-    class KDE_EXPORT Plugin : public KDots::IPlugin
-    {
-      Q_OBJECT
-      Q_INTERFACES(KDots::IPlugin)
-      Q_PLUGIN_METADATA(IID "com.github.ignotus.kdots.IPlugin" FILE "")
-    public:
-      Plugin(QObject *parent = 0);
-      std::unique_ptr<IRival> createRival();
-      QString name() const;
-      QString description() const;
-      QIcon icon() const;
-    };
+  class KDE_EXPORT Plugin : public KDots::IPlugin
+  {
+    Q_OBJECT
+    Q_INTERFACES(KDots::IPlugin)
+    Q_PLUGIN_METADATA(IID "com.github.ignotus.kdots.IPlugin" FILE "")
+  public:
+    Plugin(QObject *parent = 0);
+    std::unique_ptr<IRival> createRival();
+    QString name() const;
+    QString description() const;
+    QIcon icon() const;
+  };
 
-  }
+}
 }

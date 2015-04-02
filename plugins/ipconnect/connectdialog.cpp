@@ -30,25 +30,24 @@
 
 namespace KDots
 {
-  namespace ipconnect
+namespace ipconnect
+{
+  ConnectDialog::ConnectDialog(QTcpServer* server, int port, QWidget* parent)
+    : QDialog(parent)
+    , m_ui(new Ui::ConnectDialog)
+    , m_server(server)
   {
-    ConnectDialog::ConnectDialog(QTcpServer* server, int port, QWidget* parent)
-      : QDialog(parent)
-      , m_ui(new Ui::ConnectDialog)
-      , m_server(server)
-    {
-      m_ui->setupUi(this);
-      
-      connect(server,
-          SIGNAL(newConnection()),
-          this,
-          SLOT(accept()));
-      
-      if(m_server->listen(QHostAddress::Any, port))
-        qDebug() << Q_FUNC_INFO << "Listening the port" << port;
-      else
-        qWarning() << Q_FUNC_INFO << "Couldn't listen the port " << port;
-    }
-
+    m_ui->setupUi(this);
+    
+    connect(server,
+        SIGNAL(newConnection()),
+        this,
+        SLOT(accept()));
+    
+    if(m_server->listen(QHostAddress::Any, port))
+      qDebug() << Q_FUNC_INFO << "Listening the port" << port;
+    else
+      qWarning() << Q_FUNC_INFO << "Couldn't listen the port " << port;
   }
+}
 }

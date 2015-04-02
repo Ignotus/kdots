@@ -35,53 +35,53 @@
 struct stat;
 namespace KDots
 {
-  namespace simpleai
+namespace simpleai
+{
+  enum class MapElement
   {
-    enum class MapElement
-    {
-      EM, //Empty
-      NM, // Does not matter
-      FI, //First
-      SE, //Second
-      PF, // Possibly first
-      PS, // Possibly second
-      CU // Current
-    };
-    
-    typedef QVector<MapElement> MapLine;
-    typedef QVector<MapLine> MapType;
-    
-    class MapData
-    {
-    public:
-      MapData();
-      MapData(const MapType& map, const Point& current, float priority);
+    EM, //Empty
+    NM, // Does not matter
+    FI, //First
+    SE, //Second
+    PF, // Possibly first
+    PS, // Possibly second
+    CU // Current
+  };
+  
+  typedef QVector<MapElement> MapLine;
+  typedef QVector<MapLine> MapType;
+  
+  class MapData
+  {
+  public:
+    MapData();
+    MapData(const MapType& map, const Point& current, float priority);
 
-      QString toString() const;
+    QString toString() const;
 
-    public:
-      MapType m_map;
-      Point m_current;
-      float m_priority;
-    };
-    
-    class PriorityMap : boost::noncopyable
-    {
-    public:
-      static PriorityMap& instance();
+  public:
+    MapType m_map;
+    Point m_current;
+    float m_priority;
+  };
+  
+  class PriorityMap : boost::noncopyable
+  {
+  public:
+    static PriorityMap& instance();
 
-      const QVector<MapData>& priorityMap();
+    const QVector<MapData>& priorityMap();
 
-    private:
-      PriorityMap();
+  private:
+    PriorityMap();
 
-      static MapData inverse(const MapData& data);
-      static MapData rotate(const MapData& data);
-      static MapData opposite(const MapData& data);
-      QVector<MapData> loadMap() const;
+    static MapData inverse(const MapData& data);
+    static MapData rotate(const MapData& data);
+    static MapData opposite(const MapData& data);
+    QVector<MapData> loadMap() const;
 
-    private:
-      QVector<MapData> m_priorityMap;
-    };
-  }
+  private:
+    QVector<MapData> m_priorityMap;
+  };
+}
 }

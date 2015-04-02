@@ -32,46 +32,46 @@
 
 namespace KDots
 {
-  class BoardModel;
-  namespace ipconnect
+class BoardModel;
+namespace ipconnect
+{
+  class ConfigurationWidget;
+  class Rival : public KDots::IRival
   {
-    class ConfigurationWidget;
-    class Rival : public KDots::IRival
-    {
-      Q_OBJECT
-    public:
-      Rival(QObject *parent = 0);
-      virtual ~Rival();
-      
-      IConfigurationWidget* configureWidget();
+    Q_OBJECT
+  public:
+    Rival(QObject *parent = 0);
+    virtual ~Rival();
+    
+    IConfigurationWidget* configureWidget();
 
-      void setBoardModel(BoardModel *board);
-      void requestGameConfig();
+    void setBoardModel(BoardModel *board);
+    void requestGameConfig();
 
-      Owner owner() const;
+    Owner owner() const;
 
-    public Q_SLOTS:
-      void onPointAdded(const Point& point);
-      void onDifficultyChanged(const KgDifficultyLevel*);
-      
-    private Q_SLOTS:
-      void onNewConnectionHandle();
-      void onReadyRead();
-      void onDisconnected();
-      
-    Q_SIGNALS:
-      void needCreateBoard(const GameConfig& config);
-      void needDestroy();
-      void needAddPoint(const Point&);
-      
-    private:
-      BoardModel *m_board;
-      QTcpSocket *m_socket;
-      QTcpServer *m_server;
-      
-      Owner m_me;
-      
-      std::unique_ptr<ConfigurationWidget> m_configWidget;
-    };
-  }
+  public Q_SLOTS:
+    void onPointAdded(const Point& point);
+    void onDifficultyChanged(const KgDifficultyLevel*);
+    
+  private Q_SLOTS:
+    void onNewConnectionHandle();
+    void onReadyRead();
+    void onDisconnected();
+    
+  Q_SIGNALS:
+    void needCreateBoard(const GameConfig& config);
+    void needDestroy();
+    void needAddPoint(const Point&);
+    
+  private:
+    BoardModel *m_board;
+    QTcpSocket *m_socket;
+    QTcpServer *m_server;
+    
+    Owner m_me;
+    
+    std::unique_ptr<ConfigurationWidget> m_configWidget;
+  };
+}
 }

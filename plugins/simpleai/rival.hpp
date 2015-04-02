@@ -32,47 +32,47 @@
 
 namespace KDots
 {
-  class Point;
-  namespace simpleai
+class Point;
+namespace simpleai
+{
+  class NodeInfo;
+  class Rival : public KDots::IRival
   {
-    class NodeInfo;
-    class Rival : public KDots::IRival
-    {
-      Q_OBJECT
-      Q_INTERFACES(KDots::IRival)
-    public:
-      Rival(QObject *parent = 0);
+    Q_OBJECT
+    Q_INTERFACES(KDots::IRival)
+  public:
+    Rival(QObject *parent = 0);
 
-      Owner owner() const;
+    Owner owner() const;
 
-      void setBoardModel(BoardModel *board);
+    void setBoardModel(BoardModel *board);
 
-    public Q_SLOTS:
-      void onPointAdded(const Point& point);
-      void onDifficultyChanged(const KgDifficultyLevel *level);
+  public Q_SLOTS:
+    void onPointAdded(const Point& point);
+    void onDifficultyChanged(const KgDifficultyLevel *level);
 
-    private:
-      void addPoint(bool random = false);
-      bool addRandomPoint();
+  private:
+    void addPoint(bool random = false);
+    bool addRandomPoint();
 
-      // Complexity O(n)
-      QRect getBoundingBox() const;
+    // Complexity O(n)
+    QRect getBoundingBox() const;
 
-      typedef std::vector<float> VectorF;
-      // Complexity O(n)
-      std::vector<VectorF> getImportanceMatrix(const QRect& bb) const;
+    typedef std::vector<float> VectorF;
+    // Complexity O(n)
+    std::vector<VectorF> getImportanceMatrix(const QRect& bb) const;
 
-    Q_SIGNALS:
-      void needCreateBoard(const GameConfig& config);
-      void needDestroy();
-      void needAddPoint(const Point&);
+  Q_SIGNALS:
+    void needCreateBoard(const GameConfig& config);
+    void needDestroy();
+    void needAddPoint(const Point&);
 
-    private:
-      BoardModel *m_board;
-      Owner m_human, m_ai;
-      int m_depth;
-      float m_k1;
-      float m_k2;
-    };
-  }
+  private:
+    BoardModel *m_board;
+    Owner m_human, m_ai;
+    int m_depth;
+    float m_k1;
+    float m_k2;
+  };
+}
 }
