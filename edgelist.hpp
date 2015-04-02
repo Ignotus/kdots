@@ -25,12 +25,13 @@
  */
 #pragma once
 #include <stdexcept>
+
 #include "point.hpp"
 
 namespace KDots
 {
   template<int SIZE>
-  class KDOTS_EXPORT EdgeList final
+  class EdgeList final
   {
   public:
     EdgeList()

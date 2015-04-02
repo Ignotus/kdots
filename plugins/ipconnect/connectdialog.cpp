@@ -24,8 +24,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "connectdialog.hpp"
+
 #include <QTcpServer>
 #include <QDebug>
+
 #include "ui_connectdialog.h"
 
 namespace KDots

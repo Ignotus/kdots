@@ -25,12 +25,12 @@
  */
 #pragma once
 
-#include <constants.hpp>
-#include <point.hpp>
+#include <boost/noncopyable.hpp>
 
 #include <QVector>
 
-#include <boost/noncopyable.hpp>
+#include <constants.hpp>
+#include <point.hpp>
 
 struct stat;
 namespace KDots

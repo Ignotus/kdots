@@ -24,11 +24,14 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "pluginloader.hpp"
+
 #include <QDir>
 #include <QApplication>
 #include <QPluginLoader>
 #include <QDebug>
+
 #include <interface/iplugin.hpp>
+
 #include "constants.hpp"
 #include "config.hpp"
 

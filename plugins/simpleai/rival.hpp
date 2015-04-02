@@ -24,11 +24,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
+
+#include <QRect>
+
 #include <interface/irival.hpp>
 
 #include <polygon.hpp>
-
-#include <QRect>
 
 namespace KDots
 {

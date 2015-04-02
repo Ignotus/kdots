@@ -40,11 +40,12 @@ namespace ipconnect
   class ConnectDialog : public QDialog
   {
     Q_OBJECT
-    
-    Ui::ConnectDialog *m_ui;
-    QTcpServer *m_server;
   public:
     ConnectDialog(QTcpServer *server, int port, QWidget *parent = 0);
+  
+  private:
+    Ui::ConnectDialog *m_ui;
+    QTcpServer *m_server;
   };
 }
 }

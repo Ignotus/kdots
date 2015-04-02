@@ -25,8 +25,10 @@
  */
 #pragma once
 #include <memory>
+
 #include <KXmlGuiWindow>
 #include <KgDifficulty>
+
 #include "constants.hpp"
 #include "boardmodel.hpp"
 

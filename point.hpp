@@ -25,6 +25,7 @@
  */
 #pragma once
 #include <QMetaType>
+
 #include "constants.hpp"
 
 class QPointF;

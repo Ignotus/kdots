@@ -24,8 +24,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "newgamewidget.hpp"
-#include "ui_newgamewidget.h"
+
 #include <QMetaType>
+
+#include "ui_newgamewidget.h"
 #include "kdots.h"
 #include "constants.hpp"
 #include "pluginloader.hpp"

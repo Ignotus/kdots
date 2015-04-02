@@ -24,7 +24,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "polygonfinder.hpp"
+
 #include <algorithm>
+
 #include "point.hpp"
 #include "constants.hpp"
 #include "graph.hpp"

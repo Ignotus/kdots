@@ -25,6 +25,7 @@
  */
 #pragma once
 #include <QWidget>
+
 #include "constants.hpp"
 #include "gameconfig.hpp"
 

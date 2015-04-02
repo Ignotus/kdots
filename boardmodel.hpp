@@ -25,13 +25,15 @@
  */
 #pragma once
 #include <memory>
+
 #include <QObject>
+
 #include <interface/irival.hpp>
 
-#include "graph.hpp"
 #include "gameconfig.hpp"
-#include "polygon.hpp"
+#include "graph.hpp"
 #include "iboardview.hpp"
+#include "polygon.hpp"
 
 namespace KDots
 {

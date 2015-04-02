@@ -24,8 +24,11 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "pluginmanagerwidget.hpp"
+
 #include <QStandardItemModel>
+
 #include <interface/iplugin.hpp>
+
 #include "kdots.h"
 #include "pluginloader.hpp"
 #include "pluginwidgetdelegate.hpp"

@@ -24,9 +24,11 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "brushcombodelegate.hpp"
-#include <KApplication>
-#include <KComboBox>
+
+#include <QComboBox>
 #include <QPainter>
+
+#include <KApplication>
 
 namespace KDots
 {

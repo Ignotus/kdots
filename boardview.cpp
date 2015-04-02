@@ -24,14 +24,18 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "boardview.hpp"
+
 #include <cmath>
 #include <vector>
+
 #include <QPainter>
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QPainter>
+
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
+
 #include "boardmodel.hpp"
 #include "stepqueue.hpp"
 #include "brushcombodelegate.hpp"

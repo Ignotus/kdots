@@ -26,6 +26,7 @@
 #pragma once
 #include <vector>
 #include <iterator>
+
 #include "graphpoint.hpp"
 
 namespace KDots
@@ -49,40 +50,16 @@ namespace KDots
     iterator end();
     const_iterator end() const;
     
-    bool isValid(const Point& point) const
-    {
-      return point > Point() && point < Point(width(), height());
-    }
+    bool isValid(const Point& point) const;
 
-    std::size_t width() const
-    {
-      return m_graph.size();
-    }
+    std::size_t width() const;
+    std::size_t height() const;
 
-    std::size_t height() const
-    {
-      return m_graph.front().size();
-    }
+    GraphPoint& operator[](const Point& index);
+    const GraphPoint& operator[](const Point& index) const;
 
-    GraphPoint& operator[](const Point& index)
-    {
-      return m_graph[index.m_x][index.m_y];
-    }
-
-    const GraphPoint& operator[](const Point& index) const
-    {
-      return m_graph[index.m_x][index.m_y];
-    }
-
-    std::vector<GraphPoint>& operator[](int index)
-    {
-      return m_graph[index];
-    }
-
-    const std::vector<GraphPoint>& operator[](int index) const
-    {
-      return m_graph[index];
-    }
+    std::vector<GraphPoint>& operator[](int index);
+    const std::vector<GraphPoint>& operator[](int index) const;
 
     void addEdge(const KDots::Point& first, const KDots::Point& second);
     void removeEdge(const Point& first, const Point& second);

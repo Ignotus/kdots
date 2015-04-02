@@ -25,6 +25,7 @@
  */
 #pragma once
 #include <interface/iconfigurationwidget.hpp>
+
 namespace Ui
 {
   class ConfigurationWidget;
@@ -49,8 +50,6 @@ namespace ipconnect
   class ConfigurationWidget : public IConfigurationWidget
   {
     Q_OBJECT
-
-    Ui::ConfigurationWidget *m_ui;
   public:
     ConfigurationWidget(QWidget *parent = 0);
 
@@ -64,6 +63,9 @@ namespace ipconnect
 
   Q_SIGNALS:
     void needCreateBoard(bool);
+  
+  private:
+    Ui::ConfigurationWidget *m_ui;
   };
 }
 }

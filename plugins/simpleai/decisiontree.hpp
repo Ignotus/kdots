@@ -24,9 +24,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
+#include <constants.hpp>
 #include <point.hpp>
 #include <polygon.hpp>
-#include <constants.hpp>
 
 class QRect;
 

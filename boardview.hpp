@@ -25,8 +25,9 @@
  */
 #pragma once
 #include <memory>
-#include "iboardview.hpp"
+
 #include "constants.hpp"
+#include "iboardview.hpp"
 #include "point.hpp"
 
 class QPainter;

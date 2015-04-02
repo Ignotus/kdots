@@ -25,13 +25,14 @@
  */
 #include "decisiontree.hpp"
 
+#include <stack>
+
+#include <QRect>
+#include <QDebug>
+
 #include <graph.hpp>
 #include <stepqueue.hpp>
 #include <polygonfinder.hpp>
-
-#include <QRect>
-
-#include <stack>
 
 namespace KDots
 {

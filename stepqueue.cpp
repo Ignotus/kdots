@@ -25,6 +25,8 @@
  */
 #include "stepqueue.hpp"
 
+#include <QDebug>
+
 namespace KDots
 {
   StepQueue::StepQueue(Owner firstPlayer)

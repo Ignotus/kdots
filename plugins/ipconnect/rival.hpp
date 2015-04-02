@@ -25,10 +25,11 @@
  */
 #pragma once
 #include <memory>
-#include <QObject>
-#include <QTcpSocket>
-#include <QTcpServer>
+
 #include <interface/irival.hpp>
+
+class QTcpSocket;
+class QTcpServer;
 
 namespace KDots
 {

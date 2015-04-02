@@ -24,14 +24,18 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "boardmodel.hpp"
+
 #include <QDebug>
+
 #include <KMessageBox>
 #include <KLocalizedString>
+
 #include <interface/irival.hpp>
+
+#include "boardview.hpp"
 #include "graph.hpp"
 #include "polygonfinder.hpp"
 #include "stepqueue.hpp"
-#include "boardview.hpp"
 
 namespace KDots
 {

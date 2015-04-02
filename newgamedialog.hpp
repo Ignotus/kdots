@@ -25,7 +25,9 @@
  */
 #pragma once
 #include <memory>
+
 #include <QDialog>
+
 #include "gameconfig.hpp"
 
 namespace Ui

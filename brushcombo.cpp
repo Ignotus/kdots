@@ -24,8 +24,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "brushcombo.hpp"
+
 #include <QPaintEvent>
 #include <QStylePainter>
+
 #include "brushcombodelegate.hpp"
 
 namespace KDots

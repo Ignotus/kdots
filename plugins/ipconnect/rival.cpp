@@ -24,15 +24,21 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "rival.hpp"
-#include <KMessageBox>
+
 #include <QDebug>
-#include <KLocalizedString>
+#include <QTcpSocket>
+#include <QTcpServer>
+
 #include <KgDifficulty>
+#include <KMessageBox>
+#include <KLocalizedString>
+
 #include <boardmodel.hpp>
 #include <stepqueue.hpp>
 #include <graph.hpp>
-#include "connectdialog.hpp"
+
 #include "configurationwidget.hpp"
+#include "connectdialog.hpp"
 
 namespace KDots
 {

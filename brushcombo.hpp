@@ -25,6 +25,7 @@
  */
 #pragma once
 #include <KComboBox>
+
 #include "constants.hpp"
 
 namespace KDots

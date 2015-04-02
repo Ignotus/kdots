@@ -24,9 +24,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#include <list>
 #include <vector>
 #include <memory>
+
 #include "point.hpp"
 #include "constants.hpp"
 

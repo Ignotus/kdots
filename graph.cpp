@@ -65,4 +65,39 @@ namespace KDots
     m_graph[first.m_x][first.m_y].edges().removeEdge(second);
     m_graph[second.m_x][second.m_y].edges().removeEdge(first);
   }
+  
+  bool Graph::isValid(const Point& point) const
+  {
+    return point > Point() && point < Point(width(), height());
+  }
+
+  std::size_t Graph::width() const
+  {
+    return m_graph.size();
+  }
+
+  std::size_t Graph::height() const
+  {
+    return m_graph.front().size();
+  }
+
+  GraphPoint& Graph::operator[](const Point& index)
+  {
+    return m_graph[index.m_x][index.m_y];
+  }
+
+  const GraphPoint& Graph::operator[](const Point& index) const
+  {
+    return m_graph[index.m_x][index.m_y];
+  }
+
+  std::vector<GraphPoint>& Graph::operator[](int index)
+  {
+    return m_graph[index];
+  }
+
+  const std::vector<GraphPoint>& Graph::operator[](int index) const
+  {
+    return m_graph[index];
+  }
 }

@@ -24,7 +24,6 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "prioritymap.hpp"
-#include <config.hpp>
 
 #include <boost/bimap.hpp>
 #include <boost/range/combine.hpp>
@@ -32,6 +31,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QStringList>
+
+#include <config.hpp>
 
 namespace KDots
 {

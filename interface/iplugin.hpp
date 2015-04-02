@@ -26,7 +26,6 @@
 #pragma once
 #include <memory>
 #include <QIcon>
-#include <QString>
 #include <QtPlugin>
 
 namespace KDots

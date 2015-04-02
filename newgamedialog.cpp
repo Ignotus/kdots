@@ -24,15 +24,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "newgamedialog.hpp"
+
 #include <QDebug>
+
 #include <interface/irival.hpp>
 #include <interface/iplugin.hpp>
 #include <interface/iconfigurationwidget.hpp>
+
 #include "ui_newgamedialog.h"
 #include "pluginmanagerwidget.hpp"
 #include "newgamewidget.hpp"
 #include "pluginloader.hpp"
-
 
 namespace KDots
 {

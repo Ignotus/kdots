@@ -25,8 +25,7 @@
  */
 #pragma once
 #include <memory>
-#include <list>
-#include <unordered_set>
+
 #include "polygon.hpp"
 #include "constants.hpp"
 

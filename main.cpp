@@ -25,10 +25,13 @@
  */
 #include <QApplication>
 #include <QCommandLineParser>
+
 #include <KAboutData>
 #include <KLocale>
 #include <KLocalizedString>
+
 #include <config.hpp>
+
 #include "mainwindow.hpp"
 #include "gameconfig.hpp"
 

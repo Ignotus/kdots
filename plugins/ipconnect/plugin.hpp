@@ -25,6 +25,7 @@
  */
 #pragma once
 #include <interface/iplugin.hpp>
+
 #include "rival.hpp"
 
 namespace KDots

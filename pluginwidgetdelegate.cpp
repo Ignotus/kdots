@@ -24,18 +24,21 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "pluginwidgetdelegate.hpp"
-#include <QPainter>
-#include <KApplication>
+
 #include <QDebug>
+#include <QPainter>
+
+#include <KApplication>
+
+#include <interface/iplugin.hpp>
+
 #include "pluginloader.hpp"
-#include "interface/iplugin.hpp"
 
 namespace KDots
 {
   PluginWidgetDelegate::PluginWidgetDelegate(QObject *parent)
     : QItemDelegate(parent)
   {
-    
   }
   
   QSize PluginWidgetDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
