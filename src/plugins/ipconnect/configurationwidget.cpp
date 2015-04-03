@@ -23,78 +23,65 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#pragma once
-#include <stdexcept>
+#include "configurationwidget.hpp"
 
-#include "point.hpp"
+#include "ui_configurationwidget.h"
 
 namespace KDots
 {
-  template<int SIZE>
-  class EdgeList final
+namespace ipconnect
+{
+  namespace
   {
-  public:
-    EdgeList()
-      : m_count(0)
-    {}
-
-    bool addEdge(const Point& point)
+    enum Tabs
     {
-      if(m_count == SIZE || hasPoint(point))
-        return false;
-
-      m_pointList[m_count++] = point;
+      CreateGameTab = 0,
+      JoinGameTab = 1
+    };
+  }
+  
+  ConfigurationWidget::ConfigurationWidget(QWidget *parent)
+    : IConfigurationWidget(parent)
+    , m_ui(new Ui::ConfigurationWidget)
+  {
+    m_ui->setupUi(this);
+    
+    connect(m_ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(onTabChanged(int)));
+  }
+  
+  void ConfigurationWidget::requestState()
+  {
+    onTabChanged(m_ui->tabWidget->currentIndex());
+  }
+  
+  void ConfigurationWidget::onTabChanged(int index)
+  {
+    emit needCreateBoard(index == CreateGameTab);
+  }
+  
+  bool ConfigurationWidget::clientConfig(ClientConfig& config)
+  {
+    if (m_ui->tabWidget->currentIndex() == CreateGameTab)
+      return false;
+    else
+    {
+      config.m_host = m_ui->host->text();
+      config.m_port = m_ui->connectionPort->value();
       return true;
     }
-
-    int size() const
-    {
-      return m_count;
-    }
-
-    bool hasPoint(const Point& point)
-    {
-      for(int i = 0;  i < m_count; ++i)
-      {
-        if(m_pointList[i] == point)
-          return true;
-      }
-
-      return false;
-    }
-
-    Point& operator[](int index)
-    {
-      return const_cast<EdgeList<SIZE>&>(static_cast<const EdgeList<SIZE>&>(*this) [index]);
-    }
-
-    const Point& operator[](int index) const
-    {
-      if(index < 0 || index >= m_count)
-        throw std::runtime_error("beyond the limit of the array");
-      return m_pointList[index];
-    }
-
-    bool removeEdge(const Point& toPoint)
-    {
-      for(int i = 0; i < m_count; ++i)
-      {
-        if(m_pointList[i] == toPoint)
-        {
-          m_count--;
-
-          if(i != m_count)
-            m_pointList[i] = m_pointList[m_count];
-
-          return true;
-        }
-      }
-
-      return false;
-    }
+  }
   
-  private:
-    int m_count;
-    Point m_pointList[SIZE];
-  };
+  bool ConfigurationWidget::serverConfig(ServerConfig& config)
+  {
+    if (m_ui->tabWidget->currentIndex() == JoinGameTab)
+      return false;
+    else
+    {
+      config.m_port = m_ui->listenPort->value();
+      config.user = m_ui->user->currentIndex();
+      return true;
+    }
+  }
+
+}
 }

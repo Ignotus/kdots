@@ -24,54 +24,64 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#include "point.hpp"
-#include "constants.hpp"
 
+#include <boost/noncopyable.hpp>
+
+#include <QVector>
+
+#include <kdotslib/constants.hpp>
+#include <kdotslib/point.hpp>
+
+struct stat;
 namespace KDots
 {
-  class KDOTS_EXPORT StepQueue
+namespace simpleai
+{
+  enum class MapElement
   {
-  public:
-    StepQueue(Owner firstPlayer);
-    virtual ~StepQueue() {}
-    
-    Owner firstOwner() const;
-    Point lastPoint() const;
-    
-    void clear();
-
-    void addPoint(const Point& point);
-    void addCaptured();
-    void addEmptyCaptured();
-    
-    std::size_t emptyCapturedCount() const;
-
-    Owner getCurrentOwner() const;
-    std::size_t getMarks(Owner owner) const;
-    const std::vector<Point>& getPoints(Owner owner) const;
-    const std::vector<Point>& getAllPoints() const;
-
-    static Owner other(Owner player);
-
-    virtual Owner nextStep();
+    EM, //Empty
+    NM, // Does not matter
+    FI, //First
+    SE, //Second
+    PF, // Possibly first
+    PS, // Possibly second
+    CU // Current
+  };
   
-  protected:
-    Owner m_owner;
-    bool m_captured; 
-    
-  private:
-    Owner m_firstOwner;
-    std::vector<Point> m_firstPoints, m_secondPoints, m_points;
-    std::size_t m_first, m_second, m_emptyCaptured;
-  };
-
-  class KDOTS_EXPORT ExtraStepQueue final : public StepQueue
+  typedef QVector<MapElement> MapLine;
+  typedef QVector<MapLine> MapType;
+  
+  class MapData
   {
   public:
-    ExtraStepQueue(Owner firstPlayer);
+    MapData();
+    MapData(const MapType& map, const Point& current, float priority);
 
-    Owner nextStep();
+    QString toString() const;
+
+  public:
+    MapType m_map;
+    Point m_current;
+    float m_priority;
   };
+  
+  class PriorityMap : boost::noncopyable
+  {
+  public:
+    static PriorityMap& instance();
 
+    const QVector<MapData>& priorityMap();
 
+  private:
+    PriorityMap();
+
+    static MapData inverse(const MapData& data);
+    static MapData rotate(const MapData& data);
+    static MapData opposite(const MapData& data);
+    QVector<MapData> loadMap() const;
+
+  private:
+    QVector<MapData> m_priorityMap;
+  };
+}
 }

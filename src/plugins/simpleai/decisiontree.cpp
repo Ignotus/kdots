@@ -30,9 +30,9 @@
 #include <QRect>
 #include <QDebug>
 
-#include <graph.hpp>
-#include <stepqueue.hpp>
-#include <polygonfinder.hpp>
+#include <kdotslib/graph.hpp>
+#include <kdotslib/stepqueue.hpp>
+#include <kdotslib/polygonfinder.hpp>
 
 namespace KDots
 {

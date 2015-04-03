@@ -32,6 +32,7 @@
 #include <QTextStream>
 #include <QStringList>
 
+// TODO: Remove this header
 #include <config.hpp>
 
 namespace KDots
