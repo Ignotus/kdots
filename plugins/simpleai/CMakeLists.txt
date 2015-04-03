@@ -10,19 +10,8 @@ include_directories(
 
 set(SIMPLEAI_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-set(SIMPLEAI_HEADERS
-  prioritymap.hpp
-  rival.hpp
-  plugin.hpp
-  decisiontree.hpp
-)
-
-set(SIMPLEAI_SRCS
-  prioritymap.cpp
-  rival.cpp
-  plugin.cpp
-  decisiontree.cpp
-)
+file(GLOB SIMPLEAI_HEADERS *.hpp)
+file(GLOB SIMPLEAI_SRCS *.cpp)
 
 add_library(kdots_simpleai MODULE
   ${SIMPLEAI_SRCS}

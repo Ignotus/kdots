@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011, 2012, 2014, 2015 Minh Ngo <minh@fedoraproject.org>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -42,14 +42,14 @@ namespace
     for (auto itr = polygon.begin(), itrEnd = polygon.end();
         itr != itrEnd; ++itr)
     {
-      res += (itr->m_x - prevPoint.m_x) * (itr->m_y + prevPoint.m_y); 
+      res += (itr->m_x - prevPoint.m_x) * (itr->m_y + prevPoint.m_y);
       prevPoint = *itr;
-    } 
-    
+    }
+
     return std::abs(res);
   }
 }
-  
+
 int KDots::Polygon::area() const
 {
   if (m_area < 0)
@@ -94,7 +94,7 @@ KDots::Point KDots::Polygon::getPrevPoint(std::vector<KDots::Point>::const_itera
       prev = --m_points.end();
     else
       --prev;
-    
+
     if(prev->m_y != currentY)
       return *prev;
   }
@@ -111,12 +111,12 @@ KDots::Point KDots::Polygon::getNextPoint(int& shift, std::vector<KDots::Point>:
       next = m_points.begin();
     else
       ++next;
-    
+
     if (next->m_y != currentY)
       return *next;
   }
 }
-  
+
 bool KDots::Polygon::contains(const Point& point) const
 {
   // k - a count of points in the same line with "point" object
@@ -131,16 +131,16 @@ bool KDots::Polygon::contains(const Point& point) const
       ++itr;
       continue;
     }
-    
+
     if (itr->m_x == point.m_x)
-      return true;  
+      return true;
 
     const Point& prevPoint = getPrevPoint(itr);
     const Point& nextPoint = getNextPoint(shift, itr);
 
     if (itr->m_x < point.m_x && prevPoint.m_y != nextPoint.m_y && shift == 1)
       ++i;
-    
+
     ++itr;
   }
 

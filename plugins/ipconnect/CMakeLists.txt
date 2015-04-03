@@ -12,25 +12,9 @@ find_package(Qt5 REQUIRED
   Network
 )
 
-
-SET(IPCONNECT_HEADERS
-  connectdialog.hpp
-  plugin.hpp
-  rival.hpp
-  configurationwidget.hpp
-)
-
-SET(IPCONNECT_SRCS
-  connectdialog.cpp
-  plugin.cpp
-  rival.cpp
-  configurationwidget.cpp
-)
-
-SET(FORMS
-  configurationwidget.ui
-  connectdialog.ui
-)
+file(GLOB IPCONNECT_HEADERS *.hpp)
+file(GLOB IPCONNECT_SRCS *.cpp)
+file(GLOB FORMS *.ui)
 
 ki18n_wrap_ui(IPCONNECT_SRCS ${FORMS})
 

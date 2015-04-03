@@ -43,40 +43,9 @@ include_directories(
   ${Boost_INCLUDE_DIR}
 )
 
-set(SRCS
-  pluginloader.cpp
-  pluginmanagerwidget.cpp
-  newgamewidget.cpp
-  newgamedialog.cpp
-  mainwindow.cpp
-  boardview.cpp
-  pluginwidgetdelegate.cpp
-  brushcombo.cpp
-  brushcombodelegate.cpp
-  main.cpp
-  kdots.kcfgc
-)
-
-set(HEADERS
-  pluginloader.hpp
-  pluginmanagerwidget.hpp
-  newgamedialog.hpp
-  newgamewidget.hpp
-  mainwindow.hpp
-  boardview.hpp
-  pluginwidgetdelegate.hpp
-  brushcombo.hpp
-  brushcombodelegate.hpp
-)
-
-set(FORMS
-  ui/mainwindow.ui
-  ui/newgamewidget.ui
-  ui/newgamedialog.ui
-  ui/pluginmanagerwidget.ui
-  ui/boardconfigwidget.ui
-)
-
+file(GLOB HDRS *.hpp)
+file(GLOB SRCS *.cpp)
+file(GLOB FORMS ui/*.ui)
 
 ki18n_wrap_ui(SRCS ${FORMS})
 kconfig_add_kcfg_files(SRCS kdots.kcfgc)

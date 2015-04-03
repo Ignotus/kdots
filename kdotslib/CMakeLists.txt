@@ -12,30 +12,8 @@ set(KDOTS_REQUIRED_LIBS
   KF5::KDELibs4Support
 )
 
-set(KDOTSLIB_SRCS
-  point.cpp
-  graphpoint.cpp
-  graph.cpp
-  boardmodel.cpp
-  stepqueue.cpp
-  polygon.cpp
-  polygonfinder.cpp
-  gameconfig.cpp
-)
-
-set(KDOTSLIB_HEADERS
-  graphpoint.hpp
-  graph.hpp
-  boardmodel.hpp
-  stepqueue.hpp
-  edgelist.hpp
-  point.hpp
-  constants.hpp
-  polygon.hpp
-  polygonfinder.hpp
-  gameconfig.hpp
-  iboardview.hpp
-)
+file(GLOB KDOTSLIB_HDRS *.hpp)
+file(GLOB KDOTSLIB_SRCS *.cpp)
 
 set(KDOTS_VERSION "0.5.3")
 set(KDOTS_SOVERSION "1")
