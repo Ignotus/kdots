@@ -27,9 +27,11 @@
 
 #include <QMetaType>
 
+#include <constants.hpp>
+
 #include "ui_newgamewidget.h"
+
 #include "kdots.h"
-#include "constants.hpp"
 #include "pluginloader.hpp"
 
 namespace KDots

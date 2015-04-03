@@ -78,3 +78,5 @@ namespace singlepc
   }
 }
 }
+
+#include "moc_plugin.cpp"

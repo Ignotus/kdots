@@ -28,7 +28,7 @@
 
 #include <QDialog>
 
-#include "gameconfig.hpp"
+#include <gameconfig.hpp>
 
 namespace Ui
 {

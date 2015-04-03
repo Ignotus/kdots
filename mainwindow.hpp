@@ -29,7 +29,7 @@
 #include <KXmlGuiWindow>
 #include <KgDifficulty>
 
-#include "constants.hpp"
+#include <constants.hpp>
 
 namespace Ui
 {

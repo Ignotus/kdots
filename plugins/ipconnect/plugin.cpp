@@ -59,3 +59,5 @@ namespace ipconnect
   }
 }
 }
+
+#include "moc_plugin.cpp"

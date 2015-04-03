@@ -81,6 +81,7 @@ namespace ipconnect
       return true;
     }
   }
+}
+}
 
-}
-}
+#include "moc_configurationwidget.cpp"

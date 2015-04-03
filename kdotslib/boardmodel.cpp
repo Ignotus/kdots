@@ -32,7 +32,7 @@
 
 #include <interface/irival.hpp>
 
-#include "boardview.hpp"
+#include "iboardview.hpp"
 #include "graph.hpp"
 #include "polygonfinder.hpp"
 #include "stepqueue.hpp"

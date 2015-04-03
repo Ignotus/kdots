@@ -53,3 +53,5 @@ namespace ipconnect
   }
 }
 }
+
+#include "moc_connectdialog.cpp"

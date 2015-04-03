@@ -36,11 +36,12 @@
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 
-#include "boardmodel.hpp"
-#include "stepqueue.hpp"
+#include <boardmodel.hpp>
+#include <stepqueue.hpp>
+#include <graph.hpp>
+
 #include "brushcombodelegate.hpp"
 #include "kdots.h"
-#include "graph.hpp"
 
 namespace KDots
 { 
@@ -284,3 +285,5 @@ namespace KDots
     painter.drawPixmap(dx, dy, pixmap);
   }
 }
+
+#include "moc_boardview.cpp"

@@ -31,9 +31,9 @@
 #include <KLocalizedString>
 
 #include <config.hpp>
+#include <gameconfig.hpp>
 
 #include "mainwindow.hpp"
-#include "gameconfig.hpp"
 
 void initAboutData(KAboutData& aboutData)
 {

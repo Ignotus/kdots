@@ -25,7 +25,8 @@
  */
 #pragma once
 #include <QObject>
-#include <constants.hpp>
+
+#include <kdotslib/constants.hpp>
 
 class QStatusBar;
 class KgDifficultyLevel;

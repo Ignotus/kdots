@@ -58,3 +58,5 @@ namespace simpleai
   }
 }
 }
+
+#include "moc_plugin.cpp"

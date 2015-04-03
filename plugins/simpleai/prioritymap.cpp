@@ -32,7 +32,7 @@
 #include <QTextStream>
 #include <QStringList>
 
-#include <config.hpp>
+#include <kdotslib/config.hpp>
 
 namespace KDots
 {

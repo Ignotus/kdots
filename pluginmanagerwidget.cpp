@@ -29,10 +29,11 @@
 
 #include <interface/iplugin.hpp>
 
+#include "ui_pluginmanagerwidget.h"
+
 #include "kdots.h"
 #include "pluginloader.hpp"
 #include "pluginwidgetdelegate.hpp"
-#include "ui_pluginmanagerwidget.h"
 
 namespace KDots
 {
@@ -78,3 +79,5 @@ namespace KDots
         .at(0).data().toString();
   }
 }
+
+#include "moc_pluginmanagerwidget.cpp"

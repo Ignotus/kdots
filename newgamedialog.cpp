@@ -32,6 +32,7 @@
 #include <interface/iconfigurationwidget.hpp>
 
 #include "ui_newgamedialog.h"
+
 #include "pluginmanagerwidget.hpp"
 #include "newgamewidget.hpp"
 #include "pluginloader.hpp"
@@ -155,5 +156,6 @@ namespace KDots
     m_game = new NewGameWidget(this);
     m_ui->Grid->addWidget(m_game, 0, 0);
   }
-  
 }
+
+#include "moc_newgamedialog.cpp"

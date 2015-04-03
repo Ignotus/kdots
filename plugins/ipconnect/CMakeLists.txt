@@ -5,7 +5,7 @@ project(ipconnect)
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}
-  ${KDOTS_SOURCE_DIR}
+  ${KDOTS_INCLUDE_DIR}
 )
 
 find_package(Qt5 REQUIRED

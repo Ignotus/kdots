@@ -36,15 +36,17 @@
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 
+#include <boardmodel.hpp>
+#include <graph.hpp>
+#include <stepqueue.hpp>
+
 #include "ui_mainwindow.h"
 #include "ui_boardconfigwidget.h"
+
 #include "newgamedialog.hpp"
 #include "boardview.hpp"
 #include "pluginloader.hpp"
 #include "kdots.h"
-#include "stepqueue.hpp"
-#include "graph.hpp"
-#include "boardmodel.hpp"
 
 namespace KDots
 {

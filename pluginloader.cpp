@@ -32,8 +32,8 @@
 
 #include <interface/iplugin.hpp>
 
-#include "constants.hpp"
-#include "config.hpp"
+#include <config.hpp>
+#include <constants.hpp>
 
 namespace KDots
 {

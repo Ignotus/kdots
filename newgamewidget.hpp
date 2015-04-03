@@ -26,8 +26,8 @@
 #pragma once
 #include <QWidget>
 
-#include "constants.hpp"
-#include "gameconfig.hpp"
+#include <constants.hpp>
+#include <gameconfig.hpp>
 
 namespace Ui
 {

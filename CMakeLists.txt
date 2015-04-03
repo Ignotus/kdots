@@ -6,7 +6,6 @@ find_package(ECM REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 include(KDEInstallDirs)
-include(KDECMakeSettings)
 include(KDECompilerSettings)
 
 find_package(Qt5 REQUIRED
@@ -23,24 +22,24 @@ find_package(KF5 REQUIRED COMPONENTS
 
 find_package(KF5KDEGames 4.9.0 REQUIRED)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexceptions")
+
+set(PLUGIN_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/plugins)
+set(KDOTS_INCLUDE_DIR
+  ${CMAKE_CURRENT_BINARY_DIR}/kdotslib
+  ${CMAKE_CURRENT_SOURCE_DIR}/kdotslib
+)
+
+set(PLUGINS_DIR ${CMAKE_INSTALL_PREFIX}/${KDE_INSTALL_PLUGINDIR}/kdots)
+
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}
+  ${KDOTS_INCLUDE_DIR}
   ${KDEGAMES_INCLUDE_DIRS}
   ${QT_INCLUDES}
   ${Boost_INCLUDE_DIR}
 )
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexceptions")
-
-set(PLUGIN_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/plugins)
-set(KDOTS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-
-set(INSTALL_PREFIX "/usr")
-
-set(PLUGINS_DIR ${CMAKE_INSTALL_PREFIX}/${KDE_INSTALL_PLUGINDIR}/kdots)
-
-message(STATUS "Setting plugin directory as ${PLUGINS_DIR}")
 
 set(SRCS
   pluginloader.cpp
@@ -66,12 +65,6 @@ set(HEADERS
   pluginwidgetdelegate.hpp
   brushcombo.hpp
   brushcombodelegate.hpp
-)
-
-set(INTERFACE_HEAD
-  interface/iplugin.hpp
-  interface/irival.hpp
-  interface/iconfigurationwidget.hpp
 )
 
 set(FORMS
