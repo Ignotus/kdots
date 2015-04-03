@@ -50,7 +50,7 @@ namespace singlepc
     void needAddPoint(const Point&);
   };
 
-  class KDE_EXPORT Plugin : public KDots::IPlugin
+  class Plugin : public KDots::IPlugin
   {
     Q_OBJECT
     Q_INTERFACES(KDots::IPlugin)

@@ -24,12 +24,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#include <vector>
-#include <memory>
-
 #include <QScopedPointer>
 
 #include "constants.hpp"
+#include "enums.hpp"
+
+namespace std
+{
+  template<typename T>
+  class shared_ptr;
+
+  template<class T, class Alloc>
+  class vector;
+}
 
 namespace KDots
 {

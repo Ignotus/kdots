@@ -45,19 +45,6 @@
 
 namespace KDots
 {
-  enum class GameMode
-  {
-    EXTRA_TURN_MODE,
-    DEFAULT_MODE
-  };
-
-  enum Owner
-  {
-    NONE = 1,
-    FIRST = 2,
-    SECOND = 4
-  };
-  
   const int DIRECTION_COUNT = 8;
   
   const QString PLUGIN_SUFFIX = QLatin1String("kdots_");

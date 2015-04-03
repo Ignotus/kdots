@@ -26,6 +26,7 @@
 #pragma once
 #include <QMetaType>
 
+#include "enums.hpp"
 #include "constants.hpp"
 #include "point.hpp"
 

@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011, 2012, 2014, 2015 Minh Ngo <minh@fedoraproject.org>
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -37,17 +37,17 @@ namespace KDots
     Q_DISABLE_COPY(PolygonPrivate)
   private:
     PolygonPrivate(const std::vector<Point>& points);
-  
+
     Point getPrevPoint(std::vector<Point>::const_iterator current) const;
     Point getNextPoint(int& shift, std::vector<Point>::const_iterator current) const;
-  
+
   private:
     std::vector<Point> m_points;
     bool m_filled;
     Owner m_owner;
-    
+
     mutable int m_area;
-    
+
     //Polygon *q_ptr;
   };
 }

@@ -24,55 +24,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#include "point.hpp"
-#include "constants.hpp"
-#include "enums.hpp"
 
 namespace KDots
 {
-  class KDOTS_EXPORT StepQueue
+  enum class GameMode
   {
-  public:
-    StepQueue(Owner firstPlayer);
-    virtual ~StepQueue() {}
-    
-    Owner firstOwner() const;
-    Point lastPoint() const;
-    
-    void clear();
-
-    void addPoint(const Point& point);
-    void addCaptured();
-    void addEmptyCaptured();
-    
-    std::size_t emptyCapturedCount() const;
-
-    Owner getCurrentOwner() const;
-    std::size_t getMarks(Owner owner) const;
-    const std::vector<Point>& getPoints(Owner owner) const;
-    const std::vector<Point>& getAllPoints() const;
-
-    static Owner other(Owner player);
-
-    virtual Owner nextStep();
-  
-  protected:
-    Owner m_owner;
-    bool m_captured; 
-    
-  private:
-    Owner m_firstOwner;
-    std::vector<Point> m_firstPoints, m_secondPoints, m_points;
-    std::size_t m_first, m_second, m_emptyCaptured;
+    EXTRA_TURN_MODE,
+    DEFAULT_MODE
   };
 
-  class KDOTS_EXPORT ExtraStepQueue final : public StepQueue
+  enum Owner
   {
-  public:
-    ExtraStepQueue(Owner firstPlayer);
-
-    Owner nextStep();
+    NONE = 1,
+    FIRST = 2,
+    SECOND = 4
   };
-
-
 }

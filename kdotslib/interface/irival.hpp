@@ -26,7 +26,7 @@
 #pragma once
 #include <QObject>
 
-#include <kdotslib/constants.hpp>
+#include <enums.hpp>
 
 class QStatusBar;
 class KgDifficultyLevel;
