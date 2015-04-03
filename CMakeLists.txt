@@ -43,31 +43,6 @@ set(PLUGINS_DIR ${CMAKE_INSTALL_PREFIX}/${KDE_INSTALL_PLUGINDIR}/kdots)
 
 message(STATUS "Setting plugin directory as ${PLUGINS_DIR}")
 
-set(KDOTSLIB_SRCS
-  point.cpp
-  graphpoint.cpp
-  graph.cpp
-  boardmodel.cpp
-  stepqueue.cpp
-  polygon.cpp
-  polygonfinder.cpp
-  gameconfig.cpp
-)
-
-set(KDOTSLIB_HEADERS
-  graphpoint.hpp
-  graph.hpp
-  boardmodel.hpp
-  stepqueue.hpp
-  edgelist.hpp
-  point.hpp
-  constants.hpp
-  polygon.hpp
-  polygonfinder.hpp
-  gameconfig.hpp
-  iboardview.hpp
-)
-
 set(SRCS
   pluginloader.cpp
   pluginmanagerwidget.cpp
@@ -118,31 +93,7 @@ set(KDOTS_SOVERSION "1")
 
 configure_file(config.hpp.in config.hpp)
 
-set(KDOTS_REQUIRED_LIBS
-  ${KDEGAMES_LIBRARY}
-  ${QT_LIBRARIES}
-  ${Boost_LIBRARIES}
-  KF5::TextWidgets
-  KF5::XmlGui
-  KF5::KDELibs4Support
-)
-
-add_library(kdotslib SHARED
-  ${KDOTSLIB_SRCS}
-)
-
-add_executable(kdots
-  ${SRCS}
-  ${INTERFACE_HEAD}
-)
-
-target_link_libraries(kdotslib
-  ${KDOTS_REQUIRED_LIBS}
-)
-
-set_target_properties(kdotslib
-  PROPERTIES VERSION ${KDOTS_VERSION} SOVERSION ${KDOTS_SOVERSION}
-)
+add_executable(kdots ${SRCS})
 
 target_link_libraries(kdots
   ${KDOTS_REQUIRED_LIBS}
@@ -150,8 +101,8 @@ target_link_libraries(kdots
 )
 
 install(TARGETS kdots DESTINATION ${BIN_INSTALL_DIR})
-install(TARGETS kdotslib DESTINATION ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES kdotsui.rc DESTINATION ${KXMLGUI_INSTALL_DIR}/kdots)
 install(PROGRAMS kdots.desktop  DESTINATION ${XDG_APPS_INSTALL_DIR})
 
+add_subdirectory(kdotslib)
 add_subdirectory(plugins)
