@@ -52,8 +52,8 @@ namespace KDots
     bool contains(const Point& point) const;
     
   private:
-    KDots::Point getPrevPoint(std::vector<KDots::Point>::const_iterator current) const;
-    KDots::Point getNextPoint(int& shift, std::vector<KDots::Point>::const_iterator current) const;
+    Point getPrevPoint(std::vector<Point>::const_iterator current) const;
+    Point getNextPoint(int& shift, std::vector<Point>::const_iterator current) const;
   
   private:
     std::vector<Point> m_points;

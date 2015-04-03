@@ -26,123 +26,127 @@
 
 #include "polygon.hpp"
 
-KDots::Polygon::Polygon(const std::vector<Point>& points)
-  : m_points(points)
-  , m_filled(false)
-  , m_area(-1)
+namespace KDots
 {
-}
-
-namespace
-{
-  int doubleArea(const std::vector<KDots::Point>& polygon)
+  Polygon::Polygon(const std::vector<Point>& points)
+    : m_points(points)
+    , m_filled(false)
+    , m_area(-1)
   {
-    int res = 0;
-    KDots::Point prevPoint = polygon.back();
-    for (auto itr = polygon.begin(), itrEnd = polygon.end();
-        itr != itrEnd; ++itr)
+  }
+
+  namespace
+  {
+    int doubleArea(const std::vector<Point>& polygon)
     {
-      res += (itr->m_x - prevPoint.m_x) * (itr->m_y + prevPoint.m_y);
-      prevPoint = *itr;
+      int res = 0;
+      Point prevPoint = polygon.back();
+      for (auto itr = polygon.begin(), itrEnd = polygon.end();
+          itr != itrEnd; ++itr)
+      {
+        res += (itr->m_x - prevPoint.m_x) * (itr->m_y + prevPoint.m_y);
+        prevPoint = *itr;
+      }
+
+      return std::abs(res);
+    }
+  }
+
+  int Polygon::area() const
+  {
+    if (m_area < 0)
+    {
+      m_area = doubleArea(m_points);
     }
 
-    return std::abs(res);
-  }
-}
-
-int KDots::Polygon::area() const
-{
-  if (m_area < 0)
-  {
-    m_area = doubleArea(m_points);
+    return m_area;
   }
 
-  return m_area;
-}
-
-const std::vector<KDots::Point>& KDots::Polygon::points() const
-{
-  return m_points;
-}
-
-bool KDots::Polygon::isFilled() const
-{
-  return m_filled;
-}
-
-void KDots::Polygon::setFilled(bool filled)
-{
-  m_filled = filled;
-}
-
-KDots::Owner KDots::Polygon::owner() const
-{
-  return m_owner;
-}
-
-void KDots::Polygon::setOwner(Owner own)
-{
-  m_owner = own;
-}
-
-KDots::Point KDots::Polygon::getPrevPoint(std::vector<KDots::Point>::const_iterator current) const
-{
-  const int currentY = current->m_y;
-  for (auto prev = current;;)
+  const std::vector<Point>& Polygon::points() const
   {
-    if (prev == m_points.begin())
-      prev = --m_points.end();
-    else
-      --prev;
-
-    if(prev->m_y != currentY)
-      return *prev;
+    return m_points;
   }
-}
 
-KDots::Point KDots::Polygon::getNextPoint(int& shift, std::vector<KDots::Point>::const_iterator current) const
-{
-  const int currentY = current->m_y;
-  shift = 0;
-  for (auto next = current;;)
+  bool Polygon::isFilled() const
   {
-    ++shift;
-    if (next == --m_points.end())
-      next = m_points.begin();
-    else
-      ++next;
-
-    if (next->m_y != currentY)
-      return *next;
+    return m_filled;
   }
-}
 
-bool KDots::Polygon::contains(const Point& point) const
-{
-  // k - a count of points in the same line with "point" object
-  // i - crosses count
-  int i = 0, shift;
-
-  std::vector<KDots::Point>::const_iterator itr = m_points.begin(), itrEnd = m_points.end();
-  while (itr != itrEnd)
+  void Polygon::setFilled(bool filled)
   {
-    if (itr->m_y != point.m_y)
+    m_filled = filled;
+  }
+
+  Owner Polygon::owner() const
+  {
+    return m_owner;
+  }
+
+  void Polygon::setOwner(Owner own)
+  {
+    m_owner = own;
+  }
+
+  Point Polygon::getPrevPoint(std::vector<Point>::const_iterator current) const
+  {
+    const int currentY = current->m_y;
+    for (auto prev = current;;)
     {
+      if (prev == m_points.begin())
+        prev = --m_points.end();
+      else
+        --prev;
+
+      if(prev->m_y != currentY)
+        return *prev;
+    }
+  }
+
+  Point Polygon::getNextPoint(int& shift, std::vector<Point>::const_iterator current) const
+  {
+    const int currentY = current->m_y;
+    shift = 0;
+    for (auto next = current;;)
+    {
+      ++shift;
+      if (next == --m_points.end())
+        next = m_points.begin();
+      else
+        ++next;
+
+      if (next->m_y != currentY)
+        return *next;
+    }
+  }
+
+  bool Polygon::contains(const Point& point) const
+  {
+    // k - a count of points in the same line with "point" object
+    // i - crosses count
+    int i = 0, shift;
+
+    auto itr = m_points.begin();
+    auto itrEnd = m_points.end();
+    while (itr != itrEnd)
+    {
+      if (itr->m_y != point.m_y)
+      {
+        ++itr;
+        continue;
+      }
+
+      if (itr->m_x == point.m_x)
+        return true;
+
+      const Point& prevPoint = getPrevPoint(itr);
+      const Point& nextPoint = getNextPoint(shift, itr);
+
+      if (itr->m_x < point.m_x && prevPoint.m_y != nextPoint.m_y && shift == 1)
+        ++i;
+
       ++itr;
-      continue;
     }
 
-    if (itr->m_x == point.m_x)
-      return true;
-
-    const Point& prevPoint = getPrevPoint(itr);
-    const Point& nextPoint = getNextPoint(shift, itr);
-
-    if (itr->m_x < point.m_x && prevPoint.m_y != nextPoint.m_y && shift == 1)
-      ++i;
-
-    ++itr;
+    return i % 2;
   }
-
-  return i % 2;
 }
