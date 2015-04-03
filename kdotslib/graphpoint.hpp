@@ -25,7 +25,9 @@
  */
 #pragma once
 #include "edgelist.hpp"
+#include "kdots_api.hpp"
 #include "enums.hpp"
+#include "constants.hpp"
 
 namespace KDots
 {

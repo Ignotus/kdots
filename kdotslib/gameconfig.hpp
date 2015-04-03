@@ -27,7 +27,7 @@
 #include <QMetaType>
 
 #include "enums.hpp"
-#include "constants.hpp"
+#include "kdots_api.hpp"
 #include "point.hpp"
 
 namespace KDots

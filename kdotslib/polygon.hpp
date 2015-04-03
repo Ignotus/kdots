@@ -28,7 +28,7 @@
 
 #include <QScopedPointer>
 
-#include "constants.hpp"
+#include "kdots_api.hpp"
 #include "enums.hpp"
 
 namespace std

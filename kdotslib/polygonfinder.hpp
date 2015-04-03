@@ -28,7 +28,7 @@
 
 #include <QScopedPointer>
 
-#include "constants.hpp"
+#include "kdots_api.hpp"
 #include "enums.hpp"
 #include "polygon.hpp"
 
@@ -44,12 +44,12 @@ namespace KDots
   public:
     PolygonFinder(const Graph& graph, Owner owner,
                   const std::vector<Point>& additionalPoints = {});
-    
+
     ~PolygonFinder();
 
     // O(n)
     const PolyList& operator()(const Point& point);
-  
+
   private:
     const QScopedPointer<PolygonFinderPrivate> d_ptr;
   };

@@ -40,8 +40,8 @@ namespace KDots
     , m_additionalPoints(additionalPoints)
   {
   }
-  
-  
+
+
   namespace
   {
     const Point GRAPH_OFFSET[DIRECTION_COUNT] = {
@@ -88,24 +88,24 @@ namespace KDots
 
     m_cache.pop_back();
   }
-  
+
   bool PolygonFinderPrivate::isAdditionalPoint(const Point& point) const
   {
     for (const Point& pi : m_additionalPoints)
       if (pi == point)
         return true;
-    
+
     return false;
   }
-  
+
   //////////////////////////////////////////////////////////////////////////////
-  
+
   PolygonFinder::PolygonFinder(const Graph& graph, Owner owner,
                                const std::vector<Point>& additionalPoints)
     : d_ptr(new PolygonFinderPrivate(graph, owner, additionalPoints))
   {
   }
-  
+
   PolygonFinder::~PolygonFinder()
   {
   }
@@ -128,7 +128,7 @@ namespace KDots
     Q_D(PolygonFinder);
     d->m_first = point;
     d->findPolygons(point);
-    
+
     auto& polygonContainer = d->m_polygons;
 
     if (polygonContainer.empty())

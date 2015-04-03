@@ -24,11 +24,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#include <QString>
+#define KDE_EXPORT __attribute__ ((visibility("default")))
+#define KDE_IMPORT __attribute__ ((visibility("default")))
 
-namespace KDots
-{
-  const int DIRECTION_COUNT = 8;
-  
-  const QString PLUGIN_SUFFIX = QLatin1String("kdots_");
-}
+#ifndef KDOTS_EXPORT
+# if defined(MAKE_KDOTS_LIB)
+   // We are building this library
+#  define KDOTS_EXPORT KDE_EXPORT
+# else
+   // We are using this library
+#  define KDOTS_EXPORT KDE_IMPORT
+# endif
+#endif
+
+# ifndef KDOTS_EXPORT_DEPRECATED
+#  define KDOTS_EXPORT_DEPRECATED KDE_DEPRECATED KDOTS_EXPORT
+# endif

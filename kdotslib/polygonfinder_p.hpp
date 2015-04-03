@@ -28,7 +28,6 @@
 
 #include "point.hpp"
 #include "polygon.hpp"
-#include "constants.hpp"
 
 namespace KDots
 {
@@ -40,7 +39,7 @@ namespace KDots
   private:
     PolygonFinderPrivate(const Graph& graph, Owner owner,
                          const std::vector<Point>& additionalPoints);
-    
+
     void findPolygons(const Point& point);
     bool isAdditionalPoint(const Point& point) const;
 

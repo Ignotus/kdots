@@ -26,7 +26,7 @@
 #pragma once
 #include <QMetaType>
 
-#include "constants.hpp"
+#include "kdots_api.hpp"
 
 class QPointF;
 class QPoint;

@@ -24,8 +24,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
+#include "kdots_api.hpp"
 #include "point.hpp"
-#include "constants.hpp"
 #include "enums.hpp"
 
 namespace KDots
