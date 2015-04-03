@@ -31,6 +31,11 @@
 namespace KDots
 {
   class IRival;
+  
+  /*
+   * KDots plugin interface
+   */
+  
   class IPlugin : public QObject
   {
   public:

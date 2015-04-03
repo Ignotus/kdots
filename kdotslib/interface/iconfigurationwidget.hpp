@@ -29,6 +29,7 @@
 namespace KDots
 {
   class GameConfig;
+  // Configuration widget interface
   class IConfigurationWidget : public QWidget
   {
   public:
@@ -37,9 +38,11 @@ namespace KDots
     {
     }
     
+    // This slot is called when configuration state is needed
     virtual void requestState() = 0;
   
-  protected:
+  protected: // signals
+    // Emit this signal if the plugin needs a new game board
     virtual void needCreateBoard(bool) = 0;
   };
 }

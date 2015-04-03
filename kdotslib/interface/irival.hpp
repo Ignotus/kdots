@@ -38,6 +38,9 @@ namespace KDots
   class GameConfig;
   class IConfigurationWidget;
   
+  /*
+   * KDots board opponent interface
+   */
   class IRival : public QObject
   {
   public:
@@ -50,37 +53,55 @@ namespace KDots
     {
     }
     
+    // Returns a configuration widget if it's needed to configure a game
+    // in addition
     virtual IConfigurationWidget* configureWidget()
     {
       return nullptr;
     }
     
+    // Sets the current game board
     virtual void setBoardModel(const BoardModel *board)
     {
       Q_UNUSED(board);
     }
     
+    // This method is called if KDots requires game configuration from
+    // the plugin. This configuration can be returned later by the signal
+    // needCreateBoard()
     virtual void requestGameConfig()
     {
     }
     
+    // Returns the class owner
     virtual Owner owner() const
     {
       return Owner::NONE;
     }
     
+    // Determines if in this game mode it's possible to undo moves
     virtual bool canUndo() const
     {
       return false;
     }
     
   public: //slots
+    // This slot is called after the appearance of the new point on the board
     virtual void onPointAdded(const Point& point) = 0;
+    
+    // This slot is called after the difficulty level changed.
+    // Please disable difficulty changes in the class constructor if it's not needed.
     virtual void onDifficultyChanged(const KgDifficultyLevel *difficulty) = 0;
     
   protected: //signals
+    // Emit this signal if a new board with following configuration is needed to be
+    // created.
     virtual void needCreateBoard(const GameConfig& config) = 0;
+    
+    // Emit this signal if the current game is needed to be destroyed
     virtual void needDestroy() = 0;
+    
+    // Emit this signal to add a new point to the game board
     virtual void needAddPoint(const Point&) = 0;
   };
 }
