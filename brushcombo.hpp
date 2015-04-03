@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011, 2012, 2014, 2015 Minh Ngo <minh@fedoraproject.org>
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -24,56 +24,16 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
+#include <KComboBox>
 
-#include <QRect>
-
-#include <interface/irival.hpp>
-
-#include <kdotslib/polygon.hpp>
+#include "constants.hpp"
 
 namespace KDots
 {
-class Point;
-namespace simpleai
-{
-  class NodeInfo;
-  class Rival : public KDots::IRival
+  class BrushCombo : public KComboBox
   {
-    Q_OBJECT
-    Q_INTERFACES(KDots::IRival)
   public:
-    Rival(QObject *parent = 0);
-
-    Owner owner() const;
-
-    void setBoardModel(BoardModel *board);
-
-  public Q_SLOTS:
-    void onPointAdded(const Point& point);
-    void onDifficultyChanged(const KgDifficultyLevel *level);
-
-  private:
-    void addPoint(bool random = false);
-    bool addRandomPoint();
-
-    // Complexity O(n)
-    QRect getBoundingBox() const;
-
-    typedef std::vector<float> VectorF;
-    // Complexity O(n)
-    std::vector<VectorF> getImportanceMatrix(const QRect& bb) const;
-
-  Q_SIGNALS:
-    void needCreateBoard(const GameConfig& config);
-    void needDestroy();
-    void needAddPoint(const Point&);
-
-  private:
-    BoardModel *m_board;
-    Owner m_human, m_ai;
-    int m_depth;
-    float m_k1;
-    float m_k2;
+    BrushCombo(QWidget* parent = 0);
+    void paintEvent(QPaintEvent *e);
   };
-}
 }

@@ -33,10 +33,10 @@
 #include <KMessageBox>
 #include <KLocalizedString>
 
-#include <kdotslib/boardmodel.hpp>
-#include <kdotslib/stepqueue.hpp>
-#include <kdotslib/graph.hpp>
-#include <kdotslib/iboardview.hpp>
+#include <boardmodel.hpp>
+#include <stepqueue.hpp>
+#include <graph.hpp>
+#include <iboardview.hpp>
 
 #include "configurationwidget.hpp"
 #include "connectdialog.hpp"

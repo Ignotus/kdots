@@ -24,23 +24,22 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "rival.hpp"
+#include "prioritymap.hpp"
+#include "decisiontree.hpp"
 
-#include <kdotslib/boardmodel.hpp>
-#include <kdotslib/constants.hpp>
-#include <kdotslib/graph.hpp>
-#include <kdotslib/point.hpp>
-#include <kdotslib/polygonfinder.hpp>
-#include <kdotslib/stepqueue.hpp>
-#include <kdotslib/iboardview.hpp>
+#include <boardmodel.hpp>
+#include <constants.hpp>
+#include <graph.hpp>
+#include <point.hpp>
+#include <polygonfinder.hpp>
+#include <stepqueue.hpp>
+#include <iboardview.hpp>
 
 #include <stack>
 #include <ctime>
 
 #include <QDebug>
 #include <KgDifficulty>
-
-#include "prioritymap.hpp"
-#include "decisiontree.hpp"
 
 namespace KDots
 {

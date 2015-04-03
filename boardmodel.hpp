@@ -24,64 +24,59 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#include <QObject>
-#include <kdotslib/constants.hpp>
+#include <memory>
 
-class QStatusBar;
-class KgDifficultyLevel;
+#include <QObject>
+
+#include "gameconfig.hpp"
+#include "polygon.hpp"
 
 namespace KDots
 {
-  class BoardModel;
-  class Point;
-  class GameConfig;
-  class IConfigurationWidget;
+  class Graph;
+  class StepQueue;
+  class IBoardView;
+  class IRival;
   
-  class IRival : public QObject
+  class KDOTS_EXPORT BoardModel : public QObject
   {
+    Q_OBJECT
   public:
-    IRival(QObject *parent = 0)
-      : QObject(parent)
-    {
-    }
+    BoardModel(const GameConfig& config, std::unique_ptr<StepQueue>&& step_queue, QObject *parent = 0);
     
-    virtual ~IRival()
-    {
-    }
+    void setView(std::unique_ptr<IBoardView>&& view);
+    void setRival(std::unique_ptr<IRival>&& rival);
     
-    virtual IConfigurationWidget* configureWidget()
-    {
-      return nullptr;
-    }
+    const GameConfig& gameConfig() const;
     
-    virtual void setBoardModel(BoardModel *board)
-    {
-      Q_UNUSED(board);
-    }
+    const std::vector<Polygon_ptr>& polygons() const;
+
+    const Graph& graph() const;
+
+    const StepQueue& stepQueue() const;
     
-    virtual void requestGameConfig()
-    {
-    }
+  public Q_SLOTS:
+    void undo();
+
+  private:
+    void drawPolygon(PolyList polygons);
+    void continueStep();
+    void emitStatus();
     
-    virtual Owner owner() const
-    {
-      return Owner::NONE;
-    }
+  private Q_SLOTS:
+    void addPoint(const Point& point);
     
-    virtual bool canUndo() const
-    {
-      return false;
-    }
+  Q_SIGNALS:
+    void pointAdded(const Point& lastPoint);
+    void freezeView(bool);
+    void statusUpdated(const QString& message);
     
-  public: //slots
-    virtual void onPointAdded(const Point& point) = 0;
-    virtual void onDifficultyChanged(const KgDifficultyLevel *difficulty) = 0;
-    
-  protected: //signals
-    virtual void needCreateBoard(const GameConfig& config) = 0;
-    virtual void needDestroy() = 0;
-    virtual void needAddPoint(const Point&) = 0;
+  private:
+    std::unique_ptr<Graph> m_graph;
+    std::shared_ptr<StepQueue> m_steps;
+    GameConfig m_config;
+    std::vector<Polygon_ptr> m_polygons;
+    std::unique_ptr<IRival> m_rival;
+    std::unique_ptr<IBoardView> m_view;
   };
 }
-
-Q_DECLARE_INTERFACE(KDots::IRival, "com.github.ignotus.kdots.IRival/1.0.1")
