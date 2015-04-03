@@ -15,7 +15,7 @@ set(KDOTS_REQUIRED_LIBS
 file(GLOB KDOTSLIB_HDRS *.hpp)
 file(GLOB KDOTSLIB_SRCS *.cpp)
 
-set(KDOTS_VERSION "0.5.3")
+set(KDOTS_VERSION "0.5.4")
 set(KDOTS_SOVERSION "1")
 
 configure_file(config.hpp.in config.hpp)
