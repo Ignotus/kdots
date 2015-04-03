@@ -24,6 +24,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
+#include <vector>
+
 #include <QScopedPointer>
 
 #include "constants.hpp"
@@ -33,9 +35,6 @@ namespace std
 {
   template<typename T>
   class shared_ptr;
-
-  template<class T, class Alloc>
-  class vector;
 }
 
 namespace KDots
@@ -65,7 +64,7 @@ namespace KDots
     bool contains(const Point& point) const;
   
   private:
-    QScopedPointer<PolygonPrivate> d_ptr;
+    const QScopedPointer<PolygonPrivate> d_ptr;
   };
   
   typedef std::shared_ptr<Polygon> Polygon_ptr;
