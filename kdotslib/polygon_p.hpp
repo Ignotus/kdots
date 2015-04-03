@@ -24,43 +24,30 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#include <vector>
-#include <memory>
-
 #include <QScopedPointer>
 
-#include "constants.hpp"
+#include "point.hpp"
 
 namespace KDots
 {
-  class Point;
-  class PolygonPrivate;
-  class KDOTS_EXPORT Polygon final
+  class Polygon;
+  class PolygonPrivate final
   {
-    Q_DECLARE_PRIVATE(Polygon)
-    Q_DISABLE_COPY(Polygon)
-  public:
-    Polygon(const std::vector<Point>& points = {});
-    ~Polygon();
-    
-    int area() const;
-    
-    const std::vector<Point>& points() const;
-
-    bool isFilled() const;
-
-    void setFilled(bool filled);
-    
-    Owner owner() const;
-    
-    void setOwner(Owner own);
-    
-    bool contains(const Point& point) const;
+    friend class Polygon;
+    Q_DISABLE_COPY(PolygonPrivate)
+  private:
+    PolygonPrivate(const std::vector<Point>& points);
+  
+    Point getPrevPoint(std::vector<Point>::const_iterator current) const;
+    Point getNextPoint(int& shift, std::vector<Point>::const_iterator current) const;
   
   private:
-    QScopedPointer<PolygonPrivate> d_ptr;
+    std::vector<Point> m_points;
+    bool m_filled;
+    Owner m_owner;
+    
+    mutable int m_area;
+    
+    //Polygon *q_ptr;
   };
-  
-  typedef std::shared_ptr<Polygon> Polygon_ptr;
-  typedef std::vector<Polygon_ptr> PolyList;
 }

@@ -26,6 +26,7 @@
 #pragma once
 #include <memory>
 
+#include "point.hpp"
 #include "polygon.hpp"
 #include "constants.hpp"
 
