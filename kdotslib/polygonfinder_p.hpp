@@ -24,33 +24,34 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#include <vector>
+#include <memory>
 
-#include <QScopedPointer>
-
-#include "constants.hpp"
-#include "enums.hpp"
+#include "point.hpp"
 #include "polygon.hpp"
+#include "constants.hpp"
 
 namespace KDots
 {
-  class Graph;
-  class Point;
-  class PolygonFinderPrivate;
-  class KDOTS_EXPORT PolygonFinder final
+  class PolygonFinder;
+  class PolygonFinderPrivate final
   {
-    Q_DECLARE_PRIVATE(PolygonFinder)
-    Q_DISABLE_COPY(PolygonFinder)
-  public:
-    PolygonFinder(const Graph& graph, Owner owner,
-                  const std::vector<Point>& additionalPoints = {});
-    
-    ~PolygonFinder();
-
-    // O(n)
-    const PolyList& operator()(const Point& point);
-  
+    friend class PolygonFinder;
+    Q_DISABLE_COPY(PolygonFinderPrivate)
   private:
-    const QScopedPointer<PolygonFinderPrivate> d_ptr;
+    PolygonFinderPrivate(const Graph& graph, Owner owner,
+                         const std::vector<Point>& additionalPoints);
+    
+    void findPolygons(const Point& point);
+    bool isAdditionalPoint(const Point& point) const;
+
+  private:
+    const Graph& m_graph;
+    Owner m_current;
+    std::vector<std::vector<bool>> m_stepMap;
+    const std::vector<Point>& m_additionalPoints;
+
+    std::vector<Point> m_cache;
+    PolyList m_polygons;
+    Point m_first;
   };
 }

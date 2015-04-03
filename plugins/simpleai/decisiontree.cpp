@@ -26,6 +26,7 @@
 #include "decisiontree.hpp"
 
 #include <stack>
+#include <memory>
 
 #include <QRect>
 #include <QDebug>

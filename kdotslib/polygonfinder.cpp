@@ -24,66 +24,24 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "polygonfinder.hpp"
+#include "polygonfinder_p.hpp"
 
 #include <algorithm>
 
-#include "point.hpp"
-#include "constants.hpp"
 #include "graph.hpp"
 
 namespace KDots
 {
-  PolygonFinder::PolygonFinder(const Graph& graph, Owner owner,
-                               const std::vector<Point>& additionalPoints)
+  PolygonFinderPrivate::PolygonFinderPrivate(const Graph& graph, Owner owner,
+                                             const std::vector<Point>& additionalPoints)
     : m_graph(graph)
     , m_current(owner)
     , m_stepMap(graph.width(), std::vector<bool>(graph.height(), false))
     , m_additionalPoints(additionalPoints)
   {
   }
-
-  namespace
-  {
-    bool areaComp(const PolyList::value_type& p1, const PolyList::value_type& p2)
-    {
-      return p1->area() < p2->area();
-    }
-
-    int maxSize(const PolyList& polygonList)
-    {
-      return (*std::max_element(polygonList.begin(), polygonList.end(), areaComp))->area();
-    }
-  }
-
-  const PolyList& PolygonFinder::operator()(const Point& point)
-  {
-    m_first = point;
-    findPolygons(point);
-
-    if (m_polygons.empty())
-      return m_polygons;
-
-    const int max = maxSize(m_polygons);
-
-    auto removePred = [&max](const Polygon_ptr& ptr) {
-      return ptr->area() < max;
-    };
-
-    m_polygons.erase(std::remove_if(m_polygons.begin(), m_polygons.end(), removePred),
-                     m_polygons.end());
-
-    return m_polygons;
-  }
   
-  bool PolygonFinder::isAdditionalPoint(const Point& point) const
-  {
-    for (const Point& pi : m_additionalPoints)
-      if (pi == point)
-        return true;
-    
-    return false;
-  }
-
+  
   namespace
   {
     const Point GRAPH_OFFSET[DIRECTION_COUNT] = {
@@ -98,7 +56,7 @@ namespace KDots
     };
   }
 
-  void PolygonFinder::findPolygons(const Point& point)
+  void PolygonFinderPrivate::findPolygons(const Point& point)
   {
     if (m_cache.size() > 3 && point == m_cache.front())
     {
@@ -129,5 +87,63 @@ namespace KDots
     }
 
     m_cache.pop_back();
+  }
+  
+  bool PolygonFinderPrivate::isAdditionalPoint(const Point& point) const
+  {
+    for (const Point& pi : m_additionalPoints)
+      if (pi == point)
+        return true;
+    
+    return false;
+  }
+  
+  //////////////////////////////////////////////////////////////////////////////
+  
+  PolygonFinder::PolygonFinder(const Graph& graph, Owner owner,
+                               const std::vector<Point>& additionalPoints)
+    : d_ptr(new PolygonFinderPrivate(graph, owner, additionalPoints))
+  {
+  }
+  
+  PolygonFinder::~PolygonFinder()
+  {
+  }
+
+  namespace
+  {
+    bool areaComp(const PolyList::value_type& p1, const PolyList::value_type& p2)
+    {
+      return p1->area() < p2->area();
+    }
+
+    int maxSize(const PolyList& polygonList)
+    {
+      return (*std::max_element(polygonList.begin(), polygonList.end(), areaComp))->area();
+    }
+  }
+
+  const PolyList& PolygonFinder::operator()(const Point& point)
+  {
+    Q_D(PolygonFinder);
+    d->m_first = point;
+    d->findPolygons(point);
+    
+    auto& polygonContainer = d->m_polygons;
+
+    if (polygonContainer.empty())
+      return polygonContainer;
+
+    const int max = maxSize(polygonContainer);
+
+    auto removePred = [&max](const Polygon_ptr& ptr) {
+      return ptr->area() < max;
+    };
+
+    polygonContainer.erase(std::remove_if(polygonContainer.begin(),
+                                          polygonContainer.end(), removePred),
+                           polygonContainer.end());
+
+    return polygonContainer;
   }
 }
