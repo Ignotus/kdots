@@ -47,7 +47,5 @@ namespace KDots
     Owner m_owner;
 
     mutable int m_area;
-
-    //Polygon *q_ptr;
   };
 }
