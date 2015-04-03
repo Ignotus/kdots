@@ -55,7 +55,7 @@ namespace KDots
       return nullptr;
     }
     
-    virtual void setBoardModel(BoardModel *board)
+    virtual void setBoardModel(const BoardModel *board)
     {
       Q_UNUSED(board);
     }

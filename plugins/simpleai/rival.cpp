@@ -257,7 +257,7 @@ namespace simpleai
     // Else -> End of the game
   }
 
-  void Rival::setBoardModel(BoardModel *board)
+  void Rival::setBoardModel(const BoardModel *board)
   {
     m_board = board;
 

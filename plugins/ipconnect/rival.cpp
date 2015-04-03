@@ -142,7 +142,7 @@ namespace ipconnect
     }
   }
   
-  void Rival::setBoardModel(BoardModel *board) //Is called after configureWidget
+  void Rival::setBoardModel(const BoardModel *board) //Is called after configureWidget
   {
     m_board = board;
     

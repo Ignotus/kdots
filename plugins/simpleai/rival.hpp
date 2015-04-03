@@ -46,7 +46,7 @@ namespace simpleai
 
     Owner owner() const;
 
-    void setBoardModel(BoardModel *board);
+    void setBoardModel(const BoardModel *board);
 
   public Q_SLOTS:
     void onPointAdded(const Point& point);
@@ -69,7 +69,7 @@ namespace simpleai
     void needAddPoint(const Point&);
 
   private:
-    BoardModel *m_board;
+    const BoardModel *m_board;
     Owner m_human, m_ai;
     int m_depth;
     float m_k1;

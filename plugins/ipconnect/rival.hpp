@@ -46,7 +46,7 @@ namespace ipconnect
     
     IConfigurationWidget* configureWidget();
 
-    void setBoardModel(BoardModel *board);
+    void setBoardModel(const BoardModel *board);
     void requestGameConfig();
 
     Owner owner() const;
@@ -66,7 +66,7 @@ namespace ipconnect
     void needAddPoint(const Point&);
     
   private:
-    BoardModel *m_board;
+    const BoardModel *m_board;
     QTcpSocket *m_socket;
     QTcpServer *m_server;
     
