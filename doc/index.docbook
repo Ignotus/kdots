@@ -1,0 +1,117 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN" "dtd/kdedbx45.dtd" [
+
+  <!ENTITY kappname "KDots">
+  <!ENTITY package "kdegames">
+  <!ENTITY latex "L<superscript>A</superscript>T<subscript>E</subscript>X">
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % English "INCLUDE">
+]>
+<book id="KDots" lang="&language;">
+
+<bookinfo>
+<title>The KDots Handbook</title>
+
+<authorgroup>
+<author>
+<personname>
+<firstname>Minh</firstname>
+<surname>Ngo</surname>
+</personname>
+<email>minh@fedoraproject.org</email>
+</author>
+<!-- TRANS:ROLES_OF_TRANSLATORS -->
+</authorgroup>
+
+<copyright>
+<year>2015</year>
+<holder>Minh Ngo</holder>
+</copyright>
+<legalnotice>&FDLNotice;</legalnotice>
+
+<date>2015-04-03</date>
+<releaseinfo>0.5.4 (&kde; 5.8.0)</releaseinfo>
+
+<abstract>
+<para>
+KDots is a simple implementation of the game of dots written with Qt Toolkit and KDELibs.
+</para>
+</abstract>
+
+<keywordset>
+<keyword>KDE</keyword>
+<keyword>kdegames</keyword>
+<keyword>Board</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title>Introduction</title>
+
+<para>
+KDots is a simple implementation of the game of dots written with Qt Toolkit and KDELibs.
+
+The purpose of the Dots game is to catch your opponent's dots by placing your dots on the
+game board where the lines cross.
+
+Game mode can be extended via plugins. Currently, 3 plugins are available for supporting AI,
+online and offline games between two players.
+</para>
+</chapter>
+
+<chapter id="using-kapp">
+<title>Using KDots</title>
+
+<para>
+Screenshot:
+<screenshot>
+<screeninfo>Here is a screenshot of KDots</screeninfo>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="screenshot.png" format="PNG"/>
+	  </imageobject>
+	  <textobject>
+	    <phrase>Screenshot</phrase>
+	  </textobject>
+	</mediaobject>
+</screenshot>
+</para>
+</chapter>
+
+<chapter id="credits">
+
+<title>Credits and License</title>
+
+<para>
+KDots
+</para>
+<para>
+Program copyright 2011, 2012, 2014, 2015 Minh Ngo <email>minh@fedoraproject.org</email>
+</para>
+
+<para>
+Documentation Copyright &copy; 2015 Minh Ngo <email>minh@fedoraproject.org</email>
+</para>
+
+<!-- TRANS:CREDIT_FOR_TRANSLATORS -->
+
+&underFDL;               <!-- FDL: do not remove -->
+&underGPL;        	 <!-- GPL License -->
+</chapter>
+
+&documentation.index;
+</book>
+
+<!--
+Local Variables:
+mode: xml
+sgml-minimize-attributes:nil
+sgml-general-insert-case:lower
+sgml-indent-step:0
+sgml-indent-data:nil
+End:
+
+vim:tabstop=2:shiftwidth=2:expandtab
+kate: space-indent on; indent-width 2; tab-width 2; indent-mode none;
+-->

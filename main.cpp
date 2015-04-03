@@ -38,11 +38,11 @@
 void initAboutData(KAboutData& aboutData)
 {
   aboutData.setHomepage("https://github.com/Ignotus/kdots");
-  aboutData.setBugAddress("nlminhtl@gmail.com");
+  aboutData.setBugAddress("minh@fedoraproject.org");
   aboutData.addAuthor("Minh Ngo",
       i18n("Architecture. Project Management"),
-      "nlminhtl@gmail.com",
-      "http://ignotusp.fedoraproject.org");
+      "minh@fedoraproject.org",
+      "http://fedoraproject.org/~minh/");
 
   aboutData.addCredit("Bohdan Rybak",
       i18n("Game engine tester"),
@@ -59,7 +59,7 @@ int main(int argc, char **argv)
     QLatin1String("kdots"), VERSION,
     i18n("A prototype of the game of dots."),
     KAboutLicense::BSDL,
-    QLatin1String("Copyright(c) 2011-2012 Minh Ngo"));
+    QLatin1String("Copyright(c) 2011, 2012, 2014, 2015 Minh Ngo"));
 
   initAboutData(aboutData);
 

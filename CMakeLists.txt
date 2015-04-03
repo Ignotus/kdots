@@ -59,3 +59,4 @@ install(FILES cmake/KDotsLibConfig.cmake DESTINATION ${CMAKECONFIG_INSTALL_PREFI
 
 add_subdirectory(kdotslib)
 add_subdirectory(plugins)
+add_subdirectory(doc)
