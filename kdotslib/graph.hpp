@@ -78,7 +78,7 @@ namespace KDots
     }
     
     graph_iterator()
-      : m_graph(NULL)
+      : m_graph(nullptr)
       , m_x(0)
       , m_y(0)
     {
