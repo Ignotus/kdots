@@ -12,7 +12,7 @@ set(KDOTS_REQUIRED_LIBS
   KF5::KDELibs4Support
 )
 
-file(GLOB KDOTSLIB_HDRS *.hpp)
+file(GLOB KDOTSLIB_HDRS "*[^_][^p].hpp")
 file(GLOB KDOTSLIB_SRCS *.cpp)
 
 set(KDOTS_VERSION "0.5.4")
@@ -33,3 +33,5 @@ set_target_properties(kdotslib
 )
 
 install(TARGETS kdotslib DESTINATION ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(FILES ${KDOTSLIB_HDRS} DESTINATION ${KDE_INSTALL_INCLUDEDIR}/kdots)
+install(DIRECTORY interface/ DESTINATION ${KDE_INSTALL_INCLUDEDIR}/kdots/interface)
