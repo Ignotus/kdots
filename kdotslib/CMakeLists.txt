@@ -5,7 +5,6 @@ include_directories(
 
 set(KDOTS_REQUIRED_LIBS
   ${KDEGAMES_LIBRARY}
-  ${QT_LIBRARIES}
   ${Boost_LIBRARIES}
   KF5::TextWidgets
   KF5::XmlGui

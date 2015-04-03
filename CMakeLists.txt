@@ -8,11 +8,6 @@ set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 include(KDEInstallDirs)
 include(KDECompilerSettings)
 
-find_package(Qt5 REQUIRED
-  Core
-  Widgets
-)
-
 set(CMAKE_AUTOMOC ON)
 
 find_package(Boost 1.55 REQUIRED)
@@ -39,7 +34,6 @@ include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
   ${KDOTS_INCLUDE_DIR}
   ${KDEGAMES_INCLUDE_DIRS}
-  ${QT_INCLUDES}
   ${Boost_INCLUDE_DIR}
 )
 
@@ -60,7 +54,8 @@ target_link_libraries(kdots
 
 install(TARGETS kdots DESTINATION ${BIN_INSTALL_DIR})
 install(FILES kdotsui.rc DESTINATION ${KXMLGUI_INSTALL_DIR}/kdots)
-install(PROGRAMS kdots.desktop  DESTINATION ${XDG_APPS_INSTALL_DIR})
+install(PROGRAMS kdots.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
+install(FILES cmake/KDotsLibConfig.cmake DESTINATION ${CMAKECONFIG_INSTALL_PREFIX}/KDotsLib)
 
 add_subdirectory(kdotslib)
 add_subdirectory(plugins)
