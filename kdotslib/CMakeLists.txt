@@ -33,6 +33,11 @@ set(KDOTSLIB_HEADERS
   iboardview.hpp
 )
 
+set(KDOTS_VERSION "0.5.3")
+set(KDOTS_SOVERSION "1")
+
+configure_file(config.hpp.in config.hpp)
+
 add_library(kdotslib SHARED
   ${KDOTSLIB_SRCS}
 )

@@ -88,11 +88,6 @@ ki18n_wrap_ui(SRCS ${FORMS})
 kconfig_add_kcfg_files(SRCS kdots.kcfgc)
 install(FILES kdots.kcfg DESTINATION ${KCFG_INSTALL_DIR})
 
-set(KDOTS_VERSION "0.5.3")
-set(KDOTS_SOVERSION "1")
-
-configure_file(config.hpp.in config.hpp)
-
 add_executable(kdots ${SRCS})
 
 target_link_libraries(kdots
