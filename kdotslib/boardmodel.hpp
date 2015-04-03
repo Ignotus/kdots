@@ -28,21 +28,28 @@
 
 #include <QObject>
 
-#include "gameconfig.hpp"
+#include "kdots_api.hpp"
 #include "polygon.hpp"
 
 namespace KDots
 {
+  class GameConfig;
   class Graph;
   class StepQueue;
   class IBoardView;
   class IRival;
   
+  class BoardModelPrivate;
   class KDOTS_EXPORT BoardModel : public QObject
   {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(BoardModel)
+    Q_DISABLE_COPY(BoardModel)
   public:
-    BoardModel(const GameConfig& config, std::unique_ptr<StepQueue>&& step_queue, QObject *parent = 0);
+    BoardModel(const GameConfig& config,
+               std::unique_ptr<StepQueue>&& step_queue,
+               QObject *parent = 0);
+    virtual ~BoardModel();
     
     void setView(std::unique_ptr<IBoardView>&& view);
     void setRival(std::unique_ptr<IRival>&& rival);
@@ -57,26 +64,13 @@ namespace KDots
     
   public Q_SLOTS:
     void undo();
-
-  private:
-    void drawPolygon(PolyList polygons);
-    void continueStep();
-    void emitStatus();
-    
-  private Q_SLOTS:
-    void addPoint(const Point& point);
     
   Q_SIGNALS:
     void pointAdded(const Point& lastPoint);
     void freezeView(bool);
     void statusUpdated(const QString& message);
-    
+  
   private:
-    std::unique_ptr<Graph> m_graph;
-    std::shared_ptr<StepQueue> m_steps;
-    GameConfig m_config;
-    std::vector<Polygon_ptr> m_polygons;
-    std::unique_ptr<IRival> m_rival;
-    std::unique_ptr<IBoardView> m_view;
+    const QScopedPointer<BoardModelPrivate> d_ptr;
   };
 }

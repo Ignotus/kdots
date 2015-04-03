@@ -39,6 +39,7 @@
 #include <boardmodel.hpp>
 #include <stepqueue.hpp>
 #include <graph.hpp>
+#include <gameconfig.hpp>
 
 #include "brushcombodelegate.hpp"
 #include "kdots.h"

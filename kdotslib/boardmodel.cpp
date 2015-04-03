@@ -24,6 +24,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "boardmodel.hpp"
+#include "boardmodel_p.hpp"
 
 #include <QDebug>
 
@@ -39,39 +40,81 @@
 
 namespace KDots
 {
-  BoardModel::BoardModel(const GameConfig& config, std::unique_ptr<StepQueue>&& step_queue, QObject *parent)
+  BoardModelPrivate::BoardModelPrivate(const GameConfig& config,
+                                       std::unique_ptr<StepQueue>&& step_queue,
+                                       BoardModel *parent)
     : QObject(parent)
     , m_graph(new Graph(config.m_width, config.m_height))
     , m_steps(std::move(step_queue))
     , m_config(config)
+    , q_ptr(parent)
   {
   }
-
-  void BoardModel::setView(std::unique_ptr<IBoardView>&& view)
+  
+  void BoardModelPrivate::drawPolygon(PolyList polygons)
   {
-    m_view = std::move(view);
-    m_view->setModel(this);
+    for (Polygon_ptr& polygon : polygons)
+    {
+      if (!polygon->isFilled())
+        continue;
 
-    connect(m_view.get(), SIGNAL(pointClicked(const Point&)), this, SLOT(addPoint(const Point&)));
+      polygon->setOwner(m_steps->getCurrentOwner());
+      m_polygons.push_back(polygon);
+
+      Point prevPoint = polygon->points().back();
+
+      for (const Point& currPoint : polygon->points())
+      {
+        m_graph->addEdge(prevPoint, currPoint);
+        prevPoint = currPoint;
+      }
+    }
   }
-
-  void BoardModel::setRival(std::unique_ptr<IRival>&& rival)
+  
+  namespace
   {
-    m_rival = std::move(rival);
+    QString getResult(int firstPoints, int secondPoints)
+    {
+      if (firstPoints > secondPoints)
+        return i18n("The first player win!");
 
-    connect(this, SIGNAL(pointAdded(const Point&)), m_rival.get(), SLOT(onPointAdded(const Point&)));
-    connect(m_rival.get(), SIGNAL(needAddPoint(const Point&)), this, SLOT(addPoint(const Point&)));
+      if (firstPoints < secondPoints)
+        return i18n("The second player win!");
 
-    m_rival->setBoardModel(this);
+      return i18n("Dead heat!");
+    }
   }
-
-  const GameConfig& BoardModel::gameConfig() const
+  
+  void BoardModelPrivate::continueStep()
   {
-    return m_config;
+    const auto& allPoints = m_steps->getAllPoints();
+    if (allPoints.size() + m_steps->emptyCapturedCount() == m_graph->width() * m_graph->height())
+    {
+      const int first = m_steps->getMarks(Owner::FIRST);
+      const int second = m_steps->getMarks(Owner::SECOND);
+
+      const QString& message = getResult(first, second);
+      KMessageBox::information(0, message, message);
+      return;
+    }
+
+    m_steps->nextStep();
   }
-
-  void BoardModel::addPoint(const Point& point)
+  
+  void BoardModelPrivate::emitStatus()
   {
+    const QString& firstMark = QString::number(m_steps->getMarks(Owner::FIRST));
+    const QString& secondMark = QString::number(m_steps->getMarks(Owner::SECOND));
+    
+    Q_Q(BoardModel);
+    emit q->statusUpdated(QString::fromAscii("First:\t%1\tSecond:\t%2").arg(firstMark, secondMark));
+  }
+  
+  
+  void BoardModelPrivate::addPoint(const Point& point)
+  {
+    Q_Q(BoardModel);
+    
     if (sender() == m_rival.get())
     {
       if (m_rival->owner() != m_steps->getCurrentOwner())
@@ -105,7 +148,7 @@ namespace KDots
     {
       continueStep();
       emitStatus();
-      emit pointAdded(point);
+      emit q->pointAdded(point);
       return;
     }
 
@@ -157,98 +200,89 @@ namespace KDots
 
     continueStep();
     emitStatus();
-    emit pointAdded(point);
+    emit q->pointAdded(point);
+  }
+  
+  //////////////////////////////////////////////////////////////////////////////
+  
+  BoardModel::BoardModel(const GameConfig& config,
+                         std::unique_ptr<StepQueue>&& step_queue,
+                         QObject *parent)
+    : QObject(parent)
+    , d_ptr(new BoardModelPrivate(config, std::move(step_queue), this))
+  {
+  }
+  
+  BoardModel::~BoardModel()
+  {
   }
 
-  namespace
+  void BoardModel::setView(std::unique_ptr<IBoardView>&& view)
   {
-    QString getResult(int firstPoints, int secondPoints)
-    {
-      if (firstPoints > secondPoints)
-        return i18n("The first player win!");
+    Q_D(BoardModel);
+    d->m_view = std::move(view);
+    d->m_view->setModel(this);
 
-      if (firstPoints < secondPoints)
-        return i18n("The second player win!");
-
-      return i18n("Dead heat!");
-    }
+    connect(d->m_view.get(), SIGNAL(pointClicked(const Point&)),
+            d, SLOT(addPoint(const Point&)));
   }
 
-  void BoardModel::continueStep()
+  void BoardModel::setRival(std::unique_ptr<IRival>&& rival)
   {
-    const auto& allPoints = m_steps->getAllPoints();
-    if (allPoints.size() + m_steps->emptyCapturedCount() == m_graph->width() * m_graph->height())
-    {
-      const int first = m_steps->getMarks(Owner::FIRST);
-      const int second = m_steps->getMarks(Owner::SECOND);
+    Q_D(BoardModel);
+    d->m_rival = std::move(rival);
 
-      const QString& message = getResult(first, second);
-      KMessageBox::information(0, message, message);
-      return;
-    }
+    connect(this, SIGNAL(pointAdded(const Point&)),
+            d->m_rival.get(), SLOT(onPointAdded(const Point&)));
+    connect(d->m_rival.get(), SIGNAL(needAddPoint(const Point&)),
+            d, SLOT(addPoint(const Point&)));
 
-    m_steps->nextStep();
+    d->m_rival->setBoardModel(this);
+  }
+
+  const GameConfig& BoardModel::gameConfig() const
+  {
+    Q_D(const BoardModel);
+    return d->m_config;
   }
 
   //Hardcore undo process
   void BoardModel::undo()
   {
+    Q_D(BoardModel);
     emit freezeView(true);
-    m_graph.reset(new Graph(m_config.m_width, m_config.m_height));
-    m_polygons.clear();
-    auto points(m_steps->getAllPoints());
+    d->m_graph.reset(new Graph(d->m_config.m_width, d->m_config.m_height));
+    d->m_polygons.clear();
+    auto points(d->m_steps->getAllPoints());
 
     if (!points.empty())
       points.pop_back();
-    m_steps->clear();
+    d->m_steps->clear();
 
     for (const Point& point : points)
-      addPoint(point);
+      d->addPoint(point);
 
     emit freezeView(false);
   }
 
-  void BoardModel::emitStatus()
-  {
-    const QString& firstMark = QString::number(m_steps->getMarks(Owner::FIRST));
-    const QString& secondMark = QString::number(m_steps->getMarks(Owner::SECOND));
-    emit statusUpdated(QString::fromAscii("First:\t%1\tSecond:\t%2").arg(firstMark, secondMark));
-  }
-
-  void BoardModel::drawPolygon(PolyList polygons)
-  {
-    for (Polygon_ptr& polygon : polygons)
-    {
-      if (!polygon->isFilled())
-        continue;
-
-      polygon->setOwner(m_steps->getCurrentOwner());
-      m_polygons.push_back(polygon);
-
-      Point prevPoint = polygon->points().back();
-
-      for (const Point& currPoint : polygon->points())
-      {
-        m_graph->addEdge(prevPoint, currPoint);
-        prevPoint = currPoint;
-      }
-    }
-  }
-
   const std::vector<Polygon_ptr>& BoardModel::polygons() const
   {
-    return m_polygons;
+    Q_D(const BoardModel);
+    return d->m_polygons;
   }
 
   const Graph& BoardModel::graph() const
   {
-    return *m_graph;
+    Q_D(const BoardModel);
+    return *d->m_graph;
   }
 
   const StepQueue& BoardModel::stepQueue() const
   {
-    return *m_steps;
+    Q_D(const BoardModel);
+    return *d->m_steps;
   }
 }
 
 #include "moc_boardmodel.cpp"
+#include "moc_boardmodel_p.cpp"

@@ -1,7 +1,7 @@
 /*
  * KDots
  * Copyright (c) 2011, 2012, 2014, 2015 Minh Ngo <minh@fedoraproject.org>
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -24,19 +24,45 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#define KDE_EXPORT __attribute__ ((visibility("default")))
-#define KDE_IMPORT __attribute__ ((visibility("default")))
+#include <QObject>
 
-#ifndef KDOTS_EXPORT
-# if defined(MAKE_KDOTS_LIB)
-   // We are building this library
-#  define KDOTS_EXPORT KDE_EXPORT
-# else
-   // We are using this library
-#  define KDOTS_EXPORT KDE_IMPORT
-# endif
-#endif
+#include "gameconfig.hpp"
+#include "polygon.hpp"
 
-# ifndef KDOTS_EXPORT_DEPRECATED
-#  define KDOTS_EXPORT_DEPRECATED KDE_DEPRECATED KDOTS_EXPORT
-# endif
+namespace KDots
+{
+  class Graph;
+  class StepQueue;
+  class IBoardView;
+  class IRival;
+  
+  class BoardModel;
+  class BoardModelPrivate final : public QObject
+  {
+    Q_OBJECT
+    Q_DECLARE_PUBLIC(BoardModel)
+    Q_DISABLE_COPY(BoardModelPrivate)
+  private:
+    BoardModelPrivate(const GameConfig& config,
+                      std::unique_ptr<StepQueue>&& step_queue,
+                      BoardModel *parent);
+  
+  private:
+    void drawPolygon(PolyList polygons);
+    void continueStep();
+    void emitStatus();
+  
+  private Q_SLOTS:
+    void addPoint(const Point& point);
+    
+  private:
+    std::unique_ptr<Graph> m_graph;
+    std::shared_ptr<StepQueue> m_steps;
+    GameConfig m_config;
+    std::vector<Polygon_ptr> m_polygons;
+    std::unique_ptr<IRival> m_rival;
+    std::unique_ptr<IBoardView> m_view;
+    
+    BoardModel *q_ptr;
+  };
+}

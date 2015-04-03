@@ -36,6 +36,7 @@
 #include <boardmodel.hpp>
 #include <stepqueue.hpp>
 #include <graph.hpp>
+#include <gameconfig.hpp>
 #include <iboardview.hpp>
 
 #include "configurationwidget.hpp"
