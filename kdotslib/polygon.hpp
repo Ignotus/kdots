@@ -35,9 +35,7 @@ namespace KDots
   class KDOTS_EXPORT Polygon final
   {
   public:
-    Polygon();
-
-    Polygon(const std::vector<Point>& points);
+    Polygon(const std::vector<Point>& points = {});
     
     int area() const;
     

@@ -26,12 +26,6 @@
 
 #include "polygon.hpp"
 
-KDots::Polygon::Polygon()
-  : m_filled(false)
-  , m_area(-1)
-{
-}
-
 KDots::Polygon::Polygon(const std::vector<Point>& points)
   : m_points(points)
   , m_filled(false)
@@ -125,30 +119,30 @@ KDots::Point KDots::Polygon::getNextPoint(int& shift, std::vector<KDots::Point>:
   
 bool KDots::Polygon::contains(const Point& point) const
 {
-    // k - a count of points in the same line with "point" object
-    // i - crosses count
-    int i = 0, shift;
+  // k - a count of points in the same line with "point" object
+  // i - crosses count
+  int i = 0, shift;
 
-    std::vector<KDots::Point>::const_iterator itr = m_points.begin(), itrEnd = m_points.end();
-    while (itr != itrEnd)
+  std::vector<KDots::Point>::const_iterator itr = m_points.begin(), itrEnd = m_points.end();
+  while (itr != itrEnd)
+  {
+    if (itr->m_y != point.m_y)
     {
-      if (itr->m_y != point.m_y)
-      {
-        ++itr;
-        continue;
-      }
-      
-      if (itr->m_x == point.m_x)
-        return true;  
-
-      const Point& prevPoint = getPrevPoint(itr);
-      const Point& nextPoint = getNextPoint(shift, itr);
-
-      if (itr->m_x < point.m_x && prevPoint.m_y != nextPoint.m_y && shift == 1)
-        ++i;
-      
       ++itr;
+      continue;
     }
+    
+    if (itr->m_x == point.m_x)
+      return true;  
 
-    return i % 2;
+    const Point& prevPoint = getPrevPoint(itr);
+    const Point& nextPoint = getNextPoint(shift, itr);
+
+    if (itr->m_x < point.m_x && prevPoint.m_y != nextPoint.m_y && shift == 1)
+      ++i;
+    
+    ++itr;
+  }
+
+  return i % 2;
 }
