@@ -31,7 +31,6 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QPaintEvent>
-#include <QPainter>
 
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
