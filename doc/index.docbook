@@ -50,41 +50,105 @@ KDots is a simple implementation of the game of dots written with Qt Toolkit and
 <title>Introduction</title>
 
 <para>
-KDots is a simple implementation of the game of dots written with Qt Toolkit and KDELibs.
-
-The purpose of the Dots game is to catch your opponent's dots by placing your dots on the
+&kappname; is a simple implementation of the game of dots written with &Qt; Toolkit and KDELibs.
+</para>
+<para>
+The purpose of the <ulink url="https://en.wikipedia.org/wiki/Dots_%28game%29">dots game</ulink> is to catch your opponent's dots by placing your dots on the
 game board where the lines cross.
-
+</para>
+<para>
 Game mode can be extended via plugins. Currently, 3 plugins are available for supporting AI,
 online and offline games between two players.
 </para>
 </chapter>
 
-<chapter id="using-kapp">
-<title>Using KDots</title>
+<chapter id="rules">
+<title>Game rules, strategies and tips</title>
 
-<para>
-Screenshot:
 <screenshot>
 <screeninfo>Here is a screenshot of KDots</screeninfo>
-	<mediaobject>
-	  <imageobject>
-	    <imagedata fileref="screenshot.png" format="PNG"/>
-	  </imageobject>
-	  <textobject>
-	    <phrase>Screenshot</phrase>
-	  </textobject>
-	</mediaobject>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="screenshot.png" format="PNG"/>
+    </imageobject>
+    <textobject>
+      <phrase>Screenshot</phrase>
+    </textobject>
+  </mediaobject>
 </screenshot>
+
+<para>
+The game is played on a grid of unspecified finite dimensions.
 </para>
+<para>
+Each intersection of the grid is a game point.
+</para>
+<para>
+There are two players, each has his own color of dots.
+</para>
+<para>
+Each player should put a dot of his color in an arbitrary free game point (provided it is not a part of a territory) every game turn. It is not allowed to pass the turn.
+</para>
+<para>
+If the corresponding game mode chosen, the player who makes a territory can have a bonus extra turn.
+</para>
+<para>
+Each player can make a territory by enclosing it with a continuous line from vertical, horizontal or diagonal sections through the dots of his color.
+</para>
+<para>
+If there are opponent's dots in the enclosed territory (there are can be free points in it) it is forbidden to put a dot in it for each player. If there are no dots in it the territory is free and anybody can put dots in it.
+</para>
+<para>
+If a player puts a dot inside the enclosing line of his opponent the free territory becomes enclosed territory, provided this dot is a finishing part of the enclosing line for the opponents territory.
+</para>
+<para>
+Enclosed dots cannot be used to make the enclosing lines.
+</para>
+<para>
+The dots on the board border cannot be enclosed.
+</para>
+<para>
+The game is finished when there is no possible moves.
+</para>
+<para>
+The winner is the player who enclosed more dots than his opponent
+</para>
+<note>
+<para>
+Let the enclosed territory is itself enclosed by the opponent. Then the enclosed dots in this territory  are not taken into account in the final result.
+</para>
+</note>
+
+<sect1 id="remote-connections">
+<title>Remote Connections</title>
+
+<para>
+It is possible to play the game over a network connection with another
+computer. One of the computers will act as game server. This one can determine
+who should play first. You can configure the network options during the game start.
+</para>
+
+<para>
+When a network connection is built you will be asked to enter a remote host
+and a port. The port can usually just be left untouched, but if you know
+what you are doing replace it by another number, which has to be the
+same in both player games of course. The hostname should be the name of
+the remote host to which you are connecting. Only the client in
+the connection has to supply a hostname. It is often wise that the player
+behind a firewall chooses to be client as the firewall might not allow
+incoming connections.
+</para>
+
+</sect1>
 </chapter>
+
 
 <chapter id="credits">
 
 <title>Credits and License</title>
 
 <para>
-KDots
+&kappname;
 </para>
 <para>
 Program copyright 2011, 2012, 2014, 2015 Minh Ngo <email>minh@fedoraproject.org</email>
