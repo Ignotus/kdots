@@ -1,7 +1,7 @@
 language: cpp
 
 before_install:
-  - sudo apt-add-repository ppa:neon/kf5
+  - sudo apt-add-repository ppa:neon/kf5 -y
   - sudo apt-get update -qq
   - sudo apt-get install -y project-neon-libkdegames libboost-all-dev
 
