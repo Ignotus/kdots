@@ -107,7 +107,7 @@ namespace KDots
     const QString& secondMark = QString::number(m_steps->getMarks(Owner::SECOND));
     
     Q_Q(BoardModel);
-    emit q->statusUpdated(QString::fromAscii("First:\t%1\tSecond:\t%2").arg(firstMark, secondMark));
+    emit q->statusUpdated(i18n("First:\t%1\tSecond:\t%2").arg(firstMark, secondMark));
   }
   
   
