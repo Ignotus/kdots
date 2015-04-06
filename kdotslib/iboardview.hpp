@@ -28,11 +28,15 @@
 
 namespace KDots
 {
+  class Point;
   class BoardModel;
   class IBoardView : public QWidget
   {
   public:
     IBoardView(QWidget *parent = 0) : QWidget(parent) {}
     virtual void setModel(BoardModel *table) = 0;
+  
+  protected:
+    virtual void pointClicked(const Point& point) = 0;
   };
 }
