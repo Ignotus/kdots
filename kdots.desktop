@@ -2,6 +2,8 @@
 Name=KDots
 Name[en_GB]=KDots
 Name[es]=KDots
+Name[fi]=KDots
+Name[fr]=KDots
 Name[nl]=KDots
 Name[pl]=Kropki
 Name[pt]=KDots
@@ -16,6 +18,8 @@ Categories=Qt;KDE;Game;BoardGame;
 GenericName=Game of dots
 GenericName[en_GB]=Game of dots
 GenericName[es]=Jugo de puntos
+GenericName[fi]=Pistepeli
+GenericName[fr]=Jeu de points
 GenericName[nl]=Spel met punten
 GenericName[pl]=Gra w kropki
 GenericName[pt]=Jogo de pontos
