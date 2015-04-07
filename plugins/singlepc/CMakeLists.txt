@@ -21,8 +21,7 @@ add_library(kdots_singlepc MODULE
 )
 
 target_link_libraries(kdots_singlepc
-  ${KDOTS_REQUIRED_LIBS}
-  kdotslib
+  ${KDOTS_PLUGIN_DEPS}
 )
 
 install(TARGETS kdots_singlepc DESTINATION ${KDE_INSTALL_PLUGINDIR}/kdots)

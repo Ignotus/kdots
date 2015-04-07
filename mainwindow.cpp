@@ -171,9 +171,9 @@ namespace KDots
     {
     std::unique_ptr<IBoardView> view(new BoardView(this));
     
-    connect(this, SIGNAL(preferencesUpdated()), view.get(), SLOT(update()));
+    connect(this, SIGNAL(preferencesUpdated()), view->getObject(), SLOT(update()));
     
-    setCentralWidget(view.get());
+    setCentralWidget(qobject_cast<QWidget*>(view->getObject()));
     
     m_model->setView(std::move(view));
     }

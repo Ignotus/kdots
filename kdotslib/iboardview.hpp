@@ -24,17 +24,18 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
-#include <QWidget>
 
 namespace KDots
 {
   class Point;
   class BoardModel;
-  class IBoardView : public QWidget
+  class IBoardView
   {
   public:
-    IBoardView(QWidget *parent = 0) : QWidget(parent) {}
+    virtual ~IBoardView() {}
     virtual void setModel(BoardModel *table) = 0;
+    
+    virtual QObject* getObject() = 0;
   
   protected:
     virtual void pointClicked(const Point& point) = 0;

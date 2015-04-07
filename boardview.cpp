@@ -46,7 +46,7 @@
 namespace KDots
 { 
   BoardView::BoardView(QWidget *parent)
-    : IBoardView(parent)
+    : QWidget(parent)
     , m_model(nullptr)
     , m_height(0)
     , m_width(0)
@@ -64,6 +64,11 @@ namespace KDots
     
     m_height = m_model->gameConfig().m_height + 1;
     m_width = m_model->gameConfig().m_width + 1;
+  }
+  
+  QObject* BoardView::getObject()
+  {
+    return this;
   }
   
   void BoardView::onFreezeView(bool freeze)

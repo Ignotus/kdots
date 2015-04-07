@@ -14,10 +14,6 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(KDotsLib REQUIRED)
 
-find_package(KF5 REQUIRED COMPONENTS
-  KDELibs4Support
-)
-
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}
@@ -26,7 +22,4 @@ include_directories(
   
 add_library(kdots_example MODULE plugin.cpp)
 
-target_link_libraries(kdots_example
-  KF5::KDELibs4Support
-  ${KDOTSLIB_LIBRARIES}
-  )
+target_link_libraries(kdots_example ${KDOTSLIB_LIBRARIES})

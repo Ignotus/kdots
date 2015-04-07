@@ -3,14 +3,6 @@ include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-set(KDOTS_REQUIRED_LIBS
-  ${KDEGAMES_LIBRARY}
-  ${Boost_LIBRARIES}
-  KF5::TextWidgets
-  KF5::XmlGui
-  KF5::KDELibs4Support
-)
-
 file(GLOB KDOTSLIB_HDRS "*[^_][^p].hpp")
 file(GLOB KDOTSLIB_SRCS *.cpp)
 
@@ -24,7 +16,8 @@ add_library(kdotslib SHARED
 )
 
 target_link_libraries(kdotslib
-  ${KDOTS_REQUIRED_LIBS}
+  ${Boost_LIBRARIES}
+  KF5::KDELibs4Support
 )
 
 set_target_properties(kdotslib

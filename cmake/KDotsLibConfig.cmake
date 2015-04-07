@@ -11,10 +11,14 @@
 #  For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 #
 
+include(CMakeFindDependencyMacro)
+
 if(KDOTSLIB_LIBRARIES AND KDOTSLIB_INCLUDE_DIRS)
     set(KDOTSLIB_FOUND TRUE)
 else(KDOTSLIB_LIBRARIES AND KDOTSLIB_INCLUDE_DIRS)
-
+    find_dependency(Qt5Core)
+    find_dependency(Qt5Widgets)
+    find_dependency(KF5KDEGames)
     find_path (KDOTSLIB_INCLUDE_DIR
         NAMES
         kdots/kdots_api.hpp
@@ -41,6 +45,9 @@ else(KDOTSLIB_LIBRARIES AND KDOTSLIB_INCLUDE_DIRS)
     )
     set (KDOTSLIB_LIBRARIES
         ${KDOTSLIB_LIBRARY}
+        Qt5Core
+        Qt5Widgets
+        KF5KDEGames
     )
 
     if(KDOTSLIB_INCLUDE_DIRS AND KDOTSLIB_LIBRARIES)

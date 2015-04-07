@@ -15,9 +15,8 @@ find_package(KF5 REQUIRED COMPONENTS
   TextWidgets
   XmlGui
   KDELibs4Support
+  KDEGames
 )
-
-find_package(KF5KDEGames 4.9.0 REQUIRED)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexceptions")
 
@@ -29,12 +28,18 @@ set(KDOTS_INCLUDE_DIR
 
 set(PLUGINS_DIR ${CMAKE_INSTALL_PREFIX}/${KDE_INSTALL_PLUGINDIR}/kdots)
 
+get_target_property(KF5KDEGames_INCLUDES KF5KDEGames INTERFACE_INCLUDE_DIRECTORIES)
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}
   ${KDOTS_INCLUDE_DIR}
-  ${KDEGAMES_INCLUDE_DIRS}
+  ${KF5KDEGames_INCLUDES}
   ${Boost_INCLUDE_DIR}
+)
+
+set(KDOTS_PLUGIN_DEPS
+  ${KDEGAMES_LIBRARY}
+  kdotslib
 )
 
 file(GLOB HDRS *.hpp)
@@ -48,8 +53,10 @@ install(FILES kdots.kcfg DESTINATION ${KCFG_INSTALL_DIR})
 add_executable(kdots ${SRCS})
 
 target_link_libraries(kdots
-  ${KDOTS_REQUIRED_LIBS}
   kdotslib
+  ${KDEGAMES_LIBRARY}
+  KF5::TextWidgets
+  KF5::XmlGui
 )
 
 install(TARGETS kdots DESTINATION ${BIN_INSTALL_DIR})

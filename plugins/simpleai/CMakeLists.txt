@@ -18,8 +18,7 @@ add_library(kdots_simpleai MODULE
 )
 
 target_link_libraries(kdots_simpleai
-  ${KDOTS_REQUIRED_LIBS}
-  kdotslib
+  ${KDOTS_PLUGIN_DEPS}
 )
 
 install(TARGETS kdots_simpleai DESTINATION ${KDE_INSTALL_PLUGINDIR}/kdots)

@@ -8,9 +8,7 @@ include_directories(
   ${KDOTS_INCLUDE_DIR}
 )
 
-find_package(Qt5 REQUIRED
-  Network
-)
+find_dependency(Qt5Network)
 
 file(GLOB IPCONNECT_HEADERS *.hpp)
 file(GLOB IPCONNECT_SRCS *.cpp)
@@ -23,9 +21,8 @@ add_library(kdots_ipconnect MODULE
 )
 
 target_link_libraries(kdots_ipconnect
-  ${KDOTS_REQUIRED_LIBS}
-  ${QT_LIBRARIES}
-  kdotslib
+  ${KDOTS_PLUGIN_DEPS}
+  Qt5::Network
 )
 
 install(TARGETS kdots_ipconnect DESTINATION ${KDE_INSTALL_PLUGINDIR}/kdots)

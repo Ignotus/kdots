@@ -24,6 +24,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
+#include <QWidget>
+
 #include <constants.hpp>
 #include <iboardview.hpp>
 #include <point.hpp>
@@ -36,13 +38,16 @@ namespace KDots
   class BoardModel;
   class GameConfig;
 
-  class BoardView : public IBoardView
+  class BoardView : public QWidget
+                  , public IBoardView
   {
     Q_OBJECT
   public:
     BoardView(QWidget *parent = 0);
     
     void setModel(BoardModel *table);
+    
+    QObject* getObject();
     
   public Q_SLOTS:
     void onFreezeView(bool freeze);

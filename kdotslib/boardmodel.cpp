@@ -223,7 +223,7 @@ namespace KDots
     d->m_view = std::move(view);
     d->m_view->setModel(this);
 
-    connect(d->m_view.get(), SIGNAL(pointClicked(const Point&)),
+    connect(d->m_view->getObject(), SIGNAL(pointClicked(const Point&)),
             d, SLOT(addPoint(const Point&)));
   }
 
