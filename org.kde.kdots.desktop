@@ -28,3 +28,4 @@ GenericName[sk]=Bodová hra
 GenericName[uk]=Гра у крапки
 GenericName[x-test]=xxGame of dotsxx
 Terminal=false
+X-DBUS-ServiceName=org.kde.kdots

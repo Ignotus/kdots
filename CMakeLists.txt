@@ -61,7 +61,7 @@ target_link_libraries(kdots
 
 install(TARGETS kdots DESTINATION ${BIN_INSTALL_DIR})
 install(FILES kdotsui.rc DESTINATION ${KXMLGUI_INSTALL_DIR}/kdots)
-install(PROGRAMS kdots.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
+install(PROGRAMS org.kde.kdots.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
 install(FILES cmake/KDotsLibConfig.cmake DESTINATION ${CMAKECONFIG_INSTALL_PREFIX}/KDotsLib)
 
 add_subdirectory(kdotslib)
