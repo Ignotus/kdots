@@ -10,7 +10,7 @@ include(KDECompilerSettings)
 
 set(CMAKE_AUTOMOC ON)
 
-find_package(Boost 1.55 REQUIRED)
+find_package(Boost 1.49 REQUIRED)
 find_package(KF5 REQUIRED COMPONENTS
   TextWidgets
   XmlGui
