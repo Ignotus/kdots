@@ -34,7 +34,7 @@
 
 <abstract>
 <para>
-KDots is a simple implementation of the game of dots written with Qt Toolkit and KDELibs.
+&kappname; is a simple implementation of the game of dots written with &Qt; Toolkit and &kde; libraries.
 </para>
 </abstract>
 
@@ -50,7 +50,7 @@ KDots is a simple implementation of the game of dots written with Qt Toolkit and
 <title>Introduction</title>
 
 <para>
-&kappname; is a simple implementation of the game of dots written with &Qt; Toolkit and KDELibs.
+&kappname; is a simple implementation of the game of dots written with &Qt; Toolkit and &kde; libraries.
 </para>
 <para>
 The purpose of the <ulink url="https://en.wikipedia.org/wiki/Dots_%28game%29">dots game</ulink> is to catch your opponent's dots by placing your dots on the
@@ -142,6 +142,109 @@ incoming connections.
 </sect1>
 </chapter>
 
+<chapter id="interface-overview">
+<title>Interface Overview</title>
+
+<sect1 id="menu">
+<title>Menu Items</title>
+
+<variablelist>
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>N</keycap></keycombo>
+</shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>New</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para>
+Starts a new game. In a network game this option is only available for
+the network server. The network client will be automatically started by
+the server.  
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>E</keycap></keycombo>
+</shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>End Game</guimenuitem></menuchoice></term>
+<listitem>
+<para>
+Ends a running game.
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>Q</keycap></keycombo>
+</shortcut>
+<guimenu>File</guimenu>
+<guimenuitem>Quit</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para>
+Quits the program.
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut>
+<keycombo action="simul">&Ctrl;<keycap>Z</keycap></keycombo>
+</shortcut>
+<guimenu>Game</guimenu>
+<guimenuitem>Undo</guimenuitem>
+</menuchoice></term>
+<listitem>
+<para>
+Undo the last move.
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>Settings</guimenu>
+<guimenuitem>Difficulty</guimenuitem>
+</menuchoice></term>
+<listitem><para><action>Lets you alter the difficulty level of the
+game.</action></para></listitem>
+</varlistentry>
+
+</variablelist>
+
+<para>
+Additionally &kappname; has the common &kde; <guimenu>Settings</guimenu> and <guimenu>Help</guimenu>
+menu items, for more information read the sections about the <ulink url="help:/fundamentals/ui.html#menus-settings"
+>Settings Menu</ulink> and <ulink url="help:/fundamentals/ui.html#menus-help">Help Menu</ulink>
+of the &kde; Fundamentals.
+</para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="config">
+<title>Game Configuration</title>
+<para>&kappname; can be configured using the configuration dialog with <menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure &kappname;...</guimenuitem></menuchoice> </para>
+
+<para><guilabel>First player point color</guilabel>: <action>Lets you choose the color of the first player points.</action> Click on the button to the right of the label to open the <ulink url="help:/fundamentals/colors.html">Color Selector</ulink> window.</para>
+
+<para><guilabel>Second player point color</guilabel>: <action>Lets you choose the color of the second player points.</action> Click on the button to the right of the label to open the <ulink url="help:/fundamentals/colors.html">Color Selector</ulink> window.</para>
+
+<para><guilabel>First player territory fill style</guilabel>: <action>Lets you choose the fill style of the first player territory using a drop-down list.</action></para>
+
+<para><guilabel>Second player territory fill style</guilabel>: <action>Lets you choose the fill style of the second player territory using a drop-down list.</action></para>
+
+</chapter>
 
 <chapter id="credits">
 
