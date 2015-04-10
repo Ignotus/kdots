@@ -39,7 +39,7 @@ namespace example
     return true;
   }
       
-  void Rival::onPointAdded(const Point&)
+  void Rival::onPointAdded(const QPoint&)
   {
   }
   

@@ -53,7 +53,7 @@ namespace KDots
     void emitStatus();
   
   private Q_SLOTS:
-    void addPoint(const Point& point);
+    void addPoint(const QPoint& point);
     
   private:
     std::unique_ptr<Graph> m_graph;

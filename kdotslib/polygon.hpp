@@ -37,21 +37,22 @@ namespace std
   class shared_ptr;
 }
 
+class QPoint;
+
 namespace KDots
 {
-  class Point;
   class PolygonPrivate;
   class KDOTS_EXPORT Polygon final
   {
     Q_DECLARE_PRIVATE(Polygon)
     Q_DISABLE_COPY(Polygon)
   public:
-    Polygon(const std::vector<Point>& points = {});
+    Polygon(const std::vector<QPoint>& points = {});
     ~Polygon();
     
     int area() const;
     
-    const std::vector<Point>& points() const;
+    const std::vector<QPoint>& points() const;
 
     bool isFilled() const;
 
@@ -61,7 +62,7 @@ namespace KDots
     
     void setOwner(Owner own);
     
-    bool contains(const Point& point) const;
+    bool contains(const QPoint& point) const;
   
   private:
     const QScopedPointer<PolygonPrivate> d_ptr;

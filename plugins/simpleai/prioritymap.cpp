@@ -59,7 +59,7 @@ namespace simpleai
   {
   }
 
-  MapData::MapData(const MapType& map, const Point& current, float priority)
+  MapData::MapData(const MapType& map, const QPoint& current, float priority)
     : m_map(map)
     , m_current(current)
     , m_priority(priority)
@@ -80,7 +80,7 @@ namespace simpleai
       res += "}";
     }
 
-    res += "\n" + QString::number(m_current.m_x) + " " + QString::number(m_current.m_y) + "\n";
+    res += "\n" + QString::number(m_current.x()) + " " + QString::number(m_current.y()) + "\n";
 
     return res;
   }
@@ -140,8 +140,8 @@ namespace simpleai
     }
 
     newData.m_priority = data.m_priority;
-    newData.m_current = {static_cast<int>(map.front().size() - 1 - data.m_current.m_x),
-                          data.m_current.m_y};
+    newData.m_current = {static_cast<int>(map.front().size() - 1 - data.m_current.x()),
+                         data.m_current.y()};
 
     return newData;
   }
@@ -163,8 +163,8 @@ namespace simpleai
     }
 
     newData.m_priority = data.m_priority;
-    newData.m_current = {static_cast<int>(map.size() - 1 - data.m_current.m_y),
-                          data.m_current.m_x};
+    newData.m_current = {static_cast<int>(map.size() - 1 - data.m_current.y()),
+                         data.m_current.x()};
 
     return newData;
   }
@@ -198,7 +198,7 @@ namespace simpleai
     {
       const float priority = in.readLine().toFloat();
 
-      Point current;
+      QPoint current;
       MapType map;
       for (int row = 0;; ++row)
       {

@@ -26,7 +26,8 @@
 #pragma once
 #include <memory>
 
-#include "point.hpp"
+#include <QPoint>
+
 #include "polygon.hpp"
 
 namespace KDots
@@ -38,19 +39,19 @@ namespace KDots
     Q_DISABLE_COPY(PolygonFinderPrivate)
   private:
     PolygonFinderPrivate(const Graph& graph, Owner owner,
-                         const std::vector<Point>& additionalPoints);
+                         const std::vector<QPoint>& additionalPoints);
 
-    void findPolygons(const Point& point);
-    bool isAdditionalPoint(const Point& point) const;
+    void findPolygons(const QPoint& point);
+    bool isAdditionalPoint(const QPoint& point) const;
 
   private:
     const Graph& m_graph;
     Owner m_current;
     std::vector<std::vector<bool>> m_stepMap;
-    const std::vector<Point>& m_additionalPoints;
+    const std::vector<QPoint>& m_additionalPoints;
 
-    std::vector<Point> m_cache;
+    std::vector<QPoint> m_cache;
     PolyList m_polygons;
-    Point m_first;
+    QPoint m_first;
   };
 }

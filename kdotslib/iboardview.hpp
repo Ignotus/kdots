@@ -27,7 +27,6 @@
 
 namespace KDots
 {
-  class Point;
   class BoardModel;
   class IBoardView
   {
@@ -38,6 +37,6 @@ namespace KDots
     virtual QObject* getObject() = 0;
   
   protected:
-    virtual void pointClicked(const Point& point) = 0;
+    virtual void pointClicked(const QPoint& point) = 0;
   };
 }

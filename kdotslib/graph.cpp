@@ -54,21 +54,34 @@ namespace KDots
     return itr;
   }
 
-  void Graph::addEdge(const Point& first, const Point& second)
+  void Graph::addEdge(const QPoint& first, const QPoint& second)
   {
-    m_graph[first.m_x][first.m_y].edges().addEdge(second);
-    m_graph[second.m_x][second.m_y].edges().addEdge(first);
+    m_graph[first.x()][first.y()].edges().addEdge(second);
+    m_graph[second.x()][second.y()].edges().addEdge(first);
   }
 
-  void Graph::removeEdge(const Point& first, const Point& second)
+  void Graph::removeEdge(const QPoint& first, const QPoint& second)
   {
-    m_graph[first.m_x][first.m_y].edges().removeEdge(second);
-    m_graph[second.m_x][second.m_y].edges().removeEdge(first);
+    m_graph[first.x()][first.y()].edges().removeEdge(second);
+    m_graph[second.x()][second.y()].edges().removeEdge(first);
+  }
+  
+  namespace
+  {
+    inline bool operator>(const QPoint& first, const QPoint& second)
+    {
+      return first.y() > second.y() && first.x() > second.x();
+    }
+
+    inline bool operator<(const QPoint& first, const QPoint& second)
+    {
+      return first.x() < second.x() && first.y() < second.y();
+    }
   }
 
-  bool Graph::isValid(const Point& point) const
+  bool Graph::isValid(const QPoint& point) const
   {
-    return point > Point() && point < Point(width(), height());
+    return point > QPoint{-1, -1} && point < QPoint(width(), height());
   }
 
   std::size_t Graph::width() const
@@ -81,14 +94,14 @@ namespace KDots
     return m_graph.front().size();
   }
 
-  GraphPoint& Graph::operator[](const Point& index)
+  GraphPoint& Graph::operator[](const QPoint& index)
   {
-    return m_graph[index.m_x][index.m_y];
+    return m_graph[index.x()][index.y()];
   }
 
-  const GraphPoint& Graph::operator[](const Point& index) const
+  const GraphPoint& Graph::operator[](const QPoint& index) const
   {
-    return m_graph[index.m_x][index.m_y];
+    return m_graph[index.x()][index.y()];
   }
 
   std::vector<GraphPoint>& Graph::operator[](int index)

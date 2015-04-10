@@ -32,10 +32,11 @@
 #include "enums.hpp"
 #include "polygon.hpp"
 
+class QPoint;
+
 namespace KDots
 {
   class Graph;
-  class Point;
   class PolygonFinderPrivate;
   class KDOTS_EXPORT PolygonFinder final
   {
@@ -43,12 +44,12 @@ namespace KDots
     Q_DISABLE_COPY(PolygonFinder)
   public:
     PolygonFinder(const Graph& graph, Owner owner,
-                  const std::vector<Point>& additionalPoints = {});
+                  const std::vector<QPoint>& additionalPoints = {});
 
     ~PolygonFinder();
 
     // O(n)
-    const PolyList& operator()(const Point& point);
+    const PolyList& operator()(const QPoint& point);
 
   private:
     const QScopedPointer<PolygonFinderPrivate> d_ptr;

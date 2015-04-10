@@ -44,9 +44,9 @@ namespace KDots
     return m_firstOwner;
   }
   
-  Point StepQueue::lastPoint() const
+  QPoint StepQueue::lastPoint() const
   {
-    return m_points.empty() ? Point() : m_points.back();
+    return m_points.empty() ? QPoint{-1, -1} : m_points.back();
   }
   
   void  StepQueue::clear()
@@ -59,7 +59,7 @@ namespace KDots
     m_points.clear();
   }
 
-  void StepQueue::addPoint(const Point& point)
+  void StepQueue::addPoint(const QPoint& point)
   {
     m_points.push_back(point);
     if (getCurrentOwner() == Owner::FIRST)
@@ -98,12 +98,12 @@ namespace KDots
     return owner == Owner::FIRST ? m_first : m_second;
   }
 
-  const std::vector<Point>& StepQueue::getPoints(Owner owner) const
+  const std::vector<QPoint>& StepQueue::getPoints(Owner owner) const
   {
     return owner == Owner::SECOND ? m_secondPoints : m_firstPoints;
   }
   
-  const std::vector<Point>& StepQueue::getAllPoints() const
+  const std::vector<QPoint>& StepQueue::getAllPoints() const
   {
     return m_points;
   }

@@ -27,18 +27,20 @@
 #include "polygon.hpp"
 #include "polygon_p.hpp"
 
+#include <QPoint>
+
 namespace KDots
 {
-  PolygonPrivate::PolygonPrivate(const std::vector<Point>& points)
+  PolygonPrivate::PolygonPrivate(const std::vector<QPoint>& points)
     : m_points(points)
     , m_filled(false)
     , m_area(-1)
   {
   }
 
-  Point PolygonPrivate::getPrevPoint(std::vector<Point>::const_iterator current) const
+  QPoint PolygonPrivate::getPrevPoint(std::vector<QPoint>::const_iterator current) const
   {
-    const int currentY = current->m_y;
+    const int currentY = current->y();
     for (auto prev = current;;)
     {
       if (prev == m_points.begin())
@@ -46,14 +48,14 @@ namespace KDots
       else
         --prev;
 
-      if(prev->m_y != currentY)
+      if (prev->y() != currentY)
         return *prev;
     }
   }
 
-  Point PolygonPrivate::getNextPoint(int& shift, std::vector<Point>::const_iterator current) const
+  QPoint PolygonPrivate::getNextPoint(int& shift, std::vector<QPoint>::const_iterator current) const
   {
-    const int currentY = current->m_y;
+    const int currentY = current->y();
     shift = 0;
     for (auto next = current;;)
     {
@@ -63,14 +65,14 @@ namespace KDots
       else
         ++next;
 
-      if (next->m_y != currentY)
+      if (next->y() != currentY)
         return *next;
     }
   }
 
   //////////////////////////////////////////////////////////////////////////////
 
-  Polygon::Polygon(const std::vector<Point>& points)
+  Polygon::Polygon(const std::vector<QPoint>& points)
     : d_ptr(new PolygonPrivate(points))
   {
   }
@@ -81,14 +83,14 @@ namespace KDots
 
   namespace
   {
-    int doubleArea(const std::vector<Point>& polygon)
+    int doubleArea(const std::vector<QPoint>& polygon)
     {
       int res = 0;
-      Point prevPoint = polygon.back();
+      QPoint prevPoint = polygon.back();
       for (auto itr = polygon.begin(), itrEnd = polygon.end();
           itr != itrEnd; ++itr)
       {
-        res += (itr->m_x - prevPoint.m_x) * (itr->m_y + prevPoint.m_y);
+        res += (itr->x() - prevPoint.x()) * (itr->y() + prevPoint.y());
         prevPoint = *itr;
       }
 
@@ -107,7 +109,7 @@ namespace KDots
     return d->m_area;
   }
 
-  const std::vector<Point>& Polygon::points() const
+  const std::vector<QPoint>& Polygon::points() const
   {
     Q_D(const Polygon);
     return d->m_points;
@@ -137,7 +139,7 @@ namespace KDots
     d->m_owner = own;
   }
 
-  bool Polygon::contains(const Point& point) const
+  bool Polygon::contains(const QPoint& point) const
   {
     Q_D(const Polygon);
     // k - a count of points in the same line with "point" object
@@ -148,19 +150,19 @@ namespace KDots
     auto itrEnd = d->m_points.end();
     while (itr != itrEnd)
     {
-      if (itr->m_y != point.m_y)
+      if (itr->y() != point.y())
       {
         ++itr;
         continue;
       }
 
-      if (itr->m_x == point.m_x)
+      if (itr->x() == point.x())
         return true;
 
-      const Point& prevPoint = d->getPrevPoint(itr);
-      const Point& nextPoint = d->getNextPoint(shift, itr);
+      const QPoint& prevPoint = d->getPrevPoint(itr);
+      const QPoint& nextPoint = d->getNextPoint(shift, itr);
 
-      if (itr->m_x < point.m_x && prevPoint.m_y != nextPoint.m_y && shift == 1)
+      if (itr->x() < point.x() && prevPoint.y() != nextPoint.y() && shift == 1)
         ++i;
 
       ++itr;

@@ -26,7 +26,7 @@
 #pragma once
 #include <stdexcept>
 
-#include "point.hpp"
+#include <QPoint>
 
 namespace KDots
 {
@@ -38,7 +38,7 @@ namespace KDots
       : m_count(0)
     {}
 
-    bool addEdge(const Point& point)
+    bool addEdge(const QPoint& point)
     {
       if(m_count == SIZE || hasPoint(point))
         return false;
@@ -52,7 +52,7 @@ namespace KDots
       return m_count;
     }
 
-    bool hasPoint(const Point& point)
+    bool hasPoint(const QPoint& point)
     {
       for(int i = 0;  i < m_count; ++i)
       {
@@ -63,19 +63,19 @@ namespace KDots
       return false;
     }
 
-    Point& operator[](int index)
+    QPoint& operator[](int index)
     {
       return const_cast<EdgeList<SIZE>&>(static_cast<const EdgeList<SIZE>&>(*this) [index]);
     }
 
-    const Point& operator[](int index) const
+    const QPoint& operator[](int index) const
     {
       if(index < 0 || index >= m_count)
         throw std::runtime_error("beyond the limit of the array");
       return m_pointList[index];
     }
 
-    bool removeEdge(const Point& toPoint)
+    bool removeEdge(const QPoint& toPoint)
     {
       for(int i = 0; i < m_count; ++i)
       {
@@ -95,6 +95,6 @@ namespace KDots
   
   private:
     int m_count;
-    Point m_pointList[SIZE];
+    QPoint m_pointList[SIZE];
   };
 }

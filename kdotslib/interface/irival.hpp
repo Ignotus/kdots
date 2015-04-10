@@ -28,13 +28,13 @@
 
 #include <enums.hpp>
 
+class QPoint;
 class QStatusBar;
 class KgDifficultyLevel;
 
 namespace KDots
 {
   class BoardModel;
-  class Point;
   class GameConfig;
   class IConfigurationWidget;
   
@@ -87,7 +87,7 @@ namespace KDots
     
   public: //slots
     // This slot is called after the appearance of the new point on the board
-    virtual void onPointAdded(const Point& point) = 0;
+    virtual void onPointAdded(const QPoint& point) = 0;
     
     // This slot is called after the difficulty level changed.
     // Please disable difficulty changes in the class constructor if it's not needed.
@@ -102,7 +102,7 @@ namespace KDots
     virtual void needDestroy() = 0;
     
     // Emit this signal to add a new point to the game board
-    virtual void needAddPoint(const Point&) = 0;
+    virtual void needAddPoint(const QPoint&) = 0;
   };
 }
 

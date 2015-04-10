@@ -28,7 +28,6 @@
 
 #include "enums.hpp"
 #include "kdots_api.hpp"
-#include "point.hpp"
 
 namespace KDots
 {

@@ -57,7 +57,5 @@ namespace KDots
   {
     qRegisterMetaType<KDots::GameConfig>("GameConfig");
     qRegisterMetaTypeStreamOperators<KDots::GameConfig>("GameConfig");
-    qRegisterMetaType<KDots::Point>("Point");
-    qRegisterMetaTypeStreamOperators<KDots::Point>("Point");
   }
 }

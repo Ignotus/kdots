@@ -43,7 +43,7 @@ namespace singlepc
     return true;
   }
       
-  void Rival::onPointAdded(const Point&)
+  void Rival::onPointAdded(const QPoint&)
   {
   }
   

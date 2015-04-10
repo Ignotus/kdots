@@ -52,7 +52,7 @@ namespace ipconnect
     Owner owner() const;
 
   public Q_SLOTS:
-    void onPointAdded(const Point& point);
+    void onPointAdded(const QPoint& point);
     void onDifficultyChanged(const KgDifficultyLevel*);
     
   private Q_SLOTS:
@@ -63,7 +63,7 @@ namespace ipconnect
   Q_SIGNALS:
     void needCreateBoard(const GameConfig& config);
     void needDestroy();
-    void needAddPoint(const Point&);
+    void needAddPoint(const QPoint&);
     
   private:
     const BoardModel *m_board;

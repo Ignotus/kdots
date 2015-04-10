@@ -33,7 +33,6 @@
 
 namespace KDots
 {
-class Point;
 namespace simpleai
 {
   class NodeInfo;
@@ -49,7 +48,7 @@ namespace simpleai
     void setBoardModel(const BoardModel *board);
 
   public Q_SLOTS:
-    void onPointAdded(const Point& point);
+    void onPointAdded(const QPoint& point);
     void onDifficultyChanged(const KgDifficultyLevel *level);
 
   private:
@@ -66,7 +65,7 @@ namespace simpleai
   Q_SIGNALS:
     void needCreateBoard(const GameConfig& config);
     void needDestroy();
-    void needAddPoint(const Point&);
+    void needAddPoint(const QPoint&);
 
   private:
     const BoardModel *m_board;

@@ -60,7 +60,7 @@ namespace simpleai
     qDebug() << "Bounding box:" << bbox.width() << bbox.height();
   }
   
-  void DecisionTree::calculateDecisions(std::vector<Point>& points, VectorF& grades)
+  void DecisionTree::calculateDecisions(std::vector<QPoint>& points, VectorF& grades)
   {
     m_nodes = {NodeInfo()};
     
@@ -88,7 +88,7 @@ namespace simpleai
       
       const Owner layerOwner = isHumanLayer ? StepQueue::other(m_ai) : m_ai;
       
-      const std::vector<Point>& ownerPrevPoints = isHumanLayer
+      const std::vector<QPoint>& ownerPrevPoints = isHumanLayer
           ? previousPoints.m_human
           : previousPoints.m_ai;
       
@@ -106,7 +106,7 @@ namespace simpleai
           newNode.m_parent = parentNodeID;
           newNode.m_bestChildGrade = 0;
 
-          const Point point(x + m_bbox.left(), y + m_bbox.top());
+          const QPoint point(x + m_bbox.left(), y + m_bbox.top());
           newNode.m_point = point;
 
           PolygonFinder finder(m_graph, layerOwner, ownerPrevPoints);
@@ -199,7 +199,7 @@ namespace simpleai
   {
     const NodeInfo *lastNode = &m_nodes[lastPointID];
     
-    while(lastNode->m_point.m_x != -1)
+    while(lastNode->m_point.x() != -1)
     {
       if (lastNode->m_layer % 2 == 1)
         previousPoints.m_ai.push_back(lastNode->m_point);
@@ -212,9 +212,9 @@ namespace simpleai
   
   namespace
   {
-    bool isNotIn(const std::vector<Point>& v, const Point& point)
+    bool isNotIn(const std::vector<QPoint>& v, const QPoint& point)
     {
-      for (const Point& p : v)
+      for (const QPoint& p : v)
         if (p == point)
           return false;
       
@@ -231,7 +231,7 @@ namespace simpleai
       
     int numPoints = 0;
     
-    const std::vector<Point>& opponentPrevPoints = currentOwner == m_ai
+    const std::vector<QPoint>& opponentPrevPoints = currentOwner == m_ai
         ? previousPoints.m_human
         : previousPoints.m_ai;
 
@@ -239,7 +239,7 @@ namespace simpleai
     {
       for (int y = m_bbox.top(); y <= m_bbox.bottom(); ++y)
       {
-        const Point point(x, y);
+        const QPoint point(x, y);
         
         // We can capture only noncaptured points
         if (m_graph[point].isCaptured())
@@ -270,13 +270,13 @@ namespace simpleai
   
   namespace
   {
-    bool isNotPreviousPoint(const TPreviousPoints& previousPoints, const Point& point)
+    bool isNotPreviousPoint(const TPreviousPoints& previousPoints, const QPoint& point)
     {
-      for (const Point& pai : previousPoints.m_ai)
+      for (const QPoint& pai : previousPoints.m_ai)
         if (pai == point)
           return false;
       
-      for (const Point& phuman : previousPoints.m_human)
+      for (const QPoint& phuman : previousPoints.m_human)
         if (phuman == point)
           return false;
         
@@ -291,7 +291,7 @@ namespace simpleai
     {
       for (int y = 0; y < m_bbox.height(); ++y)
       {
-        const Point point(x + m_bbox.left(), y + m_bbox.top());
+        const QPoint point(x + m_bbox.left(), y + m_bbox.top());
         
         allowedPoints[x][y] = isNotPreviousPoint(previousPoints, point)
               && m_graph[point].owner() == Owner::NONE

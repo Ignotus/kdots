@@ -27,10 +27,10 @@
 
 #include <boost/noncopyable.hpp>
 
+#include <QPoint>
 #include <QVector>
 
 #include <constants.hpp>
-#include <point.hpp>
 
 struct stat;
 namespace KDots
@@ -55,13 +55,13 @@ namespace simpleai
   {
   public:
     MapData();
-    MapData(const MapType& map, const Point& current, float priority);
+    MapData(const MapType& map, const QPoint& current, float priority);
 
     QString toString() const;
 
   public:
     MapType m_map;
-    Point m_current;
+    QPoint m_current;
     float m_priority;
   };
   

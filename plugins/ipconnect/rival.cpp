@@ -182,7 +182,7 @@ namespace ipconnect
     return m_me;
   }
 
-  void Rival::onPointAdded(const Point& point)
+  void Rival::onPointAdded(const QPoint& point)
   {
     if (!m_socket)
       return;
@@ -190,7 +190,7 @@ namespace ipconnect
     QByteArray array;
     QDataStream out(&array, QIODevice::WriteOnly);
     
-    out << QVariant::fromValue<Point>(point);
+    out << QVariant::fromValue<QPoint>(point);
     qWarning() << m_socket->write(array);
   }
 
@@ -217,7 +217,7 @@ namespace ipconnect
     QDataStream in(&const_cast<QByteArray&>(array), QIODevice::ReadOnly);
     QVariant var;
     in >> var;
-    const Point& point  = var.value<Point>();
+    const QPoint& point  = var.value<QPoint>();
     
     emit needAddPoint(point);
   }

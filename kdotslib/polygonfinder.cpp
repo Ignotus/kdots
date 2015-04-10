@@ -33,7 +33,7 @@
 namespace KDots
 {
   PolygonFinderPrivate::PolygonFinderPrivate(const Graph& graph, Owner owner,
-                                             const std::vector<Point>& additionalPoints)
+                                             const std::vector<QPoint>& additionalPoints)
     : m_graph(graph)
     , m_current(owner)
     , m_stepMap(graph.width(), std::vector<bool>(graph.height(), false))
@@ -44,7 +44,7 @@ namespace KDots
 
   namespace
   {
-    const Point GRAPH_OFFSET[DIRECTION_COUNT] = {
+    const QPoint GRAPH_OFFSET[DIRECTION_COUNT] = {
       { 0,  1},
       { 1,  1},
       { 1,  0},
@@ -56,7 +56,7 @@ namespace KDots
     };
   }
 
-  void PolygonFinderPrivate::findPolygons(const Point& point)
+  void PolygonFinderPrivate::findPolygons(const QPoint& point)
   {
     if (m_cache.size() > 3 && point == m_cache.front())
     {
@@ -64,15 +64,15 @@ namespace KDots
       return;
     }
 
-    if (m_stepMap[point.m_x][point.m_y])
+    if (m_stepMap[point.x()][point.y()])
       return;
 
     m_cache.push_back(point);
-    m_stepMap[point.m_x][point.m_y] = true;
+    m_stepMap[point.x()][point.y()] = true;
 
     for (int i = 0; i < DIRECTION_COUNT; ++i)
     {
-      const Point newPoint(point + GRAPH_OFFSET[i]);
+      const QPoint newPoint(point + GRAPH_OFFSET[i]);
 
       if (!m_graph.isValid(newPoint))
         continue;
@@ -89,9 +89,9 @@ namespace KDots
     m_cache.pop_back();
   }
 
-  bool PolygonFinderPrivate::isAdditionalPoint(const Point& point) const
+  bool PolygonFinderPrivate::isAdditionalPoint(const QPoint& point) const
   {
-    for (const Point& pi : m_additionalPoints)
+    for (const QPoint& pi : m_additionalPoints)
       if (pi == point)
         return true;
 
@@ -101,7 +101,7 @@ namespace KDots
   //////////////////////////////////////////////////////////////////////////////
 
   PolygonFinder::PolygonFinder(const Graph& graph, Owner owner,
-                               const std::vector<Point>& additionalPoints)
+                               const std::vector<QPoint>& additionalPoints)
     : d_ptr(new PolygonFinderPrivate(graph, owner, additionalPoints))
   {
   }
@@ -123,7 +123,7 @@ namespace KDots
     }
   }
 
-  const PolyList& PolygonFinder::operator()(const Point& point)
+  const PolyList& PolygonFinder::operator()(const QPoint& point)
   {
     Q_D(PolygonFinder);
     d->m_first = point;

@@ -24,8 +24,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
+#include <QPoint>
+
 #include "kdots_api.hpp"
-#include "point.hpp"
 #include "enums.hpp"
 
 namespace KDots
@@ -37,11 +38,11 @@ namespace KDots
     virtual ~StepQueue() {}
     
     Owner firstOwner() const;
-    Point lastPoint() const;
+    QPoint lastPoint() const;
     
     void clear();
 
-    void addPoint(const Point& point);
+    void addPoint(const QPoint& point);
     void addCaptured();
     void addEmptyCaptured();
     
@@ -49,8 +50,8 @@ namespace KDots
 
     Owner getCurrentOwner() const;
     std::size_t getMarks(Owner owner) const;
-    const std::vector<Point>& getPoints(Owner owner) const;
-    const std::vector<Point>& getAllPoints() const;
+    const std::vector<QPoint>& getPoints(Owner owner) const;
+    const std::vector<QPoint>& getAllPoints() const;
 
     static Owner other(Owner player);
 
@@ -62,7 +63,7 @@ namespace KDots
     
   private:
     Owner m_firstOwner;
-    std::vector<Point> m_firstPoints, m_secondPoints, m_points;
+    std::vector<QPoint> m_firstPoints, m_secondPoints, m_points;
     std::size_t m_first, m_second, m_emptyCaptured;
   };
 

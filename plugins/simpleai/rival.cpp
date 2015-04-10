@@ -30,7 +30,6 @@
 #include <boardmodel.hpp>
 #include <constants.hpp>
 #include <graph.hpp>
-#include <point.hpp>
 #include <polygonfinder.hpp>
 #include <stepqueue.hpp>
 #include <iboardview.hpp>
@@ -77,7 +76,7 @@ namespace simpleai
     m_depth = DIFFICULTY_TO_DEPTH.at(level->standardLevel());
   }
 
-  void Rival::onPointAdded(const Point& point)
+  void Rival::onPointAdded(const QPoint& point)
   {
     Q_UNUSED(point);
     if (m_board->stepQueue().getCurrentOwner() == m_human)
@@ -89,7 +88,7 @@ namespace simpleai
   bool Rival::addRandomPoint()
   {
     const Graph& graph = m_board->graph();
-    const Point newPoint(rand() % graph.width(), rand() % graph.height());
+    const QPoint newPoint(rand() % graph.width(), rand() % graph.height());
     if (graph[newPoint].owner() == Owner::NONE)
     {
       emit needAddPoint(newPoint);
@@ -103,9 +102,9 @@ namespace simpleai
   {
     const Graph& graph = m_board->graph();
 
-    auto match = [&](const Point& current, const MapData& data) -> bool {
-      auto checkPoint = [&](const Point& offset, MapElement value) -> bool {
-        const Point newPoint(current + offset);
+    auto match = [&](const QPoint& current, const MapData& data) -> bool {
+      auto checkPoint = [&](const QPoint& offset, MapElement value) -> bool {
+        const QPoint newPoint(current + offset);
 
         if (!graph.isValid(newPoint))
           return false;
@@ -128,20 +127,20 @@ namespace simpleai
         }
       };
 
-      const Point& currentMarker = data.m_current;
+      const QPoint& currentMarker = data.m_current;
       for (int row = 0; row < data.m_map.size(); ++row)
       {
         const MapLine& line = data.m_map[row];
         for (int column = 0; column < line.size(); ++column)
         {
-          if (!checkPoint({column - currentMarker.m_x, row - currentMarker.m_y}, line[column]))
+          if (!checkPoint({column - currentMarker.x(), row - currentMarker.y()}, line[column]))
             return false;
         }
       }
       return true;
     };
 
-    auto cellPriority = [&](const Point& current) -> float {
+    auto cellPriority = [&](const QPoint& current) -> float {
       float maxPriority = -std::numeric_limits<float>::infinity();
 
       for (const MapData& data : PriorityMap::instance().priorityMap())
@@ -228,7 +227,7 @@ namespace simpleai
     
     DecisionTree tree(graph, bbox, pointsOnBoard, m_depth, m_ai);
     
-    std::vector<Point> decisions;
+    std::vector<QPoint> decisions;
     std::vector<float> decisionGrades;
     
     {
@@ -244,9 +243,9 @@ namespace simpleai
       const auto importanceMatrix(getImportanceMatrix(bbox));
       for (std::size_t i = 0; i < decisions.size(); ++i)
       {
-        const Point& p = decisions[i];
+        const QPoint& p = decisions[i];
         decisionGrades[i] *= m_k2;
-        decisionGrades[i] += m_k1 * importanceMatrix[p.m_x - bbox.left()][p.m_y - bbox.top()];
+        decisionGrades[i] += m_k1 * importanceMatrix[p.x() - bbox.left()][p.y() - bbox.top()];
       }
 
       const int pointID = std::distance(decisionGrades.begin(),

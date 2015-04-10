@@ -24,8 +24,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #pragma once
+#include <QPoint>
+
 #include <constants.hpp>
-#include <point.hpp>
 #include <polygon.hpp>
 
 class QRect;
@@ -46,13 +47,13 @@ namespace simpleai
     int m_bestChildGrade;
     int m_capturedPointsCount;
 
-    Point m_point;
+    QPoint m_point;
   };
   
   struct TPreviousPoints
   {
-    std::vector<Point> m_ai;
-    std::vector<Point> m_human;
+    std::vector<QPoint> m_ai;
+    std::vector<QPoint> m_human;
   };
   
   typedef std::vector<float> VectorF;
@@ -63,7 +64,7 @@ namespace simpleai
     DecisionTree(const Graph& graph, const QRect& bbox,
                  int numPointsOnBoard, int depth, Owner ai);
     
-    void calculateDecisions(std::vector<Point>& points, VectorF& grades);
+    void calculateDecisions(std::vector<QPoint>& points, VectorF& grades);
   
   private:
     void findPreviousPoints(int lastPointID,

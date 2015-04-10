@@ -59,7 +59,7 @@ namespace KDots
   {
     m_model = model;
     
-    connect(m_model, SIGNAL(pointAdded(const Point&)), this, SLOT(update()));
+    connect(m_model, SIGNAL(pointAdded(const QPoint&)), this, SLOT(update()));
     connect(m_model, SIGNAL(freezeView(bool)), this, SLOT(onFreezeView(bool)));
     
     m_height = m_model->gameConfig().m_height + 1;
@@ -87,7 +87,7 @@ namespace KDots
     }
   }
   
-  void BoardView::calculatePoint(Point& point, QMouseEvent *event)
+  void BoardView::calculatePoint(QPoint& point, QMouseEvent *event)
   {
     const QRect& rectange = rect();
 
@@ -122,13 +122,12 @@ namespace KDots
     if (x >= m_width - 1 || x < 0 || y < 0 || y >= m_height - 1)
       return;
     
-    point.m_x = x;
-    point.m_y = y;
+    point = {x, y};
   }
   
   void BoardView::mouseMoveEvent(QMouseEvent *event)
   {
-    Point point;
+    QPoint point{-1, -1};
     calculatePoint(point, event);
     const bool needRepaint =(point != m_underMousePoint);
     m_underMousePoint = point;
@@ -139,10 +138,10 @@ namespace KDots
   
   void BoardView::mousePressEvent(QMouseEvent *event)
   {
-    Point point;
+    QPoint point{-1, -1};
     calculatePoint(point, event);
     
-    if (!point.empty())
+    if (point.x() != -1)
       emit pointClicked(point);
   }
   
@@ -170,7 +169,7 @@ namespace KDots
           ? firstBrush
           : secondBrush);
       
-      const Point& currPoint = itr.point() + 1;
+      const QPoint& currPoint = itr.point() + QPoint{1, 1};
 
       painter.drawEllipse(QPointF(currPoint) * cellSize, 3, 3);
         
@@ -178,7 +177,7 @@ namespace KDots
 
       for (int j = 0; j < edges.size(); ++j)
       {
-        const Point& lastPoint = edges[j] + 1;
+        const QPoint& lastPoint = edges[j] + QPoint{1, 1};
 
         painter.drawLine(QPointF(currPoint) * cellSize, QPointF(lastPoint) * cellSize);
       }
@@ -188,27 +187,27 @@ namespace KDots
   void BoardView::drawLastPoint(QPainter& painter, float cellSize)
   {
     const Graph& graph = m_model->graph();
-    const Point& lastPoint = m_model->stepQueue().lastPoint();
+    const QPoint& lastPoint = m_model->stepQueue().lastPoint();
     const QColor firstColor(Settings::firstPointColor());
     const QColor secondColor(Settings::secondPointColor());
     
     const QPen firtBorder(firstColor, 0.5), secondBorder(secondColor, 0.5);
     
-    if (!lastPoint.empty())
+    if (lastPoint.x() != -1)
     {
       painter.setPen(graph[lastPoint].owner() == Owner::FIRST
           ? firtBorder
           : secondBorder);
             
       painter.setBrush(Qt::NoBrush);
-      const Point& newPoint = lastPoint + 1;
+      const QPoint& newPoint = lastPoint + QPoint{1, 1};
       painter.drawEllipse(QPointF(newPoint) * cellSize, 6, 6);
     }
   }
   
   void BoardView::drawUnderMousePoint(QPainter& painter, float cellSize)
   {
-    if (m_underMousePoint.empty())
+    if (m_underMousePoint.x() == -1)
       return;
     
     const Graph& graph = m_model->graph();
@@ -223,7 +222,7 @@ namespace KDots
         : secondBorder);
             
     painter.setBrush(Qt::NoBrush);
-    const Point& newPoint = m_underMousePoint + 1;
+    const QPoint& newPoint = m_underMousePoint + QPoint{1, 1};
     painter.drawEllipse(QPointF(newPoint) * cellSize, 6, 6);
   }
   
@@ -242,9 +241,9 @@ namespace KDots
     for (Polygon_ptr polygon : polygonVector)
     {
       QPolygon qPoly;
-      for(const Point& point : polygon->points())
+      for(const QPoint& point : polygon->points())
       {
-        const Point& newPoint = point + 1;
+        const QPoint& newPoint = point + QPoint{1, 1};
         qPoly << QPoint(newPoint) * cellSize;
       }
       QPainterPath path;

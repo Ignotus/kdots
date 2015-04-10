@@ -50,19 +50,19 @@ namespace KDots
     iterator end();
     const_iterator end() const;
     
-    bool isValid(const Point& point) const;
+    bool isValid(const QPoint& point) const;
 
     std::size_t width() const;
     std::size_t height() const;
 
-    GraphPoint& operator[](const Point& index);
-    const GraphPoint& operator[](const Point& index) const;
+    GraphPoint& operator[](const QPoint& index);
+    const GraphPoint& operator[](const QPoint& index) const;
 
     std::vector<GraphPoint>& operator[](int index);
     const std::vector<GraphPoint>& operator[](int index) const;
 
-    void addEdge(const KDots::Point& first, const KDots::Point& second);
-    void removeEdge(const Point& first, const Point& second);
+    void addEdge(const QPoint& first, const QPoint& second);
+    void removeEdge(const QPoint& first, const QPoint& second);
   
   private:
     std::vector<std::vector<GraphPoint>> m_graph;
@@ -72,9 +72,9 @@ namespace KDots
   class graph_iterator final : public std::iterator<std::forward_iterator_tag, A>
   {
   public: 
-    Point point() const
+    QPoint point() const
     {
-      return Point(m_x, m_y);
+      return QPoint(m_x, m_y);
     }
     
     graph_iterator()

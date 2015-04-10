@@ -66,7 +66,7 @@ namespace KDots
     void undo();
     
   Q_SIGNALS:
-    void pointAdded(const Point& lastPoint);
+    void pointAdded(const QPoint& lastPoint);
     void freezeView(bool);
     void statusUpdated(const QString& message);
   

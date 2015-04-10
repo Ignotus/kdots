@@ -28,7 +28,6 @@
 
 #include <constants.hpp>
 #include <iboardview.hpp>
-#include <point.hpp>
 
 class QPainter;
 
@@ -58,14 +57,14 @@ namespace KDots
     void paintEvent(QPaintEvent *event);
 
   private:
-    void calculatePoint(Point& point, QMouseEvent *event);
+    void calculatePoint(QPoint& point, QMouseEvent *event);
     void drawPolygons(QPainter& painter, float cellSize);
     void fillPolygon(QPainter& painter, float cellSize);
     void drawLastPoint(QPainter& painter, float cellSize);
     void drawUnderMousePoint(QPainter& painter, float cellSize);
   
   Q_SIGNALS:
-    void pointClicked(const Point& point);
+    void pointClicked(const QPoint& point);
 
   private:
     BoardModel *m_model;
@@ -73,6 +72,6 @@ namespace KDots
     int m_height;
     int m_width;
     
-    Point m_underMousePoint;
+    QPoint m_underMousePoint;
   };
 }

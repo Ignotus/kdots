@@ -41,13 +41,13 @@ namespace singlepc
     bool canUndo() const;
 
   public Q_SLOTS:
-    void onPointAdded(const Point& point);
+    void onPointAdded(const QPoint& point);
     void onDifficultyChanged(const KgDifficultyLevel *difficulty);
 
   Q_SIGNALS:
     void needCreateBoard(const GameConfig& config);
     void needDestroy();
-    void needAddPoint(const Point&);
+    void needAddPoint(const QPoint&);
   };
 
   class Plugin : public KDots::IPlugin

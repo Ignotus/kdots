@@ -25,8 +25,7 @@
  */
 #pragma once
 #include <QScopedPointer>
-
-#include "point.hpp"
+#include <QPoint>
 
 namespace KDots
 {
@@ -36,13 +35,13 @@ namespace KDots
     friend class Polygon;
     Q_DISABLE_COPY(PolygonPrivate)
   private:
-    PolygonPrivate(const std::vector<Point>& points);
+    PolygonPrivate(const std::vector<QPoint>& points);
 
-    Point getPrevPoint(std::vector<Point>::const_iterator current) const;
-    Point getNextPoint(int& shift, std::vector<Point>::const_iterator current) const;
+    QPoint getPrevPoint(std::vector<QPoint>::const_iterator current) const;
+    QPoint getNextPoint(int& shift, std::vector<QPoint>::const_iterator current) const;
 
   private:
-    std::vector<Point> m_points;
+    std::vector<QPoint> m_points;
     bool m_filled;
     Owner m_owner;
 

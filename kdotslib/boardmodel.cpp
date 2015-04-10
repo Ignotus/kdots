@@ -61,9 +61,9 @@ namespace KDots
       polygon->setOwner(m_steps->getCurrentOwner());
       m_polygons.push_back(polygon);
 
-      Point prevPoint = polygon->points().back();
+      QPoint prevPoint = polygon->points().back();
 
-      for (const Point& currPoint : polygon->points())
+      for (const QPoint& currPoint : polygon->points())
       {
         m_graph->addEdge(prevPoint, currPoint);
         prevPoint = currPoint;
@@ -111,7 +111,7 @@ namespace KDots
   }
   
   
-  void BoardModelPrivate::addPoint(const Point& point)
+  void BoardModelPrivate::addPoint(const QPoint& point)
   {
     Q_Q(BoardModel);
     
@@ -155,7 +155,7 @@ namespace KDots
     const Owner otherOwner = StepQueue::other(current);
 
     const auto& otherOwnerPoints = m_steps->getPoints(otherOwner);
-    for (const Point& p : otherOwnerPoints)
+    for (const QPoint& p : otherOwnerPoints)
     {
       GraphPoint& gpoint = graph[p];
       if (gpoint.isCaptured())
@@ -185,7 +185,7 @@ namespace KDots
 
       for (const Polygon_ptr& polygon : polyList)
       {
-        const Point& newPoint = itr.point();
+        const QPoint& newPoint = itr.point();
 
         if (polygon->contains(newPoint) && polygon->isFilled())
         {
@@ -223,8 +223,8 @@ namespace KDots
     d->m_view = std::move(view);
     d->m_view->setModel(this);
 
-    connect(d->m_view->getObject(), SIGNAL(pointClicked(const Point&)),
-            d, SLOT(addPoint(const Point&)));
+    connect(d->m_view->getObject(), SIGNAL(pointClicked(const QPoint&)),
+            d, SLOT(addPoint(const QPoint&)));
   }
 
   void BoardModel::setRival(std::unique_ptr<IRival>&& rival)
@@ -232,10 +232,10 @@ namespace KDots
     Q_D(BoardModel);
     d->m_rival = std::move(rival);
 
-    connect(this, SIGNAL(pointAdded(const Point&)),
-            d->m_rival.get(), SLOT(onPointAdded(const Point&)));
-    connect(d->m_rival.get(), SIGNAL(needAddPoint(const Point&)),
-            d, SLOT(addPoint(const Point&)));
+    connect(this, SIGNAL(pointAdded(const QPoint&)),
+            d->m_rival.get(), SLOT(onPointAdded(const QPoint&)));
+    connect(d->m_rival.get(), SIGNAL(needAddPoint(const QPoint&)),
+            d, SLOT(addPoint(const QPoint&)));
 
     d->m_rival->setBoardModel(this);
   }
@@ -259,7 +259,7 @@ namespace KDots
       points.pop_back();
     d->m_steps->clear();
 
-    for (const Point& point : points)
+    for (const QPoint& point : points)
       d->addPoint(point);
 
     emit freezeView(false);
