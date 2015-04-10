@@ -30,5 +30,5 @@ namespace KDots
 {
   const int DIRECTION_COUNT = 8;
   
-  const QString PLUGIN_SUFFIX = QLatin1String("kdots_");
+  const QString PLUGIN_PREFIX = QLatin1String("libkdots_");
 }
