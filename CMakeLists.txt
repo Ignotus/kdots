@@ -14,7 +14,8 @@ find_package(Boost 1.49 REQUIRED)
 find_package(KF5 REQUIRED COMPONENTS
   TextWidgets
   XmlGui
-  KDELibs4Support
+  I18n
+  Completion
   KDEGames
 )
 
@@ -57,6 +58,7 @@ target_link_libraries(kdots
   ${KDEGAMES_LIBRARY}
   KF5::TextWidgets
   KF5::XmlGui
+  KF5::Completion
 )
 
 install(TARGETS kdots DESTINATION ${BIN_INSTALL_DIR})

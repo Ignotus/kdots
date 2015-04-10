@@ -63,6 +63,9 @@ namespace KDots
     void drawLastPoint(QPainter& painter, float cellSize);
     void drawUnderMousePoint(QPainter& painter, float cellSize);
   
+  private slots:
+    void onShowMessage(const QString& message);
+  
   Q_SIGNALS:
     void pointClicked(const QPoint& point);
 

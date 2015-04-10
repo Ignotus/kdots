@@ -28,7 +28,6 @@
 
 #include <QDebug>
 
-#include <KMessageBox>
 #include <KLocalizedString>
 
 #include <interface/irival.hpp>
@@ -94,7 +93,9 @@ namespace KDots
       const int second = m_steps->getMarks(Owner::SECOND);
 
       const QString& message = getResult(first, second);
-      KMessageBox::information(0, message, message);
+      
+      Q_Q(BoardModel);
+      emit q->showMessage(message);
       return;
     }
 

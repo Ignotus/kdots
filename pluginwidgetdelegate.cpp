@@ -25,10 +25,9 @@
  */
 #include "pluginwidgetdelegate.hpp"
 
+#include <QApplication>
 #include <QDebug>
 #include <QPainter>
-
-#include <KApplication>
 
 #include <interface/iplugin.hpp>
 
@@ -57,7 +56,7 @@ namespace KDots
       const QModelIndex& index) const
   {
     QStyleOptionViewItemV4 myOption = option;
-    KApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
+    QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
     const QString& pluginName = index.data().toString();
     
     const QRect textRect(option.rect.x(), option.rect.y() + 30,

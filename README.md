@@ -24,9 +24,9 @@ Dependencies
 * Qt5::Core, Qt5::Widgets, Qt5::Network
 * cmake 2.8.12 or later
 * extra-cmake-modules
-* Boost (tested on 1.55)
-* KF5::TextWidgets, KF5::XmlGui, KF5::KDELibs4Support
-* KF5KDEGames 4.9.0
+* Boost (>= 1.49)
+* KF5::TextWidgets, KF5::XmlGui, KF5::Completion
+* KF5::KDEGames 4.9.0
 * A C++ compiler with C++11 support.
 
 Building

@@ -32,6 +32,8 @@
 #include <QMouseEvent>
 #include <QPaintEvent>
 
+#include <KMessageBox>
+
 #include <interface/iplugin.hpp>
 #include <interface/irival.hpp>
 
@@ -61,9 +63,15 @@ namespace KDots
     
     connect(m_model, SIGNAL(pointAdded(const QPoint&)), this, SLOT(update()));
     connect(m_model, SIGNAL(freezeView(bool)), this, SLOT(onFreezeView(bool)));
+    connect(m_model, SIGNAL(showMessage(const QString&)), this, SLOT(onShowMessage(const QString&)));
     
     m_height = m_model->gameConfig().m_height + 1;
     m_width = m_model->gameConfig().m_width + 1;
+  }
+  
+  void BoardView::onShowMessage(const QString& message)
+  {
+    KMessageBox::information(0, message, message);
   }
   
   QObject* BoardView::getObject()

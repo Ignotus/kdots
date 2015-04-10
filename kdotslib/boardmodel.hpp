@@ -69,6 +69,7 @@ namespace KDots
     void pointAdded(const QPoint& lastPoint);
     void freezeView(bool);
     void statusUpdated(const QString& message);
+    void showMessage(const QString& message);
   
   private:
     const QScopedPointer<BoardModelPrivate> d_ptr;

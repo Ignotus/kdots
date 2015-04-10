@@ -17,7 +17,8 @@ add_library(kdotslib SHARED
 
 target_link_libraries(kdotslib
   ${Boost_LIBRARIES}
-  KF5::KDELibs4Support
+  Qt5::Core
+  KF5::I18n
 )
 
 set_target_properties(kdotslib

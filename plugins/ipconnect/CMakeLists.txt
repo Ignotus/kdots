@@ -23,6 +23,7 @@ add_library(kdots_ipconnect MODULE
 target_link_libraries(kdots_ipconnect
   ${KDOTS_PLUGIN_DEPS}
   Qt5::Network
+  KF5::Completion
 )
 
 install(TARGETS kdots_ipconnect DESTINATION ${KDE_INSTALL_PLUGINDIR}/kdots)

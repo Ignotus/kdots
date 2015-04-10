@@ -27,8 +27,7 @@
 
 #include <QComboBox>
 #include <QPainter>
-
-#include <KApplication>
+#include <QApplication>
 
 namespace KDots
 {
@@ -101,7 +100,7 @@ namespace KDots
     pixPainter.fillRect(pixmapRect, brushes()[index.row()]);
     pixPainter.drawRect(pixmapRect);
  
-    KApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
+    QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
     painter->drawPixmap(itemRect, pixmap);
   }
   

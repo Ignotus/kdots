@@ -26,8 +26,8 @@
 #include "mainwindow.hpp"
 
 #include <QDir>
+#include <QStatusBar>
 
-#include <KStatusBar>
 #include <KConfigDialog>
 #include <KToolBar>
 #include <KStandardAction>
