@@ -7,7 +7,7 @@ set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 include(KDEInstallDirs)
 include(KDECompilerSettings)
-
+include(ECMInstallIcons)
 set(CMAKE_AUTOMOC ON)
 
 find_package(Boost 1.49 REQUIRED)
