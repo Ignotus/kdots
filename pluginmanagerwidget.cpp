@@ -54,6 +54,8 @@ namespace KDots
     QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
     proxyModel->setSourceModel(model);
     
+    model->sort(0, Qt::AscendingOrder);
+    
     m_ui->PluginList->setModel(model);
     m_ui->PluginList->setItemDelegate(new PluginWidgetDelegate(m_ui->PluginList));
     m_ui->PluginList->setSelectionMode(QAbstractItemView::SingleSelection);
