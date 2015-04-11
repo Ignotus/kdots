@@ -26,6 +26,7 @@
 #include "pluginmanagerwidget.hpp"
 
 #include <QStandardItemModel>
+#include <QSortFilterProxyModel>
 
 #include <interface/iplugin.hpp>
 
@@ -49,6 +50,9 @@ namespace KDots
       model->appendRow(new QStandardItem(PluginLoader::instance().plugin(name)->icon(),
                                          name));
     }
+
+    QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
+    proxyModel->setSourceModel(model);
     
     m_ui->PluginList->setModel(model);
     m_ui->PluginList->setItemDelegate(new PluginWidgetDelegate(m_ui->PluginList));
