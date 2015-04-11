@@ -101,7 +101,7 @@ namespace KDots
 #ifdef Q_OS_MAC
       return abs(res);
 #else
-      return std::abs(res)
+      return std::abs(res);
 #endif
     }
   }
