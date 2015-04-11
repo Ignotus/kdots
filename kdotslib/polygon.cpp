@@ -27,6 +27,10 @@
 #include "polygon.hpp"
 #include "polygon_p.hpp"
 
+#ifdef Q_OS_MAC
+#include <stdlib.h>
+#endif
+
 #include <QPoint>
 
 namespace KDots
@@ -94,7 +98,11 @@ namespace KDots
         prevPoint = *itr;
       }
 
-      return std::abs(res);
+#ifdef Q_OS_MAC
+      return abs(res);
+#else
+      return std::abs(res)
+#endif
     }
   }
 

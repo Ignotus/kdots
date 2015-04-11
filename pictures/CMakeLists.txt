@@ -1,2 +1,1 @@
-ecm_install_icons(ICONS 128-apps-kdots.png  16-apps-kdots.png  22-apps-kdots.png  32-apps-kdots.png  48-apps-kdots.png  64-apps-kdots.png sc-apps-kdots.svgz DESTINATION ${ICON_INSTALL_DIR} THEME hicolor)
-
+ecm_install_icons(ICONS 128-apps-kdots.png  16-apps-kdots.png  22-apps-kdots.png  32-apps-kdots.png  48-apps-kdots.png  64-apps-kdots.png sc-apps-kdots.svgz DESTINATION ${KDE_INSTALL_ICONDIR} THEME hicolor)

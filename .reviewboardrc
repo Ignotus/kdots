@@ -1,0 +1,5 @@
+REPOSITORY = "kdots"
+REVIEWBOARD_URL = "https://git.reviewboard.kde.org"
+TARGET_GROUPS = "kdegames"
+TARGET_PEOPLE = "minhngo"
+BRANCH = "master"

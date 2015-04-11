@@ -5,9 +5,12 @@ find_package(ECM REQUIRED NO_MODULE)
 
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
+include(ECMInstallIcons)
 include(KDEInstallDirs)
 include(KDECompilerSettings)
-include(ECMInstallIcons)
+include(KDECMakeSettings)
+include(ECMAddAppIcon)
+
 set(CMAKE_AUTOMOC ON)
 
 find_package(Boost 1.49 REQUIRED)
@@ -51,6 +54,8 @@ ki18n_wrap_ui(SRCS ${FORMS})
 kconfig_add_kcfg_files(SRCS kdots.kcfgc)
 install(FILES kdots.kcfg DESTINATION ${KCFG_INSTALL_DIR})
 
+file(GLOB ICONS_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/pictures/*-apps-kdots.png")
+ecm_add_app_icon(SRCS ICONS ${ICONS_SRCS})
 add_executable(kdots ${SRCS})
 
 target_link_libraries(kdots
@@ -61,12 +66,12 @@ target_link_libraries(kdots
   KF5::Completion
 )
 
-install(TARGETS kdots DESTINATION ${BIN_INSTALL_DIR})
-install(FILES kdotsui.rc DESTINATION ${KXMLGUI_INSTALL_DIR}/kdots)
-install(PROGRAMS org.kde.kdots.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
-install(FILES cmake/KDotsLibConfig.cmake DESTINATION ${CMAKECONFIG_INSTALL_PREFIX}/KDotsLib)
-
 add_subdirectory(kdotslib)
 add_subdirectory(plugins)
 add_subdirectory(doc)
 add_subdirectory(pictures)
+
+install(TARGETS kdots ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(FILES kdotsui.rc DESTINATION ${KDE_INSTALL_KXMLGUI5DIR}/kdots)
+install(PROGRAMS org.kde.kdots.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+install(FILES cmake/KDotsLibConfig.cmake DESTINATION ${CMAKECONFIG_INSTALL_PREFIX}/KDotsLib)

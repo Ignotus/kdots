@@ -31,11 +31,13 @@
 #include "kdots_api.hpp"
 #include "enums.hpp"
 
+#ifndef Q_OS_MAC
 namespace std
 {
   template<typename T>
   class shared_ptr;
 }
+#endif
 
 class QPoint;
 

@@ -70,6 +70,8 @@ int main(int argc, char **argv)
   QApplication app(argc, argv);
   parser.process(app);
 
+  app.setWindowIcon(QIcon::fromTheme(QStringLiteral("kdots")));
+
   KDots::GameConfig::registerMeta();
 
   KDots::MainWindow *w = new KDots::MainWindow();
