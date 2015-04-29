@@ -250,7 +250,7 @@ namespace simpleai
 
       const int pointID = std::distance(decisionGrades.begin(),
                                         std::max_element(decisionGrades.begin(),
-                                                        decisionGrades.end()));
+                                                         decisionGrades.end()));
       emit needAddPoint(decisions[pointID]);
     }
     // Else -> End of the game

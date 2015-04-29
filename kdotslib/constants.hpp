@@ -30,9 +30,5 @@ namespace KDots
 {
   const int DIRECTION_COUNT = 8;
 
-#ifndef Q_OS_MAC
-  const QString PLUGIN_PREFIX = QLatin1String("libkdots_");
-#else
   const QString PLUGIN_PREFIX = QLatin1String("kdots_");
-#endif
 }
