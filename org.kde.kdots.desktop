@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=KDots
+Name[ast]=KDots
 Name[bs]=KDots
 Name[ca]=KDots
 Name[cs]=KDots
@@ -29,6 +30,7 @@ Icon=kdots
 Type=Application
 Categories=Qt;KDE;Game;BoardGame;
 GenericName=Game of dots
+GenericName[ast]=Xuegu de puntos
 GenericName[bs]=Igra tačaka
 GenericName[ca]=Joc de punts
 GenericName[de]=Spiel mit Punkten
