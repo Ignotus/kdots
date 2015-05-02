@@ -36,6 +36,9 @@
 
 #include <stack>
 #include <ctime>
+#include <cassert>
+
+#include <boost/range/combine.hpp>
 
 #include <QDebug>
 #include <KgDifficulty>
@@ -162,10 +165,11 @@ namespace simpleai
     {
       for (int y = 0; y < bb.height(); ++y)
       {
-        if (graph[x + offsetPoint.x()][y + offsetPoint.y()].owner() != Owner::NONE)
+        const QPoint graphPoint(QPoint(x, y) + offsetPoint);
+        if (graph[graphPoint].owner() != Owner::NONE)
           importanceMatrix[x][y] = -std::numeric_limits<float>::infinity();
         else
-          importanceMatrix[x][y] = cellPriority({offsetPoint.x() + x, offsetPoint.y() + y});
+          importanceMatrix[x][y] = cellPriority(graphPoint);
       }
     }
 
@@ -241,16 +245,21 @@ namespace simpleai
     if (!decisions.empty())
     {
       const auto importanceMatrix(getImportanceMatrix(bbox));
-      for (std::size_t i = 0; i < decisions.size(); ++i)
+      for (const boost::tuple<const QPoint&, float&>& pair : boost::combine(decisions, decisionGrades))
       {
-        const QPoint& p = decisions[i];
-        decisionGrades[i] *= m_k2;
-        decisionGrades[i] += m_k1 * importanceMatrix[p.x() - bbox.left()][p.y() - bbox.top()];
+        const QPoint p = pair.get<0>() - bbox.topLeft();
+        assert(p.x() >= 0);
+        assert(p.y() >= 0);
+        assert(p.x() < importanceMatrix.size());
+        assert(p.y() < importanceMatrix[0].size());
+        (pair.get<1>() *= m_k2) += m_k1 * importanceMatrix[p.x()][p.y()];
       }
 
       const int pointID = std::distance(decisionGrades.begin(),
                                         std::max_element(decisionGrades.begin(),
                                                          decisionGrades.end()));
+
+      assert(pointID >= 0 && pointID < decisions.size());
       emit needAddPoint(decisions[pointID]);
     }
     // Else -> End of the game

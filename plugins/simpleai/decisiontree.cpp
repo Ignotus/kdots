@@ -101,12 +101,12 @@ namespace simpleai
 
           m_nodes.emplace_back();
 
-          NodeInfo& newNode = m_nodes[m_nodes.size() - 1];
+          NodeInfo& newNode = m_nodes.back();
           newNode.m_layer = currentLayer;
           newNode.m_parent = parentNodeID;
           newNode.m_bestChildGrade = 0;
 
-          const QPoint point(x + m_bbox.left(), y + m_bbox.top());
+          const QPoint point(QPoint(x, y) + m_bbox.topLeft());
           newNode.m_point = point;
 
           PolygonFinder finder(m_graph, layerOwner, ownerPrevPoints);
@@ -291,7 +291,7 @@ namespace simpleai
     {
       for (int y = 0; y < m_bbox.height(); ++y)
       {
-        const QPoint point(x + m_bbox.left(), y + m_bbox.top());
+        const QPoint point(QPoint(x, y) + m_bbox.topLeft());
         
         allowedPoints[x][y] = isNotPreviousPoint(previousPoints, point)
               && m_graph[point].owner() == Owner::NONE
