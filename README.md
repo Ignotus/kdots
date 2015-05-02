@@ -44,4 +44,4 @@ Installing
 Other
 -----
 
-CI for the master branch is available [here](http://build.kde.org/job/kdots_master_qt5/)
+CI for the master branch is available [here](https://build.kde.org/job/kdots master kf5-qt5/)
