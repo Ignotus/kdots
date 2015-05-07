@@ -1,5 +1,7 @@
 # KDots
 
+[![Build Status](https://build.kde.org/job/kdots%20master%20kf5-qt5/badge/icon)](https://build.kde.org/job/kdots%20master%20kf5-qt5/)
+
 [![KDots](http://i.imgur.com/Izm74a6.png)](http://i.imgur.com/Izm74a6.png)
 
 About
@@ -40,8 +42,3 @@ To build current version of source code, execute following commands:
 Installing
 ----------
     # make install
-
-Other
------
-
-CI for the master branch is available [here](https://build.kde.org/job/kdots master kf5-qt5/)
