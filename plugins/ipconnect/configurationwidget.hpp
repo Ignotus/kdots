@@ -53,7 +53,7 @@ namespace ipconnect
   public:
     ConfigurationWidget(QWidget *parent = 0);
 
-    void requestState();
+    void requestState() override;
 
     bool clientConfig(ClientConfig& config);
     bool serverConfig(ServerConfig& config);
@@ -62,7 +62,7 @@ namespace ipconnect
     void onTabChanged(int index);
 
   Q_SIGNALS:
-    void needCreateBoard(bool);
+    void needCreateBoard(bool) override;
 
   private:
     Ui::ConfigurationWidget *m_ui;

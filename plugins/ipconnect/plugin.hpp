@@ -40,10 +40,10 @@ namespace ipconnect
     public:
       Plugin(QObject *parent = 0);
       
-      std::unique_ptr<IRival> createRival();
-      QString name() const;
-      QString description() const;
-      QIcon icon() const;
+      std::unique_ptr<IRival> createRival() override;
+      QString name() const override;
+      QString description() const override;
+      QIcon icon() const override;
     };
 }
 }

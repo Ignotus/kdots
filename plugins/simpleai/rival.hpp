@@ -43,13 +43,13 @@ namespace simpleai
   public:
     Rival(QObject *parent = 0);
 
-    Owner owner() const;
+    Owner owner() const override;
 
-    void setBoardModel(const BoardModel *board);
+    void setBoardModel(const BoardModel *board) override;
 
   public Q_SLOTS:
-    void onPointAdded(const QPoint& point);
-    void onDifficultyChanged(const KgDifficultyLevel *level);
+    void onPointAdded(const QPoint& point) override;
+    void onDifficultyChanged(const KgDifficultyLevel *level) override;
 
   private:
     void addPoint(bool random = false);
@@ -63,9 +63,9 @@ namespace simpleai
     std::vector<VectorF> getImportanceMatrix(const QRect& bb) const;
 
   Q_SIGNALS:
-    void needCreateBoard(const GameConfig& config);
-    void needDestroy();
-    void needAddPoint(const QPoint&);
+    void needCreateBoard(const GameConfig& config) override;
+    void needDestroy() override;
+    void needAddPoint(const QPoint&) override;
 
   private:
     const BoardModel *m_board;

@@ -24,7 +24,7 @@ find_package(KF5 REQUIRED COMPONENTS
   DocTools
 )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fexceptions")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -fexceptions")
 
 set(PLUGIN_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/plugins)
 set(KDOTS_INCLUDE_DIR

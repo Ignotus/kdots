@@ -38,16 +38,16 @@ namespace singlepc
   public:
     Rival(QObject *parent = 0);
     
-    bool canUndo() const;
+    bool canUndo() const override;
 
   public Q_SLOTS:
-    void onPointAdded(const QPoint& point);
-    void onDifficultyChanged(const KgDifficultyLevel *difficulty);
+    void onPointAdded(const QPoint& point) override;
+    void onDifficultyChanged(const KgDifficultyLevel *difficulty) override;
 
   Q_SIGNALS:
-    void needCreateBoard(const GameConfig& config);
-    void needDestroy();
-    void needAddPoint(const QPoint&);
+    void needCreateBoard(const GameConfig& config) override;
+    void needDestroy() override;
+    void needAddPoint(const QPoint&) override;
   };
 
   class Plugin : public KDots::IPlugin
@@ -57,10 +57,10 @@ namespace singlepc
     Q_PLUGIN_METADATA(IID "com.github.ignotus.kdots.IPlugin" FILE "plugin.json")
   public:
     Plugin(QObject *parent = 0);
-    std::unique_ptr<IRival> createRival();
-    QString name() const;
-    QString description() const;
-    QIcon icon() const;
+    std::unique_ptr<IRival> createRival() override;
+    QString name() const override;
+    QString description() const override;
+    QIcon icon() const override;
   };
 
 }

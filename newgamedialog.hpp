@@ -54,7 +54,7 @@ namespace KDots
     const GameConfig& gameConfig() const;
     
   public:
-    void accept();
+    void accept() override;
     
   private Q_SLOTS:
     void pluginWidget();

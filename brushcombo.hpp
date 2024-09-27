@@ -32,6 +32,6 @@ namespace KDots
   {
   public:
     BrushCombo(QWidget* parent = 0);
-    void paintEvent(QPaintEvent *e);
+    void paintEvent(QPaintEvent *e) override;
   };
 }

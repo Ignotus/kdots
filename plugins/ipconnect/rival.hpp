@@ -44,16 +44,16 @@ namespace ipconnect
     Rival(QObject *parent = 0);
     virtual ~Rival();
     
-    IConfigurationWidget* configureWidget();
+    IConfigurationWidget* configureWidget() override;
 
-    void setBoardModel(const BoardModel *board);
-    void requestGameConfig();
+    void setBoardModel(const BoardModel *board) override;
+    void requestGameConfig() override;
 
-    Owner owner() const;
+    Owner owner() const override;
 
   public Q_SLOTS:
-    void onPointAdded(const QPoint& point);
-    void onDifficultyChanged(const KgDifficultyLevel*);
+    void onPointAdded(const QPoint& point) override;
+    void onDifficultyChanged(const KgDifficultyLevel*) override;
     
   private Q_SLOTS:
     void onNewConnectionHandle();
@@ -61,9 +61,9 @@ namespace ipconnect
     void onDisconnected();
     
   Q_SIGNALS:
-    void needCreateBoard(const GameConfig& config);
-    void needDestroy();
-    void needAddPoint(const QPoint&);
+    void needCreateBoard(const GameConfig& config) override;
+    void needDestroy() override;
+    void needAddPoint(const QPoint&) override;
     
   private:
     const BoardModel *m_board;

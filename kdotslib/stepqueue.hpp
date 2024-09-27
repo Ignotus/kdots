@@ -75,7 +75,7 @@ namespace KDots
   public:
     ExtraStepQueue(Owner firstPlayer);
 
-    Owner nextStep();
+    Owner nextStep() override;
   };
 
 
