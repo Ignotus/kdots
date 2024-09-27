@@ -36,7 +36,7 @@ namespace ipconnect
     {
       Q_OBJECT
       Q_INTERFACES(KDots::IPlugin)
-      Q_PLUGIN_METADATA(IID "com.github.ignotus.kdots.IPlugin" FILE "")
+      Q_PLUGIN_METADATA(IID "com.github.ignotus.kdots.IPlugin" FILE "plugin.json")
     public:
       Plugin(QObject *parent = 0);
       
