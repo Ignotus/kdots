@@ -52,8 +52,7 @@ namespace KDots
     editor->setGeometry(option.rect);
   }
   
-  void PluginWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewItem& option,
-      const QModelIndex& index) const
+  void KDots::PluginWidgetDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
   {
     QStyleOptionViewItemV4 myOption = option;
     QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);

@@ -217,12 +217,6 @@ namespace simpleai
 
   void Rival::addPoint(bool random)
   {
-    if (random)
-    {
-      while (!addRandomPoint());
-      return;
-    }
-
     const QRect bbox(getBoundingBox());
 
     const Graph& graph = m_board->graph();

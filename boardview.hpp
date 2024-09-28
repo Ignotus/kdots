@@ -44,17 +44,17 @@ namespace KDots
   public:
     BoardView(QWidget *parent = 0);
     
-    void setModel(BoardModel *table);
+    void setModel(BoardModel *table) override;
     
-    QObject* getObject();
-    
+    QObject* getObject() override;
+
   public Q_SLOTS:
     void onFreezeView(bool freeze);
 
   protected:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void paintEvent(QPaintEvent *event);
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
   private:
     void calculatePoint(QPoint& point, QMouseEvent *event);
@@ -67,7 +67,7 @@ namespace KDots
     void onShowMessage(const QString& message);
   
   Q_SIGNALS:
-    void pointClicked(const QPoint& point);
+    void pointClicked(const QPoint& point) override;
 
   private:
     BoardModel *m_model;

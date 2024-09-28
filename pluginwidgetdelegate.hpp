@@ -33,13 +33,13 @@ namespace KDots
   public:
     PluginWidgetDelegate(QObject *parent = 0);
     
-    QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const;
+    QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const override;
     
     void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem& option,
-        const QModelIndex& index) const;
+        const QModelIndex& index) const override;
     
     void paint(QPainter *painter, const QStyleOptionViewItem& option,
-        const QModelIndex& index) const;
+        const QModelIndex& index) const override;
 
   private:
     void drawIcon(QPainter *painter, const QStyleOptionViewItem& option, const QIcon& icon) const;

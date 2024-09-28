@@ -54,13 +54,9 @@ namespace KDots
 
     bool hasPoint(const QPoint& point)
     {
-      for(int i = 0;  i < m_count; ++i)
-      {
-        if(m_pointList[i] == point)
-          return true;
-      }
-
-      return false;
+      return std::any_of(m_pointList, &m_pointList[m_count], [&point](const QPoint& p) {
+        return p == point;
+      });
     }
 
     QPoint& operator[](int index)

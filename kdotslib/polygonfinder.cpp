@@ -91,11 +91,9 @@ namespace KDots
 
   bool PolygonFinderPrivate::isAdditionalPoint(const QPoint& point) const
   {
-    for (const QPoint& pi : m_additionalPoints)
-      if (pi == point)
-        return true;
-
-    return false;
+    return std::any_of(m_additionalPoints.begin(), m_additionalPoints.end(), [&point](const QPoint& pi) {
+      return pi == point;
+    });
   }
 
   //////////////////////////////////////////////////////////////////////////////

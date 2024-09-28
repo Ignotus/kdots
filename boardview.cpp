@@ -31,6 +31,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QPaintEvent>
+ #include <QPainterPath>
 
 #include <KMessageBox>
 

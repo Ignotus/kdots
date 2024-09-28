@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.16.0)
 project(kdots)
 
 find_package(ECM REQUIRED NO_MODULE)
@@ -13,16 +13,18 @@ include(ECMAddAppIcon)
 
 set(CMAKE_AUTOMOC ON)
 
-find_package(Boost 1.49 REQUIRED)
+find_package(Boost REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 find_package(KF5 REQUIRED COMPONENTS
   TextWidgets
-  XmlGui
   I18n
+  XmlGui
   Completion
   KDEGames
+  DocTools
 )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexceptions")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -fexceptions")
 
 set(PLUGIN_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/plugins)
 set(KDOTS_INCLUDE_DIR
