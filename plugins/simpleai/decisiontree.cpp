@@ -39,15 +39,6 @@ namespace KDots
 {
 namespace simpleai
 {
-  NodeInfo::NodeInfo()
-    : m_parent(-1)
-    , m_layer(0)
-    , m_bestChildGrade(0)
-    , m_capturedPointsCount(0)
-    , m_point{-1, -1}
-  {
-  }
-  
   DecisionTree::DecisionTree(const Graph& graph, const QRect& bbox,
                              int numPointsOnBoard, int depth, Owner ai)
     : m_graph(graph)
@@ -59,245 +50,26 @@ namespace simpleai
   {
     qDebug() << "Bounding box:" << bbox.width() << bbox.height();
   }
-  
-  void DecisionTree::calculateDecisions(std::vector<QPoint>& points, VectorF& grades)
+
+  void DecisionTree::calculateDecisions(std::vector<QPoint>& oPoints,
+                                        VectorF& oWeights)
   {
-    m_nodes = {NodeInfo()};
-    
-    // For DFS
-    std::stack<std::size_t> tasks;
-    tasks.push(0);
-    
-    while (!tasks.empty())
-    {
-      const int parentNodeID = tasks.top();
-      tasks.pop();
-
-      TPreviousPoints previousPoints;
-
-      findPreviousPoints(parentNodeID, previousPoints);
-
-      std::vector<VectorB> allowedPoints(m_bbox.width(), VectorB(m_bbox.height(), false));
-      buildAllowedPointsMap(previousPoints, allowedPoints);
-
-      const std::size_t layerStart = m_nodes.size();
-      
-      const int parentLayer = m_nodes[parentNodeID].m_layer;
-      const int currentLayer = parentLayer + 1;
-      const bool isHumanLayer = parentLayer % 2 == 1;
-      
-      const Owner layerOwner = isHumanLayer ? StepQueue::other(m_ai) : m_ai;
-      
-      const std::vector<QPoint>& ownerPrevPoints = isHumanLayer
-          ? previousPoints.m_human
-          : previousPoints.m_ai;
-      
-      for (int x = 0; x < m_bbox.width(); ++x)
-      {
-        for (int y = 0; y < m_bbox.height(); ++y)
-        {
-          if (!allowedPoints[x][y])
-            continue;
-
-          m_nodes.emplace_back();
-
-          NodeInfo& newNode = m_nodes.back();
-          newNode.m_layer = currentLayer;
-          newNode.m_parent = parentNodeID;
-          newNode.m_bestChildGrade = 0;
-
-          const QPoint point(QPoint(x, y) + m_bbox.topLeft());
-          newNode.m_point = point;
-
-          PolygonFinder finder(m_graph, layerOwner, ownerPrevPoints);
-
-          const PolyList& polygons = finder(point);
-          
-          newNode.m_capturedPointsCount = findCapturedPoints(previousPoints,
-                                                             layerOwner,
-                                                             polygons);
-
-          NodeInfo& parentNode = m_nodes[parentNodeID];
-          // If it's a human layer we choose the worse case
-          if (parentNode.m_bestChildGrade > newNode.m_capturedPointsCount)
-            m_nodes.pop_back();
-          else
-            parentNode.m_bestChildGrade = newNode.m_capturedPointsCount;
-        }
-      }
-
-      // Not found any elements for this layer
-      if (layerStart == m_nodes.size())
-        continue;
-
-      // Invert grades for human layers
-      if (isHumanLayer)
-        m_nodes[parentNodeID].m_bestChildGrade *= -1;
-
-      m_leafs.reserve(m_leafs.size() + m_nodes.size() - layerStart);
-      
-      // Last layer
-      if (currentLayer == m_depth || (m_numPointsOnBoard + currentLayer == m_maxNumPoints))
-      {
-        for (std::size_t i = layerStart; i < m_nodes.size(); ++i)
-          m_leafs.push_back(i);
-        
-        continue;
-      }
-
-      for (std::size_t i = layerStart; i < m_nodes.size(); ++i)
-      {
-        if (m_nodes[i].m_capturedPointsCount == 0)
-          tasks.push(i);
-        else
-          m_leafs.push_back(i);
-      }
-    }
-    
-    // Update all weights starting from leafs
-    
-    int bestGrade = 0;
-    int prevParentID = -1;
-    for (const int id : m_leafs)
-    {
-      const NodeInfo& node = m_nodes[id];
-      if (node.m_parent != prevParentID)
-      {
-        if (prevParentID != -1)
-          m_nodes[prevParentID].m_bestChildGrade += bestGrade;
-
-        bestGrade = node.m_bestChildGrade;
-        prevParentID = node.m_parent;
-        continue;
-      }
-
-      if (prevParentID % 2 == 0) // Current is max/ai layer
-      {
-        if (bestGrade < node.m_bestChildGrade)
-          bestGrade = node.m_bestChildGrade;
-      }
-      else // Current is min/human layer
-      {
-        if (bestGrade > node.m_bestChildGrade)
-          bestGrade = node.m_bestChildGrade;
-      }
-    }
-
-    qDebug() << "Decision Tree Final Size:" << m_nodes.size();
-
-    // Decisions are positioned in the first layer
-    // TODO: reserve
-    for (int i = 1; m_nodes[i].m_parent == 0; ++i)
-    {
-      points.push_back(m_nodes[i].m_point);
-      grades.push_back(m_nodes[i].m_bestChildGrade);
-    }
-  }
-  
-  void DecisionTree::findPreviousPoints(int lastPointID,
-                                        TPreviousPoints& previousPoints) const
-  {
-    const NodeInfo *lastNode = &m_nodes[lastPointID];
-    
-    while(lastNode->m_point.x() != -1)
-    {
-      if (lastNode->m_layer % 2 == 1)
-        previousPoints.m_ai.push_back(lastNode->m_point);
-      else
-        previousPoints.m_human.push_back(lastNode->m_point);
-      
-      lastNode = &m_nodes[lastNode->m_parent];
-    }
-  }
-  
-  namespace
-  {
-    bool isNotIn(const std::vector<QPoint>& v, const QPoint& point)
-    {
-      for (const QPoint& p : v)
-        if (p == point)
-          return false;
-      
-      return true;
-    }
-  }
-  
-  int DecisionTree::findCapturedPoints(const TPreviousPoints& previousPoints,
-                                       Owner currentOwner,
-                                       const PolyList& polygons) const
-  {
-    if (polygons.empty())
-        return 0;
-      
-    int numPoints = 0;
-    
-    const std::vector<QPoint>& opponentPrevPoints = currentOwner == m_ai
-        ? previousPoints.m_human
-        : previousPoints.m_ai;
-
-    for (int x = m_bbox.left(); x <= m_bbox.right(); ++x)
-    {
-      for (int y = m_bbox.top(); y <= m_bbox.bottom(); ++y)
-      {
-        const QPoint point(x, y);
-        
-        // We can capture only noncaptured points
-        if (m_graph[point].isCaptured())
+    const int w = m_graph.width();
+    const int h = m_graph.height();
+    qDebug() << "x" << m_bbox.x() << m_bbox.right();
+    qDebug() << "y" << m_bbox.y() << m_bbox.bottom();
+    for (int x = m_bbox.x(); x <= m_bbox.right(); ++x) {
+      for (int y = m_bbox.y(); y <= m_bbox.bottom(); ++y) {
+        const auto& p = m_graph[QPoint{x, y}];
+        qDebug() << "x" << x << "y" << y << p.owner();
+        if (p.owner() != Owner::NONE)
           continue;
-        
-        const Owner pointOwner = m_graph[point].owner();
-        
-        // We can capture only oponent's points
-        if (pointOwner == currentOwner)
-          continue;
-        
-        if (pointOwner == Owner::NONE && isNotIn(opponentPrevPoints, point))
-          continue;
-          
-        for (const Polygon_ptr& polygon : polygons)
-        {
-          if (polygon->contains(point))
-          {
-            ++numPoints;
-            break;
-          }
-        }
-      }
-    }
-    
-    return numPoints;
-  }
-  
-  namespace
-  {
-    bool isNotPreviousPoint(const TPreviousPoints& previousPoints, const QPoint& point)
-    {
-      for (const QPoint& pai : previousPoints.m_ai)
-        if (pai == point)
-          return false;
-      
-      for (const QPoint& phuman : previousPoints.m_human)
-        if (phuman == point)
-          return false;
-        
-      return true;
-    }
-  }
-  
-  void DecisionTree::buildAllowedPointsMap(const TPreviousPoints& previousPoints,
-                                           std::vector<VectorB>& allowedPoints) const
-  {
-    for (int x = 0; x < m_bbox.width(); ++x)
-    {
-      for (int y = 0; y < m_bbox.height(); ++y)
-      {
-        const QPoint point(QPoint(x, y) + m_bbox.topLeft());
-        
-        allowedPoints[x][y] = isNotPreviousPoint(previousPoints, point)
-              && m_graph[point].owner() == Owner::NONE
-              && !m_graph[point].isCaptured();
+
+        oPoints.push_back({x, y});
+        oWeights.push_back(((double)rand()) / RAND_MAX);
       }
     }
   }
+  
 }
 }

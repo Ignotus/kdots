@@ -36,49 +36,20 @@ namespace KDots
 class Graph;
 namespace simpleai
 {
-  class NodeInfo
-  {
-  public:
-    NodeInfo();
-    
-  public:
-    int m_parent; // Index from the vector
-    int m_layer;
-    int m_bestChildGrade;
-    int m_capturedPointsCount;
-
-    QPoint m_point;
-  };
-  
-  struct TPreviousPoints
-  {
-    std::vector<QPoint> m_ai;
-    std::vector<QPoint> m_human;
-  };
-  
   typedef std::vector<float> VectorF;
   
   class DecisionTree
   {
   public:
+    /* ai : Owner - identified in the graph as a point made by AI.
+     * bbox : QRect - decision should be made within the bounding box
+     * depth : int - Depth of the search tree
+     */
     DecisionTree(const Graph& graph, const QRect& bbox,
                  int numPointsOnBoard, int depth, Owner ai);
     
-    void calculateDecisions(std::vector<QPoint>& points, VectorF& grades);
+    void calculateDecisions(std::vector<QPoint>& oPoints, VectorF& oWeights);
   
-  private:
-    void findPreviousPoints(int lastPointID,
-                            TPreviousPoints& previousPoints) const;
-    
-    int findCapturedPoints(const TPreviousPoints& previousPoints,
-                           Owner current,
-                           const PolyList& polygons) const;
-    
-    typedef std::vector<bool> VectorB;
-    // Returns allowed points to place (not to capture)
-    void buildAllowedPointsMap(const TPreviousPoints& previousPoints,
-                               std::vector<VectorB>& allowedPoints) const;
-    
   private:
     const Graph& m_graph;
     const QRect& m_bbox;
@@ -86,9 +57,6 @@ namespace simpleai
     const int m_maxNumPoints;
     const int m_depth;
     Owner m_ai;
-    
-    std::vector<NodeInfo> m_nodes;
-    std::vector<int> m_leafs;
   };
 }
 }
