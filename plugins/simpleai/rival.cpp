@@ -77,6 +77,7 @@ namespace simpleai
   void Rival::onDifficultyChanged(const KgDifficultyLevel *level)
   {
     m_depth = DIFFICULTY_TO_DEPTH.at(level->standardLevel());
+    qDebug() << "m_depth" << m_depth;
   }
 
   void Rival::onPointAdded(const QPoint& point)
@@ -246,6 +247,8 @@ namespace simpleai
         assert(p.y() >= 0);
         assert(p.x() < importanceMatrix.size());
         assert(p.y() < importanceMatrix[0].size());
+
+        // Heuristics will contribute only if decision tree cannot decide on the best move
         (pair.get<1>() *= m_k2) += m_k1 * importanceMatrix[p.x()][p.y()];
       }
 

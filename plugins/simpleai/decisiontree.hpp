@@ -49,6 +49,16 @@ namespace simpleai
                  int numPointsOnBoard, int depth, Owner ai);
     
     void calculateDecisions(std::vector<QPoint>& oPoints, VectorF& oWeights);
+
+  private:
+    int gradeMove(const QPoint& newPoint,
+                  std::vector<QPoint>& decisionStack,
+                  std::vector<QPoint>& humanDecisionStack,
+                  int depth) const;
+
+    bool anyPointsCaptured(const Polygon& polygon,
+                           const std::vector<QPoint>& otherPoints,
+                           Owner other) const;
   
   private:
     const Graph& m_graph;
@@ -56,7 +66,8 @@ namespace simpleai
     const int m_numPointsOnBoard;
     const int m_maxNumPoints;
     const int m_depth;
-    Owner m_ai;
+    const Owner m_ai;
+    const Owner m_human;
   };
 }
 }
